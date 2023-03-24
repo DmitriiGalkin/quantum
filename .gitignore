@@ -15,5 +15,5 @@ pnpm-debug.log*
 .idea
 
 # production
-#/build
-#/build-portal
+/build
+
