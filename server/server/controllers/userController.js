@@ -1,14 +1,13 @@
 'use strict';
 const User = require('../models/userModel');
+
 exports.findAll = function(req, res) {
-    User.findAll(function(err, employee) {
-        console.log('controller')
-        if (err)
-            res.send(err);
-        console.log('res', employee);
-        res.send(employee);
+    User.findAll(function(err, users) {
+        if (err) res.send(err);
+        res.send(users);
     });
 };
+
 exports.create = function(req, res) {
     const new_user = new User(req.body);
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){

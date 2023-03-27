@@ -10,12 +10,8 @@ var Meet = function(data){
 
 Meet.findAll = function (result) {
     dbConn.query("Select * from meet", function (err, res) {
-        if(err) {
-            result(null, err);
-        }
-        else{
-            result(null, res);
-        }
+        if(err) result(null, err);
+        result(null, res);
     });
 };
 

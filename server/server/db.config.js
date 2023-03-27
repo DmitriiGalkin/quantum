@@ -2,11 +2,10 @@
 const mysql = require('mysql2');
 
 const dbConn = mysql.createConnection({
-    host     : 'localhost', // специально для докера, иначе бы было написано localhost   db
+    host     : '127.0.0.1',
     user     : 'dima',
     password : 'dima1234',
     database : 'quantum',
-    port: 3306,
 });
 
 dbConn.connect(function(err) {

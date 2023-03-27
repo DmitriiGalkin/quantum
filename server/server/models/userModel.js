@@ -101,13 +101,8 @@ User.findByPlaceId = function (id, result) {
 
 User.findAll = function (result) {
     dbConn.query("Select * from user", function (err, res) {
-        if(err) {
-            console.log("error: ", err);
-            result(null, err);
-        }
-        else{
-            result(null, res);
-        }
+        if(err) result(null, err);
+        result(null, res);
     });
 };
 User.update = function(id, user, result){
