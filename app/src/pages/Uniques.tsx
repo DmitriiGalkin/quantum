@@ -18,9 +18,6 @@ export default function UniquesPage() {
     return (
         <>
             <div style={{ padding: 24 }}>
-                <Typography component="div" style={{ fontSize: 30, textAlign: 'center' }}>
-                    {userD?.title}
-                </Typography>
                 <Typography component="div" style={{ fontWeight: 700, textAlign: 'center' }}>
                     - твои Уникальные Ценности!
                 </Typography>

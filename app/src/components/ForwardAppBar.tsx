@@ -2,25 +2,7 @@ import React from 'react';
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
 import {AppBar, IconButton, Skeleton, Toolbar, Typography} from "@mui/material";
 
-// const useStyles = makeStyles((theme: Theme) => ({
-//     root: {
-//         display: 'flex',
-//         justifyContent: 'space-between',
-//         padding: '8px 16px',
-//     },
-//     menuButton: {
-//         padding: 0,
-//         marginRight: theme.spacing(2),
-//     },
-//     title: {
-//         flexGrow: 1,
-//         color: theme.palette.background.paper,
-//     },
-// }));
-
 export function ForwardAppBar({ title, icon, onClick }: { title?: string, icon?: JSX.Element, onClick?: () => void }) {
-//    const classes = useStyles();
-
     return (
         <AppBar position="static">
             <Toolbar variant="dense">

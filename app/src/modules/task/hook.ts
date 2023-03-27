@@ -5,7 +5,7 @@ import {User} from "../user";
 import {useUnit} from "../../tools/hooks";
 
 export const useTask = (id: number): UseQueryResult<User> => {
-    return useQuery(['task', id], () => service.get(`/task/${id}`),)
+    return useQuery(['task', id], () => service.get(`/user-task/${id}`),)
 }
 export const useTasks = (): UseQueryResult<Task[]> => {
     return useQuery(['tasks'], () => service.get(`/task`),)
@@ -15,4 +15,4 @@ export const useOnlyUserTasks = (): UseQueryResult<UserTask[]> => {
     return useQuery(['userTasks', user.id], () => service.get(`/user/${user.id}/tasks`))
 }
 
-export const useEditTask = (): UseMutate<any> => useMutation((task) => service.put(`/task/${task.id}`, task))
+export const useEditUserTask = (): UseMutate<any> => useMutation((task) => service.put(`/user-task/${task.id}`, task))

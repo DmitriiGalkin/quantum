@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {makeStyles} from '@mui/styles';
 import ForwardAppBar from "../../components/ForwardAppBar";
 import {useParams} from "react-router-dom";
-import {Task, useEditTask, useTask} from "../../modules/task";
-import CampaignIcon from '@mui/icons-material/Campaign';
-import {Button, Container, Theme} from "@mui/material";
+import {Task, useEditUserTask, useTask} from "../../modules/task";
+import {Container, Theme} from "@mui/material";
 import SelectEmotion from "./SelectEmotion";
 import {useEditUser, useUser} from "../../modules/user";
 
@@ -43,36 +42,23 @@ export default function UserView() {
     const { id } = useParams();
     const { data: user = {} as Task } = useUser(1)
     const { data: task = {} as Task } = useTask(Number(id))
-    const campaignIconOnClick = () => {
-        let utterance = new SpeechSynthesisUtterance(task.title);
-        speechSynthesis.speak(utterance);
-    }
-    const [emotion, setEmotion] = useState<number>()
-    const editTask = useEditTask()
+
+    const editTask = useEditUserTask()
     const editUser = useEditUser(1)
 
-    const onClick = () => {
-        editTask.mutate({ ...task, result: JSON.stringify({ emotion }) })
+    const onClick = (v: number) => {
+        editTask.mutate({ ...task, result: JSON.stringify({ emotion: v }) })
         setTimeout(() => {
             editUser.mutate({ ...user, points: user.points + task.points })
         }, 10)
-
+        window.history.back()
     };
 
     return (
         <div className={classes.root}>
-            <ForwardAppBar title={task.title} icon={<CampaignIcon/>} onClick={campaignIconOnClick}/>
+            <ForwardAppBar title={task.title}/>
             <Container style={{ paddingTop: 20 }}>
-                <SelectEmotion onClick={(v) => setEmotion(v)}/>
-                {emotion === 6 && 'У тебя сегодня прекрасное настроение!'}
-                <Button
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={onClick}
-                >
-                    Отправить
-                </Button>
+                <SelectEmotion onClick={(v) => onClick(v)}/>
             </Container>
         </div>
     );

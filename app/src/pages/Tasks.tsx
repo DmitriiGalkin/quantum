@@ -8,7 +8,7 @@ export default function TasksPage() {
 
     return (
         <Stack spacing={2}>
-            {tasks.map((task) => <TaskCard key={task.taskId} {...task} />)}
+            {tasks.map((task) => <TaskCard key={task.id} {...task} />)}
         </Stack>
     );
 }

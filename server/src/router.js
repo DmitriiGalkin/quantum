@@ -75,8 +75,8 @@ router.delete('/meet/:meetId/user/:userId', meetController.deleteMeetUser ); // 
  * Задания
  */
 router.get('/task/', taskController.findAll);
-router.get('/task/:id', taskController.findById);
-router.put('/task/:id', taskController.update);
+router.get('/user-task/:id', taskController.findById);
+router.put('/user-task/:id', taskController.update);
 
 
 /**

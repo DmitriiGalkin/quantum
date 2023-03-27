@@ -6,6 +6,7 @@ export interface Task {
 }
 
 export interface UserTask {
+    id: number
     userid: number
     taskId: string
     task: Task

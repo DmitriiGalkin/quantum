@@ -16,13 +16,13 @@ Task.findAll = function (result) {
     });
 };
 Task.findById = function (id, result) {
-    dbConn.query("Select * from task where id = ? ", id, function (err, res) {
+    dbConn.query("Select * from user_task where id = ? ", id, function (err, res) {
         if (err) result(err, null);
         result(null, res);
     });
 };
 Task.findAllByUserId = function (id, result) {
-    dbConn.query("Select * from user_task where userId = ? ", id, function (err, res) {
+    dbConn.query("Select * from user_task where results IS NULL AND userId = ? ", id, function (err, res) {
         if (err) result(null, err);
         result(null, res);
     });
@@ -36,7 +36,7 @@ Task.findByUserTask = function (userTask, result) {
 
 
 Task.update = function(id, task, result){
-    dbConn.query("UPDATE task SET results=? WHERE id = ?", [task.result, id], function (err, res) {
+    dbConn.query("UPDATE user_task SET results=? WHERE id = ?", [task.result, id], function (err, res) {
         if(err) result(null, err);
         result(null, res);
     });

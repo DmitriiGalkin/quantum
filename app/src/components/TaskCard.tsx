@@ -16,14 +16,6 @@ export default function TaskCard(userTask: UserTask) {
             },
             marginBottom: 2,
         }}>
-            {/*<div>*/}
-            {/*    <Tooltip disableFocusListener title="Задание относится к проекту `Рисование`" enterTouchDelay={0}>*/}
-            {/*        <Chip label="Рисование" color="primary" size="small" variant="outlined"*/}
-            {/*              sx={{*/}
-            {/*            borderRadius: 2*/}
-            {/*        }}/>*/}
-            {/*    </Tooltip>*/}
-            {/*</div>*/}
             <div>
                 <Typography variant="h5">
                     {userTask.task.title}
@@ -47,7 +39,7 @@ export default function TaskCard(userTask: UserTask) {
                     marginRight: 2,
                     marginTop: 1,
                 }}
-                onClick={() => navigate(`/task/${userTask.taskId}`)}
+                onClick={() => navigate(`/task/${userTask.id}`)}
             >
                 Начать
             </Button>
