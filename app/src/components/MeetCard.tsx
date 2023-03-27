@@ -1,7 +1,7 @@
 import React from 'react';
 import {Meet, useAddMeetUser, useDeleteMeetUser} from "../modules/meet";
 import {convertToMeetTime} from "../tools/date";
-import {Avatar, AvatarGroup, Box, Typography} from "@mui/material";
+import {AvatarGroup, Box, Typography} from "@mui/material";
 import {useUnit} from "../tools/hooks";
 import QAvatar from "./QAvatar";
 

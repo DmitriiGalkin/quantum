@@ -8,7 +8,7 @@ import {LocalizationProvider} from '@mui/x-date-pickers';
 import {router} from "./App";
 import theme from "./theme";
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 
 
 const queryClient = new QueryClient()

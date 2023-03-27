@@ -1,6 +1,6 @@
 'use strict';
 var async = require("async");
-
+const helper = require('./helper');
 const Meet = require('../models/meetModel');
 const User = require('../models/userModel');
 const Project = require('../models/projectModel');
@@ -78,7 +78,9 @@ exports.deleteMeetUser = function(req, res) {
  * Найти все встречи на которые потенциально может претендовать участник
  */
 exports.findAllByUserId = function(req, res) {
-    Meet.findAllByUserId(req.params.id, function(err, meets) {
+    const userId = helper.getUserId(req) || 0
+
+    Meet.findAllByUserId(userId, function(err, meets) {
         if (err) res.send(err);
 
         async.map(meets, User.findByMeet, function(err, meetsWithUsers) {

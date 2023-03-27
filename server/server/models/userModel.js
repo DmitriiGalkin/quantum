@@ -30,7 +30,7 @@ User.findById = function (id, result) {
     });
 };
 User.findUniquesById = function (id, result) {
-    dbConn.query("Select * from `unique` where userId = ? ", id, function (err, res) {
+    dbConn.query("Select * from `user_unique` where userId = ? ", id, function (err, res) {
         if(err) {
             console.log("error: ", err);
             result(err, null);

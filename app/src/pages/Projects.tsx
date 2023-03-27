@@ -1,6 +1,6 @@
 import React from 'react';
 import ProjectCard from "../components/ProjectCard";
-import {Alert, Box, Fab, Link, Stack, Theme} from "@mui/material";
+import {Alert, Fab, Link, Stack, Theme} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import QZoom from "../components/QZoom";
 import AddIcon from "@mui/icons-material/Add";

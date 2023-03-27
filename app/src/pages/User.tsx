@@ -1,11 +1,20 @@
 import React from 'react';
 import {makeStyles} from '@mui/styles';
-import {Card, CardActionArea, CardContent, CardHeader, Container, Grid, Typography, CardMedia, Theme} from "@mui/material";
+import {
+    Card,
+    CardActionArea,
+    CardContent,
+    CardHeader,
+    CardMedia,
+    Container,
+    Grid,
+    Theme,
+    Typography
+} from "@mui/material";
 import ForwardAppBar from "../components/ForwardAppBar";
 import Image from "../components/Image";
 import {Link, useParams} from "react-router-dom";
-import {User} from "../modules/user";
-import {useUser, useUserProjects, useUserUniques} from "../modules/user";
+import {User, useUser, useUserProjects, useUserUniques} from "../modules/user";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

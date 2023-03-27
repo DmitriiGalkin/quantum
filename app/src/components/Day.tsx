@@ -1,8 +1,8 @@
 import React from 'react';
 import {Meet} from "../modules/meet";
 import {getMonthShortTitle} from "../tools/date";
-import {Divider, Typography, Theme} from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import {Divider, Theme, Typography} from "@mui/material";
+import {makeStyles} from '@mui/styles';
 import {LocalDate} from "@js-joda/core";
 import MeetCard from "./MeetCard";
 

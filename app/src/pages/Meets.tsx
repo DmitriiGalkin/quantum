@@ -7,7 +7,7 @@ import {Alert, Fab, Link, Stack, Theme} from "@mui/material";
 import QZoom from "../components/QZoom";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
-import { makeStyles } from "@mui/styles";
+import {makeStyles} from "@mui/styles";
 import {useUserMeet} from "../modules/user";
 
 const useStyles = makeStyles((theme: Theme) => {

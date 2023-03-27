@@ -1,11 +1,11 @@
-import {Badge, BottomNavigation, BottomNavigationAction, Paper, Theme} from "@mui/material";
+import {BottomNavigation, BottomNavigationAction, Paper, Theme} from "@mui/material";
 import GroupsIcon from "@mui/icons-material/Groups";
 import RocketIcon from "@mui/icons-material/Rocket";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import React from "react";
 import {makeStyles} from "@mui/styles";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => ({
     bottomNavigation: {

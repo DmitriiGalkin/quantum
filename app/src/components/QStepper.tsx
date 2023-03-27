@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, MobileStepper, Paper, Theme} from "@mui/material";
-import {KeyboardArrowRight, KeyboardArrowLeft} from "@mui/icons-material";
+import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 import {makeStyles} from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) => ({

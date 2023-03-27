@@ -6,11 +6,11 @@ import {
     Button,
     Container,
     IconButton,
-    Typography,
-    Theme,
     ImageList,
     ImageListItem,
-    Stack
+    Stack,
+    Theme,
+    Typography
 } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import FavoriteIcon from "@mui/icons-material/Favorite";

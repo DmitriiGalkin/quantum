@@ -1,7 +1,6 @@
 import React from 'react';
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
-import {Container, IconButton, Skeleton, Typography, Theme, AppBar, Toolbar} from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import {AppBar, IconButton, Skeleton, Toolbar, Typography} from "@mui/material";
 
 // const useStyles = makeStyles((theme: Theme) => ({
 //     root: {

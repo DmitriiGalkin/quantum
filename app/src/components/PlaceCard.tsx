@@ -1,7 +1,7 @@
 import React from 'react';
 import {Place} from "../modules/place";
 import {Link} from "react-router-dom";
-import {Box, CardMedia, CardContent, Typography, CardActionArea, Theme} from "@mui/material";
+import {Box, CardActionArea, CardContent, CardMedia, Theme, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 
 
