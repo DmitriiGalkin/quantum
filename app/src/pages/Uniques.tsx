@@ -1,6 +1,6 @@
 import React from 'react';
 import {Alert, Box, IconButton, Stack, Typography} from "@mui/material";
-import {useEditUser, useOnlyUserUniques, useUser, useUserUniques} from "../modules/user";
+import {useEditUser, useOnlyUserUniques, useUser} from "../modules/user";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ArrowUpward from "@mui/icons-material/ArrowUpward";
 import {useEditUnique} from "../modules/unique";
