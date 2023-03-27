@@ -1,4 +1,6 @@
 'use strict';
+var async = require("async");
+
 const Task = require('../models/taskModel');
 exports.findAll = function(req, res) {
     Task.findAll(function(err, employee) {
@@ -28,8 +30,11 @@ exports.update = function(req, res) {
 };
 
 exports.findTasksByUserId = function(req, res) {
-    Task.findAllByUserId(req.params.id, function(err, tasks) {
+    Task.findAllByUserId(req.params.id, function(err, userTasks) {
         if (err) res.send(err);
-        res.send(tasks);
+        async.map(userTasks, Task.findByUserTask, function(err, userTasksWithTask) {
+            if (err) console.log(err);
+            res.send(userTasksWithTask);
+        });
     });
 };

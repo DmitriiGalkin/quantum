@@ -1,10 +1,10 @@
 import React from 'react';
-import {Task} from "../modules/task";
+import {UserTask} from "../modules/task";
 import {Box, Button, Chip, Tooltip, Typography} from "@mui/material";
 import {AutoAwesome} from '@mui/icons-material';
 import {useNavigate} from "react-router-dom";
 
-export default function TaskCard(task: Task) {
+export default function TaskCard(userTask: UserTask) {
     const navigate = useNavigate();
 
     return (
@@ -16,17 +16,17 @@ export default function TaskCard(task: Task) {
             },
             marginBottom: 2,
         }}>
-            <div>
-                <Tooltip disableFocusListener title="Задание относится к проекту `Рисование`" enterTouchDelay={0}>
-                    <Chip label="Рисование" color="primary" size="small" variant="outlined"
-                          sx={{
-                        borderRadius: 2
-                    }}/>
-                </Tooltip>
-            </div>
+            {/*<div>*/}
+            {/*    <Tooltip disableFocusListener title="Задание относится к проекту `Рисование`" enterTouchDelay={0}>*/}
+            {/*        <Chip label="Рисование" color="primary" size="small" variant="outlined"*/}
+            {/*              sx={{*/}
+            {/*            borderRadius: 2*/}
+            {/*        }}/>*/}
+            {/*    </Tooltip>*/}
+            {/*</div>*/}
             <div>
                 <Typography variant="h5">
-                    {task.title}
+                    {userTask.task.title}
                 </Typography>
             </div>
             <Box style={{ display: 'flex', alignItems: 'center' }}>
@@ -35,7 +35,7 @@ export default function TaskCard(task: Task) {
                 </Typography>
                 <AutoAwesome style={{ width: 20, height: 20 }} color="primary"/>
                 <Typography variant="subtitle1" sx={{ paddingLeft: 1 }}>
-                     {task.points}
+                     {userTask.task.points}
                 </Typography>
             </Box>
             <Button
@@ -47,7 +47,7 @@ export default function TaskCard(task: Task) {
                     marginRight: 2,
                     marginTop: 1,
                 }}
-                onClick={() => navigate(`/task/${task.id}`)}
+                onClick={() => navigate(`/task/${userTask.taskId}`)}
             >
                 Начать
             </Button>

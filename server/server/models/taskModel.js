@@ -22,9 +22,15 @@ Task.findById = function (id, result) {
     });
 };
 Task.findAllByUserId = function (id, result) {
-    dbConn.query("Select * from task where userId = ? ", id, function (err, res) {
+    dbConn.query("Select * from user_task where userId = ? ", id, function (err, res) {
         if (err) result(null, err);
         result(null, res);
+    });
+};
+Task.findByUserTask = function (userTask, result) {
+    dbConn.query("Select * from task where id = ? ", userTask.taskId, function (err, res) {
+        if (err) result(null, err);
+        result(null, { ...userTask, task: res[0] });
     });
 };
 

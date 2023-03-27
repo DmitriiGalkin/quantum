@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Box, IconButton, Stack, Typography} from "@mui/material";
+import {Box, IconButton, Stack, Typography} from "@mui/material";
 import {useEditUser, useOnlyUserUniques, useUser} from "../modules/user";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ArrowUpward from "@mui/icons-material/ArrowUpward";
@@ -48,9 +48,6 @@ export default function UniquesPage() {
                             </IconButton>}
                         </Box>
                     ))}
-                    <Alert variant="outlined" severity="warning">
-                        Кто я?
-                    </Alert>
                 </Stack>
             </Box>
         </>

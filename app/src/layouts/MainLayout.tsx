@@ -10,16 +10,14 @@ import MainAppBar from "../components/MainAppBar";
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         height: '100vh',
-        // backgroundColor: theme.palette.background.paper,
-        // borderRadius: `${theme.spacing(4)} ${theme.spacing(4)} 0 0`,
+        borderRadius: `${theme.spacing(4)} ${theme.spacing(4)} 0 0`,
     },
     contentAll: {
         // height: '100%',
     },
     content: {
         flexGrow: 1,
-        // backgroundColor: theme.palette.background.paper,
-        // borderRadius: `${theme.spacing(4)} ${theme.spacing(4)} 0 0`,
+        backgroundColor: theme.palette.background.paper,
     },
 }));
 
@@ -28,8 +26,7 @@ export default function MainView() {
     return (
         <Box className={classes.root}>
             <MainAppBar/>
-            <Box className={classes.contentAll} flexDirection="column" display='flex' sx={{ pb: 7 }}>
-                <img src="/img.png" alt="мальчик" style={{ width: '100%' }}/>
+            <Box className={classes.contentAll} flexDirection="column" display='flex'>
                 <div className={classes.content}>
                     <Box p={3}>
                         <Container disableGutters>

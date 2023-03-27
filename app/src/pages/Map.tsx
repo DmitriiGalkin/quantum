@@ -22,17 +22,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function MapPage() {
     const classes = useStyles();
-    const navigate = useNavigate();
 
     const { data: places = [] } = usePlaces()
-    const handleBack = () => navigate('/place')
 
     return (
         <div className={classes.root}>
-            <ForwardAppBar title="Пространства"/>
-            <Button onClick={handleBack}>
-                Создать пространство
-            </Button>
+            <ForwardAppBar title="Места"/>
             <Container maxWidth="lg" style={{ paddingTop: 20 }}>
                 <Grid container spacing={2}>
                     {places.map((place) =>                     <Grid item lg={3} xs={12}>

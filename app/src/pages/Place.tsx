@@ -63,7 +63,7 @@ export default function PlacePage() {
 
     return (
         <div className={classes.root}>
-            <ForwardAppBar title={place.title} icon={<PenIcon style={{ color: 'white' }}/>} onClick={() => navigate(`/place/${place.id}/edit` )}/>
+            <ForwardAppBar title={place.title}/>
             <div className={classes.container}>
                 <Box sx={{ margin: '0 18px', paddingTop: 3}}>
                     <Image alt={place.title} src={place.image} borderRadius={'24px 24px 0 0'} />
