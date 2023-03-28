@@ -76,11 +76,6 @@ export default function CreateProjectStepperDialog({ isEdit }: {isEdit?: boolean
                                         backgroundColor: (theme) => project.placeId === place.id ? 'rgba(255,204,0,0.1)' : theme.palette.background.paper,
                                     }}>
                                         <CardActionArea>
-                                            <CardMedia
-                                                className={classes.media}
-                                                image={place.image}
-                                                title={place.title}
-                                            />
                                             <CardContent>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     {place.title}

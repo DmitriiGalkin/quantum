@@ -5,7 +5,6 @@ import {makeStyles} from "@mui/styles";
 const useStyles = makeStyles((theme: Theme) => ({
     content: {
         backgroundColor: theme.palette.background.paper,
-        borderRadius: '32px 32px 0 0',
     },
 }));
 interface QContainerProps {

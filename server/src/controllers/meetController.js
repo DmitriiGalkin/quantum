@@ -23,8 +23,7 @@ exports.findAll = function(req, res) {
 
 exports.findById = function(req, res) {
     Meet.findById(req.params.id, function(err, employee) {
-        if (err)
-            res.send(err);
+        if (err) res.send(err);
         res.json(employee);
     });
 };
@@ -78,9 +77,7 @@ exports.deleteMeetUser = function(req, res) {
  * Найти все встречи на которые потенциально может претендовать участник
  */
 exports.findAllByUserId = function(req, res) {
-    const userId = helper.getUserId(req) || 0
-
-    Meet.findAllByUserId(userId, function(err, meets) {
+    Meet.findAllByUserId(req.params.id, function(err, meets) {
         if (err) res.send(err);
 
         async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
