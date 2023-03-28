@@ -13,9 +13,6 @@ export default function MeetsPage() {
 
     return (
         <Stack spacing={2}>
-            <Box>
-                <a href={uri}>Авторизация</a>
-            </Box>
             {meetsGroup.map(([date, meets]) => (
                 <Day key={date} date={date} meets={meets as Meet[]}/>
             ))}

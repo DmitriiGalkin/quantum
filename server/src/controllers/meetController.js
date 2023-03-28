@@ -52,8 +52,7 @@ exports.create = function(req, res) {
 };
 
 exports.createMeetUser = function(req, res) {
-    const new_employee = new UserMeet(req.params);
-    console.log(req.params, 'req.params')
+    const new_employee = new UserMeet({...req.params, userId: req.user.id});
     if(req.body.constructor === Object && Object.keys(req.params).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
@@ -65,7 +64,7 @@ exports.createMeetUser = function(req, res) {
     }
 };
 exports.deleteMeetUser = function(req, res) {
-    UserMeet.delete( req.params.userId, req.params.meetId, function(err, employee) {
+    UserMeet.delete( req.user.id, req.params.meetId, function(err, employee) {
         if (err)
             res.send(err);
         res.json({ error:false, message: 'Employee successfully deleted' });
@@ -77,12 +76,14 @@ exports.deleteMeetUser = function(req, res) {
  * Найти все встречи на которые потенциально может претендовать участник
  */
 exports.findAllByUserId = function(req, res) {
-    Meet.findAllByUserId(req.params.id, function(err, meets) {
+    Meet.findAllByUserId(req.user.id, function(err, meets) {
         if (err) res.send(err);
 
         async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
             if (err) console.log(err);
-            async.map(meetsWithUsers, Project.findByMeet, function(err, meetsWithProject) {
+            //project.users?.find((user) => user.id === unit.id)
+            const meetsWithUsersA = meetsWithUsers.map((p) => ({ ...p, active: p.users?.find((user) => user.id === req.user.id) }))
+            async.map(meetsWithUsersA, Project.findByMeet, function(err, meetsWithProject) {
                 if (err) console.log(err);
                 res.send(meetsWithProject);
             });

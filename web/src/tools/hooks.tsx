@@ -82,5 +82,3 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
 export const useAuth = () => {
     return useContext(AuthContext);
 };
-
-export const useUnit = () => JSON.parse(useContext(AuthContext).user)

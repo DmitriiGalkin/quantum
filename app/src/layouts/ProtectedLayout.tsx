@@ -2,9 +2,9 @@ import {Navigate, Outlet} from "react-router-dom";
 import {useAuth} from "../tools/hooks";
 
 export const ProtectedLayout = () => {
-    const { user } = useAuth();
+    const { access_token } = useAuth();
 
-    if (!user) {
+    if (!access_token) {
         return <Navigate to="/login" />;
     }
 

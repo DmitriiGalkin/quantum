@@ -75,8 +75,8 @@ exports.update = function(req, res) {
 };
 
 exports.createProjectUser = function(req, res) {
-    const data = new ProjectUser(req.params);
-    console.log(req.params, 'req.params')
+    const data = new ProjectUser({...req.params, userId: req.user.id});
+
     if(req.body.constructor === Object && Object.keys(req.params).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
@@ -88,7 +88,7 @@ exports.createProjectUser = function(req, res) {
     }
 };
 exports.deleteProjectUser = function(req, res) {
-    ProjectUser.delete(req.params.projectId, req.params.userId, function(err, employee) {
+    ProjectUser.delete(req.params.projectId, req.user.id, function(err, employee) {
         if (err)
             res.send(err);
         res.json({ error:false, message: 'Employee successfully deleted' });
@@ -96,7 +96,7 @@ exports.deleteProjectUser = function(req, res) {
 };
 
 exports.findAllByUserId = function(req, res) {
-    Project.findAllByUserId(req.params.id, function(err, projects) {
+    Project.findAllByUserId(req.user.id, function(err, projects) {
         if (err) res.send(err);
         if (projects) {
             async.map(projects || [], Meet.findFirstByProject, function(err, projectsWithMeet) {
@@ -105,7 +105,8 @@ exports.findAllByUserId = function(req, res) {
                     if (err) console.log(err);
                     async.map(projectsWithMeetWithPlace, User.findByProject, function(err, projectsWithMeetWithPlaceWithUsers) {
                         if (err) console.log(err);
-                        res.send(projectsWithMeetWithPlaceWithUsers);
+                        const projectsWithMeetWithPlaceWithUsersA = projectsWithMeetWithPlaceWithUsers.map((p) => ({ ...p, active: p.users?.find((user) => user.id === req.user.id) }))
+                        res.send(projectsWithMeetWithPlaceWithUsersA);
                     });
                 });
             });

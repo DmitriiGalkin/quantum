@@ -13,17 +13,14 @@ import {convertToMeetsGroupTime2, toServerDatetime} from "../../tools/date";
 import {Project, useProject} from "../../modules/project";
 import {CalendarPicker} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
-import {useUnit} from "../../tools/hooks";
 
 export default function CreateMeetView() {
     const [meet, setMeet] = useState(DEFAULT_MEET)
     const [activeStep, setActiveStep] = React.useState(0);
     const addMeet = useAddMeet()
-    const user = useUnit();
 
-    const { data: projects = [] } = useUserProjects(user.id)
+    const { data: projects = [] } = useUserProjects()
     const { data: project = {} as Project } = useProject(meet.projectId || 0)
-    //const { data: user = {} as User } = useUser(1)
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -135,7 +132,7 @@ export default function CreateMeetView() {
                         <Typography variant="h5" sx={{ paddingBottom: 6 }}>
                             Время
                         </Typography>
-                        <Day date={convertToMeetsGroupTime2(meet.datetime)} meets={[{...meet, id: 0, project, users: [user], datetime: toServerDatetime(meet.datetime)}] as Meet[]}/>
+                        <Day date={convertToMeetsGroupTime2(meet.datetime)} meets={[{...meet, id: 0, project, users: [], datetime: toServerDatetime(meet.datetime)}] as Meet[]}/>
                     </div>
                 </TabPanel>
                 <TabPanel value={activeStep} index={3}>

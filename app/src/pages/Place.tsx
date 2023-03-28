@@ -4,11 +4,9 @@ import ForwardAppBar from "../components/ForwardAppBar";
 import {useNavigate, useParams} from "react-router-dom";
 import {Place, useAddPlaceUser, useDeletePlaceUser, usePlace, usePlaceProjects, usePlaceUsers} from "../modules/place";
 import ProjectCard from "../components/ProjectCard";
-import PenIcon from '@mui/icons-material/Edit';
 import {Box, Button, Container, Theme, Typography} from "@mui/material";
 import Image from "../components/Image";
 import SaveIcon from "@mui/icons-material/Save";
-import {useUnit} from "../tools/hooks";
 import QAvatar from "../components/QAvatar";
 
 
@@ -48,13 +46,10 @@ export default function PlacePage() {
 
     const navigate = useNavigate();
 
-    const user = useUnit();
-
-    const active = users.map((user) => user.id).includes(user.id)
     const addPlaceUser = useAddPlaceUser(id)
     const deletePlaceUser = useDeletePlaceUser(id)
     const onClick = () => {
-        if (active) {
+        if (place.active) {
             deletePlaceUser.mutate({ placeId: id })
         } else {
             addPlaceUser.mutate({ placeId: id })
@@ -87,7 +82,7 @@ export default function PlacePage() {
                             startIcon={<SaveIcon />}
                             onClick={onClick}
                         >
-                            {active ? 'Покинуть пространство' : 'Участвовать в пространстве'}
+                            {place.active ? 'Покинуть пространство' : 'Участвовать в пространстве'}
                         </Button>
                     </Box>
                 </Container>

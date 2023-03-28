@@ -47,34 +47,30 @@ export const AuthContext = createContext('auth' as any);
 export interface LoginData { email: string, password: string }
 
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
-    const [user, setUser] = useLocalStorage<string | null>("user", null);
+    const access_token = localStorage.getItem('access_token')
     const navigate = useNavigate();
     const userByLogin = useUserByLogin()
 
     // call this function when you want to authenticate the user
     const login = async (data: LoginData) => {
         userByLogin.mutateAsync(data).then((result) => {
-            console.log(data, result, 'data result')
-            if (!!result) {
-                setUser(JSON.stringify(result));
-            }
             navigate("/login");
         })
     };
 
     // call this function to sign out logged in user
     const logout = () => {
-        setUser(null);
+        localStorage.removeItem("access_token");
         navigate("/", { replace: true });
     };
 
     const value = useMemo(
         () => ({
-            user,
+            access_token,
             login,
             logout
         }),
-        [user]
+        [access_token]
     );
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
@@ -82,5 +78,3 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
 export const useAuth = () => {
     return useContext(AuthContext);
 };
-
-export const useUnit = () => JSON.parse(useContext(AuthContext).user)

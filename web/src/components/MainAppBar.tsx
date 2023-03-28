@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 
 import {useNavigate} from "react-router-dom";
-import {useAuth, useUnit} from "../tools/hooks";
+import {useAuth} from "../tools/hooks";
 import {makeStyles} from "@mui/styles";
 import InstallPWA from "./InstallPWA";
 
@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function MainAppBar() {
     const classes = useStyles();
-    const user = useUnit();
 
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
@@ -77,7 +76,7 @@ export default function MainAppBar() {
                 >
                     <List>
                         <ListItem disablePadding>
-                            <ListItemButton onClick={() => navigate('/user/'+user.id)} >
+                            <ListItemButton onClick={() => navigate('/user/')} >
                                 <ListItemIcon>
                                     <AccountCircleIcon />
                                 </ListItemIcon>

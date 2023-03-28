@@ -29,6 +29,12 @@ User.findById = function (id, result) {
         result(null, res);
     });
 };
+User.findByToken = function (id, result) {
+    dbConn.query("Select * from user where token = ? ", id, function (err, res) {
+        if(err) result(err, null);
+        result(null, res.length ? res[0] : undefined);
+    });
+};
 User.findUniquesById = function (id, result) {
     dbConn.query("Select * from `user_unique` where userId = ? ", id, function (err, res) {
         if(err) {
@@ -111,6 +117,13 @@ User.update = function(id, user, result){
         result(null, res);
     });
 };
+User.logi = function(token, result){
+    dbConn.query("UPDATE user SET token=? WHERE id = 1", [token], function (err, res) {
+        if(err) result(null, err);
+        result(null, res);
+    });
+};
+
 User.delete = function(id, result){
     dbConn.query("DELETE FROM user WHERE id = ?", [id], function (err, res) {
         if(err) result(null, err);

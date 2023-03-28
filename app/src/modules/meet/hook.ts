@@ -2,7 +2,6 @@ import {Meet, NewMeet} from "./types";
 import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import service, {UseMutate} from "../../tools/service";
 import {User} from "../user";
-import {useUnit} from "../../tools/hooks";
 
 export const useMeets = (): UseQueryResult<Meet[]> => {
     return useQuery(['meets'], () => service.get(`/meet`),)
@@ -20,9 +19,8 @@ interface MeetUser {
 
 
 export const useAddMeetUser = (projectId?: number): UseMutate<MeetUser> => {
-    const user = useUnit();
     const queryClient = useQueryClient()
-    return useMutation(({ meetId }) => service.post("/meet/" + meetId + '/user/' + user.id), {
+    return useMutation(({ meetId }) => service.post("/meet/" + meetId + '/user'), {
         onSuccess() {
             queryClient.invalidateQueries(['userMeets'])
             queryClient.invalidateQueries(['projectMeets', projectId])
@@ -30,9 +28,8 @@ export const useAddMeetUser = (projectId?: number): UseMutate<MeetUser> => {
     })
 }
 export const useDeleteMeetUser = (projectId?: number): UseMutate<MeetUser> => {
-    const user = useUnit();
     const queryClient = useQueryClient()
-    return useMutation(({ meetId }) => service.delete("/meet/" + meetId + '/user/' + user.id), {
+    return useMutation(({ meetId }) => service.delete("/meet/" + meetId + '/user'), {
         onSuccess() {
             queryClient.invalidateQueries(['userMeets'])
             queryClient.invalidateQueries(['projectMeets', projectId])

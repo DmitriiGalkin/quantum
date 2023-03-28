@@ -5,16 +5,12 @@ import {Box, Typography} from "@mui/material";
 import {convertToMeetDatetime} from "../tools/date";
 import {Project} from "../modules/project";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import {useUnit} from "../tools/hooks";
 
 interface ProjectCardProps extends Project {
     selected?: boolean
     onClick: () => void
 }
 export default function ProjectCard(project: ProjectCardProps) {
-    const unit = useUnit()
-    const active = project.users?.find((user) => user.id === unit.id)
-
     const firstMeetDateTitle = convertToMeetDatetime(project.meet?.datetime)
     return (
     <Box sx={{ flexDirection: 'column', border: '1px solid #E1E3E8',
@@ -24,7 +20,7 @@ export default function ProjectCard(project: ProjectCardProps) {
                 paddingTop: 2,
             },
             marginBottom: 2,
-            backgroundColor: active || project.selected ? 'rgba(255,204,0,0.1)' : undefined
+            backgroundColor: project.active || project.selected ? 'rgba(255,204,0,0.1)' : undefined
         }}
          onClick={project.onClick}
     >

@@ -1,6 +1,13 @@
 'use strict';
 const User = require('../models/userModel');
 
+exports.logi = function(req, res) {
+    User.logi(req.body.access_token, function(err, users) {
+        if (err) res.send(err);
+        res.send(users && users[0]);
+    });
+};
+
 exports.findAll = function(req, res) {
     User.findAll(function(err, users) {
         if (err) res.send(err);
@@ -33,7 +40,7 @@ exports.findById = function(req, res) {
     });
 };
 exports.findUniquesById = function(req, res) {
-    User.findUniquesById(req.params.id, function(err, employee) {
+    User.findUniquesById(req.user.id, function(err, employee) {
         if (err) res.send(err);
         res.send(employee);
     });

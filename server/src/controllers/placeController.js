@@ -4,10 +4,7 @@ const PlaceUser = require('../models/placeUserModel');
 
 exports.findAll = function(req, res) {
     Place.findAll(function(err, employee) {
-        console.log('controller')
-        if (err)
-            res.send(err);
-        console.log('res', employee);
+        if (err) res.send(err);
         res.send(employee);
     });
 };
@@ -39,7 +36,7 @@ exports.create = function(req, res) {
 };
 
 exports.createPlaceUser = function(req, res) {
-    const data = new PlaceUser(req.params);
+    const data = new PlaceUser({...req.params, userId: req.user.id});
     if(req.body.constructor === Object && Object.keys(req.params).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
@@ -50,7 +47,7 @@ exports.createPlaceUser = function(req, res) {
     }
 };
 exports.deletePlaceUser = function(req, res) {
-    PlaceUser.delete(req.params.placeId, req.params.userId, function(err, employee) {
+    PlaceUser.delete(req.params.placeId, req.user.id, function(err, employee) {
         if (err) res.send(err);
         res.json({ error:false, message: 'Employee successfully deleted' });
     });

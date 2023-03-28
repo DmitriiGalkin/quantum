@@ -3,7 +3,6 @@ import service, {UseMutate} from "../../tools/service";
 import {NewPlace, Place} from "./types";
 import {Project} from "../project";
 import {User} from "../user";
-import {useUnit} from "../../tools/hooks";
 
 export const usePlaces = (): UseQueryResult<Place[]> => {
     return useQuery(['places'], () => service.get(`/place`),)
@@ -26,8 +25,7 @@ interface PlaceUser {
 }
 export const useAddPlaceUser = (placeId?: number): UseMutate<PlaceUser> => {
     const queryClient = useQueryClient()
-    const user = useUnit();
-    return useMutation(({ placeId }) => service.post("/place/" + placeId + '/user/' + user.id), {
+    return useMutation(({ placeId }) => service.post("/place/" + placeId + '/user'), {
         onSuccess() {
             queryClient.invalidateQueries(['placeUser', placeId])
         },
@@ -35,8 +33,7 @@ export const useAddPlaceUser = (placeId?: number): UseMutate<PlaceUser> => {
 }
 export const useDeletePlaceUser = (placeId?: number): UseMutate<PlaceUser> => {
     const queryClient = useQueryClient()
-    const user = useUnit();
-    return useMutation(({ placeId }) => service.delete("/place/" + placeId + '/user/' + user.id), {
+    return useMutation(({ placeId }) => service.delete("/place/" + placeId + '/user'), {
         onSuccess() {
             queryClient.invalidateQueries(['placeUser', placeId])
         },

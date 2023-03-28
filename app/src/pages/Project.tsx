@@ -24,7 +24,6 @@ import {
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet} from "../modules/meet";
-import {useUnit} from "../tools/hooks";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -45,7 +44,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function ProjectPage() {
     const classes = useStyles();
     const navigate = useNavigate();
-    const user = useUnit();
 
     const { id } = useParams();
     const { data: project = {} as Project } = useProject(Number(id))
@@ -53,11 +51,10 @@ export default function ProjectPage() {
     const { data: users = [] } = useProjectUsers(Number(id))
     const addProjectUser = useAddProjectUser(Number(id))
     const deleteProjectUser = useDeleteProjectUser(Number(id))
-    const active = users.map((user) => user.id).includes(user.id)
     const meetsGroup = getMeetsGroup(meets)
 
     const onClick = () => {
-        if (active) {
+        if (project.active) {
             deleteProjectUser.mutate({ projectId: project.id })
         } else {
             addProjectUser.mutate({ projectId: project.id })
@@ -84,7 +81,7 @@ export default function ProjectPage() {
                                 startIcon={<SaveIcon />}
                                 onClick={onClick}
                             >
-                                {active ? 'Покинуть проект' : 'Участвовать в проекте'}
+                                {project.active ? 'Покинуть проект' : 'Участвовать в проекте'}
                             </Button>
                         </Box>
                         {project.place && (

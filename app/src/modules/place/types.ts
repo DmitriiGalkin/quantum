@@ -4,6 +4,7 @@ export interface Place {
     id: number
     title: string
     image: string
+    active?: boolean
     description: string
     tags: string[]
     ageLimit?: AgeLimit // Возрастное ограничение

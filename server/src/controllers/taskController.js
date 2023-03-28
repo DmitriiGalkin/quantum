@@ -30,7 +30,7 @@ exports.update = function(req, res) {
 };
 
 exports.findTasksByUserId = function(req, res) {
-    Task.findAllByUserId(req.params.id, function(err, userTasks) {
+    Task.findAllByUserId(req.user.id, function(err, userTasks) {
         if (err) res.send(err);
         async.map(userTasks, Task.findByUserTask, function(err, userTasksWithTask) {
             if (err) console.log(err);

@@ -6,7 +6,7 @@ import {
     Grid,
     IconButton,
     InputAdornment,
-    Link,
+    Link, Stack,
     TextField,
     Theme,
     Typography
@@ -16,6 +16,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {makeStyles} from "@mui/styles";
 import {useAuth} from "../tools/hooks";
 import {Link as RouterLink} from "react-router-dom";
+import {uri} from "../auth";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -106,6 +107,9 @@ export default function LoginPage() {
                                 </RouterLink>
                             </Grid>
                         </Grid>
+                        <Box>
+                            <a href={uri}>Авторизация через гугл</a>
+                        </Box>
                     </Box>
                 </Container>
             </Box>

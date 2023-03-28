@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const User = require('./models/userModel');
 
 const userController =   require('./controllers/userController');
 const projectController =   require('./controllers/projectController');
@@ -14,6 +15,31 @@ const uniqueController =   require('./controllers/uniqueController');
 //     console.log(req.headers);
 // });
 
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null) return res.sendStatus(401)
+
+    // jwt.verify(token, process.env.TOKEN_SECRET as string, (err: any, user: any) => {
+    //     console.log(err)
+    //
+    //     if (err) return res.sendStatus(403)
+    //
+    //     req.user = user
+    //
+    //     next()
+    // })
+    // console.log(token, 'token authenticateToken')
+
+    User.findByToken(token, function(err, user) {
+        if (err) res.send(err);
+        req.user = user
+        next()
+    });
+}
+
+router.post('/logi', userController.logi);
 /**
  * Участники
  */
@@ -26,10 +52,10 @@ router.delete('/user/:id', userController.delete);
 
 router.get('/user/:id/project', projectController.findByUserId);
 
-router.get('/user/:id/meets', meetController.findAllByUserId);
-router.get('/user/:id/projects', projectController.findAllByUserId);
-router.get('/user/:id/tasks', taskController.findTasksByUserId);
-router.get('/user/:id/uniques', userController.findUniquesById);
+router.get('/meets', authenticateToken, meetController.findAllByUserId);
+router.get('/projects', authenticateToken, projectController.findAllByUserId);
+router.get('/tasks', authenticateToken, taskController.findTasksByUserId);
+router.get('/uniques', authenticateToken, userController.findUniquesById);
 
 router.put('/unique/:id', uniqueController.update);
 router.get('/profile/:id/places', placeController.findByUserId);
@@ -46,8 +72,8 @@ router.put('/project/:id', projectController.update);
 router.get('/project/:id/user', userController.findByProjectId); // Участники проекта
 router.get('/project/:id/meet', meetController.findByProjectId); // Встречи проекта
 
-router.post('/project/:projectId/user/:userId', projectController.createProjectUser );
-router.delete('/project/:projectId/user/:userId', projectController.deleteProjectUser );
+router.post('/project/:projectId/user', authenticateToken, projectController.createProjectUser );
+router.delete('/project/:projectId/user', authenticateToken, projectController.deleteProjectUser );
 
 /**
  * Места
@@ -60,8 +86,8 @@ router.post('/place/', placeController.create);
 router.get('/place/:id/user', userController.findByPlaceId); // Участники пространства
 router.get('/place/:id/project', projectController.findByPlaceId);
 
-router.post('/place/:placeId/user/:userId', placeController.createPlaceUser );
-router.delete('/place/:placeId/user/:userId', placeController.deletePlaceUser );
+router.post('/place/:placeId/user', authenticateToken, placeController.createPlaceUser );
+router.delete('/place/:placeId/user', authenticateToken, placeController.deletePlaceUser );
 
 /**
  * Встречи
@@ -72,8 +98,8 @@ router.get('/meet/:id/user', userController.findByMeetId); // Участники
 
 router.post('/meet/', meetController.create); // Создание встречи
 
-router.post('/meet/:meetId/user/:userId', meetController.createMeetUser ); // Добавление участника
-router.delete('/meet/:meetId/user/:userId', meetController.deleteMeetUser ); // Удаление участника
+router.post('/meet/:meetId/user', authenticateToken, meetController.createMeetUser ); // Добавление участника
+router.delete('/meet/:meetId/user', authenticateToken, meetController.deleteMeetUser ); // Удаление участника
 
 /**
  * Задания
