@@ -6,6 +6,7 @@ import User from "./pages/User";
 import Task from "./pages/task";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
+import Callback from "./pages/Callback";
 import CreateMeet from "./pages/createMeet";
 import CreateUser from "./pages/CreateUser";
 import CreateProject from "./pages/CreateProject";
@@ -37,6 +38,7 @@ export const router = createBrowserRouter(
             element={<AuthLayout />}
             loader={() => defer({ userPromise: getUserData() })}
         >
+            <Route path="/callback" element={<Callback />} />
             <Route element={<ProtectedLayout />}>
                 <Route element={<MainLayout />}>
                     <Route index element={<Meets />} />
@@ -60,6 +62,7 @@ export const router = createBrowserRouter(
             <Route element={<HomeLayout />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/registration" element={<Registration />} />
+
             </Route>
         </Route>
     )

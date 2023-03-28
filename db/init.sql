@@ -78,13 +78,13 @@ INSERT INTO `meet` VALUES (1,1,0,'2023-02-13 14:00:57','2023-02-13 04:43:57','20
 UNLOCK TABLES;
 
 --
--- Table structure for table `meet_user`
+-- Table structure for table `user_meet`
 --
 
-DROP TABLE IF EXISTS `meet_user`;
+DROP TABLE IF EXISTS `user_meet`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `meet_user` (
+CREATE TABLE `user_meet` (
   `userId` bigint NOT NULL,
   `meetId` bigint NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
@@ -92,13 +92,13 @@ CREATE TABLE `meet_user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `meet_user`
+-- Dumping data for table `user_meet`
 --
 
-LOCK TABLES `meet_user` WRITE;
-/*!40000 ALTER TABLE `meet_user` DISABLE KEYS */;
-INSERT INTO `meet_user` VALUES (3,1,'2023-02-24 20:27:15'),(4,1,'2023-02-24 20:27:15'),(5,1,'2023-02-24 20:27:15'),(2,2,'2023-02-24 20:44:42'),(5,2,'2023-02-24 20:44:42'),(2,3,'2023-02-24 20:44:42'),(5,3,'2023-02-24 20:44:42'),(2,4,'2023-02-24 20:44:42'),(5,4,'2023-02-24 20:44:42'),(4,5,'2023-02-24 20:44:42'),(1,16,'2023-03-02 17:28:01'),(1,17,'2023-03-03 23:47:54'),(1,8,'2023-03-04 00:33:13'),(1,11,'2023-03-08 21:27:01'),(1,6,'2023-03-08 22:54:17'),(1,23,'2023-03-08 23:11:17'),(3,5,'2023-03-09 16:50:33'),(3,2,'2023-03-09 16:51:49'),(3,4,'2023-03-09 16:54:08'),(3,6,'2023-03-09 16:54:10'),(3,17,'2023-03-09 16:54:14'),(1,2,'2023-03-09 18:05:11'),(15,24,'2023-03-10 22:58:20'),(15,21,'2023-03-10 23:07:23'),(15,18,'2023-03-10 23:10:23'),(15,5,'2023-03-10 23:10:44'),(16,19,'2023-03-11 11:12:21'),(16,18,'2023-03-11 11:12:21'),(16,5,'2023-03-11 11:12:24'),(16,6,'2023-03-11 11:14:16'),(2,19,'2023-03-11 11:17:54'),(2,20,'2023-03-11 11:18:12'),(2,22,'2023-03-11 11:18:24'),(2,21,'2023-03-11 11:18:25'),(2,24,'2023-03-11 11:18:27'),(2,18,'2023-03-20 17:12:22'),(2,1,'2023-03-20 17:19:51'),(2,5,'2023-03-20 17:19:52'),(2,6,'2023-03-20 17:19:52'),(1,1,'2023-03-22 17:22:34'),(1,25,'2023-03-22 17:22:38');
-/*!40000 ALTER TABLE `meet_user` ENABLE KEYS */;
+LOCK TABLES `user_meet` WRITE;
+/*!40000 ALTER TABLE `user_meet` DISABLE KEYS */;
+INSERT INTO `user_meet` VALUES (3,1,'2023-02-24 20:27:15'),(4,1,'2023-02-24 20:27:15'),(5,1,'2023-02-24 20:27:15'),(2,2,'2023-02-24 20:44:42'),(5,2,'2023-02-24 20:44:42'),(2,3,'2023-02-24 20:44:42'),(5,3,'2023-02-24 20:44:42'),(2,4,'2023-02-24 20:44:42'),(5,4,'2023-02-24 20:44:42'),(4,5,'2023-02-24 20:44:42'),(1,16,'2023-03-02 17:28:01'),(1,17,'2023-03-03 23:47:54'),(1,8,'2023-03-04 00:33:13'),(1,11,'2023-03-08 21:27:01'),(1,6,'2023-03-08 22:54:17'),(1,23,'2023-03-08 23:11:17'),(3,5,'2023-03-09 16:50:33'),(3,2,'2023-03-09 16:51:49'),(3,4,'2023-03-09 16:54:08'),(3,6,'2023-03-09 16:54:10'),(3,17,'2023-03-09 16:54:14'),(1,2,'2023-03-09 18:05:11'),(15,24,'2023-03-10 22:58:20'),(15,21,'2023-03-10 23:07:23'),(15,18,'2023-03-10 23:10:23'),(15,5,'2023-03-10 23:10:44'),(16,19,'2023-03-11 11:12:21'),(16,18,'2023-03-11 11:12:21'),(16,5,'2023-03-11 11:12:24'),(16,6,'2023-03-11 11:14:16'),(2,19,'2023-03-11 11:17:54'),(2,20,'2023-03-11 11:18:12'),(2,22,'2023-03-11 11:18:24'),(2,21,'2023-03-11 11:18:25'),(2,24,'2023-03-11 11:18:27'),(2,18,'2023-03-20 17:12:22'),(2,1,'2023-03-20 17:19:51'),(2,5,'2023-03-20 17:19:52'),(2,6,'2023-03-20 17:19:52'),(1,1,'2023-03-22 17:22:34'),(1,25,'2023-03-22 17:22:38');
+/*!40000 ALTER TABLE `user_meet` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -131,13 +131,13 @@ INSERT INTO `place` VALUES (1,'Лесная мастерская','Уютная 
 UNLOCK TABLES;
 
 --
--- Table structure for table `place_user`
+-- Table structure for table `user_place`
 --
 
-DROP TABLE IF EXISTS `place_user`;
+DROP TABLE IF EXISTS `user_place`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `place_user` (
+CREATE TABLE `user_place` (
   `placeId` bigint NOT NULL,
   `userId` bigint NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
@@ -145,13 +145,13 @@ CREATE TABLE `place_user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `place_user`
+-- Dumping data for table `user_place`
 --
 
-LOCK TABLES `place_user` WRITE;
-/*!40000 ALTER TABLE `place_user` DISABLE KEYS */;
-INSERT INTO `place_user` VALUES (2,8,'2023-03-10 21:39:02'),(2,14,'2023-03-10 22:28:20'),(2,15,'2023-03-10 22:46:49'),(2,16,'2023-03-11 10:24:17'),(1,1,'2023-03-21 23:00:19');
-/*!40000 ALTER TABLE `place_user` ENABLE KEYS */;
+LOCK TABLES `user_place` WRITE;
+/*!40000 ALTER TABLE `user_place` DISABLE KEYS */;
+INSERT INTO `user_place` VALUES (2,8,'2023-03-10 21:39:02'),(2,14,'2023-03-10 22:28:20'),(2,15,'2023-03-10 22:46:49'),(2,16,'2023-03-11 10:24:17'),(1,1,'2023-03-21 23:00:19');
+/*!40000 ALTER TABLE `user_place` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -208,13 +208,13 @@ INSERT INTO `project_image` VALUES (1,'1cacc4a1-d2de-463b-bc5b-3e006c6a2d07.jpg'
 UNLOCK TABLES;
 
 --
--- Table structure for table `project_user`
+-- Table structure for table `user_project`
 --
 
-DROP TABLE IF EXISTS `project_user`;
+DROP TABLE IF EXISTS `user_project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `project_user` (
+CREATE TABLE `user_project` (
   `userId` bigint NOT NULL,
   `projectId` bigint NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
@@ -222,13 +222,13 @@ CREATE TABLE `project_user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `project_user`
+-- Dumping data for table `user_project`
 --
 
-LOCK TABLES `project_user` WRITE;
-/*!40000 ALTER TABLE `project_user` DISABLE KEYS */;
-INSERT INTO `project_user` VALUES (2,1,'2023-02-24 23:22:35'),(3,2,'2023-02-24 23:22:35'),(5,2,'2023-02-24 23:22:35'),(2,3,'2023-02-24 23:22:35'),(5,3,'2023-02-24 23:22:35'),(2,4,'2023-02-24 23:22:35'),(3,4,'2023-02-24 23:22:35'),(5,4,'2023-02-24 23:22:35'),(3,5,'2023-02-24 23:22:35'),(4,5,'2023-02-24 23:22:35'),(2,6,'2023-02-24 23:22:35'),(1,6,'2023-03-02 02:00:06'),(1,3,'2023-03-10 22:53:15'),(15,3,'2023-03-10 23:18:22'),(16,4,'2023-03-11 10:25:07'),(16,3,'2023-03-11 11:12:16');
-/*!40000 ALTER TABLE `project_user` ENABLE KEYS */;
+LOCK TABLES `user_project` WRITE;
+/*!40000 ALTER TABLE `user_project` DISABLE KEYS */;
+INSERT INTO `user_project` VALUES (2,1,'2023-02-24 23:22:35'),(3,2,'2023-02-24 23:22:35'),(5,2,'2023-02-24 23:22:35'),(2,3,'2023-02-24 23:22:35'),(5,3,'2023-02-24 23:22:35'),(2,4,'2023-02-24 23:22:35'),(3,4,'2023-02-24 23:22:35'),(5,4,'2023-02-24 23:22:35'),(3,5,'2023-02-24 23:22:35'),(4,5,'2023-02-24 23:22:35'),(2,6,'2023-02-24 23:22:35'),(1,6,'2023-03-02 02:00:06'),(1,3,'2023-03-10 22:53:15'),(15,3,'2023-03-10 23:18:22'),(16,4,'2023-03-11 10:25:07'),(16,3,'2023-03-11 11:12:16');
+/*!40000 ALTER TABLE `user_project` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

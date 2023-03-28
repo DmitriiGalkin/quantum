@@ -7,13 +7,13 @@ var PlaceUser = function(data){
     this.created_at = new Date();
 };
 PlaceUser.create = function (newEmp, result) {
-    dbConn.query("INSERT INTO place_user set ?", newEmp, function (err, res) {
+    dbConn.query("INSERT INTO user_place set ?", newEmp, function (err, res) {
         if(err) result(err, null);
         result(null, res.insertId);
     });
 };
 PlaceUser.delete = function(placeId, userId, result){
-    dbConn.query(`DELETE FROM place_user WHERE placeId = ${placeId} AND userId = ${userId}`, function (err, res) {
+    dbConn.query(`DELETE FROM user_place WHERE placeId = ${placeId} AND userId = ${userId}`, function (err, res) {
         if(err) result(null, err);
         result(null, res);
     });

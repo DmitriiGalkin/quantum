@@ -45,7 +45,7 @@ exports.createPlaceUser = function(req, res) {
     }else{
         PlaceUser.create(data, function(err, data) {
             if (err) res.send(err);
-            res.json({error:false,message:"Place_user added successfully!", data});
+            res.json({error:false,message:"user_place added successfully!", data});
         });
     }
 };

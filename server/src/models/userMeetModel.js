@@ -7,13 +7,13 @@ var UserMeet = function(employee){
     this.created_at     = new Date();
 };
 UserMeet.create = function (newEmp, result) {
-    dbConn.query("INSERT INTO meet_user set ?", newEmp, function (err, res) {
+    dbConn.query("INSERT INTO user_meet set ?", newEmp, function (err, res) {
         if(err) result(err, null);
         result(null, res.insertId);
     });
 };
 UserMeet.delete = function(userId, meetId, result){
-    dbConn.query(`DELETE FROM meet_user WHERE userId = ${userId} AND meetId = ${meetId}`, function (err, res) {
+    dbConn.query(`DELETE FROM user_meet WHERE userId = ${userId} AND meetId = ${meetId}`, function (err, res) {
         if(err) {
             console.log("error: ", err);
             result(null, err);

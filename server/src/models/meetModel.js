@@ -58,7 +58,7 @@ Meet.create = function (data, result) {
 };
 
 Meet.findAllByUserId = function (id, result) {
-    dbConn.query("Select meet.* from meet LEFT JOIN project ON project.id = meet.projectId LEFT JOIN project_user ON project_user.projectId = project.id WHERE userId = ? AND DATE(datetime) > CURDATE()", id, function (err, res) {
+    dbConn.query("Select meet.* from meet LEFT JOIN project ON project.id = meet.projectId LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ? AND DATE(datetime) > CURDATE()", id, function (err, res) {
         if(err)  result(err, null);
         else { result(null, res); }
     });

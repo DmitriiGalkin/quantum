@@ -52,7 +52,7 @@ Project.findByPlaceId = function (id, result) {
     });
 };
 Project.findByUserId = function (id, result) {
-    dbConn.query('Select * from project LEFT JOIN project_user ON project.id = project_user.projectId WHERE project_user.userId = ?', id, function (err, res) {
+    dbConn.query('Select * from project LEFT JOIN user_project ON project.id = user_project.projectId WHERE user_project.userId = ?', id, function (err, res) {
         if(err) {
             console.log("error: ", err);
             result(null, err);
@@ -80,7 +80,7 @@ Project.update = function(id, project, result){
  * Проекты пространств на которые подписан участник
  */
 Project.findAllByUserId = function (id, result) {
-    dbConn.query('Select project.* from project LEFT JOIN place ON place.id = project.placeId LEFT JOIN place_user ON place_user.placeId = project.placeId WHERE place_user.userId = ?', id, function (err, res) {
+    dbConn.query('Select project.* from project LEFT JOIN place ON place.id = project.placeId LEFT JOIN user_place ON user_place.placeId = project.placeId WHERE user_place.userId = ?', id, function (err, res) {
         if(err) result(null, err);
             result(null, res);
     });

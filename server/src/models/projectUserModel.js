@@ -7,7 +7,7 @@ var ProjectUser = function(data){
     this.created_at = new Date();
 };
 ProjectUser.create = function (newEmp, result) {
-    dbConn.query("INSERT INTO project_user set ?", newEmp, function (err, res) {
+    dbConn.query("INSERT INTO user_project set ?", newEmp, function (err, res) {
         if(err) {
             console.log("error: ", err);
             result(err, null);
@@ -19,7 +19,7 @@ ProjectUser.create = function (newEmp, result) {
     });
 };
 ProjectUser.delete = function(projectId, userId, result){
-    dbConn.query(`DELETE FROM project_user WHERE projectId = ${projectId} AND userId = ${userId}`, function (err, res) {
+    dbConn.query(`DELETE FROM user_project WHERE projectId = ${projectId} AND userId = ${userId}`, function (err, res) {
         if(err) {
             console.log("error: ", err);
             result(null, err);

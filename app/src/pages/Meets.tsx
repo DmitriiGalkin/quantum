@@ -3,8 +3,9 @@ import {Meet} from "../modules/meet";
 
 import Day from "../components/Day";
 import {getMeetsGroup} from "../tools/helper";
-import {Stack} from "@mui/material";
+import {Box, Stack} from "@mui/material";
 import {useUserMeet} from "../modules/user";
+import {uri} from "../auth";
 
 export default function MeetsPage() {
     const { data: meets = [] } = useUserMeet()
@@ -12,6 +13,9 @@ export default function MeetsPage() {
 
     return (
         <Stack spacing={2}>
+            <Box>
+                <a href={uri}>Авторизация</a>
+            </Box>
             {meetsGroup.map(([date, meets]) => (
                 <Day key={date} date={date} meets={meets as Meet[]}/>
             ))}
