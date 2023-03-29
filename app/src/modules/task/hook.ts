@@ -4,7 +4,7 @@ import {UserTask} from "./types";
 import {User} from "../user";
 
 export const useTask = (id: number): UseQueryResult<User> => {
-    return useQuery(['task', id], () => service.get(`/user-task/${id}`),)
+    return useQuery(['task', id], () => service.get(`/task/${id}`),)
 }
 
 export const useOnlyUserTasks = (): UseQueryResult<UserTask[]> => {

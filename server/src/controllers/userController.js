@@ -51,15 +51,6 @@ exports.update = function(req, res) {
     }
 };
 
-exports.delete = function(req, res) {
-    User.delete( req.params.id, function(err, employee) {
-        if (err)
-            res.send(err);
-        res.json({ error:false, message: 'Employee successfully deleted' });
-    });
-};
-
-
 exports.findByPlaceId = function(req, res) {
     User.findByPlaceId(req.params.id, function(err, employee) {
         if (err)

@@ -16,7 +16,8 @@ exports.findById = function(req, res) {
                     if (err) res.send(err);
                     async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
                         if (err) console.log(err);
-                        res.send({ ...project, images, users, meets: meetsWithUsers });
+
+                        res.send({ ...project, images, users, meets: meetsWithUsers, active: users.some((u) => req.user.id === u.id) });
                     });
                 });
             });

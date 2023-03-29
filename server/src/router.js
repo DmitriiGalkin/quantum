@@ -32,15 +32,11 @@ router.post('/user/login', userController.islogin);
 router.post('/logi', userController.logi);
 router.get('/user/:id', userController.findById);
 router.put('/user/:id', userController.update);
-router.delete('/user/:id', userController.delete);
-
 
 router.post('/user/:projectId/project', useUser, projectController.createProjectUser );
 router.delete('/user/:projectId/project', useUser, projectController.deleteProjectUser );
-
-router.post('/user/:meetId/meet', useUser, meetController.createMeetUser ); // Добавление участника
-router.delete('/user/:meetId/meet', useUser, meetController.deleteMeetUser ); // Удаление участника
-
+router.post('/user/:meetId/meet', useUser, meetController.createMeetUser );
+router.delete('/user/:meetId/meet', useUser, meetController.deleteMeetUser );
 router.post('/user/:placeId/place', useUser, placeController.createPlaceUser );
 router.delete('/user/:placeId/place', useUser, placeController.deletePlaceUser );
 
@@ -49,7 +45,7 @@ router.delete('/user/:placeId/place', useUser, placeController.deletePlaceUser )
  */
 router.get('/projects', useUser, projectController.findByUser);
 router.post('/project', projectController.create);
-router.get('/project/:id', projectController.findById);
+router.get('/project/:id', useUser, projectController.findById);
 router.put('/project/:id', projectController.update);
 
 /**
