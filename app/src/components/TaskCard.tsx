@@ -1,6 +1,6 @@
 import React from 'react';
 import {UserTask} from "../modules/task";
-import {Box, Button, Chip, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import {AutoAwesome} from '@mui/icons-material';
 import {useNavigate} from "react-router-dom";
 

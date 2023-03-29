@@ -3,7 +3,6 @@ import React from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import MapIcon from '@mui/icons-material/Map';
-import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AssignmentInd from '@mui/icons-material/AssignmentInd';
 
@@ -18,9 +17,9 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    Theme,
     Toolbar,
-    Typography,
-    Theme
+    Typography
 } from "@mui/material";
 
 import {useNavigate} from "react-router-dom";

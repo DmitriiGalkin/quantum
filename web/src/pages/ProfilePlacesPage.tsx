@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Stack} from "@mui/material";
 import {useProfilePlaces} from "../modules/place";
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import {DataGrid, GridColDef} from '@mui/x-data-grid';
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'Номер', width: 70 },

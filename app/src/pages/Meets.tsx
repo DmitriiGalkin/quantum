@@ -3,9 +3,8 @@ import {Meet} from "../modules/meet";
 
 import Day from "../components/Day";
 import {getMeetsGroup} from "../tools/helper";
-import {Box, Stack} from "@mui/material";
+import {Stack} from "@mui/material";
 import {useUserMeet} from "../modules/user";
-import {uri} from "../auth";
 
 export default function MeetsPage() {
     const { data: meets = [] } = useUserMeet()

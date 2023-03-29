@@ -1,7 +1,7 @@
 import React from 'react';
 import {Avatar as MUIAvatar, Theme} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import Avatar, { genConfig } from 'react-nice-avatar'
+import Avatar, {genConfig} from 'react-nice-avatar'
 import {User} from "../modules/user";
 
 const useStyles = makeStyles((theme: Theme) => ({

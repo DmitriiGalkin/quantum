@@ -3,8 +3,7 @@ import {makeStyles} from '@mui/styles';
 import ForwardAppBar from "../components/ForwardAppBar";
 import PlaceCard from "../components/PlaceCard";
 import {usePlaces} from "../modules/place";
-import {Button, Container, Grid, Theme} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {Container, Grid, Theme} from "@mui/material";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

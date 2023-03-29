@@ -1,8 +1,7 @@
 import React from 'react';
 import {Place} from "../modules/place";
 import {Link} from "react-router-dom";
-import {Box, CardActionArea, CardContent, CardMedia, Theme, Typography} from "@mui/material";
-import {makeStyles} from "@mui/styles";
+import {Box, CardActionArea, CardContent, Typography} from "@mui/material";
 
 interface PlaceCardProps extends Place {
     selected?: boolean

@@ -1,25 +1,11 @@
 import React from 'react';
 import {makeStyles} from '@mui/styles';
-import {
-    Avatar,
-    Box,
-    Button,
-    Container,
-    Stack,
-    Theme,
-    Typography
-} from "@mui/material";
+import {Avatar, Box, Button, Container, Stack, Theme, Typography} from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import PenIcon from "@mui/icons-material/Edit";
 import ForwardAppBar from "../components/ForwardAppBar";
 import {useNavigate, useParams} from "react-router-dom";
-import {
-    Project,
-    useAddProjectUser,
-    useDeleteProjectUser,
-    useProject,
-    useProjectMeets,
-} from "../modules/project";
+import {useAddProjectUser, useDeleteProjectUser, useProject,} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet} from "../modules/meet";

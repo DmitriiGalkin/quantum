@@ -5,7 +5,7 @@ import ForwardAppBar from "../components/ForwardAppBar";
 import {TabPanel} from "../components/tabs";
 import QContainer from "../components/QContainer";
 import {useParams} from "react-router-dom";
-import {Box, CardActionArea, CardContent, CardMedia, Grid, TextField, Theme, Typography} from "@mui/material";
+import {Box, CardActionArea, CardContent, Grid, TextField, Theme, Typography} from "@mui/material";
 import {usePlaces} from "../modules/place";
 import {makeStyles} from "@mui/styles";
 

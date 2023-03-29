@@ -1,15 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import ForwardAppBar from "../components/ForwardAppBar";
-import {TabPanel} from "../components/tabs";
-import {useAddUser, User, useUpdateUser} from "../modules/user";
-import QStepper from "../components/QStepper";
-import QContainer from "../components/QContainer";
-import {Box, TextField, Typography} from "@mui/material";
-import Avatar, {genConfig} from 'react-nice-avatar'
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
-import {Project, useProject} from "../modules/project";
-import {useParams, useSearchParams} from "react-router-dom";
+import {useMutation} from "@tanstack/react-query";
+import {useSearchParams} from "react-router-dom";
 import {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, GOOGLE_USER_INFO_URI} from "../auth";
 import {UseMutate} from "../tools/service";
 

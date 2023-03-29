@@ -1,10 +1,8 @@
 import React from 'react';
-import Image from "./Image";
 
 import {Box, Typography} from "@mui/material";
 import {convertToMeetDatetime} from "../tools/date";
 import {Project} from "../modules/project";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 interface ProjectCardProps extends Project {
     selected?: boolean

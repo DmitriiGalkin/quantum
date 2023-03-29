@@ -1,4 +1,4 @@
-import {AgeLimit, Place} from "../place/types";
+import {AgeLimit} from "../place/types";
 import {Meet} from "../meet/types";
 import {User} from "../user";
 

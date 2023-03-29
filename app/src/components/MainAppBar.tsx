@@ -1,9 +1,8 @@
 import React from 'react';
 import MapIcon from '@mui/icons-material/Map';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {AppBar, Box, Fab, IconButton, Menu, MenuItem, Toolbar, Typography,} from "@mui/material";
+import {AppBar, Box, IconButton, Menu, MenuItem, Toolbar,} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import PenIcon from "@mui/icons-material/Edit";
 
 export default function MainAppBar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

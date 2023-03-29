@@ -1,22 +1,8 @@
 import React from 'react';
 
-import {
-    AppBar,
-    Box, Container,
-    Divider,
-    Drawer,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Toolbar,
-    Typography,
-    Theme
-} from "@mui/material";
+import {Box, Container, Theme} from "@mui/material";
 
-import {Outlet, useNavigate} from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import {makeStyles} from "@mui/styles";
 import QAppBar from "../components/QAppBar";
 

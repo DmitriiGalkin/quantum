@@ -6,7 +6,7 @@ import {
     Grid,
     IconButton,
     InputAdornment,
-    Link, Stack,
+    Link,
     TextField,
     Theme,
     Typography
