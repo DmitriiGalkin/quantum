@@ -19,7 +19,6 @@ import {
     useDeleteProjectUser,
     useProject,
     useProjectMeets,
-    useProjectUsers
 } from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
@@ -46,12 +45,15 @@ export default function ProjectPage() {
     const navigate = useNavigate();
 
     const { id } = useParams();
-    const { data: project = {} as Project } = useProject(Number(id))
-    const { data: meets = [] } = useProjectMeets(Number(id))
-    const { data: users = [] } = useProjectUsers(Number(id))
+    const { data: project } = useProject(Number(id))
+
+
     const addProjectUser = useAddProjectUser(Number(id))
     const deleteProjectUser = useDeleteProjectUser(Number(id))
-    const meetsGroup = getMeetsGroup(meets)
+
+    if (!project) { return null }
+
+    const meetsGroup = getMeetsGroup(project.meets)
 
     const onClick = () => {
         if (project.active) {
@@ -84,23 +86,6 @@ export default function ProjectPage() {
                                 {project.active ? 'Покинуть проект' : 'Участвовать в проекте'}
                             </Button>
                         </Box>
-                        {project.place && (
-                            <div className={classes.block}>
-                                <Typography variant="h5">
-                                    Место проведения
-                                </Typography>
-                                <Box sx={{padding: 1, display: "flex"}}>
-                                    <Box>
-                                        <Typography variant="h5">
-                                            {project.place.title}
-                                        </Typography>
-                                        <Typography>
-                                            {project.place.description}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            </div>
-                        )}
                         <div className={classes.block}>
                             <Typography variant="h5">
                                 Встречи
@@ -122,7 +107,7 @@ export default function ProjectPage() {
                             <Typography variant="h5">
                                 Участники
                             </Typography>
-                            {users.map((user) => (
+                            {project.users?.map((user) => (
                                 <Box key={user.id} sx={{padding: 1, display: "flex"}}>
                                     <Avatar
                                         alt={user.title}

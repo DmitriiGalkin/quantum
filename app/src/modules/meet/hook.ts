@@ -20,7 +20,7 @@ interface MeetUser {
 
 export const useAddMeetUser = (projectId?: number): UseMutate<MeetUser> => {
     const queryClient = useQueryClient()
-    return useMutation(({ meetId }) => service.post("/meet/" + meetId + '/user'), {
+    return useMutation(({ meetId }) => service.post("/user/" + meetId + '/meet'), {
         onSuccess() {
             queryClient.invalidateQueries(['userMeets'])
             queryClient.invalidateQueries(['projectMeets', projectId])
@@ -29,7 +29,7 @@ export const useAddMeetUser = (projectId?: number): UseMutate<MeetUser> => {
 }
 export const useDeleteMeetUser = (projectId?: number): UseMutate<MeetUser> => {
     const queryClient = useQueryClient()
-    return useMutation(({ meetId }) => service.delete("/meet/" + meetId + '/user'), {
+    return useMutation(({ meetId }) => service.delete("/user/" + meetId + '/meet'), {
         onSuccess() {
             queryClient.invalidateQueries(['userMeets'])
             queryClient.invalidateQueries(['projectMeets', projectId])

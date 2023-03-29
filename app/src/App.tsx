@@ -2,7 +2,6 @@ import React from 'react';
 import {Route} from "react-router";
 import Project from "./pages/Project";
 import Map from "./pages/Map";
-import User from "./pages/User";
 import Task from "./pages/task";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
@@ -53,7 +52,6 @@ export const router = createBrowserRouter(
                     <Route path="project/:id/edit" element={<CreateProject isEdit />} />
                     <Route path="project/:id" element={<Project />} />
                     <Route path="user/:id/edit" element={<CreateUser isEdit />} />
-                    <Route path="user/:id" element={<User />} />
                     <Route path="place" element={<CreatePlace />} />
                     <Route path="task/:id" element={<Task />} />
                     <Route path="place/:id" element={<Place />} />

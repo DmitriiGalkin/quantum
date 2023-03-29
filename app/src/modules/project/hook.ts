@@ -30,7 +30,7 @@ interface ProjectUser {
 export const useAddProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
     const queryClient = useQueryClient()
 
-    return useMutation(({ projectId }) => service.post("/project/" + projectId + '/user'), {
+    return useMutation(({ projectId }) => service.post("/user/" + projectId + '/project'), {
         onSuccess() {
             queryClient.invalidateQueries(['projectUsers', projectId])
         },
@@ -39,7 +39,7 @@ export const useAddProjectUser = (projectId?: number): UseMutate<ProjectUser> =>
 export const useDeleteProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
     const queryClient = useQueryClient()
 
-    return useMutation(({ projectId }) => service.delete("/project/" + projectId + '/user'), {
+    return useMutation(({ projectId }) => service.delete("/user/" + projectId + '/project'), {
         onSuccess() {
             queryClient.invalidateQueries(['projectUsers', projectId])
         },

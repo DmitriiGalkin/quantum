@@ -41,10 +41,6 @@ export default function PlacePage() {
     const classes = useStyles();
     const id = Number(useParams().id);
     const { data: place = {} as Place } = usePlace(id)
-    const { data: projects = [] } = usePlaceProjects(id)
-    const { data: users = []  } = usePlaceUsers(id)
-
-    const navigate = useNavigate();
 
     const addPlaceUser = useAddPlaceUser(id)
     const deletePlaceUser = useDeletePlaceUser(id)
@@ -86,41 +82,6 @@ export default function PlacePage() {
                         </Button>
                     </Box>
                 </Container>
-            </div>
-            <div className={classes.block}>
-                <Typography variant="h5">
-                    Проекты
-                </Typography>
-                {projects.map((project) => (
-                    <ProjectCard key={project.id} {...project} onClick={() => navigate(`/project/${project.id}`)} />
-                ))}
-                <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    startIcon={<SaveIcon />}
-                    onClick={() => navigate(`/project`)}
-                >
-                    Создать проект
-                </Button>
-            </div>
-            <div className={classes.block}>
-                <Typography variant="h5">
-                    Участники
-                </Typography>
-                {users.map((user) => (
-                    <Box sx={{padding: 1, display: "flex"}}>
-                        <QAvatar {...user} />
-                        <Box sx={{flexGrow:1, paddingLeft: 2}}>
-                            <Typography variant="subtitle1">
-                                {user.title}
-                            </Typography>
-                            <Typography>
-                                Вдохновитель
-                            </Typography>
-                        </Box>
-                    </Box>
-                ))}
             </div>
         </div>
     );

@@ -1,42 +1,9 @@
 'use strict';
 var async = require("async");
-const helper = require('./helper');
 const Meet = require('../models/meetModel');
 const User = require('../models/userModel');
 const Project = require('../models/projectModel');
 const UserMeet = require('../models/userMeetModel');
-
-
-exports.findAll = function(req, res) {
-    Meet.findAll(function(err, meets) {
-        if (err)
-            res.send(err);
-        async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
-            if (err) console.log(err);
-            async.map(meetsWithUsers, Project.findByMeet, function(err, meetsWithProject) {
-                if (err) console.log(err);
-                res.send(meetsWithProject);
-            });
-        });
-    });
-};
-
-exports.findById = function(req, res) {
-    Meet.findById(req.params.id, function(err, employee) {
-        if (err) res.send(err);
-        res.json(employee);
-    });
-};
-exports.findByProjectId = function(req, res) {
-    Meet.findByProjectId(req.params.id, function(err, meets) {
-        if (err)
-            res.send(err);
-        async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
-            if (err) console.log(err);
-            res.send(meetsWithUsers);
-        });
-    });
-};
 
 exports.create = function(req, res) {
     const meet = new Meet(req.body);
@@ -75,7 +42,7 @@ exports.deleteMeetUser = function(req, res) {
 /**
  * Найти все встречи на которые потенциально может претендовать участник
  */
-exports.findAllByUserId = function(req, res) {
+exports.findByUser = function(req, res) {
     Meet.findAllByUserId(req.user.id, function(err, meets) {
         if (err) res.send(err);
 

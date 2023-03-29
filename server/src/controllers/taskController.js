@@ -2,15 +2,7 @@
 var async = require("async");
 
 const Task = require('../models/taskModel');
-exports.findAll = function(req, res) {
-    Task.findAll(function(err, employee) {
-        console.log('controller')
-        if (err)
-            res.send(err);
-        console.log('res', employee);
-        res.send(employee);
-    });
-};
+
 exports.findById = function(req, res) {
     Task.findById(req.params.id, function(err, tasks) {
         if (err) res.send(err);
@@ -29,7 +21,7 @@ exports.update = function(req, res) {
     }
 };
 
-exports.findTasksByUserId = function(req, res) {
+exports.findByUser = function(req, res) {
     Task.findAllByUserId(req.user.id, function(err, userTasks) {
         if (err) res.send(err);
         async.map(userTasks, Task.findByUserTask, function(err, userTasksWithTask) {

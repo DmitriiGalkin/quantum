@@ -8,23 +8,17 @@ const User = require('../models/userModel');
 const ProjectUser = require('../models/projectUserModel');
 const ProjectImage = require('../models/projectImageModel');
 
-exports.findAll = function(req, res) {
-    Project.findAll(function(err, projects) {
-        if (err) res.send(err);
-        async.map(projects, Meet.findFirstByProject, function(err, projectsWithMeet) {
-            if (err) console.log(err);
-            async.map(projectsWithMeet, Place.findByProject, function(err, projectsWithMeetWithPlace) {
-                if (err) console.log(err);
-                res.send(projectsWithMeetWithPlace);
-            });
-        });
-    });
-};
 exports.findById = function(req, res) {
     Project.findById(req.params.id, function(err, project) {
-        Place.findById(project.placeId, function(err, place) {
+        User.findByProjectId(project.id, function(err, users) {
             ProjectImage.findByProjectId(project.placeId, function(err, images) {
-                res.send({ ...project, place, images });
+                Meet.findByProjectId(req.params.id, function(err, meets) {
+                    if (err) res.send(err);
+                    async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
+                        if (err) console.log(err);
+                        res.send({ ...project, images, users, meets: meetsWithUsers });
+                    });
+                });
             });
         });
     });
@@ -36,20 +30,6 @@ exports.findByPlaceId = function(req, res) {
         res.json(employee);
     });
 };
-exports.findByUserId = function(req, res) {
-    Project.findByUserId(req.params.id, function(err, projects) {
-        if (err) res.send(err);
-
-        async.map(projects, Place.findByProject, function(err, projectsWithPlace) {
-            if (err) console.log(err);
-            async.map(projectsWithPlace, User.findByProject, function(err, projectsWithPlaceWithUsers) {
-                if (err) console.log(err);
-                res.send(projectsWithPlaceWithUsers);
-            });
-        });
-    });
-};
-
 
 exports.create = function(req, res) {
     const project = new Project(req.body);
@@ -95,7 +75,7 @@ exports.deleteProjectUser = function(req, res) {
     });
 };
 
-exports.findAllByUserId = function(req, res) {
+exports.findByUser = function(req, res) {
     Project.findAllByUserId(req.user.id, function(err, projects) {
         if (err) res.send(err);
         if (projects) {

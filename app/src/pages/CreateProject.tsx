@@ -15,6 +15,8 @@ const DEFAULT_PROJECT: Project = {
     title: 'новый проект',
     description: 'описание нового проекта',
     placeId: null,
+    users: [],
+    meets: [],
 }
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

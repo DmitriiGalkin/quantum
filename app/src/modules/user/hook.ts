@@ -36,7 +36,7 @@ export const useUserByLogin = (): UseMutate<LoginData> => useMutation((data) => 
 
 
 export const useUserMeet = (): UseQueryResult<Meet[]> => {
-    return useQuery(['userMeets', 1], () => service.get(`/user/1/meets`))
+    return useQuery(['userMeets'], () => service.get(`/meets`))
 }
 export const useOnlyUserProjects = (): UseQueryResult<Project[]> => {
     return useQuery(['onlyUserProjects'], () => service.get(`/projects`))

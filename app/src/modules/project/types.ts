@@ -12,7 +12,7 @@ export interface Project {
     favorite?: boolean, // пользователь добавил проект в избранное
     ageLimit?: AgeLimit // Возрастное ограничение
     meet?: Meet
-    place?: Place
-    users?: User[]
+    users: User[]
+    meets: Meet[]
     images?: string[]
 }

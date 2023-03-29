@@ -11,4 +11,4 @@ export const useOnlyUserTasks = (): UseQueryResult<UserTask[]> => {
     return useQuery(['userTasks'], () => service.get(`/tasks`))
 }
 
-export const useEditUserTask = (): UseMutate<any> => useMutation((task) => service.put(`/user-task/${task.id}`, task))
+export const useEditUserTask = (): UseMutate<any> => useMutation((task) => service.put(`/task/${task.id}`, task))

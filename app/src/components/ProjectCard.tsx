@@ -28,24 +28,12 @@ export default function ProjectCard(project: ProjectCardProps) {
             {project.title}
         </Typography>
         <div style={{ display: 'flex' }}>
-            {/*<Box sx={{display: 'block',*/}
-            {/*    minWidth: '75px'}}>*/}
-            {/*    <Image*/}
-            {/*        src={project.image}*/}
-            {/*        alt={project.title}*/}
-            {/*        borderRadius={'12'}*/}
-            {/*    />*/}
-            {/*</Box> sx={{ paddingLeft: 2 }}*/}
             <Box>
                 <Typography variant="subtitle1" color="primary">
                     {firstMeetDateTitle}
                 </Typography>
                 <Typography>
                     {project.description}
-                </Typography>
-                <Typography>
-                    <LocationOnIcon/>
-                    {project.place?.title}
                 </Typography>
             </Box>
         </div>

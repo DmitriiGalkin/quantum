@@ -16,12 +16,6 @@ exports.findById = function(req, res) {
         res.json(employee);
     });
 };
-exports.findByUserId = function(req, res) {
-    Place.findByUserId(req.params.id, function(err, places) {
-        res.json(places);
-    });
-};
-
 
 exports.create = function(req, res) {
     const place = new Place(req.body);
