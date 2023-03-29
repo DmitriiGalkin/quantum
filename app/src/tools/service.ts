@@ -1,19 +1,18 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {UseMutationResult} from "@tanstack/react-query";
+import {ACCESS_TOKEN} from "./auth";
 
 const SAME_URL = window.location.protocol + '//' + window.location.hostname + ':8080'
 
 export const createService = (): AxiosInstance => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
 
     const service = axios.create()
     service.interceptors.request.use((config: AxiosRequestConfig) => ({
         baseURL: SAME_URL,
-        headers: { authorization: `Bearer 1` },
         ...config,
     }))
     service.interceptors.response.use(( axiosResponse) => axiosResponse.data)
-
 
     return service
 }

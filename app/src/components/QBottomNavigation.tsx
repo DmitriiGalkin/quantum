@@ -7,18 +7,8 @@ import React from "react";
 import {makeStyles} from "@mui/styles";
 import {useLocation, useNavigate} from "react-router-dom";
 
-const useStyles = makeStyles((theme: Theme) => ({
-    bottomNavigation: {
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0
-    },
-}));
-
 const MAIN_PAGES = ['', 'projects', 'tasks', 'uniques']
 export default function QBottomNavigation() {
-    const classes = useStyles();
     const navigate = useNavigate();
     const location = useLocation();
     const value = MAIN_PAGES.findIndex((pageName) => '/' + pageName === location.pathname) || 0
@@ -38,17 +28,15 @@ export default function QBottomNavigation() {
     }
 
     return (
-        <Paper className={classes.bottomNavigation} elevation={3} style={{zIndex: 10 }}>
-            <BottomNavigation
-                value={value}
-                onChange={(event, newValue) => onChange(newValue)}
-                showLabels
-            >
-                <BottomNavigationAction label="Встречи" icon={<GroupsIcon />} />
-                <BottomNavigationAction label="Проекты" icon={<RocketIcon />} />
-                <BottomNavigationAction label="Задания" icon={<EmojiEventsIcon />} />
-                <BottomNavigationAction label="Ценности" icon={<AutoAwesomeIcon />} />
-            </BottomNavigation>
-        </Paper>
+        <BottomNavigation
+            value={value}
+            onChange={(event, newValue) => onChange(newValue)}
+            showLabels
+        >
+            <BottomNavigationAction label="Встречи" icon={<GroupsIcon />} />
+            <BottomNavigationAction label="Проекты" icon={<RocketIcon />} />
+            <BottomNavigationAction label="Задания" icon={<EmojiEventsIcon />} />
+            <BottomNavigationAction label="Ценности" icon={<AutoAwesomeIcon />} />
+        </BottomNavigation>
     )
 }

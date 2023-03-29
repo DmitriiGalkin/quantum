@@ -3,10 +3,12 @@ import MapIcon from '@mui/icons-material/Map';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {AppBar, Box, IconButton, Menu, MenuItem, Toolbar,} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../tools/auth";
 
 export default function MainAppBar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const map = () => {
         navigate('/map')
@@ -20,7 +22,7 @@ export default function MainAppBar() {
     };
 
     return (
-        <AppBar position="sticky">
+        <AppBar>
             <Toolbar variant="dense">
                 <Box sx={{ padding: '14px 0px 4px 6px' }} >
                     <svg width="98" height="21" viewBox="0 0 98 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,6 +71,7 @@ export default function MainAppBar() {
                     <MenuItem onClick={() => navigate(`/meet`)}>Новая встреча</MenuItem>
                     <MenuItem onClick={() => navigate(`/project`)}>Новый проект</MenuItem>
                     <MenuItem onClick={() => navigate('/user/1/edit')}>Настройки</MenuItem>
+                    <MenuItem onClick={() => logout()}>Выход</MenuItem>
                 </Menu>
             </Toolbar>
         </AppBar>

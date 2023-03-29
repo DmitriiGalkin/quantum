@@ -6,6 +6,7 @@ var User = function(user){
     this.password = user.password;
     this.image = user.image;
     this.title = user.title;
+    this.token = user.token;
     this.points = user.points;
     this.created_at = new Date();
     this.updated_at = new Date();
@@ -112,7 +113,7 @@ User.findAll = function (result) {
     });
 };
 User.update = function(id, user, result){
-    dbConn.query("UPDATE user SET title=?,points=?,email=?,password=? WHERE id = ?", [user.title,user.points,user.email,user.password, id], function (err, res) {
+    dbConn.query("UPDATE user SET title=?,points=?,email=?,password=?,token=? WHERE id = ?", [user.title,user.points,user.email,user.password,user.token, id], function (err, res) {
         if(err) result(null, err);
         result(null, res);
     });

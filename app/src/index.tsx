@@ -9,6 +9,7 @@ import {router} from "./App";
 import theme from "./theme";
 import CssBaseline from '@mui/material/CssBaseline';
 import {ThemeProvider} from '@mui/material/styles';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
 const queryClient = new QueryClient()
@@ -19,6 +20,8 @@ const root = ReactDOM.createRoot(
 console.log(theme, 'theme')
 
 root.render(
+    <GoogleOAuthProvider clientId="804980223837-9e350rj8p8glgbqel5c5rmh6jafnf1u2.apps.googleusercontent.com">
+
   <React.StrictMode>
       <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
@@ -29,6 +32,8 @@ root.render(
           </QueryClientProvider>
       </ThemeProvider>
   </React.StrictMode>
+    </GoogleOAuthProvider>,
+
 );
 
 // If you want to start measuring performance in your app, pass a function

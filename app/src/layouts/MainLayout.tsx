@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Box, Container, Theme} from "@mui/material";
+import {Box, Container, Paper, Theme} from "@mui/material";
 
 import {Outlet} from "react-router-dom";
 import QBottomNavigation from "../components/QBottomNavigation";
@@ -10,14 +10,24 @@ import MainAppBar from "../components/MainAppBar";
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         height: '100vh',
-        borderRadius: `${theme.spacing(4)} ${theme.spacing(4)} 0 0`,
+        backgroundColor: theme.palette.background.paper,
     },
     contentAll: {
-        // height: '100%',
+        height: '100vh',
+        padding: '48px 0 56px 0',
     },
-    content: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
+    bottomNavigation: {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10
+    },
+    appBar: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0
     },
 }));
 
@@ -25,17 +35,21 @@ export default function MainView() {
     const classes = useStyles();
     return (
         <Box className={classes.root}>
-            <MainAppBar/>
-            <Box className={classes.contentAll} flexDirection="column" display='flex'>
-                <div className={classes.content}>
+            <div className={classes.appBar}><MainAppBar/></div>
+            <div style={{minHeight: '100vh', height: '100%'}}>
+                <Box className={classes.contentAll} flexDirection="column" display='flex'>
                     <Box p={3}>
                         <Container disableGutters>
                             <Outlet />
                         </Container>
                     </Box>
-                </div>
-            </Box>
-            <QBottomNavigation/>
+                </Box>
+            </div>
+            <div className={classes.bottomNavigation}>
+                <Paper elevation={2}>
+                    <QBottomNavigation/>
+                </Paper>
+            </div>
         </Box>
     );
 }

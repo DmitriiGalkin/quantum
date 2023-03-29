@@ -43,6 +43,7 @@ exports.deleteMeetUser = function(req, res) {
  * Найти все встречи на которые потенциально может претендовать участник
  */
 exports.findByUser = function(req, res) {
+    console.log(req.user, 'req.user findByUser')
     Meet.findAllByUserId(req.user.id, function(err, meets) {
         if (err) res.send(err);
 

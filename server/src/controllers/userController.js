@@ -1,5 +1,6 @@
 'use strict';
 const User = require('../models/userModel');
+var jwt = require('jsonwebtoken');
 
 exports.logi = function(req, res) {
     User.logi(req.body.access_token, function(err, users) {
@@ -23,7 +24,16 @@ exports.create = function(req, res) {
 exports.islogin = function(req, res) {
     User.islogin(req.body.email, req.body.password, function(err, users) {
         if (err) res.send(err);
-        res.send(users && users[0]);
+
+        if(users[0]) {
+            var token = jwt.sign({ foo: 'bar' }, 'shhhhh');
+
+            User.update(users[0].id, {...users[0], token}, function(err, user) {
+                if (err) { res.send(err);}
+
+                res.send({ access_token: token });
+            });
+        }
     });
 };
 exports.findById = function(req, res) {

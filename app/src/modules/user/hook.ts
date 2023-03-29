@@ -3,7 +3,7 @@ import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/r
 import service, {UseMutate} from "../../tools/service";
 import {Unique} from "../unique";
 import {Project} from "../project";
-import {LoginData} from "../../tools/hooks";
+import {LoginData} from "../../tools/auth";
 import {Meet} from "../meet";
 
 export const useUser = (id: number): UseQueryResult<User> => {

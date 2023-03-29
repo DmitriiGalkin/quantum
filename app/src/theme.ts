@@ -24,10 +24,10 @@ const theme = createTheme({
     spacing: 6,
     palette: {
         background: {
-            default: "#FFCC00",
+            default: "#FFA427",
         },
         primary: {
-            main: '#FF9503',
+            main: '#FFA427',
             contrastText: '#674100',
         },
         secondary: {
