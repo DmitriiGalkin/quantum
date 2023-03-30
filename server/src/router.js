@@ -33,8 +33,8 @@ router.post('/logi', userController.logi);
 router.get('/user/:id', userController.findById);
 router.put('/user/:id', userController.update);
 
-router.post('/user/:projectId/project', useUser, projectController.createProjectUser );
-router.delete('/user/:projectId/project', useUser, projectController.deleteProjectUser );
+router.post('/userProject/:projectId', useUser, projectController.createProjectUser );
+router.delete('/userProject/:projectId', useUser, projectController.deleteProjectUser );
 router.post('/user/:meetId/meet', useUser, meetController.createMeetUser );
 router.delete('/user/:meetId/meet', useUser, meetController.deleteMeetUser );
 router.post('/user/:placeId/place', useUser, placeController.createPlaceUser );
@@ -52,8 +52,8 @@ router.put('/project/:id', projectController.update);
  * Места
  */
 router.get('/places', placeController.findAll);
-router.post('/place', placeController.create);
 router.get('/place/:id', placeController.findById);
+router.post('/place', placeController.create);
 
 /**
  * Встречи

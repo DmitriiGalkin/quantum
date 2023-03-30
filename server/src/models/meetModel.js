@@ -3,6 +3,7 @@ var dbConn = require('../db.config');
 
 var Meet = function(data){
     this.projectId = data.projectId;
+    this.placeId = data.placeId;
     this.datetime = data.datetime;
     this.created_at = new Date();
     this.updated_at = new Date();

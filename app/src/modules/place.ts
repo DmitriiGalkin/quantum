@@ -1,20 +1,30 @@
 import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import service, {UseMutate} from "../../tools/service";
-import {NewPlace, Place} from "./types";
-import {Project} from "../project";
-import {User} from "../user";
+import service, {UseMutate} from "../tools/service";
+
+export type AgeLimit = 1 | 3 | 6 | 9 | 12 | 16 | 18
+
+export interface Place {
+    id: number
+    title: string
+    image: string
+    active?: boolean
+    description: string
+    tags: string[]
+    ageLimit?: AgeLimit // Возрастное ограничение
+    x: string
+    y: string
+}
+
+export interface NewPlace {
+    title?: string
+    description?: string
+}
 
 export const usePlaces = (): UseQueryResult<Place[]> => {
     return useQuery(['places'], () => service.get(`/places`),)
 }
 export const usePlace = (id: number): UseQueryResult<Place> => {
     return useQuery(['place', id], () => service.get(`/place/${id}`),)
-}
-export const usePlaceProjects = (id: number): UseQueryResult<Project[]> => {
-    return useQuery(['placeProjects', id], () => service.get(`/place/${id}/project`),)
-}
-export const usePlaceUsers = (id: number): UseQueryResult<User[]> => {
-    return useQuery(['placeUser', id], () => service.get(`/place/${id}/user`),)
 }
 
 export const useAddPlace = (): UseMutate<NewPlace> => useMutation((place) => service.post("/place", place))

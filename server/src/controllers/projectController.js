@@ -6,19 +6,16 @@ const Meet = require('../models/meetModel');
 const Place = require('../models/placeModel');
 const User = require('../models/userModel');
 const ProjectUser = require('../models/projectUserModel');
-const ProjectImage = require('../models/projectImageModel');
 
 exports.findById = function(req, res) {
     Project.findById(req.params.id, function(err, project) {
         User.findByProjectId(project.id, function(err, users) {
-            ProjectImage.findByProjectId(project.placeId, function(err, images) {
-                Meet.findByProjectId(req.params.id, function(err, meets) {
-                    if (err) res.send(err);
-                    async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
-                        if (err) console.log(err);
+            Meet.findByProjectId(req.params.id, function(err, meets) {
+                if (err) res.send(err);
+                async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
+                    if (err) console.log(err);
 
-                        res.send({ ...project, images, users, meets: meetsWithUsers, active: users.some((u) => req.user.id === u.id) });
-                    });
+                    res.send({ ...project, users, meets: meetsWithUsers, active: users.some((u) => req.user.id === u.id) });
                 });
             });
         });
@@ -76,15 +73,20 @@ exports.deleteProjectUser = function(req, res) {
     });
 };
 
+/**
+ * Проекты пользователя
+ */
 exports.findByUser = function(req, res) {
     Project.findAllByUserId(req.user.id, function(err, projects) {
         if (err) res.send(err);
+        console.log(projects, 'projects')
         if (projects) {
             async.map(projects || [], Meet.findFirstByProject, function(err, projectsWithMeet) {
                 if (err) console.log(err);
-                async.map(projectsWithMeet, Place.findByProject, function(err, projectsWithMeetWithPlace) {
+                console.log(projectsWithMeet, 'projectsWithMeet')
+                async.map(projectsWithMeet, Place.findByProject, function(err, projectsWithMeetWithPlaces) {
                     if (err) console.log(err);
-                    async.map(projectsWithMeetWithPlace, User.findByProject, function(err, projectsWithMeetWithPlaceWithUsers) {
+                    async.map(projectsWithMeetWithPlaces, User.findByProject, function(err, projectsWithMeetWithPlaceWithUsers) {
                         if (err) console.log(err);
                         const projectsWithMeetWithPlaceWithUsersA = projectsWithMeetWithPlaceWithUsers.map((p) => ({ ...p, active: p.users?.find((user) => user.id === req.user.id) }))
                         res.send(projectsWithMeetWithPlaceWithUsersA);

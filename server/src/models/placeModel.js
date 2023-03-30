@@ -21,9 +21,9 @@ Place.findAll = function (result) {
 };
 
 Place.findByProject = function (project, result) {
-    dbConn.query("Select * from place where  id = ? ", project.placeId, function (err, res) {
+    dbConn.query("SELECT place.*, meet.projectId FROM place LEFT JOIN meet ON meet.placeId = place.id WHERE projectId = ? GROUP BY place.id", project.id, function (err, res) {
         if(err) result(err, null);
-        result(null, {...project, place: res[0] });
+        result(null, {...project, places: res });
     });
 };
 

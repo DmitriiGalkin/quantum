@@ -1,7 +1,29 @@
-import {Meet, NewMeet} from "./types";
 import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import service, {UseMutate} from "../../tools/service";
-import {User} from "../user";
+import service, {UseMutate} from "../tools/service";
+import {User} from "./user";
+import {Project} from "./project";
+
+export interface Meet {
+    id: number
+    title?: string
+    description?: string
+    datetime: string
+    active?: boolean
+    image?: string
+    projectId: number
+    project: Project
+    users: User[]
+    endDatetime?: string,
+}
+
+export interface NewMeet {
+    title?: string
+    description?: string
+    image: string | null
+    projectId: number | null
+    datetime?: string
+    endDatetime?: string,
+}
 
 export const useMeets = (): UseQueryResult<Meet[]> => {
     return useQuery(['meets'], () => service.get(`/meet`),)

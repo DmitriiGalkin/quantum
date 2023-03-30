@@ -4,7 +4,6 @@ var dbConn = require('../db.config');
 var Project = function(project){
     this.title = project.title;
     this.description = project.description;
-    this.placeId = project.placeId;
     this.created_at = new Date();
     this.updated_at = new Date();
 };
@@ -77,10 +76,10 @@ Project.update = function(id, project, result){
 };
 
 /**
- * Проекты пространств на которые подписан участник
+ * Проекты в которых участвует пользователь
  */
 Project.findAllByUserId = function (id, result) {
-    dbConn.query('Select project.* from project LEFT JOIN place ON place.id = project.placeId LEFT JOIN user_place ON user_place.placeId = project.placeId WHERE user_place.userId = ?', id, function (err, res) {
+    dbConn.query('SELECT * FROM project LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = 1', id, function (err, res) {
         if(err) result(null, err);
             result(null, res);
     });

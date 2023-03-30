@@ -9,11 +9,16 @@ exports.findAll = function(req, res) {
     });
 };
 
+/**
+ * Информация по пространству,
+ * а также проекты по которым запланированы здесь встречи
+ */
 exports.findById = function(req, res) {
     Place.findById(req.params.id, function(err, employee) {
-        if (err)
-            res.send(err);
-        res.json(employee);
+        Project.findByPlaceId(req.params.id, function(err, project) {
+            if (err) res.send(err);
+            res.json(employee);
+        });
     });
 };
 

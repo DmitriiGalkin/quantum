@@ -1,10 +1,19 @@
-import {User} from "./types";
 import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import service, {UseMutate} from "../../tools/service";
-import {Unique} from "../unique";
-import {Project} from "../project";
-import {LoginData} from "../../tools/auth";
-import {Meet} from "../meet";
+import service, {UseMutate} from "../tools/service";
+import {Unique} from "./unique";
+import {Project} from "./project";
+import {LoginData} from "../tools/auth";
+import {Meet} from "./meet";
+
+export interface User {
+    id: number
+    image?: string
+    title: string
+    points: number
+    email?: string
+    password?: string
+}
+
 
 export const useUser = (id: number): UseQueryResult<User> => {
     return useQuery(['user', id], () => service.get(`/user/${id}`),)
@@ -40,4 +49,31 @@ export const useUserMeet = (): UseQueryResult<Meet[]> => {
 }
 export const useOnlyUserProjects = (): UseQueryResult<Project[]> => {
     return useQuery(['onlyUserProjects'], () => service.get(`/projects`))
+}
+
+
+
+
+interface ProjectUser {
+    projectId: number
+    userId?: number
+}
+
+export const useAddProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
+    const queryClient = useQueryClient()
+
+    return useMutation(({ projectId }) => service.post(`/userProject/${projectId}`), {
+        onSuccess() {
+            queryClient.invalidateQueries(['projects', projectId])
+        },
+    })
+}
+export const useDeleteProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
+    const queryClient = useQueryClient()
+
+    return useMutation(({ projectId }) => service.delete(`/userProject/${projectId}`), {
+        onSuccess() {
+            queryClient.invalidateQueries(['projects', projectId])
+        },
+    })
 }

@@ -4,8 +4,9 @@ import {Avatar, Box, Button, Container, Stack, Theme, Typography} from "@mui/mat
 import SaveIcon from '@mui/icons-material/Save';
 import PenIcon from "@mui/icons-material/Edit";
 import ForwardAppBar from "../components/ForwardAppBar";
-import {useNavigate, useParams} from "react-router-dom";
-import {useAddProjectUser, useDeleteProjectUser, useProject,} from "../modules/project";
+import {useNavigate} from "react-router-dom";
+import {useAddProjectUser, useDeleteProjectUser} from "../modules/user";
+import {useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet} from "../modules/meet";
