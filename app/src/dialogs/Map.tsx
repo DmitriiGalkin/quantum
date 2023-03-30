@@ -1,40 +1,19 @@
 import React, {useState} from 'react';
-import {makeStyles} from '@mui/styles';
 import ForwardAppBar from "../components/ForwardAppBar";
 import {usePlaces} from "../modules/place";
-import {Theme} from "@mui/material";
 import {YMaps, Map, Placemark} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
 import {PlaceDialog} from "./PlaceDialog";
+import Dialog from "@mui/material/Dialog";
 
-const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-        flexGrow: 1,
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
-    root2: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        '& > *': {
-            margin: theme.spacing(0.5),
-        },
-    },
-}));
-
-export default function MapDialog() {
-    const classes = useStyles();
+export default function MapDialog({onClose, open}: {onClose:()=>void; open:boolean}) {
     const { data: places = [] } = usePlaces()
     const [placeId, setPlaceId] = useState<number>()
     const [x,y] = getCenter(places)
 
     return (
-        <div className={classes.root}>
-            <ForwardAppBar title="Карта проектов"/>
+        <Dialog onClose={onClose} open={open} fullScreen keepMounted>
+            <ForwardAppBar title="Карта проектов" onClick={onClose}/>
             {places.length && (
                 <YMaps>
                     <Map
@@ -60,6 +39,6 @@ export default function MapDialog() {
                 </YMaps>
             )}
             {placeId && <PlaceDialog placeId={placeId} onClose={() => setPlaceId(undefined)} />}
-        </div>
+        </Dialog>
     );
 }

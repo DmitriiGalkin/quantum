@@ -9,6 +9,7 @@ import {useAddProjectUser, useDeleteProjectUser, useProject,} from "../modules/p
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet} from "../modules/meet";
+import Dialog from "@mui/material/Dialog";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -26,16 +27,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export default function ProjectPage() {
+export interface ProjectDialogProps {
+    projectId: number;
+    onClose: () => void;
+}
+export default function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
     const classes = useStyles();
     const navigate = useNavigate();
 
-    const { id } = useParams();
-    const { data: project } = useProject(Number(id))
+    const { data: project } = useProject(projectId)
 
 
-    const addProjectUser = useAddProjectUser(Number(id))
-    const deleteProjectUser = useDeleteProjectUser(Number(id))
+    const addProjectUser = useAddProjectUser(projectId)
+    const deleteProjectUser = useDeleteProjectUser(projectId)
 
     if (!project) { return null }
 
@@ -43,21 +47,18 @@ export default function ProjectPage() {
 
     const onClick = () => {
         if (project.active) {
-            deleteProjectUser.mutate({ projectId: project.id })
+            deleteProjectUser.mutate({ projectId })
         } else {
-            addProjectUser.mutate({ projectId: project.id })
+            addProjectUser.mutate({ projectId })
         }
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <ForwardAppBar title={project.title} icon={<PenIcon style={{ color: 'white' }}/>} onClick={() => navigate(`/project/${project.id}/edit` )}/>
+        <Dialog onClose={onClose} open={true} fullScreen>
+            <ForwardAppBar title={project.title} icon={<PenIcon style={{ color: 'white' }}/>} onClick={onClose}/>
             <div className={classes.container}>
                 <Container disableGutters sx={{ padding: '24px 18px' }}>
                     <Stack spacing={2}>
-                        <Typography variant="h5">
-                            {project.title}
-                        </Typography>
                         <Typography>
                             {project.description}
                         </Typography>
@@ -114,6 +115,6 @@ export default function ProjectPage() {
                     </Stack>
                 </Container>
             </div>
-        </Box>
+        </Dialog>
     );
 }
