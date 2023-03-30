@@ -22,13 +22,24 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
                     config.headers['Authorization'] = `Bearer ${result.access_token}`;
                     return config;
                 },
-                error => {
-                    return Promise.reject(error);
-                }
             );
             navigate("/");
         })
     };
+
+    // // Гугл логин
+    // const googleLogin = async (data: LoginData) => {
+    //     userByLogin.mutateAsync(data).then((result: any) => {
+    //         localStorage.setItem(ACCESS_TOKEN, result.access_token);
+    //         service.interceptors.request.use(
+    //             config => {
+    //                 config.headers['Authorization'] = `Bearer ${result.access_token}`;
+    //                 return config;
+    //             },
+    //         );
+    //         navigate("/");
+    //     })
+    // };
 
     const logout = () => {
         localStorage.removeItem(ACCESS_TOKEN);
@@ -39,6 +50,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
         () => ({
             access_token,
             login,
+            // googleLogin,
             logout
         }),
         [access_token]

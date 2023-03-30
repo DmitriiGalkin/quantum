@@ -8,6 +8,8 @@ export interface Place {
     description: string
     tags: string[]
     ageLimit?: AgeLimit // Возрастное ограничение
+    x: string
+    y: string
 }
 
 export interface NewPlace {

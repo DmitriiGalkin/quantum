@@ -4,6 +4,10 @@ import {createTheme} from '@mui/material/styles';
 const theme = createTheme({
     typography: {
         fontFamily: 'Manrope, Arial',
+        h4: {
+            fontSize: 24,
+            fontWeight: 700,
+        },
         h5: {
             fontSize: 16,
             fontWeight: 700,
@@ -12,19 +16,19 @@ const theme = createTheme({
             fontSize: 15,
             fontWeight: 500,
         },
+        subtitle1: {
+            fontSize: 14,
+            fontWeight: 700,
+        },
         body1: {
             fontSize: 14,
             fontWeight: 400,
         },
-        subtitle1: {
-            fontSize: 14,
-            fontWeight: 700,
-        }
     },
     spacing: 6,
     palette: {
         background: {
-            default: "#FFA427",
+            default: "white",
         },
         primary: {
             main: '#FFA427',

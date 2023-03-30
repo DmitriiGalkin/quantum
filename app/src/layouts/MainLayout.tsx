@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         zIndex: 10
     },
     appBar: {
+        zIndex: 10,
         position: 'fixed',
         top: 0,
         left: 0,

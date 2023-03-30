@@ -4,7 +4,6 @@ import ForwardAppBar from "../components/ForwardAppBar";
 import {useParams} from "react-router-dom";
 import {Place, useAddPlaceUser, useDeletePlaceUser, usePlace} from "../modules/place";
 import {Box, Button, Container, Theme, Typography} from "@mui/material";
-import Image from "../components/Image";
 import SaveIcon from "@mui/icons-material/Save";
 
 
@@ -54,9 +53,6 @@ export default function PlacePage() {
         <div className={classes.root}>
             <ForwardAppBar title={place.title}/>
             <div className={classes.container}>
-                <Box sx={{ margin: '0 18px', paddingTop: 3}}>
-                    <Image alt={place.title} src={place.image} borderRadius={'24px 24px 0 0'} />
-                </Box>
                 <Container disableGutters sx={{ padding: '24px 18px',
                     '& > * + *': {
                         marginTop: 2,
