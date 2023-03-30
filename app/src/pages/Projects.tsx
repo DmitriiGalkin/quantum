@@ -1,16 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ProjectCard from "../components/ProjectCard";
 import {Stack} from "@mui/material";
-import {useNavigate} from "react-router-dom";
 import {useOnlyUserProjects} from "../modules/user";
+import {PlaceDialog} from "./PlaceDialog";
 
 export default function ProjectsPage() {
-    const navigate = useNavigate();
     const { data: projects = [] } = useOnlyUserProjects()
+    const [placeId, setPlaceId] = useState<number>()
 
     return (
-        <Stack spacing={2}>
-            {projects.map((project) => <ProjectCard key={project.id} {...project} onClick={() => navigate(`/project/${project.id}`)}/>)}
-        </Stack>
+        <>
+            <Stack spacing={2}>
+                {projects.map((project) => <ProjectCard key={project.id} {...project} onClick={() => setPlaceId(project.id)}/>)}
+            </Stack>
+            {placeId && <PlaceDialog placeId={placeId} onClose={() => setPlaceId(undefined)} />}
+        </>
     );
 }

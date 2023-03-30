@@ -72,7 +72,7 @@ export default function PlacePage() {
                             startIcon={<SaveIcon />}
                             onClick={onClick}
                         >
-                            {place.active ? 'Покинуть пространство' : 'Участвовать в пространстве'}
+                            {place.active ? 'Не следить за его проектами' : 'Следить за проектами '}
                         </Button>
                     </Box>
                 </Container>

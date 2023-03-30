@@ -12,7 +12,7 @@ export function ForwardAppBar({ title, icon, onClick }: { title?: string, icon?:
                     color="inherit"
                     aria-label="menu"
                     sx={{ mr: 2 }}
-                    onClick={() => window.history.back()}
+                    onClick={onClick}
                 >
                     <ArrowBackIos/>
                 </IconButton>

@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import {makeStyles} from '@mui/styles';
 import ForwardAppBar from "../components/ForwardAppBar";
-import PlaceCard from "../components/PlaceCard";
-import {Place, usePlaces} from "../modules/place";
-import {Container, Grid, Theme} from "@mui/material";
+import {usePlaces} from "../modules/place";
+import {Theme} from "@mui/material";
 import {YMaps, Map, Placemark} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
-import {useNavigate} from "react-router-dom";
-import {useAuth} from "../tools/auth";
+import {PlaceDialog} from "./PlaceDialog";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -28,24 +26,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export default function MapPage() {
+export default function MapDialog() {
     const classes = useStyles();
     const { data: places = [] } = usePlaces()
-    // window.ymaps3.ready.then(() => {
-    //     const map = new ymaps3.YMap(document.getElementById('YMapsID'), {
-    //         location: {
-    //             center: [37.64, 55.76],
-    //             zoom: 10
-    //         }
-    //     });
-    // });
-    // const [ymaps3React] = await Promise.all([ymaps3.import('@yandex/ymaps3-reactify'), ymaps3.ready]);
-    const navigate = useNavigate();
+    const [placeId, setPlaceId] = useState<number>()
     const [x,y] = getCenter(places)
-
-    const onClickPlace = (place: Place) => {
-        navigate(`/place/${place.id}`)
-    }
 
     return (
         <div className={classes.root}>
@@ -64,21 +49,17 @@ export default function MapPage() {
                             <Placemark
                                 modules={["geoObject.addon.balloon"]}
                                 defaultGeometry={[place.x, place.y]}
-                                // properties={{
-                                //     balloonContentHeader: place.title,
-                                //     balloonContentBody: place.description,
-                                // }}
                                 options={{
                                     preset: 'islands#icon',
                                     iconColor: '#FFA427',
-                                    // balloonMaxWidth: 200,
                                 }}
-                                onClick={() => onClickPlace(place)}
+                                onClick={() => setPlaceId(place.id)}
                             />
                         ))}
                     </Map>
                 </YMaps>
             )}
+            {placeId && <PlaceDialog placeId={placeId} onClose={() => setPlaceId(undefined)} />}
         </div>
     );
 }
