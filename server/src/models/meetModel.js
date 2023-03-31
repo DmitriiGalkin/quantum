@@ -15,13 +15,13 @@ Meet.create = function (data, result) {
 // Встречи проекта
 Meet.findByProject = function (project, result) {
     dbConn.query("Select * from meet where projectId = ? ", project.id, function (err, res) {
-        result(null, {...project, meets: res});
+        result(null, res);
     });
 };
 // Ближайшая встреча по проекту
 Meet.findFirstByProject = function (project, result) {
     dbConn.query("Select * from meet where  projectId = ? LIMIT 1", project.id, function (err, res) {
-        result(null, {...project, meet: res.length ? res[0] : undefined});
+        result(null, res.length ? res[0] : undefined);
     });
 };
 // Встречи участника

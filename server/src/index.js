@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const router = require('./router')
 const cors = require('cors');
 
-const port = process.env.PORT || 8080; // Setup server port
+const port = process.env.PORT || 3001; // Setup server port
 
 const app = express();
 app.use(cors({ origin: '*' })); // Разрешаем CORS

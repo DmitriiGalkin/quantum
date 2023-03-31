@@ -21,13 +21,13 @@ Project.update = function(id, project, result){
 // Проект
 Project.findById = function (id, result) {
     dbConn.query("Select * from project where  id = ? ", id, function (err, res) {
-        result(null, res[0]);
+        result(null, res.length ? res[0] : undefined);
     });
 };
 // Проекты встречи
 Project.findByMeet = function (meet, result) {
     dbConn.query("Select * from project where  id = ? ", meet.projectId, function (err, res) {
-        result(null, { ...meet, project: res[0] });
+        result(null, res.length ? res[0] : undefined);
     });
 };
 // Проекты пространства

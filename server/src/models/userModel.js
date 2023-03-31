@@ -49,13 +49,13 @@ User.findByToken = function (id, result) {
 // Участники встречи
 User.findByMeet = function (meet, result) {
     dbConn.query("Select * from user LEFT JOIN user_meet ON user.id = user_meet.userId where meetId = ?", meet.id, function (err, res) {
-        result(null, { ...meet, users: res});
+        result(null, res);
     });
 };
 // Участники проекта
 User.findByProject = function (project, result) {
     dbConn.query("Select * from user LEFT JOIN user_project ON user.id = user_project.userId where projectId = ?", project.id, function (err, users) {
-        result(null, { ...project, users });
+        result(null, users);
     });
 };
 

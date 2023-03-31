@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI} from "../auth";
-import service, {UseMutate, ACCESS_TOKEN} from "../tools/service";
+import {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, GOOGLE_TOKEN_URI} from "../tools/auth";
+import service, {ACCESS_TOKEN, UseMutate} from "../tools/service";
 
 export const useData = (parameters: any): UseMutate<any> => {
     return useMutation(() => googleService.post(``, parameters))
@@ -20,7 +20,7 @@ export const useLogi = (): UseMutate<any> => {
 export const createService = (): AxiosInstance => {
     const service = axios.create()
     service.interceptors.request.use((config: AxiosRequestConfig) => ({
-        baseURL: 'https://accounts.google.com/o/oauth2/token',
+        baseURL: GOOGLE_TOKEN_URI,
         ...config,
     }))
     service.interceptors.response.use(( axiosResponse) => axiosResponse.data)

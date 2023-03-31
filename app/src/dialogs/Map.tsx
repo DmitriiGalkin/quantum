@@ -1,7 +1,7 @@
 import React from 'react';
 import ForwardAppBar from "../components/ForwardAppBar";
 import {usePlaces} from "../modules/place";
-import {YMaps, Map, Placemark} from '@pbe/react-yandex-maps';
+import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
 import Dialog from "@mui/material/Dialog";
 

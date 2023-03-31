@@ -1,7 +1,7 @@
 import React from 'react';
 import ForwardAppBar from "../../components/ForwardAppBar";
 import {Task, useEditUserTask, useTask} from "../../modules/task";
-import {Container, Theme} from "@mui/material";
+import {Container} from "@mui/material";
 import SelectEmotion from "./SelectEmotion";
 import {useEditUser, useUser} from "../../modules/user";
 import Dialog from "@mui/material/Dialog";

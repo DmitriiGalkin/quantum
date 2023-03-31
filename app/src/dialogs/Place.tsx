@@ -2,21 +2,11 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
-import {Place, useAddPlaceUser, useDeletePlaceUser, usePlace} from "../modules/place";
-import {Box, Card, Container, Stack, Theme} from "@mui/material";
+import {useAddPlaceUser, useDeletePlaceUser, usePlace} from "../modules/place";
+import {Card, Container, Stack} from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import {makeStyles} from "@mui/styles";
 import ForwardAppBar from "../components/ForwardAppBar";
 import ProjectCard from "../components/ProjectCard";
-
-const useStyles = makeStyles((theme: Theme) => ({
-    block: {
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: 12,
-        padding: 12,
-    },
-
-}));
 
 export interface PlaceDialogProps {
     placeId: number;
@@ -25,7 +15,6 @@ export interface PlaceDialogProps {
 }
 
 export function PlaceDialog({ placeId, setProjectId, onClose }: PlaceDialogProps) {
-    const classes = useStyles();
     const { data: place } = usePlace(placeId)
 
     const addPlaceUser = useAddPlaceUser(placeId)

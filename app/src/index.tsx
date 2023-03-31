@@ -9,7 +9,7 @@ import {router} from "./App";
 import theme from "./theme";
 import CssBaseline from '@mui/material/CssBaseline';
 import {ThemeProvider} from '@mui/material/styles';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import {GoogleOAuthProvider} from '@react-oauth/google';
 
 
 const queryClient = new QueryClient()

@@ -12,8 +12,8 @@ exports.findById = function(req, res) {
     Project.findById(req.params.id, function(err, project) {
         User.findByProject(project, function(err, users) {
             Meet.findByProject(project, function(err, meets) {
-                async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
-                    res.send({ ...project, users, meets: meetsWithUsers, active: users.some((u) => req.user.id === u.id) });
+                async.map(meets, User.findByMeet, function(err, meetsUsers) {
+                    res.send({ ...project, users, meets: meets.map((p, index) => ({ ...p, users: meetsUsers[index]})), active: users.find((u) => req.user.id === u.id) });
                 });
             });
         });
@@ -61,11 +61,12 @@ exports.deleteUserProject = function(req, res) {
 // Проекты участника
 exports.findByUser = function(req, res) {
     Project.findAllByUserId(req.user.id, function(err, projects) {
-        async.map(projects, Meet.findFirstByProject, function(err, projectsWithMeet) {
-            async.map(projectsWithMeet, Place.findByProject, function(err, projectsWithMeetWithPlaces) {
-                async.map(projectsWithMeetWithPlaces, User.findByProject, function(err, projectsWithMeetWithPlaceWithUsers) {
-                    const projectsWithMeetWithPlaceWithUsersA = projectsWithMeetWithPlaceWithUsers.map((p) => ({ ...p, active: p.users?.find((user) => user.id === req.user.id) }))
-                    res.send(projectsWithMeetWithPlaceWithUsersA);
+        async.map(projects, Meet.findFirstByProject, function(err, projectsMeet) {
+            async.map(projects, Place.findByProject, function(err, projectsPlaces) {
+                async.map(projects, User.findByProject, function(err, projectsUsers) {
+                    const projs = projects.map((p, index) => ({ ...p, meets: projectsMeet[index], places: projectsPlaces[index], users: projectsUsers[index]}))
+                    // const projectsWithMeetWithPlaceWithUsersA = projectsWithMeetWithPlaceWithUsers.map((p) => ({ ...p, active: p.users?.find((user) => user.id === req.user.id) }))
+                    res.send(projs);
                 });
             });
         });

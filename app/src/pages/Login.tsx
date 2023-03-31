@@ -1,20 +1,9 @@
 import React, {useState} from 'react';
-import {
-    Box,
-    Button,
-    Container,
-    IconButton,
-    InputAdornment,
-    Stack,
-    TextField,
-    Theme,
-    Typography
-} from "@mui/material";
+import {Box, Button, Container, IconButton, InputAdornment, Stack, TextField, Theme, Typography} from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {makeStyles} from "@mui/styles";
-import {useAuth} from "../tools/auth";
-import {uri} from "../auth";
+import {uri, useAuth} from "../tools/auth";
 import GoogleIcon from "../components/GoogleIcon";
 
 

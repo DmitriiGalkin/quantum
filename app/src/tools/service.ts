@@ -1,7 +1,7 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {UseMutationResult} from "@tanstack/react-query";
 
-const SAME_URL = window.location.protocol + '//' + window.location.hostname + ':8080'
+const SAME_URL = window.location.protocol + '//' + window.location.hostname + ':3001'
 export const ACCESS_TOKEN = 'access_token'
 
 export const createService = (): AxiosInstance => {

@@ -6,5 +6,5 @@ COPY . /app
 RUN yarn build
 FROM nginx:1.16.0-alpine
 COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
