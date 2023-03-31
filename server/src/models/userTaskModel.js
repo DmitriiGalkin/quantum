@@ -6,27 +6,19 @@ var UserTask = function(data){
     this.taskId = data.taskId;
     this.results = data.results;
 };
-
-UserTask.findAll = function (result) {
-    dbConn.query("Select * from task", function (err, res) {
-        result(null, res);
-    });
-};
+// Задание участника
 UserTask.findById = function (id, result) {
     dbConn.query("Select * from user_task where id = ? ", id, function (err, res) {
         result(null, res);
     });
 };
+// Задания участника
 UserTask.findAllByUserId = function (id, result) {
     dbConn.query("Select * from user_task where results IS NULL AND userId = ? ", id, function (err, res) {
         result(null, res);
     });
 };
-UserTask.findByUserTask = function (userTask, result) {
-    dbConn.query("Select * from task where id = ? ", userTask.taskId, function (err, res) {
-        result(null, { ...userTask, task: res[0] });
-    });
-};
+// Обновление задания участника
 UserTask.update = function(id, task, result){
     dbConn.query("UPDATE user_task SET results=? WHERE id = ?", [task.result, id], function (err, res) {
         result(null, res);

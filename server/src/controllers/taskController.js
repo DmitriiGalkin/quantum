@@ -1,31 +1,29 @@
 'use strict';
 var async = require("async");
 
+const Task = require('../models/taskModel');
 const UserTask = require('../models/userTaskModel');
 
+// Задание участника
 exports.findById = function(req, res) {
     UserTask.findById(req.params.id, function(err, tasks) {
-        if (err) res.send(err);
         res.json(tasks[0]);
     });
 };
-
+// Обновление задания участника
 exports.update = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Конструктор сломался' });
     }else{
-        UserTask.update(req.params.id, new UserTask(req.body), function(err, data) {
-            if (err) res.send(err);
+        UserTask.update(req.params.id, new UserTask(req.body), function() {
             res.json({ error:false, message: 'task successfully updated' });
         });
     }
 };
-
+// Задания участника
 exports.findByUser = function(req, res) {
     UserTask.findAllByUserId(req.user.id, function(err, userTasks) {
-        if (err) res.send(err);
-        async.map(userTasks, UserTask.findByUserTask, function(err, userTasksWithTask) {
-            if (err) console.log(err);
+        async.map(userTasks, Task.findByUserTask, function(err, userTasksWithTask) {
             res.send(userTasksWithTask);
         });
     });

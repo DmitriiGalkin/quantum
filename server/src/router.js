@@ -33,19 +33,19 @@ router.post('/logi', userController.logi);
 router.get('/user/:id', userController.findById);
 router.put('/user/:id', userController.update);
 
-router.post('/userProject/:projectId', useUser, projectController.createProjectUser );
-router.delete('/userProject/:projectId', useUser, projectController.deleteProjectUser );
-router.post('/user/:meetId/meet', useUser, meetController.createMeetUser );
-router.delete('/user/:meetId/meet', useUser, meetController.deleteMeetUser );
-router.post('/user/:placeId/place', useUser, placeController.createPlaceUser );
-router.delete('/user/:placeId/place', useUser, placeController.deletePlaceUser );
+router.post('/userProject/:projectId', useUser, projectController.createUserProject );
+router.delete('/userProject/:projectId', useUser, projectController.deleteUserProject );
+router.post('/user/:meetId/meet', useUser, meetController.createUserMeet );
+router.delete('/user/:meetId/meet', useUser, meetController.deleteUserMeet );
+router.post('/user/:placeId/place', useUser, placeController.createUserPlace );
+router.delete('/user/:placeId/place', useUser, placeController.deleteUserPlace );
 
 /**
  * Проекты
  */
 router.get('/projects', useUser, projectController.findByUser);
-router.post('/project', projectController.create);
 router.get('/project/:id', useUser, projectController.findById);
+router.post('/project', projectController.create);
 router.put('/project/:id', projectController.update);
 
 /**
@@ -71,7 +71,7 @@ router.put('/task/:id', taskController.update);
 /**
  * Таланты
  */
-router.get('/uniques', useUser, userController.findByUser);
+router.get('/uniques', useUser, uniqueController.findByUser);
 router.put('/unique/:id', uniqueController.update);
 
 module.exports = router
