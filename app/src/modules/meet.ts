@@ -5,6 +5,7 @@ import {Project} from "./project";
 
 export interface Meet {
     id: number
+    placeId?: number | null,
     title?: string
     description?: string
     datetime: string
@@ -21,6 +22,7 @@ export interface NewMeet {
     description?: string
     image: string | null
     projectId: number | null
+    placeId: number | null
     datetime?: string
     endDatetime?: string,
 }

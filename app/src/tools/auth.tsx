@@ -1,12 +1,11 @@
 import {createContext, useContext, useMemo} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserByLogin} from "../modules/user";
-import service from "./service";
+import service, {ACCESS_TOKEN} from "./service";
 
 export const AuthContext = createContext('auth' as any);
 
 export interface LoginData { email: string, password: string }
-export const ACCESS_TOKEN = 'access_token'
 
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const access_token = localStorage.getItem(ACCESS_TOKEN)

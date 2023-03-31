@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, GOOGLE_USER_INFO_URI} from "../auth";
-import service, {UseMutate} from "../tools/service";
-import {ACCESS_TOKEN, LoginData, useAuth} from "../tools/auth";
+import {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI} from "../auth";
+import service, {UseMutate, ACCESS_TOKEN} from "../tools/service";
 
 export const useData = (parameters: any): UseMutate<any> => {
     return useMutation(() => googleService.post(``, parameters))

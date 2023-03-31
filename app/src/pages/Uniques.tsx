@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, IconButton, Stack, Typography} from "@mui/material";
+import {Box, Card, CardContent, IconButton, Stack, Typography} from "@mui/material";
 import {useEditUser, useOnlyUserUniques, useUser} from "../modules/user";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ArrowUpward from "@mui/icons-material/ArrowUpward";
@@ -25,14 +25,11 @@ export default function UniquesPage() {
                     Свободных баллов {userD?.points ? userD?.points : 'нет'}
                 </Typography>
             </div>
-            <Box sx={{
-                border: '1px solid #E1E3E8',
-                borderRadius: 2,
-            }}
-            >
+            <Card>
+                <CardContent>
                 <Stack spacing={2}>
                     {uniques.map((unique) => (
-                        <Box key={unique.id} sx={{ display: 'flex', padding: 1 }}>
+                        <Box key={unique.id} sx={{ display: 'flex' }}>
                             <Typography variant="subtitle1" color="primary" style={{ flexGrow: 1 }}>
                                 {unique.title}
                             </Typography>
@@ -46,7 +43,8 @@ export default function UniquesPage() {
                         </Box>
                     ))}
                 </Stack>
-            </Box>
+                </CardContent>
+            </Card>
         </>
     );
 }

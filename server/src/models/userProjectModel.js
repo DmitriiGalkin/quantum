@@ -1,0 +1,18 @@
+'use strict';
+var dbConn = require('../db.config');
+
+var UserProject = function(data){
+    this.userId = data.userId;
+    this.projectId = data.projectId;
+};
+UserProject.create = function (newEmp, result) {
+    dbConn.query("INSERT INTO user_project set ?", newEmp, function (err, res) {
+        result(null, res.insertId);
+    });
+};
+UserProject.delete = function(projectId, userId, result){
+    dbConn.query(`DELETE FROM user_project WHERE projectId = ${projectId} AND userId = ${userId}`, function (err, res) {
+        result(null, res);
+    });
+};
+module.exports = UserProject;

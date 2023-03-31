@@ -1,6 +1,7 @@
 'use strict';
 const Place = require('../models/placeModel');
 const PlaceUser = require('../models/placeUserModel');
+const Project = require('../models/projectModel');
 
 exports.findAll = function(req, res) {
     Place.findAll(function(err, employee) {
@@ -14,10 +15,10 @@ exports.findAll = function(req, res) {
  * а также проекты по которым запланированы здесь встречи
  */
 exports.findById = function(req, res) {
-    Place.findById(req.params.id, function(err, employee) {
-        Project.findByPlaceId(req.params.id, function(err, project) {
+    Place.findById(req.params.id, function(err, place) {
+        Project.findByPlaceId(req.params.id, function(err, projects) {
             if (err) res.send(err);
-            res.json(employee);
+            res.json({...place, projects});
         });
     });
 };

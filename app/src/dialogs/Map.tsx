@@ -1,14 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ForwardAppBar from "../components/ForwardAppBar";
 import {usePlaces} from "../modules/place";
 import {YMaps, Map, Placemark} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
-import {PlaceDialog} from "./PlaceDialog";
 import Dialog from "@mui/material/Dialog";
 
-export default function MapDialog({onClose, open}: {onClose:()=>void; open:boolean}) {
+export default function MapDialog({onClose, open, setPlaceId}: {onClose:()=>void; setPlaceId: (placeId: number) => void; open:boolean}) {
     const { data: places = [] } = usePlaces()
-    const [placeId, setPlaceId] = useState<number>()
     const [x,y] = getCenter(places)
 
     return (
@@ -26,6 +24,7 @@ export default function MapDialog({onClose, open}: {onClose:()=>void; open:boole
                     >
                         {places.map((place) => (
                             <Placemark
+                                key={place.id}
                                 modules={["geoObject.addon.balloon"]}
                                 defaultGeometry={[place.x, place.y]}
                                 options={{
@@ -38,7 +37,6 @@ export default function MapDialog({onClose, open}: {onClose:()=>void; open:boole
                     </Map>
                 </YMaps>
             )}
-            {placeId && <PlaceDialog placeId={placeId} onClose={() => setPlaceId(undefined)} />}
         </Dialog>
     );
 }

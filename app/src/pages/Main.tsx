@@ -33,6 +33,10 @@ import MapIcon from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {useAuth} from "../tools/auth";
 import MapDialog from "../dialogs/Map";
+import {PlaceDialog} from "../dialogs/Place";
+import CreateProjectDialog from "../dialogs/CreateProject";
+import CreateMeetDialog from "../dialogs/createMeet";
+import TaskDialog from "../dialogs/task";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -63,6 +67,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function MainPage() {
     const classes = useStyles();
     const [projectId, setProjectId] = useState<number>()
+    const [placeId, setPlaceId] = useState<number>()
+    const [taskId, setTaskId] = useState<number>()
+
     const [tab, setTab] = useState(0)
     const { data: meets = [] } = useUserMeet()
     const meetsGroup = getMeetsGroup(meets)
@@ -72,6 +79,8 @@ export default function MainPage() {
     const navigate = useNavigate();
     const { logout } = useAuth();
     const [openMap, setOpenMap] = useState(false)
+    const [createProject, setCreateProject] = useState(false)
+    const [createMeet, setCreateMeet] = useState(false)
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -132,7 +141,7 @@ export default function MainPage() {
                                 onClose={handleMenuClose}
                             >
                                 <MenuItem onClick={() => navigate(`/meet`)}>Новая встреча</MenuItem>
-                                <MenuItem onClick={() => navigate(`/project`)}>Новый проект</MenuItem>
+                                <MenuItem onClick={() => setCreateProject(true)}>Новый проект</MenuItem>
                                 <MenuItem onClick={() => navigate('/user/1/edit')}>Настройки</MenuItem>
                                 <MenuItem onClick={() => logout()}>Выход</MenuItem>
                             </Menu>
@@ -151,12 +160,12 @@ export default function MainPage() {
                             </TabPanel>
                             <TabPanel value={tab} index={1}>
                                 <Stack spacing={2}>
-                                    {projects.map((project) => <ProjectCard key={project.id} {...project} onClick={() => setProjectId(project.id)}/>)}
+                                    {projects.map((project) => <ProjectCard key={project.id} project={project} onClick={() => setProjectId(project.id)}/>)}
                                 </Stack>
                             </TabPanel>
                             <TabPanel value={tab} index={2}>
                                 <Stack spacing={2}>
-                                    {tasks.map((task) => <TaskCard key={task.id} {...task} />)}
+                                    {tasks.map((task) => <TaskCard key={task.id} task={task} onClick={() => setTaskId(task.id)} />)}
                                 </Stack>
                             </TabPanel>
                             <TabPanel value={tab} index={3}>
@@ -180,8 +189,12 @@ export default function MainPage() {
                     </Paper>
                 </div>
             </Box>
-            <MapDialog open={openMap} onClose={() => setOpenMap(false)} />
+            <MapDialog open={openMap} onClose={() => setOpenMap(false)} setPlaceId={setPlaceId} />
+            {createProject && <CreateProjectDialog onClose={() => setCreateProject(false)} />}
+            {createMeet && <CreateMeetDialog onClose={() => setCreateMeet(false)} />}
             {projectId && <ProjectDialog projectId={projectId} onClose={() => setProjectId(undefined)} />}
+            {taskId && <TaskDialog taskId={taskId} onClose={() => setTaskId(undefined)} />}
+            {placeId && <PlaceDialog placeId={placeId} onClose={() => setPlaceId(undefined)} setProjectId={setProjectId} />}
         </>
     );
 }

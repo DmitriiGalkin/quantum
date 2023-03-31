@@ -1,5 +1,6 @@
 import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import service, {UseMutate} from "../tools/service";
+import {Project} from "./project";
 
 export type AgeLimit = 1 | 3 | 6 | 9 | 12 | 16 | 18
 
@@ -13,6 +14,7 @@ export interface Place {
     ageLimit?: AgeLimit // Возрастное ограничение
     x: string
     y: string
+    projects: Project []
 }
 
 export interface NewPlace {

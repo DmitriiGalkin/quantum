@@ -1,45 +1,35 @@
 'use strict';
 var dbConn = require('../db.config');
 
-var Task = function(task){
-    this.title = task.title;
-    this.result = task.result;
-    this.points = task.points;
-    this.created_at = new Date();
-    this.updated_at = new Date();
+var UserTask = function(data){
+    this.userId = data.userId;
+    this.taskId = data.taskId;
+    this.results = data.results;
 };
 
-Task.findAll = function (result) {
+UserTask.findAll = function (result) {
     dbConn.query("Select * from task", function (err, res) {
-        if (err) result(null, err);
         result(null, res);
     });
 };
-Task.findById = function (id, result) {
+UserTask.findById = function (id, result) {
     dbConn.query("Select * from user_task where id = ? ", id, function (err, res) {
-        if (err) result(err, null);
         result(null, res);
     });
 };
-Task.findAllByUserId = function (id, result) {
+UserTask.findAllByUserId = function (id, result) {
     dbConn.query("Select * from user_task where results IS NULL AND userId = ? ", id, function (err, res) {
-        if (err) result(null, err);
         result(null, res);
     });
 };
-Task.findByUserTask = function (userTask, result) {
+UserTask.findByUserTask = function (userTask, result) {
     dbConn.query("Select * from task where id = ? ", userTask.taskId, function (err, res) {
-        if (err) result(null, err);
         result(null, { ...userTask, task: res[0] });
     });
 };
-
-
-Task.update = function(id, task, result){
+UserTask.update = function(id, task, result){
     dbConn.query("UPDATE user_task SET results=? WHERE id = ?", [task.result, id], function (err, res) {
-        if(err) result(null, err);
         result(null, res);
     });
 };
-
-module.exports = Task;
+module.exports = UserTask;

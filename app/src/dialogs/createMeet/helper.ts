@@ -19,6 +19,7 @@ export const DEFAULT_MEET: NewMeet = {
     description: 'описание встречи',
     image: null,
     projectId: null,
+    placeId: null
 }
 
 export const getProjectDefaultDatetime = (project: Project): [string, string] => {

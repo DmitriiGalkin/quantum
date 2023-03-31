@@ -1,13 +1,12 @@
-import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
+import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
 import {User} from "./user";
 import service, {UseMutate} from "../tools/service";
 import {Meet} from "./meet";
 
-import {AgeLimit} from "./place/types";
+import {AgeLimit} from "./place";
 
 export interface Project {
     id: number,
-    placeId: number | null,
     title: string,
     image: string,
     description: string,

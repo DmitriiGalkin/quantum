@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {Box, Slider, Typography} from "@mui/material";
+import {Box, Slider, Stack, Typography} from "@mui/material";
 import ForwardAppBar from "../../components/ForwardAppBar";
 import {Meet, useAddMeet} from "../../modules/meet";
 import {TabPanel} from "../../components/tabs";
 import {DEFAULT_MEET, getProjectDefaultDatetime, valuetext, valuetext2} from "./helper";
 import QStepper from "../../components/QStepper";
-import QContainer from "../../components/QContainer";
 import ProjectCard from "../../components/ProjectCard";
 import {useUserProjects} from "../../modules/user";
 import Day from "../../components/Day";
@@ -13,10 +12,18 @@ import {convertToMeetsGroupTime2, toServerDatetime} from "../../tools/date";
 import {Project, useProject} from "../../modules/project";
 import {CalendarPicker} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
+import {usePlaces} from "../../modules/place";
+import PlaceCard from "../../components/PlaceCard";
+import Dialog from "@mui/material/Dialog";
 
-export default function CreateMeetView() {
+export interface CreateMeetDialogProps {
+    onClose: () => void;
+}
+export default function CreateMeetDialog({ onClose }: CreateMeetDialogProps) {
     const [meet, setMeet] = useState(DEFAULT_MEET)
     const [activeStep, setActiveStep] = React.useState(0);
+    const { data: places = [] } = usePlaces()
+
     const addMeet = useAddMeet()
 
     const { data: projects = [] } = useUserProjects()
@@ -53,15 +60,14 @@ export default function CreateMeetView() {
     };
 
     return (
-        <div>
+        <Dialog onClose={onClose} open={true} fullScreen>
             <ForwardAppBar title="Создать встречу"/>
-            <QContainer>
                 <TabPanel value={activeStep} index={0}>
-                    <div>
-                        <Typography variant="h5" sx={{ paddingBottom: 1 }}>
-                            Выберите проект
-                        </Typography>
-                        {projects.map((project) => <ProjectCard {...project} onClick={() => {
+                    <Typography variant="h5" sx={{ paddingBottom: 1 }}>
+                        Выберите проект для встречи
+                    </Typography>
+                    <Stack spacing={2}>
+                        {projects.map((project) => <ProjectCard project={project} selected={meet.projectId === project.id} onClick={() => {
                             const [datetime, endDatetime] = getProjectDefaultDatetime(project)
                             setMeet({
                                 ...meet,
@@ -71,9 +77,21 @@ export default function CreateMeetView() {
                             })
                             handleNext()
                         }}/>)}
-                    </div>
+                    </Stack>
                 </TabPanel>
                 <TabPanel value={activeStep} index={1}>
+                    <Typography variant="h5" sx={{ paddingBottom: 1 }}>
+                        Выберите место для встречи
+                    </Typography>
+                    <Stack spacing={2}>
+                        {places.map((place) => (
+                            <PlaceCard key={project.id} place={place} selected={meet.placeId === place.id} onClick={() => {
+                                setMeet({ ...meet, placeId: place.id })
+                            }}/>
+                        ))}
+                    </Stack>
+                </TabPanel>
+                <TabPanel value={activeStep} index={2}>
                     <div>
                         <Box sx={{
                             fontSize: '15px',
@@ -123,25 +141,24 @@ export default function CreateMeetView() {
                         </Box>
                     </div>
                 </TabPanel>
-                <TabPanel value={activeStep} index={2}>
+                <TabPanel value={activeStep} index={3}>
                     <div>
                         <Typography variant="h5" sx={{ paddingBottom: 6 }}>
                             Проект
                         </Typography>
-                        <ProjectCard {...project} onClick={() => console.log('333')}/>
+                        <ProjectCard project={project} onClick={() => console.log('333')}/>
                         <Typography variant="h5" sx={{ paddingBottom: 6 }}>
                             Время
                         </Typography>
                         <Day date={convertToMeetsGroupTime2(meet.datetime)} meets={[{...meet, id: 0, project, users: [], datetime: toServerDatetime(meet.datetime)}] as Meet[]}/>
                     </div>
                 </TabPanel>
-                <TabPanel value={activeStep} index={3}>
+                <TabPanel value={activeStep} index={4}>
                     <Typography>
                         Встреча создана!
                     </Typography>
                 </TabPanel>
-            </QContainer>
             <QStepper steps={4} activeStep={activeStep} handleBack={handleBack} handleNext={handleNext}/>
-        </div>
+        </Dialog>
     );
 }

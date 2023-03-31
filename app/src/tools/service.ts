@@ -1,8 +1,8 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {UseMutationResult} from "@tanstack/react-query";
-import {ACCESS_TOKEN} from "./auth";
 
 const SAME_URL = window.location.protocol + '//' + window.location.hostname + ':8080'
+export const ACCESS_TOKEN = 'access_token'
 
 export const createService = (): AxiosInstance => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;

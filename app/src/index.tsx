@@ -17,8 +17,6 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-console.log(theme, 'theme')
-
 root.render(
     <GoogleOAuthProvider clientId="804980223837-9e350rj8p8glgbqel5c5rmh6jafnf1u2.apps.googleusercontent.com">
 
