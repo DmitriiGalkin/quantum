@@ -25,8 +25,8 @@ exports.create = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
-        Project.create(project, function(err, data) {
-            res.json({ error: false, message: "project added successfully!", data });
+        Project.create(project, function() {
+            res.json({ error: false, message: "Создание проекта!" });
         });
     }
 };
@@ -55,7 +55,7 @@ exports.createUserProject = function(req, res) {
 // Удаление участника из проекта
 exports.deleteUserProject = function(req, res) {
     UserProject.delete(req.params.projectId, req.user.id, function() {
-        res.json({ error:false, message: 'Employee successfully deleted' });
+        res.json({ error:false, message: 'Удаление участника из проекта' });
     });
 };
 // Проекты участника

@@ -16,7 +16,7 @@ exports.update = function(req, res) {
         res.status(400).send({ error:true, message: 'Конструктор сломался' });
     }else{
         UserTask.update(req.params.id, new UserTask(req.body), function() {
-            res.json({ error:false, message: 'task successfully updated' });
+            res.json({ error:false, message: 'Обновление задания участника' });
         });
     }
 };
