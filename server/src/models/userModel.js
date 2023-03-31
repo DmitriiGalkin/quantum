@@ -1,5 +1,5 @@
 'use strict';
-var dbConn = require('../db.config');
+var dbConn = require('../db');
 
 var User = function(user){
     this.email = user.email;

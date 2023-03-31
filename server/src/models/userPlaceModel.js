@@ -1,5 +1,5 @@
 'use strict';
-var dbConn = require('../db.config');
+var dbConn = require('../db');
 
 var UserPlace = function(data){
     this.userId = data.userId;

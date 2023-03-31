@@ -10,7 +10,7 @@ const dbConn = mysql.createConnection({
 
 dbConn.connect(function(err) {
     if (err) throw err;
-    console.log("Database Connected!");
+    console.log("Server connected database on port 3306");
 });
 
 module.exports = dbConn;

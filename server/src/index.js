@@ -11,4 +11,4 @@ app.use(bodyParser.urlencoded({ extended: true })) // parse requests of content-
 app.use(bodyParser.json()) // parse requests of content-type - application/json
 app.use('/', router)
 
-app.listen(port, () => { console.log(`Server is listening on port ${port}`) });
+app.listen(port, () => { console.log(`Server listening on port ${port}`) });
