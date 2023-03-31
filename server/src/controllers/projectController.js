@@ -5,7 +5,7 @@ const Project = require('../models/projectModel');
 const Meet = require('../models/meetModel');
 const Place = require('../models/placeModel');
 const User = require('../models/userModel');
-const ProjectUser = require('../models/projectUserModel');
+const UserProject = require('../models/userProjectModel');
 
 exports.findById = function(req, res) {
     Project.findById(req.params.id, function(err, project) {
@@ -53,12 +53,12 @@ exports.update = function(req, res) {
 };
 
 exports.createProjectUser = function(req, res) {
-    const data = new ProjectUser({...req.params, userId: req.user.id});
+    const data = new UserProject({...req.params, userId: req.user.id});
 
     if(req.body.constructor === Object && Object.keys(req.params).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
-        ProjectUser.create(data, function(err, employee) {
+        UserProject.create(data, function(err, employee) {
             if (err)
                 res.send(err);
             res.json({error:false,message:"Employee added successfully!",data:employee});
@@ -66,7 +66,7 @@ exports.createProjectUser = function(req, res) {
     }
 };
 exports.deleteProjectUser = function(req, res) {
-    ProjectUser.delete(req.params.projectId, req.user.id, function(err, employee) {
+    UserProject.delete(req.params.projectId, req.user.id, function(err, employee) {
         if (err)
             res.send(err);
         res.json({ error:false, message: 'Employee successfully deleted' });
@@ -79,11 +79,9 @@ exports.deleteProjectUser = function(req, res) {
 exports.findByUser = function(req, res) {
     Project.findAllByUserId(req.user.id, function(err, projects) {
         if (err) res.send(err);
-        console.log(projects, 'projects')
         if (projects) {
             async.map(projects || [], Meet.findFirstByProject, function(err, projectsWithMeet) {
                 if (err) console.log(err);
-                console.log(projectsWithMeet, 'projectsWithMeet')
                 async.map(projectsWithMeet, Place.findByProject, function(err, projectsWithMeetWithPlaces) {
                     if (err) console.log(err);
                     async.map(projectsWithMeetWithPlaces, User.findByProject, function(err, projectsWithMeetWithPlaceWithUsers) {

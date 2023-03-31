@@ -43,13 +43,10 @@ exports.deleteMeetUser = function(req, res) {
  * Найти все встречи на которые потенциально может претендовать участник
  */
 exports.findByUser = function(req, res) {
-    console.log(req.user, 'req.user findByUser')
     Meet.findAllByUserId(req.user.id, function(err, meets) {
         if (err) res.send(err);
-
         async.map(meets, User.findByMeet, function(err, meetsWithUsers) {
             if (err) console.log(err);
-            //project.users?.find((user) => user.id === unit.id)
             const meetsWithUsersA = meetsWithUsers.map((p) => ({ ...p, active: p.users?.find((user) => user.id === req.user.id) }))
             async.map(meetsWithUsersA, Project.findByMeet, function(err, meetsWithProject) {
                 if (err) console.log(err);

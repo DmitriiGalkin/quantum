@@ -1,6 +1,6 @@
 'use strict';
 const Place = require('../models/placeModel');
-const PlaceUser = require('../models/placeUserModel');
+const UserPlace = require('../models/userPlaceModel');
 const Project = require('../models/projectModel');
 
 exports.findAll = function(req, res) {
@@ -36,18 +36,18 @@ exports.create = function(req, res) {
 };
 
 exports.createPlaceUser = function(req, res) {
-    const data = new PlaceUser({...req.params, userId: req.user.id});
+    const data = new UserPlace({...req.params, userId: req.user.id});
     if(req.body.constructor === Object && Object.keys(req.params).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
-        PlaceUser.create(data, function(err, data) {
+        UserPlace.create(data, function(err, data) {
             if (err) res.send(err);
             res.json({error:false,message:"user_place added successfully!", data});
         });
     }
 };
 exports.deletePlaceUser = function(req, res) {
-    PlaceUser.delete(req.params.placeId, req.user.id, function(err, employee) {
+    UserPlace.delete(req.params.placeId, req.user.id, function(err, employee) {
         if (err) res.send(err);
         res.json({ error:false, message: 'Employee successfully deleted' });
     });
