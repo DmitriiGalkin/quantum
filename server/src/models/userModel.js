@@ -58,5 +58,12 @@ User.findByProject = function (project, result) {
         result(null, users);
     });
 };
+// Начислеине баллов
+User.userpoints = function (userId, points, result) {
+    dbConn.query("UPDATE user SET points=? WHERE id = ?", [points, userId], function (err, res) {
+        result(null, res);
+    });
+};
+
 
 module.exports = User;

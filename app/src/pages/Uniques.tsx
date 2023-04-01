@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Card, CardContent, IconButton, Stack, Typography} from "@mui/material";
-import {useEditUser, useOnlyUserUniques, useUser} from "../modules/user";
+import {useEditUserpoints, useOnlyUserUniques, useUser} from "../modules/user";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ArrowUpward from "@mui/icons-material/ArrowUpward";
 import {useEditUnique} from "../modules/unique";
@@ -8,11 +8,11 @@ import {useEditUnique} from "../modules/unique";
 export default function UniquesPage() {
     const { data: uniques = [] } = useOnlyUserUniques()
     const { data: userD } = useUser(1)
-    const editUser = useEditUser(1)
+    const editUser = useEditUserpoints(1)
     const editUnique = useEditUnique(1)
 
     const toTop = ({ user, unique, points }: any) => {
-        editUser.mutate({ ...user, points: user.points - points })
+        editUser.mutate(user.points - points)
         editUnique.mutate({ ...unique, points: unique.points + points })
     }
     return (

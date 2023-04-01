@@ -7,7 +7,9 @@ const UserTask = require('../models/userTaskModel');
 // Задание участника
 exports.findById = function(req, res) {
     UserTask.findById(req.params.id, function(err, tasks) {
-        res.json(tasks[0]);
+        Task.findByUserTask(tasks[0], function(err, task) {
+            res.json({...tasks[0], task});
+        });
     });
 };
 // Обновление задания участника

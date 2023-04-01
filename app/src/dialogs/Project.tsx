@@ -13,8 +13,6 @@ import {
     Typography
 } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
-import PenIcon from "@mui/icons-material/Edit";
-import {useNavigate} from "react-router-dom";
 import {useAddProjectUser, useDeleteProjectUser} from "../modules/user";
 import {useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
@@ -50,13 +48,12 @@ export default function ProjectDialog({ projectId, active, setCreateMeet, onClos
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const classes = useStyles();
-    const navigate = useNavigate();
 
     const { data: project } = useProject(projectId)
 
 
-    const addProjectUser = useAddProjectUser()
-    const deleteProjectUser = useDeleteProjectUser()
+    const addProjectUser = useAddProjectUser(projectId)
+    const deleteProjectUser = useDeleteProjectUser(projectId)
 
     if (!project) { return null }
 

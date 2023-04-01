@@ -37,12 +37,14 @@ router.delete('/userProject/:projectId', useUser, projectController.deleteUserPr
 router.post('/user/:meetId/meet', useUser, meetController.createUserMeet );
 router.delete('/user/:meetId/meet', useUser, meetController.deleteUserMeet );
 
+router.post('/userpoints', useUser, userController.userpoints);
+
 /**
  * Проекты
  */
 router.get('/projects', useUser, projectController.findByUser);
 router.get('/project/:id', useUser, projectController.findById);
-router.post('/project', projectController.create);
+router.post('/project', useUser, projectController.create);
 router.put('/project/:id', projectController.update);
 
 /**

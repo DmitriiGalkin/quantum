@@ -1,4 +1,4 @@
-import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import {User} from "./user";
 import service, {UseMutate} from "../tools/service";
 import {Meet} from "./meet";
@@ -29,5 +29,12 @@ export const useProject = (id?: number): UseQueryResult<Project> => {
     })
 }
 
-export const useAddProject = (): UseMutate<Project> => useMutation((project) => service.post("/project", project))
+export const useAddProject = (): UseMutate<Project> => {
+    const queryClient = useQueryClient()
+    return useMutation((project) => service.post("/project", project), {
+        onSuccess() {
+            queryClient.invalidateQueries(['projects'])
+        },
+    })
+}
 export const useUpdateProject = (): UseMutate<Project> => useMutation((project) => service.put(`/project/${project.id}`, project))

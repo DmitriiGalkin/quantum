@@ -10,11 +10,11 @@ export interface Task {
 
 export interface UserTask {
     id: number
-    userid: number
+    userId: number
     taskId: string
     task: Task
 }
-export const useTask = (id: number): UseQueryResult<User> => {
+export const useUserTask = (id: number): UseQueryResult<UserTask> => {
     return useQuery(['task', id], () => service.get(`/task/${id}`),)
 }
 

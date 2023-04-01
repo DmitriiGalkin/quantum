@@ -70,7 +70,7 @@ export default function MainPage() {
     const classes = useStyles();
     const [projectId, setProjectId] = useState<number>()
     const [placeId, setPlaceId] = useState<number>()
-    const [taskId, setTaskId] = useState<number>()
+    const [userTaskId, setUserTaskId] = useState<number>()
 
     const [tab, setTab] = useState(0)
     const { data: meets = [] } = useUserMeet()
@@ -173,7 +173,7 @@ export default function MainPage() {
                             </TabPanel>
                             <TabPanel value={tab} index={2}>
                                 <Stack spacing={2}>
-                                    {tasks.map((task) => <TaskCard key={task.id} task={task} onClick={() => setTaskId(task.id)} />)}
+                                    {tasks.map((task) => <TaskCard key={task.id} task={task} onClick={() => setUserTaskId(task.id)} />)}
                                 </Stack>
                             </TabPanel>
                             <TabPanel value={tab} index={3}>
@@ -201,7 +201,7 @@ export default function MainPage() {
             {createProject && <CreateProjectDialog onClose={() => setCreateProject(false)} />}
             {createMeet && <CreateMeetDialog onClose={() => setCreateMeet(false)} />}
             {projectId && <ProjectDialog setCreateMeet={setCreateMeet} projectId={projectId} active={projects.map((p) => p.id).includes(projectId)} onClose={() => setProjectId(undefined)} />}
-            {taskId && <TaskDialog taskId={taskId} onClose={() => setTaskId(undefined)} />}
+            {userTaskId && <TaskDialog userTaskId={userTaskId} onClose={() => setUserTaskId(undefined)} />}
             {placeId && <PlaceDialog projects={projects} placeId={placeId} onClose={() => setPlaceId(undefined)} setProjectId={setProjectId} />}
         </>
     );

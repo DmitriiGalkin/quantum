@@ -49,3 +49,9 @@ exports.findById = function(req, res) {
     });
 };
 
+// Начисление баллов
+exports.userpoints = function(req, res) {
+    User.userpoints(req.user.id, req.body.points, function(err, users) {
+        res.send(users && users[0]);
+    });
+};

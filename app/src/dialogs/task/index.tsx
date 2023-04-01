@@ -1,33 +1,33 @@
 import React from 'react';
 import ForwardAppBar from "../../components/ForwardAppBar";
-import {Task, useEditUserTask, useTask} from "../../modules/task";
+import {useEditUserTask, useUserTask} from "../../modules/task";
 import {Container} from "@mui/material";
 import SelectEmotion from "./SelectEmotion";
-import {useEditUser, useUser} from "../../modules/user";
+import {useEditUserpoints, User, useUser} from "../../modules/user";
 import Dialog from "@mui/material/Dialog";
 
 export interface TaskDialogProps {
-    taskId: number;
+    userTaskId: number;
     onClose: () => void;
 }
-export default function TaskDialog({ taskId, onClose }: TaskDialogProps) {
-    const { data: user = {} as Task } = useUser(taskId)
-    const { data: task = {} as Task } = useTask(taskId)
+export default function TaskDialog({ userTaskId, onClose }: TaskDialogProps) {
+    const { data: userTask } = useUserTask(userTaskId)
+    const { data: user = {} as User } = useUser(userTask?.userId)
 
     const editTask = useEditUserTask()
-    const editUser = useEditUser(1)
+    const editUser = useEditUserpoints(user.id)
 
     const onClick = (v: number) => {
-        editTask.mutate({ ...task, result: JSON.stringify({ emotion: v }) })
+        editTask.mutate({ ...userTask, results: JSON.stringify({ emotion: v }) }) // сохраняем результат
         setTimeout(() => {
-            editUser.mutate({ ...user, points: user.points + task.points })
+            editUser.mutate(user.points + Number(userTask?.task.points)) // начисляем баллы
         }, 10)
-        window.history.back()
+        onClose()
     };
 
     return (
         <Dialog onClose={onClose} open={true} fullScreen>
-            <ForwardAppBar title={task.title} onClick={onClose} />
+            <ForwardAppBar title={userTask?.task.title} onClick={onClose} />
             <Container style={{ paddingTop: 20 }}>
                 <SelectEmotion onClick={(v) => onClick(v)}/>
             </Container>
