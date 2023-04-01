@@ -1,4 +1,4 @@
-import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
+import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
 import service, {UseMutate} from "../tools/service";
 import {Project} from "./project";
 
@@ -30,24 +30,3 @@ export const usePlace = (id: number): UseQueryResult<Place> => {
 }
 
 export const useAddPlace = (): UseMutate<NewPlace> => useMutation((place) => service.post("/place", place))
-
-interface PlaceUser {
-    placeId: number
-    userId?: number
-}
-export const useAddPlaceUser = (placeId?: number): UseMutate<PlaceUser> => {
-    const queryClient = useQueryClient()
-    return useMutation(({ placeId }) => service.post("/user/" + placeId + '/place'), {
-        onSuccess() {
-            queryClient.invalidateQueries(['placeUser', placeId])
-        },
-    })
-}
-export const useDeletePlaceUser = (placeId?: number): UseMutate<PlaceUser> => {
-    const queryClient = useQueryClient()
-    return useMutation(({ placeId }) => service.delete("/user/" + placeId + '/place'), {
-        onSuccess() {
-            queryClient.invalidateQueries(['placeUser', placeId])
-        },
-    })
-}

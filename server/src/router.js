@@ -36,8 +36,6 @@ router.post('/userProject/:projectId', useUser, projectController.createUserProj
 router.delete('/userProject/:projectId', useUser, projectController.deleteUserProject );
 router.post('/user/:meetId/meet', useUser, meetController.createUserMeet );
 router.delete('/user/:meetId/meet', useUser, meetController.deleteUserMeet );
-router.post('/user/:placeId/place', useUser, placeController.createUserPlace );
-router.delete('/user/:placeId/place', useUser, placeController.deleteUserPlace );
 
 /**
  * Проекты

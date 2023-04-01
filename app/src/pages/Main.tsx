@@ -162,7 +162,7 @@ export default function MainPage() {
                             </TabPanel>
                             <TabPanel value={tab} index={1}>
                                 <Stack spacing={2}>
-                                    {projects.map((project) => <ProjectCard key={project.id} project={project} onClick={() => setProjectId(project.id)}/>)}
+                                    {projects.map((project) => <ProjectCard key={project.id} project={project} active={projects.map((p) => p.id).includes(project.id)} onClick={() => setProjectId(project.id)}/>)}
                                 </Stack>
                             </TabPanel>
                             <TabPanel value={tab} index={2}>

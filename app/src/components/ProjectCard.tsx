@@ -6,13 +6,14 @@ import {Project} from "../modules/project";
 
 interface ProjectCardProps {
     project: Project
+    active?: boolean
     selected?: boolean
     onClick: () => void
 }
-export default function ProjectCard({ project, selected, onClick }: ProjectCardProps) {
+export default function ProjectCard({ project, active, selected, onClick }: ProjectCardProps) {
     const firstMeetDateTitle = convertToMeetDatetime(project.meet?.datetime)
     return (
-        <Card onClick={onClick} style={{ backgroundColor: project.active || selected ? 'rgba(255,204,0,0.1)' : undefined }}>
+        <Card onClick={onClick} style={{ backgroundColor: active || selected ? 'rgba(255,204,0,0.1)' : undefined }}>
             <CardContent>
                 <Typography variant="h5">
                     {project.title}

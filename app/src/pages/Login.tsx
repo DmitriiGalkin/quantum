@@ -9,7 +9,7 @@ import GoogleIcon from "../components/GoogleIcon";
 
 const useStyles = makeStyles((theme: Theme) => ({
     content: {
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.primary.main,
     },
     container: {
         background: 'green',
@@ -42,11 +42,11 @@ export default function LoginPage() {
 
     return (
         <div className={classes.container}>
-            <Box sx={{pt:6, pb:6, pl:6, pr:6}} className={classes.content}>
-                <img src="/img.png" alt="мальчик" style={{ width: '100%' }}/>
+            <Box sx={{pt:3, pb:3, pl:3, pr:3}} className={classes.content}>
+                <img src="/img.png" alt="мальчик" style={{ width: '100%', zIndex: 10, position: 'relative' }}/>
             </Box>
-            <Box sx={{mt:6}}>
-                <Container style={{ padding: '18px' }}>
+            <Box sx={{mt:9}} style={{ position: 'relative', top: -100, backgroundColor: 'white' }}>
+                <Container style={{ padding: '50px 18px 18px 18px' }}>
                     <Stack spacing={4}>
                         <Box>
                             <Typography variant="h4">

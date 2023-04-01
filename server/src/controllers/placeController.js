@@ -28,20 +28,3 @@ exports.create = function(req, res) {
         });
     }
 };
-// Добавление участника в пространство
-exports.createUserPlace = function(req, res) {
-    const data = new UserPlace({...req.params, userId: req.user.id});
-    if(req.body.constructor === Object && Object.keys(req.params).length === 0){
-        res.status(400).send({ error:true, message: 'Please provide all required field' });
-    }else{
-        UserPlace.create(data, function() {
-            res.json({error:false,message:"Добавление участника в пространство"});
-        });
-    }
-};
-// Удаление участника из пространства
-exports.deleteUserPlace = function(req, res) {
-    UserPlace.delete(req.params.placeId, req.user.id, function() {
-        res.json({ error:false, message: 'Удаление участника из пространства' });
-    });
-};

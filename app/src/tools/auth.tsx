@@ -65,7 +65,7 @@ export const GOOGLE_TOKEN_URI = 'https://accounts.google.com/o/oauth2/token'; //
 // export const GOOGLE_USER_INFO_URI = 'https://www.googleapis.com/oauth2/v1/userinfo'; // Информация по пользователю
 export const GOOGLE_CLIENT_ID = '804980223837-9e350rj8p8glgbqel5c5rmh6jafnf1u2.apps.googleusercontent.com'; // Client ID
 export const GOOGLE_CLIENT_SECRET = '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'; // Client Secret
-export const GOOGLE_REDIRECT_URI = 'http://localhost:3000/callback'; // Адрес редиректа после авторизации
+export const GOOGLE_REDIRECT_URI = 'https://selfproject.ru/callback'; // Адрес редиректа после авторизации
 
 export const uri = GOOGLE_AUTH_URI + '?' + http_build_query({
     'redirect_uri': GOOGLE_REDIRECT_URI,
