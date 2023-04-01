@@ -25,7 +25,7 @@ export default function UniquesPage() {
                     Свободных баллов {userD?.points ? userD?.points : 'нет'}
                 </Typography>
             </div>
-            <Card>
+            <Card style={{ backgroundColor: 'rgba(255,204,0,0.4)' }}>
                 <CardContent>
                 <Stack spacing={2}>
                     {uniques.map((unique) => (

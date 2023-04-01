@@ -1,9 +1,19 @@
 import React from 'react';
 import {makeStyles} from '@mui/styles';
-import {Avatar, Box, Button, Container, Stack, Theme, Typography} from "@mui/material";
+import {
+    AppBar,
+    Avatar,
+    Box,
+    Button,
+    Container,
+    IconButton, Menu, MenuItem,
+    Stack,
+    Theme,
+    Toolbar,
+    Typography
+} from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import PenIcon from "@mui/icons-material/Edit";
-import ForwardAppBar from "../components/ForwardAppBar";
 import {useNavigate} from "react-router-dom";
 import {useAddProjectUser, useDeleteProjectUser} from "../modules/user";
 import {useProject} from "../modules/project";
@@ -11,6 +21,8 @@ import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet} from "../modules/meet";
 import Dialog from "@mui/material/Dialog";
+import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -31,9 +43,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 export interface ProjectDialogProps {
     projectId: number;
     active?: boolean
+    setCreateMeet: (param: boolean) => void
     onClose: () => void;
 }
-export default function ProjectDialog({ projectId, active, onClose }: ProjectDialogProps) {
+export default function ProjectDialog({ projectId, active, setCreateMeet, onClose }: ProjectDialogProps) {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
     const classes = useStyles();
     const navigate = useNavigate();
 
@@ -47,6 +62,14 @@ export default function ProjectDialog({ projectId, active, onClose }: ProjectDia
 
     const meetsGroup = getMeetsGroup(project.meets)
 
+    const handleProjectMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const isMenuOpen = Boolean(anchorEl);
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
     const onClick = () => {
         if (active) {
             deleteProjectUser.mutate({ projectId })
@@ -57,14 +80,70 @@ export default function ProjectDialog({ projectId, active, onClose }: ProjectDia
 
     return (
         <Dialog onClose={onClose} open={true} fullScreen>
-            <ForwardAppBar title={project.title} icon={<PenIcon style={{ color: 'white' }}/>} onClick={onClose}/>
+            <AppBar position="static">
+                <Toolbar variant="dense">
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ mr: 2 }}
+                        onClick={onClose}
+                    >
+                        <ArrowBackIos style={{ color: 'white' }}/>
+                    </IconButton>
+                    <Typography variant="h6" color="white" component="div">
+                        {project.title}
+                    </Typography>
+                    <Box sx={{ flexGrow: 1 }} />
+                    {active && (
+                        <IconButton               size="large"
+                                                  edge="end"
+                                                  aria-label="account of current user"
+                                                  aria-controls={'primary-search-account-menu'}
+                                                  aria-haspopup="true"
+                                                  onClick={handleProjectMenuOpen}
+                                                  color="inherit">
+                            <MoreVertIcon style={{ color: 'white' }}/>
+                        </IconButton>
+                    )}
+                    <Menu
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        id={'primary-search-account-menu'}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={isMenuOpen}
+                        onClose={handleMenuClose}
+                    >
+                        <MenuItem onClick={() => {
+                            setCreateMeet(true)
+                            handleMenuClose()
+                        }}>Новая встреча</MenuItem>
+                        <MenuItem onClick={() => {
+                            console.log('Редактирование проекта')
+                            handleMenuClose()
+                        }}>Редактировать</MenuItem>
+                        <MenuItem onClick={() => {
+                            onClick()
+                            handleMenuClose()
+                        }}>Выйти</MenuItem>
+                    </Menu>
+                </Toolbar>
+            </AppBar>
             <div className={classes.container}>
                 <Container disableGutters sx={{ padding: '24px 18px' }}>
                     <Stack spacing={2}>
                         <Typography>
                             {project.description}
                         </Typography>
-                        <Box className={classes.block}>
+                        {!active && (
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -72,9 +151,9 @@ export default function ProjectDialog({ projectId, active, onClose }: ProjectDia
                                 startIcon={<SaveIcon />}
                                 onClick={onClick}
                             >
-                                {active ? 'Покинуть проект' : 'Участвовать в проекте'}
+                                Участвовать в проекте
                             </Button>
-                        </Box>
+                        )}
                         <div className={classes.block}>
                             <Typography variant="h5">
                                 Встречи
@@ -82,15 +161,6 @@ export default function ProjectDialog({ projectId, active, onClose }: ProjectDia
                             {meetsGroup.map(([date, meets]) => (
                                 <Day key={date} date={date} meets={meets as Meet[]}/>
                             ))}
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                size="large"
-                                startIcon={<SaveIcon />}
-                                onClick={() => navigate(`/meet`)}
-                            >
-                                Создать встречу
-                            </Button>
                         </div>
                         <div className={classes.block}>
                             <Typography variant="h5">

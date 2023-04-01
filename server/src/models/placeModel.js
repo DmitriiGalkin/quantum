@@ -27,7 +27,7 @@ Place.findByProject = function (project, result) {
 // Пространство
 Place.findById = function (id, result) {
     dbConn.query("Select * from place where  id = ? ", id, function (err, res) {
-        result(null, res[0]);
+        result(null, res.length ? res[0] : undefined);
     });
 };
 // Place.findByUserId = function (id, result) {

@@ -142,8 +142,14 @@ export default function MainPage() {
                                 open={isMenuOpen}
                                 onClose={handleMenuClose}
                             >
-                                <MenuItem onClick={() => navigate(`/meet`)}>Новая встреча</MenuItem>
-                                <MenuItem onClick={() => setCreateProject(true)}>Новый проект</MenuItem>
+                                <MenuItem onClick={() => {
+                                    setCreateMeet(true)
+                                    handleMenuClose()
+                                }}>Новая встреча</MenuItem>
+                                <MenuItem onClick={() => {
+                                    setCreateProject(true)
+                                    handleMenuClose()
+                                }}>Новый проект</MenuItem>
                                 <MenuItem onClick={() => navigate('/user/1/edit')}>Настройки</MenuItem>
                                 <MenuItem onClick={() => logout()}>Выход</MenuItem>
                             </Menu>
@@ -194,9 +200,9 @@ export default function MainPage() {
             <MapDialog open={openMap} onClose={() => setOpenMap(false)} setPlaceId={setPlaceId} />
             {createProject && <CreateProjectDialog onClose={() => setCreateProject(false)} />}
             {createMeet && <CreateMeetDialog onClose={() => setCreateMeet(false)} />}
-            {projectId && <ProjectDialog projectId={projectId} active={projects.map((p) => p.id).includes(projectId)} onClose={() => setProjectId(undefined)} />}
+            {projectId && <ProjectDialog setCreateMeet={setCreateMeet} projectId={projectId} active={projects.map((p) => p.id).includes(projectId)} onClose={() => setProjectId(undefined)} />}
             {taskId && <TaskDialog taskId={taskId} onClose={() => setTaskId(undefined)} />}
-            {placeId && <PlaceDialog placeId={placeId} onClose={() => setPlaceId(undefined)} setProjectId={setProjectId} />}
+            {placeId && <PlaceDialog projects={projects} placeId={placeId} onClose={() => setPlaceId(undefined)} setProjectId={setProjectId} />}
         </>
     );
 }

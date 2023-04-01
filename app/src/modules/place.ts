@@ -26,7 +26,9 @@ export const usePlaces = (): UseQueryResult<Place[]> => {
     return useQuery(['places'], () => service.get(`/places`),)
 }
 export const usePlace = (id: number): UseQueryResult<Place> => {
-    return useQuery(['place', id], () => service.get(`/place/${id}`),)
+    return useQuery(['place', id], () => service.get(`/place/${id}`), {
+        enabled: Boolean(id),
+    })
 }
 
 export const useAddPlace = (): UseMutate<NewPlace> => useMutation((place) => service.post("/place", place))

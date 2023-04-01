@@ -67,7 +67,7 @@ export default function CreateProjectDialog({ isEdit, onClose }: CreateProjectDi
 
     return (
         <Dialog onClose={onClose} open={true} fullScreen>
-            <ForwardAppBar title={isEdit ? 'Редактирование проекта' : "Создание проекта"}/>
+            <ForwardAppBar title={isEdit ? 'Редактирование проекта' : "Создание проекта"} onClick={onClose}/>
             <QContainer>
                 <TabPanel value={activeStep} index={0}>
                     <div>

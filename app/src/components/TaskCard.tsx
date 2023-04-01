@@ -9,7 +9,7 @@ interface TaskCardProps {
 }
 export default function TaskCard({ task, onClick }: TaskCardProps) {
     return (
-        <Card onClick={onClick}>
+        <Card onClick={onClick} style={{ backgroundColor: 'rgba(255,204,0,0.4)' }}>
             <CardContent>
                 <div>
                     <Typography variant="h5">

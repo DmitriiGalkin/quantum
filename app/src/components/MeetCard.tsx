@@ -19,7 +19,7 @@ export default function MeetCard(meet: Meet) {
     }
 
     return (
-        <Box style={{ padding: '8px 16px', backgroundColor: meet.active ? 'rgba(255,204,0,0.2)' : undefined }} onClick={onClick}>
+        <Box style={{ padding: '8px 16px', backgroundColor: meet.active ? 'rgba(255,204,0,0.4)' : undefined }} onClick={onClick}>
             <Box style={{ display: 'flex', alignItems: 'center' }}>
                 <Box style={{ flexGrow: 1 }}>
                     <Typography variant="h6">

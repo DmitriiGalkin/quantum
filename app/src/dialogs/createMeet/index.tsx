@@ -12,7 +12,7 @@ import {convertToMeetsGroupTime2, toServerDatetime} from "../../tools/date";
 import {Project, useProject} from "../../modules/project";
 import {CalendarPicker} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
-import {usePlaces} from "../../modules/place";
+import {Place, usePlace, usePlaces} from "../../modules/place";
 import PlaceCard from "../../components/PlaceCard";
 import Dialog from "@mui/material/Dialog";
 
@@ -28,6 +28,7 @@ export default function CreateMeetDialog({ onClose }: CreateMeetDialogProps) {
 
     const { data: projects = [] } = useUserProjects()
     const { data: project = {} as Project } = useProject(meet.projectId || 0)
+    const { data: place = {} as Place } = usePlace(meet.placeId || 0)
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -58,16 +59,17 @@ export default function CreateMeetDialog({ onClose }: CreateMeetDialogProps) {
             endDatetime: dayjs(meet.endDatetime).startOf('day').add(endMinutes, 'minute').format('YYYY-MM-DDTHH:mm:ss'),
         })
     };
+    console.log(place, 'place')
 
     return (
         <Dialog onClose={onClose} open={true} fullScreen>
-            <ForwardAppBar title="Создать встречу"/>
+            <ForwardAppBar title="Создать встречу" onClick={onClose}/>
                 <TabPanel value={activeStep} index={0}>
                     <Typography variant="h5" sx={{ paddingBottom: 1 }}>
                         Выберите проект для встречи
                     </Typography>
                     <Stack spacing={2}>
-                        {projects.map((project) => <ProjectCard project={project} selected={meet.projectId === project.id} onClick={() => {
+                        {projects.map((project) => <ProjectCard active project={project} selected={meet.projectId === project.id} onClick={() => {
                             const [datetime, endDatetime] = getProjectDefaultDatetime(project)
                             setMeet({
                                 ...meet,
@@ -85,8 +87,9 @@ export default function CreateMeetDialog({ onClose }: CreateMeetDialogProps) {
                     </Typography>
                     <Stack spacing={2}>
                         {places.map((place) => (
-                            <PlaceCard key={project.id} place={place} selected={meet.placeId === place.id} onClick={() => {
+                            <PlaceCard key={place.id} place={place} selected={meet.placeId === place.id} onClick={() => {
                                 setMeet({ ...meet, placeId: place.id })
+                                handleNext()
                             }}/>
                         ))}
                     </Stack>
@@ -143,11 +146,15 @@ export default function CreateMeetDialog({ onClose }: CreateMeetDialogProps) {
                 </TabPanel>
                 <TabPanel value={activeStep} index={3}>
                     <div>
-                        <Typography variant="h5" sx={{ paddingBottom: 6 }}>
+                        <Typography variant="h5">
                             Проект
                         </Typography>
-                        <ProjectCard project={project} onClick={() => console.log('333')}/>
-                        <Typography variant="h5" sx={{ paddingBottom: 6 }}>
+                        <ProjectCard project={project}/>
+                        <Typography variant="h5">
+                            Место
+                        </Typography>
+                        <PlaceCard place={place}/>
+                        <Typography variant="h5">
                             Время
                         </Typography>
                         <Day date={convertToMeetsGroupTime2(meet.datetime)} meets={[{...meet, id: 0, project, users: [], datetime: toServerDatetime(meet.datetime)}] as Meet[]}/>

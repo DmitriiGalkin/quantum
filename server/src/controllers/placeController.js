@@ -1,6 +1,5 @@
 'use strict';
 const Place = require('../models/placeModel');
-const UserPlace = require('../models/userPlaceModel');
 const Project = require('../models/projectModel');
 
 // Все пространства
