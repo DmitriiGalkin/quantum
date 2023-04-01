@@ -194,7 +194,7 @@ export default function MainPage() {
             <MapDialog open={openMap} onClose={() => setOpenMap(false)} setPlaceId={setPlaceId} />
             {createProject && <CreateProjectDialog onClose={() => setCreateProject(false)} />}
             {createMeet && <CreateMeetDialog onClose={() => setCreateMeet(false)} />}
-            {projectId && <ProjectDialog projectId={projectId} onClose={() => setProjectId(undefined)} />}
+            {projectId && <ProjectDialog projectId={projectId} active={projects.map((p) => p.id).includes(projectId)} onClose={() => setProjectId(undefined)} />}
             {taskId && <TaskDialog taskId={taskId} onClose={() => setTaskId(undefined)} />}
             {placeId && <PlaceDialog placeId={placeId} onClose={() => setPlaceId(undefined)} setProjectId={setProjectId} />}
         </>

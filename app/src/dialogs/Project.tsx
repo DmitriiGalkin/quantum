@@ -30,24 +30,25 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export interface ProjectDialogProps {
     projectId: number;
+    active?: boolean
     onClose: () => void;
 }
-export default function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
+export default function ProjectDialog({ projectId, active, onClose }: ProjectDialogProps) {
     const classes = useStyles();
     const navigate = useNavigate();
 
     const { data: project } = useProject(projectId)
 
 
-    const addProjectUser = useAddProjectUser(projectId)
-    const deleteProjectUser = useDeleteProjectUser(projectId)
+    const addProjectUser = useAddProjectUser()
+    const deleteProjectUser = useDeleteProjectUser()
 
     if (!project) { return null }
 
     const meetsGroup = getMeetsGroup(project.meets)
 
     const onClick = () => {
-        if (project.active) {
+        if (active) {
             deleteProjectUser.mutate({ projectId })
         } else {
             addProjectUser.mutate({ projectId })
@@ -71,7 +72,7 @@ export default function ProjectDialog({ projectId, onClose }: ProjectDialogProps
                                 startIcon={<SaveIcon />}
                                 onClick={onClick}
                             >
-                                {project.active ? 'Покинуть проект' : 'Участвовать в проекте'}
+                                {active ? 'Покинуть проект' : 'Участвовать в проекте'}
                             </Button>
                         </Box>
                         <div className={classes.block}>

@@ -23,7 +23,6 @@ function useUser(req, res, next) {
     });
 }
 
-
 /**
  * Участники
  */

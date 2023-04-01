@@ -48,7 +48,7 @@ export const useUserMeet = (): UseQueryResult<Meet[]> => {
     return useQuery(['userMeets'], () => service.get(`/meets`))
 }
 export const useOnlyUserProjects = (): UseQueryResult<Project[]> => {
-    return useQuery(['onlyUserProjects'], () => service.get(`/projects`))
+    return useQuery(['projects'], () => service.get(`/projects`))
 }
 
 
@@ -59,21 +59,21 @@ interface ProjectUser {
     userId?: number
 }
 
-export const useAddProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
+export const useAddProjectUser = (): UseMutate<ProjectUser> => {
     const queryClient = useQueryClient()
 
     return useMutation(({ projectId }) => service.post(`/userProject/${projectId}`), {
         onSuccess() {
-            queryClient.invalidateQueries(['projects', projectId])
+            queryClient.invalidateQueries(['projects'])
         },
     })
 }
-export const useDeleteProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
+export const useDeleteProjectUser = (): UseMutate<ProjectUser> => {
     const queryClient = useQueryClient()
 
     return useMutation(({ projectId }) => service.delete(`/userProject/${projectId}`), {
         onSuccess() {
-            queryClient.invalidateQueries(['projects', projectId])
+            queryClient.invalidateQueries(['projects'])
         },
     })
 }
