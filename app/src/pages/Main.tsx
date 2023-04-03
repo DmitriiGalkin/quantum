@@ -39,6 +39,8 @@ import {PlaceDialog} from "../dialogs/Place";
 import CreateProjectDialog from "../dialogs/CreateProject";
 import CreateMeetDialog from "../dialogs/createMeet";
 import TaskDialog from "../dialogs/task";
+import {Project} from "../modules/project";
+import {Place} from "../modules/place";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -68,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function MainPage() {
     const classes = useStyles();
-    const [projectId, setProjectId] = useState<number>()
+    const [project, setProject] = useState<Project>()
     const [placeId, setPlaceId] = useState<number>()
     const [userTaskId, setUserTaskId] = useState<number>()
 
@@ -81,6 +83,9 @@ export default function MainPage() {
     const navigate = useNavigate();
     const { logout } = useAuth();
     const [openMap, setOpenMap] = useState(false)
+    const [openProject, setOpenProject] = useState(false)
+    const [openPlace, setOpenPlace] = useState(false)
+
     const [createProject, setCreateProject] = useState(false)
     const [createMeet, setCreateMeet] = useState(false)
 
@@ -168,7 +173,10 @@ export default function MainPage() {
                             </TabPanel>
                             <TabPanel value={tab} index={1}>
                                 <Stack spacing={2}>
-                                    {projects.map((project) => <ProjectCard key={project.id} project={project} active={projects.map((p) => p.id).includes(project.id)} onClick={() => setProjectId(project.id)}/>)}
+                                    {projects.map((project) => <ProjectCard key={project.id} project={project} active={projects.map((p) => p.id).includes(project.id)} onClick={() => {
+                                        setProject(project)
+                                        setOpenProject(true)
+                                    }}/>)}
                                 </Stack>
                             </TabPanel>
                             <TabPanel value={tab} index={2}>
@@ -197,12 +205,12 @@ export default function MainPage() {
                     </Paper>
                 </div>
             </Box>
-            <MapDialog open={openMap} onClose={() => setOpenMap(false)} setPlaceId={setPlaceId} />
+            <MapDialog open={openMap} onClose={() => setOpenMap(false)} setPlaceId={setPlaceId} setOpenPlace={setOpenPlace} />
             {createProject && <CreateProjectDialog onClose={() => setCreateProject(false)} />}
             {createMeet && <CreateMeetDialog onClose={() => setCreateMeet(false)} />}
-            {projectId && <ProjectDialog setCreateMeet={setCreateMeet} projectId={projectId} active={projects.map((p) => p.id).includes(projectId)} onClose={() => setProjectId(undefined)} />}
+            <ProjectDialog openProject={openProject} onClose={() => setOpenProject(false)} project={project} setCreateMeet={setCreateMeet} active={project && projects.map((p) => p.id).includes(project.id)} />
+            <PlaceDialog openPlace={openPlace} onClose={() => setOpenPlace(false)} placeId={placeId} projects={projects} setProject={setProject} setOpenProject={setOpenProject} />
             {userTaskId && <TaskDialog userTaskId={userTaskId} onClose={() => setUserTaskId(undefined)} />}
-            {placeId && <PlaceDialog projects={projects} placeId={placeId} onClose={() => setPlaceId(undefined)} setProjectId={setProjectId} />}
         </>
     );
 }

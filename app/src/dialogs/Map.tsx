@@ -4,13 +4,20 @@ import {usePlaces} from "../modules/place";
 import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
 import Dialog from "@mui/material/Dialog";
+import {TransitionDialog} from "../components/TransitionDialog";
 
-export default function MapDialog({onClose, open, setPlaceId}: {onClose:()=>void; setPlaceId: (placeId: number) => void; open:boolean}) {
+interface MapDialogProps {
+    onClose: ()=>void
+    setPlaceId: (placeId: number) => void
+    open: boolean
+    setOpenPlace: (isOpen: boolean)=> void
+}
+export default function MapDialog({onClose, open, setPlaceId, setOpenPlace}: MapDialogProps) {
     const { data: places = [] } = usePlaces()
     const [x,y] = getCenter(places)
 
     return (
-        <Dialog onClose={onClose} open={open} fullScreen keepMounted>
+        <Dialog onClose={onClose} open={open} fullScreen keepMounted TransitionComponent={TransitionDialog}>
             <ForwardAppBar title="Карта проектов" onClick={onClose}/>
             {places.length && (
                 <YMaps>
@@ -31,7 +38,10 @@ export default function MapDialog({onClose, open, setPlaceId}: {onClose:()=>void
                                     preset: 'islands#icon',
                                     iconColor: '#FFA427',
                                 }}
-                                onClick={() => setPlaceId(place.id)}
+                                onClick={() => {
+                                    setPlaceId(place.id)
+                                    setOpenPlace(true)
+                                }}
                             />
                         ))}
                     </Map>

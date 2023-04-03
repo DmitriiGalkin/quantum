@@ -7,7 +7,6 @@ import {Meet} from "./meet";
 
 export interface User {
     id: number
-    image?: string
     title: string
     points: number
     email?: string
@@ -62,7 +61,7 @@ interface ProjectUser {
     userId?: number
 }
 
-export const useAddProjectUser = (projectId: number): UseMutate<ProjectUser> => {
+export const useAddProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
     const queryClient = useQueryClient()
 
     return useMutation(({ projectId }) => service.post(`/userProject/${projectId}`), {
@@ -72,7 +71,7 @@ export const useAddProjectUser = (projectId: number): UseMutate<ProjectUser> => 
         },
     })
 }
-export const useDeleteProjectUser = (projectId: number): UseMutate<ProjectUser> => {
+export const useDeleteProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
     const queryClient = useQueryClient()
 
     return useMutation(({ projectId }) => service.delete(`/userProject/${projectId}`), {

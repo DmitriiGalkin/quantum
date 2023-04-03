@@ -7,7 +7,6 @@ export type AgeLimit = 1 | 3 | 6 | 9 | 12 | 16 | 18
 export interface Place {
     id: number
     title: string
-    image: string
     active?: boolean
     description: string
     tags: string[]
@@ -25,7 +24,7 @@ export interface NewPlace {
 export const usePlaces = (): UseQueryResult<Place[]> => {
     return useQuery(['places'], () => service.get(`/places`),)
 }
-export const usePlace = (id: number): UseQueryResult<Place> => {
+export const usePlace = (id?: number): UseQueryResult<Place> => {
     return useQuery(['place', id], () => service.get(`/place/${id}`), {
         enabled: Boolean(id),
     })

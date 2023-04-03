@@ -2,7 +2,6 @@ import React from 'react';
 import {makeStyles} from '@mui/styles';
 import {
     AppBar,
-    Avatar,
     Box,
     Button,
     Container,
@@ -14,13 +13,15 @@ import {
 } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import {useAddProjectUser, useDeleteProjectUser} from "../modules/user";
-import {useProject} from "../modules/project";
+import {Project, useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet} from "../modules/meet";
 import Dialog from "@mui/material/Dialog";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import QAvatar from "../components/QAvatar";
+import {TransitionDialog} from "../components/TransitionDialog";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -39,25 +40,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export interface ProjectDialogProps {
-    projectId: number;
+    project?: Project;
+    openProject: boolean
     active?: boolean
     setCreateMeet: (param: boolean) => void
     onClose: () => void;
 }
-export default function ProjectDialog({ projectId, active, setCreateMeet, onClose }: ProjectDialogProps) {
+export default function ProjectDialog({ openProject, project, active, setCreateMeet, onClose }: ProjectDialogProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const classes = useStyles();
 
-    const { data: project } = useProject(projectId)
-
-
-    const addProjectUser = useAddProjectUser(projectId)
-    const deleteProjectUser = useDeleteProjectUser(projectId)
+    const addProjectUser = useAddProjectUser(project?.id)
+    const deleteProjectUser = useDeleteProjectUser(project?.id)
 
     if (!project) { return null }
 
-    const meetsGroup = getMeetsGroup(project.meets)
+    const meetsGroup = getMeetsGroup(project?.meets)
 
     const handleProjectMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -69,15 +68,16 @@ export default function ProjectDialog({ projectId, active, setCreateMeet, onClos
 
     const onClick = () => {
         if (active) {
-            deleteProjectUser.mutate({ projectId })
+            deleteProjectUser.mutate({ projectId: project.id })
         } else {
-            addProjectUser.mutate({ projectId })
+            addProjectUser.mutate({ projectId: project.id })
         }
     }
 
     return (
-        <Dialog onClose={onClose} open={true} fullScreen>
-            <AppBar position="static">
+        <Dialog onClose={onClose} open={openProject} fullScreen TransitionComponent={TransitionDialog} keepMounted
+        >
+            <AppBar position="sticky">
                 <Toolbar variant="dense">
                     <IconButton
                         size="large"
@@ -96,11 +96,7 @@ export default function ProjectDialog({ projectId, active, setCreateMeet, onClos
                     {active && (
                         <IconButton               size="large"
                                                   edge="end"
-                                                  aria-label="account of current user"
-                                                  aria-controls={'primary-search-account-menu'}
-                                                  aria-haspopup="true"
-                                                  onClick={handleProjectMenuOpen}
-                                                  color="inherit">
+                                                  onClick={handleProjectMenuOpen}>
                             <MoreVertIcon style={{ color: 'white' }}/>
                         </IconButton>
                     )}
@@ -151,25 +147,23 @@ export default function ProjectDialog({ projectId, active, setCreateMeet, onClos
                                 Участвовать в проекте
                             </Button>
                         )}
-                        <div className={classes.block}>
-                            <Typography variant="h5">
-                                Встречи
-                            </Typography>
-                            {meetsGroup.map(([date, meets]) => (
-                                <Day key={date} date={date} meets={meets as Meet[]}/>
-                            ))}
-                        </div>
+                        {project.meets.length && (
+                            <div className={classes.block}>
+                                <Typography variant="h5">
+                                    Встречи
+                                </Typography>
+                                {meetsGroup.map(([date, meets]) => (
+                                    <Day key={date} date={date} meets={meets as Meet[]}/>
+                                ))}
+                            </div>
+                        )}
                         <div className={classes.block}>
                             <Typography variant="h5">
                                 Участники
                             </Typography>
                             {project.users?.map((user) => (
                                 <Box key={user.id} sx={{padding: 1, display: "flex"}}>
-                                    <Avatar
-                                        alt={user.title}
-                                        src={user.image}
-                                        className={classes.large}
-                                    />
+                                    <QAvatar {...user}/>
                                     <Box sx={{flexGrow:1, paddingLeft: 2}}>
                                         <Typography variant="subtitle1">
                                             {user.title}

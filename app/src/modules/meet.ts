@@ -10,7 +10,6 @@ export interface Meet {
     description?: string
     datetime: string
     active?: boolean
-    image?: string
     projectId: number
     project: Project
     users: User[]
@@ -20,7 +19,6 @@ export interface Meet {
 export interface NewMeet {
     title?: string
     description?: string
-    image: string | null
     projectId: number | null
     placeId: number | null
     datetime?: string

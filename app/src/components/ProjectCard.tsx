@@ -11,7 +11,7 @@ interface ProjectCardProps {
     onClick?: () => void
 }
 export default function ProjectCard({ project, active, selected, onClick }: ProjectCardProps) {
-    const firstMeetDateTitle = convertToMeetDatetime(project.meet?.datetime)
+    // const firstMeetDateTitle = convertToMeetDatetime(project.meet?.datetime)
     const backgroundColor = selected ? 'rgba(255,204,0,0.6)' : ( active ? 'rgba(255,204,0,0.4)' : undefined)
     return (
         <Card onClick={onClick} style={{ backgroundColor }}>
@@ -21,9 +21,9 @@ export default function ProjectCard({ project, active, selected, onClick }: Proj
                 </Typography>
                 <div style={{ display: 'flex' }}>
                     <Box>
-                        <Typography variant="subtitle1" color="primary">
-                            {firstMeetDateTitle}
-                        </Typography>
+                        {/*<Typography variant="subtitle1" color="primary">*/}
+                        {/*    {firstMeetDateTitle}*/}
+                        {/*</Typography>*/}
                         <Typography>
                             {project.description}
                         </Typography>

@@ -24,7 +24,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "node src"
+    "start": "node src",
+    "nodemonstart": "nodemon src/index.js"
   },
   "eslintConfig": {
     "extends": [

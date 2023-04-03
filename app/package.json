@@ -7,7 +7,7 @@
     "@emotion/styled": "^11.10.6",
     "@js-joda/core": "^5.5.2",
     "@mui/icons-material": "^5.11.11",
-    "@mui/material": "5.0.0",
+    "@mui/material": "5.11.15",
     "@mui/styles": "5.0.0",
     "@mui/x-date-pickers-pro": "^5.0.20",
     "@pbe/react-yandex-maps": "^1.2.3",

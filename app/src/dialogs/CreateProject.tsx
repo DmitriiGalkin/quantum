@@ -11,7 +11,6 @@ import Dialog from "@mui/material/Dialog";
 
 const DEFAULT_PROJECT: Project = {
     id: 12,
-    image: '/group_dd.jpg',
     title: 'новый проект',
     description: 'описание нового проекта',
     users: [],

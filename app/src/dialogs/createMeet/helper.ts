@@ -17,7 +17,6 @@ export function valuetext2(value: number) {
 export const DEFAULT_MEET: NewMeet = {
     title: 'новая встреча',
     description: 'описание встречи',
-    image: null,
     projectId: null,
     placeId: null
 }

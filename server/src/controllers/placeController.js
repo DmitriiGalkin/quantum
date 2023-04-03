@@ -1,6 +1,10 @@
 'use strict';
+var async = require("async");
+
 const Place = require('../models/placeModel');
 const Project = require('../models/projectModel');
+const Meet = require('../models/meetModel');
+const User = require('../models/userModel');
 
 // Все пространства
 exports.findAll = function(req, res) {
@@ -12,7 +16,13 @@ exports.findAll = function(req, res) {
 exports.findById = function(req, res) {
     Place.findById(req.params.id, function(err, place) {
         Project.findByPlace(place, function(err, projects) {
-            res.json({...place, projects});
+            async.map(projects, Meet.findByProject, function(err, projectsMeets) {
+                async.map(projects, Place.findByProject, function(err, projectsPlaces) {
+                    async.map(projects, User.findByProject, function(err, projectsUsers) {
+                        res.send({...place, projects: projects.map((p, index) => ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index]}))});
+                    });
+                });
+            });
         });
     });
 };

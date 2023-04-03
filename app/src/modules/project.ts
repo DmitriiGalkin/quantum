@@ -8,15 +8,12 @@ import {AgeLimit} from "./place";
 export interface Project {
     id: number,
     title: string,
-    image: string,
     description: string,
     active?: boolean, // пользователь является участником проекта
     favorite?: boolean, // пользователь добавил проект в избранное
     ageLimit?: AgeLimit // Возрастное ограничение
-    meet?: Meet
     users: User[]
     meets: Meet[]
-    images?: string[]
 }
 
 

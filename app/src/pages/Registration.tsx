@@ -24,8 +24,8 @@ export default function RegistrationPage({ isEdit }: {isEdit?: boolean}) {
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
-    const config = genConfig(user.title)
-    console.log(user, 'user')
+    const config = genConfig(String(user.id))
+
     return (
         <div>
             <ForwardAppBar title="Регистрация"/>
@@ -60,7 +60,7 @@ export default function RegistrationPage({ isEdit }: {isEdit?: boolean}) {
                             variant="standard"
                             fullWidth
                             value={user.title}
-                            onChange={(e) => setUser({ ...user, title: e.target.value, image: JSON.stringify(genConfig(e.target.value)) })}
+                            onChange={(e) => setUser({ ...user, title: e.target.value })}
                         />
                     </Box>
                 </TabPanel>

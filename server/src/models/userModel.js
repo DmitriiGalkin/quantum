@@ -4,7 +4,6 @@ var dbConn = require('../db');
 var User = function(user){
     this.email = user.email;
     this.password = user.password;
-    this.image = user.image;
     this.title = user.title;
     this.token = user.token;
     this.points = user.points;

@@ -26,7 +26,9 @@ export default function MeetCard(meet: Meet) {
                         {meet.project?.title}
                     </Typography>
                     <Box sx={{ display: 'flex', paddingTop: 1 }}>
-                        <AvatarGroup max={meet.active ? 5 : 4} >
+                        <AvatarGroup max={meet.active ? 8 : 7}  sx={{
+                            '& .MuiAvatar-root': { width: 30, height: 30, fontSize: 15 },
+                        }}>
                             {meet.users?.map((user) => <QAvatar key={user.id} {...user} />)}
                         </AvatarGroup>
                     </Box>

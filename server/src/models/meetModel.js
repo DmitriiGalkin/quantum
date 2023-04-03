@@ -18,12 +18,6 @@ Meet.findByProject = function (project, result) {
         result(null, res);
     });
 };
-// Ближайшая встреча по проекту
-Meet.findFirstByProject = function (project, result) {
-    dbConn.query("Select * from meet where  projectId = ? LIMIT 1", project.id, function (err, res) {
-        result(null, res.length ? res[0] : undefined);
-    });
-};
 // Встречи участника
 Meet.findAllByUserId = function (id, result) {
     dbConn.query("Select meet.* from meet LEFT JOIN project ON project.id = meet.projectId LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ? AND DATE(datetime) > CURDATE()", id, function (err, res) {
