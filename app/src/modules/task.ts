@@ -1,6 +1,5 @@
 import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
 import service, {UseMutate} from "../tools/service";
-import {User} from "./user";
 
 export interface Task {
     id: number

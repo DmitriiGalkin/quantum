@@ -1,7 +1,6 @@
 import React from 'react';
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
 import {AppBar, IconButton, Skeleton, Toolbar, Typography} from "@mui/material";
-import MapIcon from "@mui/icons-material/Map";
 
 export function ForwardAppBar({ title, icon, onClick }: { title?: string, icon?: JSX.Element, onClick?: () => void }) {
     return (
@@ -12,7 +11,6 @@ export function ForwardAppBar({ title, icon, onClick }: { title?: string, icon?:
                     edge="start"
                     color="inherit"
                     aria-label="menu"
-                    sx={{ mr: 2 }}
                     onClick={onClick}
                 >
                     <ArrowBackIos style={{ color: 'white' }}/>

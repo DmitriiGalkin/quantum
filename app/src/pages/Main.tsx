@@ -7,6 +7,7 @@ import {
     Box,
     Container,
     IconButton,
+    Link,
     Menu,
     MenuItem,
     Paper,
@@ -23,8 +24,7 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import Day from "../components/Day";
 import {Meet, NewMeet} from "../modules/meet";
-import {useAddMeetUser, useDeleteMeetUser} from "../modules/user";
-import {useOnlyUserProjects, useUserMeet} from "../modules/user";
+import {useAddMeetUser, useDeleteMeetUser, useOnlyUserProjects, useUserMeet} from "../modules/user";
 import {getMeetsGroup} from "../tools/helper";
 import {TabPanel} from "../components/tabs";
 import ProjectCard from "../components/ProjectCard";
@@ -129,9 +129,6 @@ export default function MainPage() {
                             </IconButton>
                             <IconButton               size="large"
                                                       edge="end"
-                                                      aria-label="account of current user"
-                                                      aria-controls={'primary-search-account-menu'}
-                                                      aria-haspopup="true"
                                                       onClick={handleProfileMenuOpen}
                                                       color="inherit">
                                 <MoreVertIcon style={{ color: 'white' }}/>
@@ -169,11 +166,22 @@ export default function MainPage() {
                     <Box className={classes.contentAll} flexDirection="column" display='flex'>
                         <Container disableGutters>
                             <TabPanel value={tab} index={0}>
-                                <Stack spacing={2}>
-                                    {meetsGroup.map(([date, meets]) => (
-                                        <Day key={date} date={date} meets={meets as Meet[]} onClickEnter={onClickEnter} onClickLeave={onClickLeave}/>
-                                    ))}
-                                </Stack>
+                                {Boolean(meetsGroup.length) ? (
+                                    <Stack spacing={2}>
+                                        {meetsGroup.map(([date, meets]) => (
+                                            <Day key={date} date={date} meets={meets as Meet[]} onClickEnter={onClickEnter} onClickLeave={onClickLeave}/>
+                                        ))}
+                                    </Stack>
+                                ) : (
+                                    <Box
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        minHeight="80vh"
+                                    >
+                                        <span>Ближайших встреч по вашим проектам нет. Попробуйте найти интересные проекты на <Link onClick={() => setOpenMap(true)}>карте</Link>.</span>
+                                    </Box>
+                                )}
                             </TabPanel>
                             <TabPanel value={tab} index={1}>
                                 <Stack spacing={2}>

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {Box, Card, CardContent, Typography} from "@mui/material";
-import {convertToMeetDatetime} from "../tools/date";
 import {Project} from "../modules/project";
 
 interface ProjectCardProps {

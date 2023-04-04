@@ -5,19 +5,20 @@ import {
     Box,
     Button,
     Container,
-    IconButton, Menu, MenuItem,
+    IconButton,
+    Menu,
+    MenuItem,
     Stack,
     Theme,
     Toolbar,
     Typography
 } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
-import {useAddProjectUser, useDeleteProjectUser, useUser} from "../modules/user";
+import {useAddMeetUser, useAddProjectUser, useDeleteMeetUser, useDeleteProjectUser, useUser} from "../modules/user";
 import {useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet, NewMeet} from "../modules/meet";
-import {useAddMeetUser, useDeleteMeetUser} from "../modules/user";
 import Dialog from "@mui/material/Dialog";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -94,7 +95,6 @@ export default function ProjectDialog({ openProject, projectId, setOpenCreateMee
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        sx={{ mr: 2 }}
                         onClick={onClose}
                     >
                         <ArrowBackIos style={{ color: 'white' }}/>

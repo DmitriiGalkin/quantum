@@ -17,7 +17,6 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Theme,
     Toolbar,
     Typography
 } from "@mui/material";
@@ -27,7 +26,7 @@ import {useAuth} from "../tools/hooks";
 import {makeStyles} from "@mui/styles";
 import InstallPWA from "./InstallPWA";
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
     drawer: {
         width: 250,
     },
@@ -53,7 +52,6 @@ export default function MainAppBar() {
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        sx={{ mr: 2 }}
                         onClick={() => setOpen(true)}
                     >
                         <MenuIcon />
