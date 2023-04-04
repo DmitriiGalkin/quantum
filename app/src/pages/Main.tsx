@@ -22,7 +22,8 @@ import RocketIcon from "@mui/icons-material/Rocket";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import Day from "../components/Day";
-import {Meet} from "../modules/meet";
+import {Meet, NewMeet} from "../modules/meet";
+import {useAddMeetUser, useDeleteMeetUser} from "../modules/user";
 import {useOnlyUserProjects, useUserMeet} from "../modules/user";
 import {getMeetsGroup} from "../tools/helper";
 import {TabPanel} from "../components/tabs";
@@ -30,17 +31,15 @@ import ProjectCard from "../components/ProjectCard";
 import {useOnlyUserTasks} from "../modules/task";
 import TaskCard from "../components/TaskCard";
 import UniquesPage from "./Uniques";
-import ProjectDialog from "../dialogs/Project";
+import Project from "../dialogs/Project";
 import MapIcon from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {useAuth} from "../tools/auth";
-import MapDialog from "../dialogs/Map";
-import {PlaceDialog} from "../dialogs/Place";
-import CreateProjectDialog from "../dialogs/CreateProject";
-import CreateMeetDialog from "../dialogs/createMeet";
-import TaskDialog from "../dialogs/task";
-import {Project} from "../modules/project";
-import {Place} from "../modules/place";
+import Map from "../dialogs/Map";
+import Place from "../dialogs/Place";
+import CreateProject from "../dialogs/CreateProject";
+import CreateMeet from "../dialogs/CreateMeet";
+import Task from "../dialogs/task";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -70,11 +69,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function MainPage() {
     const classes = useStyles();
-    const [project, setProject] = useState<Project>()
+    const [projectId, setProjectId] = useState<number>()
     const [placeId, setPlaceId] = useState<number>()
     const [userTaskId, setUserTaskId] = useState<number>()
 
     const [tab, setTab] = useState(0)
+
     const { data: meets = [] } = useUserMeet()
     const meetsGroup = getMeetsGroup(meets)
     const { data: projects = [] } = useOnlyUserProjects()
@@ -85,9 +85,8 @@ export default function MainPage() {
     const [openMap, setOpenMap] = useState(false)
     const [openProject, setOpenProject] = useState(false)
     const [openPlace, setOpenPlace] = useState(false)
-
-    const [createProject, setCreateProject] = useState(false)
-    const [createMeet, setCreateMeet] = useState(false)
+    const [openCreateProject, setOpenCreateProject] = useState(false)
+    const [openCreateMeet, setOpenCreateMeet] = useState<NewMeet>()
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -96,6 +95,11 @@ export default function MainPage() {
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
+
+    const addMeetUser = useAddMeetUser()
+    const deleteMeetUser = useDeleteMeetUser()
+    const onClickEnter = (meetId: number) => () => addMeetUser.mutate({ meetId })
+    const onClickLeave = (meetId: number) => () => deleteMeetUser.mutate({ meetId })
 
     return (
         <>
@@ -148,11 +152,11 @@ export default function MainPage() {
                                 onClose={handleMenuClose}
                             >
                                 <MenuItem onClick={() => {
-                                    setCreateMeet(true)
+                                    setOpenCreateMeet({})
                                     handleMenuClose()
                                 }}>Новая встреча</MenuItem>
                                 <MenuItem onClick={() => {
-                                    setCreateProject(true)
+                                    setOpenCreateProject(true)
                                     handleMenuClose()
                                 }}>Новый проект</MenuItem>
                                 <MenuItem onClick={() => navigate('/user/1/edit')}>Настройки</MenuItem>
@@ -167,14 +171,14 @@ export default function MainPage() {
                             <TabPanel value={tab} index={0}>
                                 <Stack spacing={2}>
                                     {meetsGroup.map(([date, meets]) => (
-                                        <Day key={date} date={date} meets={meets as Meet[]}/>
+                                        <Day key={date} date={date} meets={meets as Meet[]} onClickEnter={onClickEnter} onClickLeave={onClickLeave}/>
                                     ))}
                                 </Stack>
                             </TabPanel>
                             <TabPanel value={tab} index={1}>
                                 <Stack spacing={2}>
-                                    {projects.map((project) => <ProjectCard key={project.id} project={project} active={projects.map((p) => p.id).includes(project.id)} onClick={() => {
-                                        setProject(project)
+                                    {projects.map((project) => <ProjectCard key={project.id} project={project} active={true} onClick={() => {
+                                        setProjectId(project.id)
                                         setOpenProject(true)
                                     }}/>)}
                                 </Stack>
@@ -205,12 +209,12 @@ export default function MainPage() {
                     </Paper>
                 </div>
             </Box>
-            <MapDialog open={openMap} onClose={() => setOpenMap(false)} setPlaceId={setPlaceId} setOpenPlace={setOpenPlace} />
-            {createProject && <CreateProjectDialog onClose={() => setCreateProject(false)} />}
-            {createMeet && <CreateMeetDialog onClose={() => setCreateMeet(false)} />}
-            <ProjectDialog openProject={openProject} onClose={() => setOpenProject(false)} project={project} setCreateMeet={setCreateMeet} active={project && projects.map((p) => p.id).includes(project.id)} />
-            <PlaceDialog openPlace={openPlace} onClose={() => setOpenPlace(false)} placeId={placeId} projects={projects} setProject={setProject} setOpenProject={setOpenProject} />
-            {userTaskId && <TaskDialog userTaskId={userTaskId} onClose={() => setUserTaskId(undefined)} />}
+            <Map open={openMap} onClose={() => setOpenMap(false)} setPlaceId={setPlaceId} setOpenPlace={setOpenPlace} />
+            <Place openPlace={openPlace} onClose={() => setOpenPlace(false)} placeId={placeId} projects={projects} setProjectId={setProjectId} setOpenProject={setOpenProject} />
+            <Project openProject={openProject} onClose={() => setOpenProject(false)} projectId={projectId} setOpenCreateMeet={setOpenCreateMeet} />
+            <CreateProject openCreateProject={openCreateProject} onClose={() => setOpenCreateProject(false)} setOpenProject={setOpenProject} setProjectId={setProjectId} />
+            <CreateMeet openCreateMeet={openCreateMeet} onClose={() => setOpenCreateMeet(undefined)} setOpenProject={setOpenProject} setProjectId={setProjectId} />
+            {userTaskId && <Task userTaskId={userTaskId} onClose={() => setUserTaskId(undefined)} />}
         </>
     );
 }

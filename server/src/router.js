@@ -26,6 +26,7 @@ function useUser(req, res, next) {
 /**
  * Участники
  */
+router.get('/user', useUser, userController.findByUser);
 router.post('/user', userController.create);
 router.post('/user/login', userController.islogin);
 router.post('/logi', userController.logi);
@@ -58,7 +59,7 @@ router.post('/place', placeController.create);
  * Встречи
  */
 router.get('/meets', useUser, meetController.findByUser);
-router.post('/meet', meetController.create);
+router.post('/meet', useUser, meetController.create);
 
 /**
  * Задания

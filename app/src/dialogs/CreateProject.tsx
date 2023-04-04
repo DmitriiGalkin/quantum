@@ -1,107 +1,73 @@
 import React, {useState} from 'react';
 import {Project, useAddProject, useProject, useUpdateProject} from "../modules/project";
-import QStepper from "../components/QStepper";
 import ForwardAppBar from "../components/ForwardAppBar";
-import {TabPanel} from "../components/tabs";
 import QContainer from "../components/QContainer";
 import {useParams} from "react-router-dom";
-import {TextField, Theme, Typography} from "@mui/material";
-import {makeStyles} from "@mui/styles";
+import {Button, TextField} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 
 const DEFAULT_PROJECT: Project = {
     id: 12,
-    title: 'новый проект',
-    description: 'описание нового проекта',
+    title: '',
+    description: '',
     users: [],
     meets: [],
 }
-const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-        width: 300,
-    },
-    large: {
-        width: theme.spacing(7),
-        height: theme.spacing(7),
-    },
-    media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
-    },
-    expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expandOpen: {
-        transform: 'rotate(180deg)',
-    },
-}));
 
 export interface CreateProjectDialogProps {
+    openCreateProject: boolean
     isEdit?: boolean;
     onClose: () => void;
+    setOpenProject: (open: boolean) => void
+    setProjectId: (projectId: number) => void
 }
-export default function CreateProjectDialog({ isEdit, onClose }: CreateProjectDialogProps) {
-    const classes = useStyles();
+export default function CreateProjectDialog({ openCreateProject, isEdit, onClose, setOpenProject, setProjectId }: CreateProjectDialogProps) {
     const { id } = useParams();
     const { data: projectOld } = useProject(id ? Number(id) : 0)
     const [project, setProject] = useState(projectOld || DEFAULT_PROJECT)
-    const [activeStep, setActiveStep] = React.useState(0);
     const addProject = useAddProject()
     const updateProject = useUpdateProject()
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        if (activeStep === 1) {
-            isEdit ? updateProject.mutate(project) : addProject.mutate(project)
-        }
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    const onClickSave = () => {
+        isEdit ? updateProject.mutate(project) : addProject.mutateAsync(project).then((projectId) => {
+            setProjectId(projectId)
+            setOpenProject(true)
+        })
+        onClose()
     };
 
     return (
-        <Dialog onClose={onClose} open={true} fullScreen>
+        <Dialog onClose={onClose} open={openCreateProject} fullScreen>
             <ForwardAppBar title={isEdit ? 'Редактирование проекта' : "Создание проекта"} onClick={onClose}/>
             <QContainer>
-                <TabPanel value={activeStep} index={0}>
-                    <div>
-                        <TextField
-                            name='title'
-                            label="Название"
-                            variant="standard"
-                            fullWidth
-                            value={project.title}
-                            onChange={(e) => setProject({ ...project, title: e.target.value})}
-                        />
-                        <TextField
-                            name='description'
-                            label="Описание"
-                            variant="standard"
-                            fullWidth
-                            value={project.description}
-                            onChange={(e) => setProject({ ...project, description: e.target.value})}
-                        />
-                    </div>
-                </TabPanel>
-                <TabPanel value={activeStep} index={1}>
-                    <div className={classes.root}>
-                        Проверили все ли верно?
-                        {project.title}
-                        {project.description}
-                    </div>
-                </TabPanel>
-                <TabPanel value={activeStep} index={2}>
-                    <Typography>
-                        Проект создан
-                    </Typography>
-                </TabPanel>
+                <TextField
+                    name='title'
+                    label="Название"
+                    variant="standard"
+                    fullWidth
+                    value={project.title}
+                    onChange={(e) => setProject({ ...project, title: e.target.value})}
+                />
+                <TextField
+                    name='description'
+                    label="Описание"
+                    variant="standard"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    value={project.description}
+                    onChange={(e) => setProject({ ...project, description: e.target.value})}
+                />
+                <Button
+                    onClick={onClickSave}
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    size="large"
+                >
+                    Создать
+                </Button>
             </QContainer>
-            <QStepper steps={3} activeStep={activeStep} handleBack={handleBack} handleNext={handleNext}/>
         </Dialog>
     );
 }

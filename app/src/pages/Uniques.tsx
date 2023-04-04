@@ -7,7 +7,7 @@ import {useEditUnique} from "../modules/unique";
 
 export default function UniquesPage() {
     const { data: uniques = [] } = useOnlyUserUniques()
-    const { data: userD } = useUser(1)
+    const { data: userD } = useUser()
     const editUser = useEditUserpoints(1)
     const editUnique = useEditUnique(1)
 

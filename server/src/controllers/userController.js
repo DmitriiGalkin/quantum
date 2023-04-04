@@ -48,6 +48,12 @@ exports.findById = function(req, res) {
         res.send(users && users[0]);
     });
 };
+// Профиль
+exports.findByUser = function(req, res) {
+    User.findById(req.user.id, function(err, users) {
+        res.send(users && users[0]);
+    });
+};
 
 // Начисление баллов
 exports.userpoints = function(req, res) {

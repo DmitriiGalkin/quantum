@@ -11,8 +11,11 @@ exports.create = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
-        Meet.create(meet, function() {
-            res.json({ error: false, message: "Встреча создана!" });
+        Meet.create(meet, function(err, meetId) {
+            const userMeet = new UserMeet({meetId, userId: req.user.id});
+            UserMeet.create(userMeet, function() {
+                res.json(meetId);
+            });
         });
     }
 };

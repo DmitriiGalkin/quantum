@@ -33,12 +33,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface DayProps {
     date: string
     meets: Meet[]
+    onClickEnter?: (meetId: number) => () => void
+    onClickLeave?: (meetId: number) => () => void
 }
-export default function Day({ date, meets }: DayProps): JSX.Element {
+export default function Day({ date, meets, onClickEnter, onClickLeave }: DayProps): JSX.Element {
     const classes = useStyles();
+    if (!date) { return <></> }
     const localDate = LocalDate.parse(date)
     const day = localDate.dayOfMonth()
     const monthShortTitle = getMonthShortTitle(localDate.monthValue())
+
     return (
         <div className={classes.meetsGroup} key={date}>
             <div>
@@ -56,7 +60,7 @@ export default function Day({ date, meets }: DayProps): JSX.Element {
                     <div key={meet.id}>
                         {Boolean(index) && <Divider light variant="middle" />}
                         <div key={meet.id}>
-                            <MeetCard {...meet} />
+                            <MeetCard meet={meet} onClickEnter={onClickEnter && onClickEnter(meet.id)} onClickLeave={onClickLeave && onClickLeave(meet.id)} />
                         </div>
                     </div>
                 )}

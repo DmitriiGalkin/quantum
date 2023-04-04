@@ -22,13 +22,13 @@ exports.findById = function(req, res) {
 // Создание проекта
 exports.create = function(req, res) {
     const project = new Project(req.body);
-    if(req.body.constructor === Object && Object.keys(req.body).length === 0){
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
-    }else{
+    } else {
         Project.create(project, function(err, projectId) {
             const userProject = new UserProject({projectId, userId: req.user.id});
             UserProject.create(userProject, function() {
-                res.json({ error: false, message: "Создание проекта!" });
+                res.json(projectId);
             });
         });
     }

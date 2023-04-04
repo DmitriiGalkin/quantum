@@ -24,7 +24,7 @@ export default function MapDialog({onClose, open, setPlaceId, setOpenPlace}: Map
                     <Map
                         defaultState={{
                             center: [x, y],
-                            zoom: 17,
+                            zoom: 12,
                         }}
                         width="100%"
                         height="100%"

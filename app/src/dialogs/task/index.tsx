@@ -12,7 +12,7 @@ export interface TaskDialogProps {
 }
 export default function TaskDialog({ userTaskId, onClose }: TaskDialogProps) {
     const { data: userTask } = useUserTask(userTaskId)
-    const { data: user = {} as User } = useUser(userTask?.userId)
+    const { data: user = {} as User } = useUser()
 
     const editTask = useEditUserTask()
     const editUser = useEditUserpoints(user.id)

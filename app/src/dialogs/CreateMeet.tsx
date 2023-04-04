@@ -1,76 +1,110 @@
-import React, {useState} from 'react';
-import {Box, Slider, Stack, Typography} from "@mui/material";
-import ForwardAppBar from "../../components/ForwardAppBar";
-import {Meet, useAddMeet} from "../../modules/meet";
-import {TabPanel} from "../../components/tabs";
-import {DEFAULT_MEET, getProjectDefaultDatetime, valuetext, valuetext2} from "./helper";
-import QStepper from "../../components/QStepper";
-import ProjectCard from "../../components/ProjectCard";
-import {useUserProjects} from "../../modules/user";
-import Day from "../../components/Day";
-import {convertToMeetsGroupTime2, toServerDatetime} from "../../tools/date";
-import {Project, useProject} from "../../modules/project";
+import React, {useEffect, useState} from 'react';
+import {Box, Button, Slider, Stack, Typography} from "@mui/material";
+import ForwardAppBar from "../components/ForwardAppBar";
+import {Meet, NewMeet, useAddMeet} from "../modules/meet";
+import {TabPanel} from "../components/tabs";
+import QStepper from "../components/QStepper";
+import ProjectCard from "../components/ProjectCard";
+import {useUserProjects} from "../modules/user";
+import Day from "../components/Day";
+import {convertToMeetsGroupTime2, toServerDatetime} from "../tools/date";
+import {Project, useProject} from "../modules/project";
 import {CalendarPicker} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
-import {Place, usePlace, usePlaces} from "../../modules/place";
-import PlaceCard from "../../components/PlaceCard";
+import {Place, usePlace, usePlaces} from "../modules/place";
+import PlaceCard from "../components/PlaceCard";
 import Dialog from "@mui/material/Dialog";
+import {TransitionDialog} from "../components/TransitionDialog";
+
+export function valuetext(value: number) {
+    return `${value}°C2222`;
+}
+function toHoursAndMinutes(totalMinutes: number) {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return { hours, minutes };
+}
+export function valuetext2(value: number) {
+    const {hours, minutes} = toHoursAndMinutes(value)
+    return `${hours}:${minutes === 0 ? '00' : minutes}`;
+}
+
+export const getProjectDefaultDatetime = (): [string, string] => {
+    const datetime = dayjs(dayjs().format('YYYY-MM-DD')).hour(10).format('YYYY-MM-DDTHH:mm:ss')
+    const endDatetime = dayjs(dayjs().format('YYYY-MM-DD')).hour(11).format('YYYY-MM-DDTHH:mm:ss')
+
+    return [datetime, endDatetime]
+}
 
 export interface CreateMeetDialogProps {
+    setProjectId: (projectId: number) => void
+    openCreateMeet?: NewMeet
     onClose: () => void;
+    setOpenProject: (open: boolean) => void
 }
-export default function CreateMeetDialog({ onClose }: CreateMeetDialogProps) {
-    const [meet, setMeet] = useState(DEFAULT_MEET)
+export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId, setOpenProject }: CreateMeetDialogProps) {
+    const [meet, setMeet] = useState<NewMeet | undefined>()
+
     const [activeStep, setActiveStep] = React.useState(0);
     const { data: places = [] } = usePlaces()
 
     const addMeet = useAddMeet()
 
     const { data: projects = [] } = useUserProjects()
-    const { data: project = {} as Project } = useProject(meet.projectId || 0)
-    const { data: place = {} as Place } = usePlace(meet.placeId || 0)
+    const { data: project = {} as Project } = useProject(meet?.projectId)
+    const { data: place = {} as Place } = usePlace(meet?.placeId)
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        if (activeStep === 2) {
-            addMeet.mutate(meet)
-        }
     };
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const calendarPickerDate = dayjs(meet.datetime)
-    const sliderValue = [dayjs(meet.datetime).hour() * 60 + dayjs(meet.datetime).minute(), dayjs(meet.endDatetime).hour() * 60 + dayjs(meet.endDatetime).minute()]
+    const onClickSave = () => {
+        if (meet) {
+            addMeet.mutateAsync(meet).then(() => {
+                meet.projectId && setProjectId(meet.projectId)
+                setOpenProject(true)
+            })
+            onClose()
+        }
+    };
+
+    const calendarPickerDate = dayjs(meet?.datetime)
+    const sliderValue = [dayjs(meet?.datetime).hour() * 60 + dayjs(meet?.datetime).minute(), dayjs(meet?.endDatetime).hour() * 60 + dayjs(meet?.endDatetime).minute()]
 
     const calendarPickerOnChange = (date: Dayjs | null) => {
         if (!date) return
         setMeet({
             ...meet,
-            datetime: date.startOf('day').add(dayjs(meet.datetime).hour(), 'hour').add(dayjs(meet.datetime).minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
-            endDatetime: date.startOf('day').add(dayjs(meet.endDatetime).hour(), 'hour').add(dayjs(meet.endDatetime).minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
+            datetime: date.startOf('day').add(dayjs(meet?.datetime).hour(), 'hour').add(dayjs(meet?.datetime).minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
+            endDatetime: date.startOf('day').add(dayjs(meet?.endDatetime).hour(), 'hour').add(dayjs(meet?.endDatetime).minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
         })
     }
     const sliderOnChange = (event: any, newValue: number | number[]) => {
         const [minutes, endMinutes] = newValue as number[]
         setMeet({
             ...meet,
-            datetime: dayjs(meet.datetime).startOf('day').add(minutes, 'minute').format('YYYY-MM-DDTHH:mm:ss'),
-            endDatetime: dayjs(meet.endDatetime).startOf('day').add(endMinutes, 'minute').format('YYYY-MM-DDTHH:mm:ss'),
+            datetime: dayjs(meet?.datetime).startOf('day').add(minutes, 'minute').format('YYYY-MM-DDTHH:mm:ss'),
+            endDatetime: dayjs(meet?.endDatetime).startOf('day').add(endMinutes, 'minute').format('YYYY-MM-DDTHH:mm:ss'),
         })
     };
-    console.log(place, 'place')
+
+    useEffect(() => {
+        setMeet(openCreateMeet)
+    }, [openCreateMeet])
 
     return (
-        <Dialog onClose={onClose} open={true} fullScreen>
+        <Dialog onClose={onClose} open={!!openCreateMeet} fullScreen TransitionComponent={TransitionDialog}>
             <ForwardAppBar title="Создать встречу" onClick={onClose}/>
                 <TabPanel value={activeStep} index={0}>
                     <Typography variant="h5" sx={{ paddingBottom: 1 }}>
                         Выберите проект для встречи
                     </Typography>
                     <Stack spacing={2}>
-                        {projects.map((project) => <ProjectCard active project={project} selected={meet.projectId === project.id} onClick={() => {
-                            const [datetime, endDatetime] = getProjectDefaultDatetime(project)
+                        {projects.map((project) => <ProjectCard key={project.id} active project={project} selected={meet?.projectId === project.id} onClick={() => {
+                            const [datetime, endDatetime] = getProjectDefaultDatetime()
                             setMeet({
                                 ...meet,
                                 projectId: project.id,
@@ -87,7 +121,7 @@ export default function CreateMeetDialog({ onClose }: CreateMeetDialogProps) {
                     </Typography>
                     <Stack spacing={2}>
                         {places.map((place) => (
-                            <PlaceCard key={place.id} place={place} selected={meet.placeId === place.id} onClick={() => {
+                            <PlaceCard key={place.id} place={place} selected={meet?.placeId === place.id} onClick={() => {
                                 setMeet({ ...meet, placeId: place.id })
                                 handleNext()
                             }}/>
@@ -157,15 +191,19 @@ export default function CreateMeetDialog({ onClose }: CreateMeetDialogProps) {
                         <Typography variant="h5">
                             Время
                         </Typography>
-                        <Day date={convertToMeetsGroupTime2(meet.datetime)} meets={[{...meet, id: 0, project, users: [], datetime: toServerDatetime(meet.datetime)}] as Meet[]}/>
+                        <Day date={convertToMeetsGroupTime2(meet?.datetime)} meets={[{...meet, id: 0, project, users: [], datetime: toServerDatetime(meet?.datetime)}] as Meet[]}/>
+                        <Button
+                            onClick={onClickSave}
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            size="large"
+                        >
+                            Создать
+                        </Button>
                     </div>
                 </TabPanel>
-                <TabPanel value={activeStep} index={4}>
-                    <Typography>
-                        Встреча создана!
-                    </Typography>
-                </TabPanel>
-            <QStepper steps={4} activeStep={activeStep} handleBack={handleBack} handleNext={handleNext}/>
+            <QStepper steps={3} activeStep={activeStep} handleBack={handleBack} handleNext={handleNext}/>
         </Dialog>
     );
 }

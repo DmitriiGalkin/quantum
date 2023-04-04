@@ -26,7 +26,7 @@ export const useProject = (id?: number): UseQueryResult<Project> => {
     })
 }
 
-export const useAddProject = (): UseMutate<Project> => {
+export const useAddProject = (): UseMutate<Project, number> => {
     const queryClient = useQueryClient()
     return useMutation((project) => service.post("/project", project), {
         onSuccess() {

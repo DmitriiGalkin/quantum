@@ -1,25 +1,30 @@
 import React from 'react';
-import {Meet, useAddMeetUser, useDeleteMeetUser} from "../modules/meet";
+import {Meet} from "../modules/meet";
 import {convertToMeetTime} from "../tools/date";
 import {AvatarGroup, Box, Typography} from "@mui/material";
 import QAvatar from "./QAvatar";
+import {useUser} from "../modules/user";
 
-export default function MeetCard(meet: Meet) {
+interface MeetCardProps {
+    meet: Meet
+    onClickEnter?: () => void
+    onClickLeave?: () => void
+}
+export default function MeetCard({ meet, onClickEnter, onClickLeave }: MeetCardProps) {
+    const { data: user } = useUser()
     const time = convertToMeetTime(meet.datetime)
-
-    const addMeetUser = useAddMeetUser(meet.projectId)
-    const deleteMeetUser = useDeleteMeetUser(meet.projectId)
+    const active = user && meet.users.map((user) => user.id).includes(user.id)
 
     const onClick = () => {
-        if (meet.active) {
-            deleteMeetUser.mutate({ meetId: meet.id })
+        if (active) {
+            onClickLeave && onClickLeave()
         } else {
-            addMeetUser.mutate({ meetId: meet.id })
+            onClickEnter && onClickEnter()
         }
     }
 
     return (
-        <Box style={{ padding: '8px 16px', backgroundColor: meet.active ? 'rgba(255,204,0,0.4)' : undefined }} onClick={onClick}>
+        <Box style={{ padding: '8px 16px', backgroundColor: active ? 'rgba(255,204,0,0.4)' : undefined }} onClick={onClick}>
             <Box style={{ display: 'flex', alignItems: 'center' }}>
                 <Box style={{ flexGrow: 1 }}>
                     <Typography variant="h6">

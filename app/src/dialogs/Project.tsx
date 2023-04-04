@@ -12,11 +12,12 @@ import {
     Typography
 } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
-import {useAddProjectUser, useDeleteProjectUser} from "../modules/user";
-import {Project, useProject} from "../modules/project";
+import {useAddProjectUser, useDeleteProjectUser, useUser} from "../modules/user";
+import {useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
-import {Meet} from "../modules/meet";
+import {Meet, NewMeet} from "../modules/meet";
+import {useAddMeetUser, useDeleteMeetUser} from "../modules/user";
 import Dialog from "@mui/material/Dialog";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -40,19 +41,24 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export interface ProjectDialogProps {
-    project?: Project;
+    projectId?: number;
     openProject: boolean
-    active?: boolean
-    setCreateMeet: (param: boolean) => void
+    setOpenCreateMeet: (newMeet: NewMeet) => void
     onClose: () => void;
 }
-export default function ProjectDialog({ openProject, project, active, setCreateMeet, onClose }: ProjectDialogProps) {
+export default function ProjectDialog({ openProject, projectId, setOpenCreateMeet, onClose }: ProjectDialogProps) {
+    const { data: user } = useUser()
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const { data: project } = useProject(projectId)
+    const active = user && project?.users.map(({ id}) => id).includes(user.id)
 
     const classes = useStyles();
 
     const addProjectUser = useAddProjectUser(project?.id)
     const deleteProjectUser = useDeleteProjectUser(project?.id)
+    const addMeetUser = useAddMeetUser(projectId)
+    const deleteMeetUser = useDeleteMeetUser(projectId)
 
     if (!project) { return null }
 
@@ -74,8 +80,12 @@ export default function ProjectDialog({ openProject, project, active, setCreateM
         }
     }
 
+
+    const onClickEnter = active ? ((meetId: number) => () => addMeetUser.mutate({ meetId })) : undefined
+    const onClickLeave = active ? ((meetId: number) => () => deleteMeetUser.mutate({ meetId })) : undefined
+
     return (
-        <Dialog onClose={onClose} open={openProject} fullScreen TransitionComponent={TransitionDialog} keepMounted
+        <Dialog onClose={onClose} open={openProject} fullScreen TransitionComponent={TransitionDialog}
         >
             <AppBar position="sticky">
                 <Toolbar variant="dense">
@@ -94,9 +104,7 @@ export default function ProjectDialog({ openProject, project, active, setCreateM
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     {active && (
-                        <IconButton               size="large"
-                                                  edge="end"
-                                                  onClick={handleProjectMenuOpen}>
+                        <IconButton size="large" edge="end" onClick={handleProjectMenuOpen}>
                             <MoreVertIcon style={{ color: 'white' }}/>
                         </IconButton>
                     )}
@@ -116,7 +124,7 @@ export default function ProjectDialog({ openProject, project, active, setCreateM
                         onClose={handleMenuClose}
                     >
                         <MenuItem onClick={() => {
-                            setCreateMeet(true)
+                            setOpenCreateMeet({ projectId })
                             handleMenuClose()
                         }}>Новая встреча</MenuItem>
                         <MenuItem onClick={() => {
@@ -147,13 +155,13 @@ export default function ProjectDialog({ openProject, project, active, setCreateM
                                 Участвовать в проекте
                             </Button>
                         )}
-                        {project.meets.length && (
+                        {Boolean(project.meets.length) && (
                             <div className={classes.block}>
                                 <Typography variant="h5">
                                     Встречи
                                 </Typography>
                                 {meetsGroup.map(([date, meets]) => (
-                                    <Day key={date} date={date} meets={meets as Meet[]}/>
+                                    <Day key={date} date={date} meets={meets as Meet[]} onClickEnter={onClickEnter} onClickLeave={onClickLeave}/>
                                 ))}
                             </div>
                         )}
