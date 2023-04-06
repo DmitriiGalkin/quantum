@@ -17,6 +17,7 @@ export interface Meet {
 }
 
 export interface NewMeet {
+    activeStep?: number
     title?: string
     description?: string
     projectId?: number

@@ -1,13 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, Slider, Stack, Typography} from "@mui/material";
 import ForwardAppBar from "../components/ForwardAppBar";
-import {Meet, NewMeet, useAddMeet} from "../modules/meet";
+import {NewMeet, useAddMeet} from "../modules/meet";
 import {TabPanel} from "../components/tabs";
-import QStepper from "../components/QStepper";
 import ProjectCard from "../components/ProjectCard";
 import {useUserProjects} from "../modules/user";
-import Day from "../components/Day";
-import {convertToMeetsGroupTime2, toServerDatetime} from "../tools/date";
 import {Project, useProject} from "../modules/project";
 import {CalendarPicker} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
@@ -44,8 +41,6 @@ export interface CreateMeetDialogProps {
 }
 export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId, setOpenProject }: CreateMeetDialogProps) {
     const [meet, setMeet] = useState<NewMeet | undefined>()
-
-    const [activeStep, setActiveStep] = React.useState(0);
     const { data: places = [] } = usePlaces()
 
     const addMeet = useAddMeet()
@@ -54,16 +49,10 @@ export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId
     const { data: project = {} as Project } = useProject(meet?.projectId)
     const { data: place = {} as Place } = usePlace(meet?.placeId)
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
     const onClickSave = () => {
         if (meet) {
-            addMeet.mutateAsync(meet).then(() => {
+            const meetWithTimezone = {...meet }
+            addMeet.mutateAsync(meetWithTimezone).then(() => {
                 meet.projectId && setProjectId(meet.projectId)
                 setOpenProject(true)
             })
@@ -97,8 +86,9 @@ export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId
 
     return (
         <Dialog onClose={onClose} open={!!openCreateMeet} fullScreen TransitionComponent={TransitionDialog}>
-            <ForwardAppBar title="Создать встречу" onClick={onClose}/>
-                <TabPanel value={activeStep} index={0}>
+            <div>
+                <ForwardAppBar title="Создать встречу" onClick={onClose}/>
+                <TabPanel value={meet?.activeStep || 0} index={0}>
                     <Typography variant="h5" sx={{ paddingBottom: 1 }}>
                         Выберите проект для встречи
                     </Typography>
@@ -110,25 +100,24 @@ export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId
                                 projectId: project.id,
                                 datetime,
                                 endDatetime,
+                                activeStep: 1,
                             })
-                            handleNext()
                         }}/>)}
                     </Stack>
                 </TabPanel>
-                <TabPanel value={activeStep} index={1}>
+                <TabPanel value={meet?.activeStep || 0} index={1}>
                     <Typography variant="h5" sx={{ paddingBottom: 1 }}>
                         Выберите место для встречи
                     </Typography>
                     <Stack spacing={2}>
                         {places.map((place) => (
                             <PlaceCard key={place.id} place={place} selected={meet?.placeId === place.id} onClick={() => {
-                                setMeet({ ...meet, placeId: place.id })
-                                handleNext()
+                                setMeet({ ...meet, placeId: place.id, activeStep: 2, })
                             }}/>
                         ))}
                     </Stack>
                 </TabPanel>
-                <TabPanel value={activeStep} index={2}>
+                <TabPanel value={meet?.activeStep || 0} index={2}>
                     <div>
                         <Box sx={{
                             fontSize: '15px',
@@ -152,7 +141,6 @@ export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId
                         }}>
                             <CalendarPicker onChange={calendarPickerOnChange} date={calendarPickerDate} disablePast/>
                         </Box>
-
                         <Box sx={{
                             width: '280px',
                             margin: '0 auto',
@@ -176,10 +164,6 @@ export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId
                                 step={15} // Каждые 15 минут
                             />
                         </Box>
-                    </div>
-                </TabPanel>
-                <TabPanel value={activeStep} index={3}>
-                    <div>
                         <Typography variant="h5">
                             Проект
                         </Typography>
@@ -188,10 +172,6 @@ export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId
                             Место
                         </Typography>
                         <PlaceCard place={place}/>
-                        <Typography variant="h5">
-                            Время
-                        </Typography>
-                        <Day date={convertToMeetsGroupTime2(meet?.datetime)} meets={[{...meet, id: 0, project, users: [], datetime: toServerDatetime(meet?.datetime)}] as Meet[]}/>
                         <Button
                             onClick={onClickSave}
                             fullWidth
@@ -203,7 +183,7 @@ export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId
                         </Button>
                     </div>
                 </TabPanel>
-            <QStepper steps={3} activeStep={activeStep} handleBack={handleBack} handleNext={handleNext}/>
+            </div>
         </Dialog>
     );
 }

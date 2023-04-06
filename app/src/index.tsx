@@ -10,7 +10,7 @@ import theme from "./theme";
 import CssBaseline from '@mui/material/CssBaseline';
 import {ThemeProvider} from '@mui/material/styles';
 import {GoogleOAuthProvider} from '@react-oauth/google';
-
+import 'dayjs/locale/ru';
 
 const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(

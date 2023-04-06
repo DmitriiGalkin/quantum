@@ -8,6 +8,7 @@ var Meet = function(data){
 };
 // Создание встречи
 Meet.create = function (data, result) {
+    console.log('INSERT INTO meet set ?', data)
     dbConn.query("INSERT INTO meet set ?", data, function (err, res) {
         result(null, res.insertId);
     });
@@ -20,7 +21,8 @@ Meet.findByProject = function (project, result) {
 };
 // Встречи участника
 Meet.findAllByUserId = function (id, result) {
-    dbConn.query("Select meet.* from meet LEFT JOIN project ON project.id = meet.projectId LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ? AND DATE(datetime) > CURDATE()", id, function (err, res) {
+    dbConn.query("Select meet.*, datetime as ut from meet LEFT JOIN project ON project.id = meet.projectId LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ? AND DATE(datetime) > CURDATE()", id, function (err, res) {
+        console.log(res,'res')
         result(null, res);
     });
 };

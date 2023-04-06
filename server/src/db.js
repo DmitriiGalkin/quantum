@@ -13,4 +13,8 @@ dbConn.connect(function(err) {
     console.log("Server connected database on port 3306");
 });
 
+dbConn.query(`SET time_zone='+00:00'`, function (err, res) {
+    console.log(err, res);
+});
+
 module.exports = dbConn;

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-
 import {
     AppBar,
     BottomNavigation,
@@ -13,10 +12,8 @@ import {
     Paper,
     Stack,
     Theme,
-    Toolbar
+    Toolbar, Typography
 } from "@mui/material";
-
-import {useNavigate} from "react-router-dom";
 import {makeStyles} from "@mui/styles";
 import GroupsIcon from "@mui/icons-material/Groups";
 import RocketIcon from "@mui/icons-material/Rocket";
@@ -24,13 +21,19 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import Day from "../components/Day";
 import {Meet, NewMeet} from "../modules/meet";
-import {useAddMeetUser, useDeleteMeetUser, useOnlyUserProjects, useUserMeet} from "../modules/user";
+import {
+    useAddMeetUser,
+    useDeleteMeetUser,
+    useEditUserpoints,
+    useOnlyUserProjects,
+    useOnlyUserUniques, useUser,
+    useUserMeet
+} from "../modules/user";
 import {getMeetsGroup} from "../tools/helper";
 import {TabPanel} from "../components/tabs";
 import ProjectCard from "../components/ProjectCard";
 import {useOnlyUserTasks} from "../modules/task";
 import TaskCard from "../components/TaskCard";
-import UniquesPage from "./Uniques";
 import Project from "../dialogs/Project";
 import MapIcon from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -39,7 +42,10 @@ import Map from "../dialogs/Map";
 import Place from "../dialogs/Place";
 import CreateProject from "../dialogs/CreateProject";
 import CreateMeet from "../dialogs/CreateMeet";
+import Options from "../dialogs/Options";
 import Task from "../dialogs/task";
+import ArrowUpward from "@mui/icons-material/ArrowUpward";
+import {useEditUnique} from "../modules/unique";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -75,18 +81,21 @@ export default function MainPage() {
 
     const [tab, setTab] = useState(0)
 
+    const { data: userD } = useUser()
     const { data: meets = [] } = useUserMeet()
-    const meetsGroup = getMeetsGroup(meets)
     const { data: projects = [] } = useOnlyUserProjects()
     const { data: tasks = [] } = useOnlyUserTasks()
+    const { data: uniques = [] } = useOnlyUserUniques()
+
+    const meetsGroup = getMeetsGroup(meets)
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const navigate = useNavigate();
     const { logout } = useAuth();
     const [openMap, setOpenMap] = useState(false)
     const [openProject, setOpenProject] = useState(false)
     const [openPlace, setOpenPlace] = useState(false)
     const [openCreateProject, setOpenCreateProject] = useState(false)
     const [openCreateMeet, setOpenCreateMeet] = useState<NewMeet>()
+    const [openOptions, setOpenOptions] = useState(false)
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -100,6 +109,14 @@ export default function MainPage() {
     const deleteMeetUser = useDeleteMeetUser()
     const onClickEnter = (meetId: number) => () => addMeetUser.mutate({ meetId })
     const onClickLeave = (meetId: number) => () => deleteMeetUser.mutate({ meetId })
+
+    const editUser = useEditUserpoints(1)
+    const editUnique = useEditUnique(1)
+
+    const toTop = ({ user, unique, points }: any) => {
+        editUser.mutate(user.points - points)
+        editUnique.mutate({ ...unique, points: unique.points + points })
+    }
 
     return (
         <>
@@ -148,15 +165,20 @@ export default function MainPage() {
                                 open={isMenuOpen}
                                 onClose={handleMenuClose}
                             >
-                                <MenuItem onClick={() => {
-                                    setOpenCreateMeet({})
-                                    handleMenuClose()
-                                }}>Новая встреча</MenuItem>
+                                {Boolean(projects.length) && (
+                                    <MenuItem onClick={() => {
+                                        setOpenCreateMeet({})
+                                        handleMenuClose()
+                                    }}>Новая встреча</MenuItem>
+                                )}
                                 <MenuItem onClick={() => {
                                     setOpenCreateProject(true)
                                     handleMenuClose()
                                 }}>Новый проект</MenuItem>
-                                <MenuItem onClick={() => navigate('/user/1/edit')}>Настройки</MenuItem>
+                                <MenuItem onClick={() => {
+                                    setOpenOptions(true)
+                                    handleMenuClose()
+                                }}>Настройки</MenuItem>
                                 <MenuItem onClick={() => logout()}>Выход</MenuItem>
                             </Menu>
                         </Toolbar>
@@ -179,25 +201,73 @@ export default function MainPage() {
                                         alignItems="center"
                                         minHeight="80vh"
                                     >
-                                        <span>Ближайших встреч по вашим проектам нет. Попробуйте найти интересные проекты на <Link onClick={() => setOpenMap(true)}>карте</Link>.</span>
+                                        <span>Встреч нет. Попробуйте найти интересные проекты на <Link onClick={() => setOpenMap(true)}>карте</Link>. Или <Link onClick={() => setOpenCreateProject(true)}>создать свой</Link>!</span>
                                     </Box>
                                 )}
                             </TabPanel>
                             <TabPanel value={tab} index={1}>
-                                <Stack spacing={2}>
-                                    {projects.map((project) => <ProjectCard key={project.id} project={project} active={true} onClick={() => {
-                                        setProjectId(project.id)
-                                        setOpenProject(true)
-                                    }}/>)}
-                                </Stack>
+                                {Boolean(projects.length) ? (
+                                    <Stack spacing={2}>
+                                        {projects.map((project) => <ProjectCard key={project.id} project={project} active={true} onClick={() => {
+                                            setProjectId(project.id)
+                                            setOpenProject(true)
+                                        }}/>)}
+                                    </Stack>
+                                ) : (
+                                    <Box
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        minHeight="80vh"
+                                    >
+                                        <span>Список проектов пуст. Попробуйте найти интересные проекты на <Link onClick={() => setOpenMap(true)}>карте</Link>.</span>
+                                    </Box>
+                                )}
                             </TabPanel>
                             <TabPanel value={tab} index={2}>
-                                <Stack spacing={2}>
-                                    {tasks.map((task) => <TaskCard key={task.id} task={task} onClick={() => setUserTaskId(task.id)} />)}
-                                </Stack>
+                                {Boolean(tasks.length) ? (
+                                    <Stack spacing={2}>
+                                        {tasks.map((task) => <TaskCard key={task.id} task={task} onClick={() => setUserTaskId(task.id)} />)}
+                                    </Stack>
+                                ) : (
+                                    <Box
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        minHeight="80vh"
+                                    >
+                                        <span>Заданий нет. Попробуйте заглянуть сюда позднее, - задания обязательно появятся.</span>
+                                    </Box>
+                                )}
                             </TabPanel>
                             <TabPanel value={tab} index={3}>
-                                <UniquesPage/>
+                                {Boolean(tasks.length) ? (
+                                    <Stack spacing={2}>
+                                        {uniques.map((unique) => (
+                                            <Box key={unique.id} sx={{ display: 'flex' }}>
+                                                <Typography variant="subtitle1" color="primary" style={{ flexGrow: 1 }}>
+                                                    {unique.title}
+                                                </Typography>
+                                                <Typography variant="subtitle1" sx={{ paddingRight: 1}}>
+                                                    {unique.points}
+                                                </Typography>
+                                                <AutoAwesomeIcon style={{ width: 20, height: 20 }} color="primary"/>
+                                                {userD?.points && <IconButton size="small" onClick={() => toTop({ user: userD, unique, points: 1 })}>
+                                                    <ArrowUpward/>
+                                                </IconButton>}
+                                            </Box>
+                                        ))}
+                                    </Stack>
+                                ) : (
+                                    <Box
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        minHeight="80vh"
+                                    >
+                                        <span>Твои уникальные ценности есть и они обязательно скоро проявятся!</span>
+                                    </Box>
+                                )}
                             </TabPanel>
                         </Container>
                     </Box>
@@ -222,6 +292,7 @@ export default function MainPage() {
             <Project openProject={openProject} onClose={() => setOpenProject(false)} projectId={projectId} setOpenCreateMeet={setOpenCreateMeet} />
             <CreateProject openCreateProject={openCreateProject} onClose={() => setOpenCreateProject(false)} setOpenProject={setOpenProject} setProjectId={setProjectId} />
             <CreateMeet openCreateMeet={openCreateMeet} onClose={() => setOpenCreateMeet(undefined)} setOpenProject={setOpenProject} setProjectId={setProjectId} />
+            <Options openOptions={openOptions} onClose={() => setOpenOptions(false)} />
             {userTaskId && <Task userTaskId={userTaskId} onClose={() => setUserTaskId(undefined)} />}
         </>
     );

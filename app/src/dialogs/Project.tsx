@@ -86,8 +86,7 @@ export default function ProjectDialog({ openProject, projectId, setOpenCreateMee
     const onClickLeave = active ? ((meetId: number) => () => deleteMeetUser.mutate({ meetId })) : undefined
 
     return (
-        <Dialog onClose={onClose} open={openProject} fullScreen TransitionComponent={TransitionDialog}
-        >
+        <Dialog onClose={onClose} open={openProject} fullScreen TransitionComponent={TransitionDialog}>
             <AppBar position="sticky">
                 <Toolbar variant="dense">
                     <IconButton
@@ -124,7 +123,7 @@ export default function ProjectDialog({ openProject, projectId, setOpenCreateMee
                         onClose={handleMenuClose}
                     >
                         <MenuItem onClick={() => {
-                            setOpenCreateMeet({ projectId })
+                            setOpenCreateMeet({ projectId, activeStep: 1 })
                             handleMenuClose()
                         }}>Новая встреча</MenuItem>
                         <MenuItem onClick={() => {

@@ -28,7 +28,7 @@ export default function RegistrationPage({ isEdit }: {isEdit?: boolean}) {
 
     return (
         <div>
-            <ForwardAppBar title="Регистрация"/>
+            <ForwardAppBar title="Настройки"/>
             <img src="/img.png" alt="мальчик" style={{ width: '100%' }}/>
             <QContainer>
                 <TabPanel value={activeStep} index={0}>

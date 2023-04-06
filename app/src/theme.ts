@@ -43,7 +43,7 @@ const theme = createTheme({
             secondary: '#A5A5A5',
             disabled: '#C1C1C1',
         },
-    }
+    },
 });
 
 export default theme;

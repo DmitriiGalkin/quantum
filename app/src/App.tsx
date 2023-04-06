@@ -3,7 +3,6 @@ import {Route} from "react-router";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Callback from "./pages/Callback";
-import CreateUser from "./pages/CreateUser";
 import CreatePlace from "./pages/CreatePlace";
 
 import {ProtectedLayout} from "./layouts/ProtectedLayout";
@@ -20,7 +19,6 @@ export const router = createBrowserRouter(
             <Route path="/callback" element={<Callback />} />
             <Route element={<ProtectedLayout />}>
                 <Route index element={<Main />}/>
-                <Route path="user/:id/edit" element={<CreateUser isEdit />} />
                 <Route path="place" element={<CreatePlace />} />
             </Route>
         </Route>
