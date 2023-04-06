@@ -9,14 +9,20 @@ const placeController =   require('./controllers/placeController');
 const taskController =   require('./controllers/taskController');
 const uniqueController =   require('./controllers/uniqueController');
 
-
+/**
+ * Подхватываем токен и авторизуем пользователя
+ */
 function useUser(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-
+    console.log(token,'token')
     if (token == null) return res.sendStatus(401)
     User.findByToken(token, function(err, user) {
-        if (err) res.send(err);
+        if (!user) {
+            res.sendStatus(401)
+        }
+        console.log(user,'========= USER ==============')
+
         req.user = user
         next()
     });

@@ -42,7 +42,7 @@ User.findById = function (id, result) {
 // Участник по token
 User.findByToken = function (id, result) {
     dbConn.query("Select * from user where token = ? ", id, function (err, res) {
-        result(null, res.length ? res[0] : undefined);
+        result(null, res.length ? res[0] : null);
     });
 };
 // Участники встречи

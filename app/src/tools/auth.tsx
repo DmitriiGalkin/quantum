@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
                     return config;
                 },
             );
-            navigate("/");
+            navigate("/", { replace: true });
         })
     };
 
@@ -42,6 +42,12 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
 
     const logout = () => {
         localStorage.removeItem(ACCESS_TOKEN);
+        service.interceptors.request.use(
+            config => {
+                config.headers['Authorization'] = undefined;
+                return config;
+            },
+        );
         navigate("/", { replace: true });
     };
 
