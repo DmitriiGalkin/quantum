@@ -3,7 +3,6 @@ import {Route} from "react-router";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Callback from "./pages/Callback";
-import CreatePlace from "./pages/CreatePlace";
 
 import {ProtectedLayout} from "./layouts/ProtectedLayout";
 import {createBrowserRouter, createRoutesFromElements} from "react-router-dom";
@@ -19,7 +18,6 @@ export const router = createBrowserRouter(
             <Route path="/callback" element={<Callback />} />
             <Route element={<ProtectedLayout />}>
                 <Route index element={<Main />}/>
-                <Route path="place" element={<CreatePlace />} />
             </Route>
         </Route>
     )

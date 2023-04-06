@@ -61,22 +61,20 @@ export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId
     };
 
     const calendarPickerDate = dayjs(meet?.datetime)
-    const sliderValue = [dayjs(meet?.datetime).hour() * 60 + dayjs(meet?.datetime).minute(), dayjs(meet?.endDatetime).hour() * 60 + dayjs(meet?.endDatetime).minute()]
+    const sliderValue = dayjs(meet?.datetime).hour() * 60 + dayjs(meet?.datetime).minute()
 
     const calendarPickerOnChange = (date: Dayjs | null) => {
         if (!date) return
         setMeet({
             ...meet,
             datetime: date.startOf('day').add(dayjs(meet?.datetime).hour(), 'hour').add(dayjs(meet?.datetime).minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
-            endDatetime: date.startOf('day').add(dayjs(meet?.endDatetime).hour(), 'hour').add(dayjs(meet?.endDatetime).minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
         })
     }
     const sliderOnChange = (event: any, newValue: number | number[]) => {
-        const [minutes, endMinutes] = newValue as number[]
+        const minutes = newValue as number
         setMeet({
             ...meet,
             datetime: dayjs(meet?.datetime).startOf('day').add(minutes, 'minute').format('YYYY-MM-DDTHH:mm:ss'),
-            endDatetime: dayjs(meet?.endDatetime).startOf('day').add(endMinutes, 'minute').format('YYYY-MM-DDTHH:mm:ss'),
         })
     };
 

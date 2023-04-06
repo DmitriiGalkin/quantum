@@ -127,10 +127,6 @@ export default function ProjectDialog({ openProject, projectId, setOpenCreateMee
                             handleMenuClose()
                         }}>Новая встреча</MenuItem>
                         <MenuItem onClick={() => {
-                            console.log('Редактирование проекта')
-                            handleMenuClose()
-                        }}>Редактировать</MenuItem>
-                        <MenuItem onClick={() => {
                             onClick()
                             handleMenuClose()
                         }}>Выйти</MenuItem>
