@@ -9,6 +9,7 @@ import {createBrowserRouter, createRoutesFromElements} from "react-router-dom";
 import {AuthLayout} from "./layouts/AuthLayout";
 import Main from './pages/Main'
 import './App.css'
+import ProjectDialog from "./pages/Project";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -18,6 +19,7 @@ export const router = createBrowserRouter(
             <Route path="/callback" element={<Callback />} />
             <Route element={<ProtectedLayout />}>
                 <Route index element={<Main />}/>
+                <Route path="/project/:id" element={<ProjectDialog />}/>
             </Route>
         </Route>
     )

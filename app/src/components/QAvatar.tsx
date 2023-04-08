@@ -16,3 +16,15 @@ export default function QAvatar(user: User) {
     const config = genConfig(String(user.id))
     return <Avatar className={classes.large} {...config} />
 }
+
+
+// shape	string	circle	circle, rounded, square	Only for React Props
+
+// shirtColor	string
+// bgColor	string
+// isGradient	boolean	false
+// faceColor	string
+//hairColor: string
+// hatColor	string
+
+

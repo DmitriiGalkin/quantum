@@ -34,7 +34,7 @@ import {TabPanel} from "../components/tabs";
 import ProjectCard from "../components/ProjectCard";
 import {useOnlyUserTasks} from "../modules/task";
 import TaskCard from "../components/TaskCard";
-import Project from "../dialogs/Project";
+import Project from "./Project";
 import MapIcon from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {useAuth} from "../tools/auth";
@@ -289,7 +289,6 @@ export default function MainPage() {
             </Box>
             <Map open={openMap} onClose={() => setOpenMap(false)} setPlaceId={setPlaceId} setOpenPlace={setOpenPlace} />
             <Place openPlace={openPlace} onClose={() => setOpenPlace(false)} placeId={placeId} projects={projects} setProjectId={setProjectId} setOpenProject={setOpenProject} />
-            <Project openProject={openProject} onClose={() => setOpenProject(false)} projectId={projectId} setOpenCreateMeet={setOpenCreateMeet} />
             <CreateProject openCreateProject={openCreateProject} onClose={() => setOpenCreateProject(false)} setOpenProject={setOpenProject} setProjectId={setProjectId} />
             <CreateMeet openCreateMeet={openCreateMeet} onClose={() => setOpenCreateMeet(undefined)} setOpenProject={setOpenProject} setProjectId={setProjectId} />
             <Options openOptions={openOptions} onClose={() => setOpenOptions(false)} />

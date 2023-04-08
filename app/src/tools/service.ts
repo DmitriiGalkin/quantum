@@ -1,7 +1,7 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {UseMutationResult} from "@tanstack/react-query";
 
-const SAME_URL = 'http://localhost:4000' // 'http://localhost:4000' // 'https://selfproject.ru/api'
+const SAME_URL = 'https://selfproject.ru/api' // 'http://localhost:4000' // 'http://localhost:4000' // 'https://selfproject.ru/api'
 export const ACCESS_TOKEN = 'access_token'
 
 export const createService = (): AxiosInstance => {

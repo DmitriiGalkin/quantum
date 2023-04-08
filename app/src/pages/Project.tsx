@@ -24,6 +24,7 @@ import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import QAvatar from "../components/QAvatar";
 import {TransitionDialog} from "../components/TransitionDialog";
+import {useNavigate, useParams} from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -41,25 +42,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export interface ProjectDialogProps {
-    projectId?: number;
-    openProject: boolean
-    setOpenCreateMeet: (newMeet: NewMeet) => void
-    onClose: () => void;
-}
-export default function ProjectDialog({ openProject, projectId, setOpenCreateMeet, onClose }: ProjectDialogProps) {
+// export interface ProjectDialogProps {
+//     projectId?: number;
+//     openProject: boolean
+//     setOpenCreateMeet: (newMeet: NewMeet) => void
+//     onClose: () => void;
+// }
+export default function Project() {
+    const { id: projectId } = useParams();
     const { data: user } = useUser()
+    const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const { data: project } = useProject(projectId)
+    const { data: project } = useProject(Number(projectId))
     const active = user && project?.users.map(({ id}) => id).includes(user.id)
 
     const classes = useStyles();
 
     const addProjectUser = useAddProjectUser(project?.id)
     const deleteProjectUser = useDeleteProjectUser(project?.id)
-    const addMeetUser = useAddMeetUser(projectId)
-    const deleteMeetUser = useDeleteMeetUser(projectId)
+    const addMeetUser = useAddMeetUser(Number(projectId))
+    const deleteMeetUser = useDeleteMeetUser(Number(projectId))
 
     if (!project) { return null }
 
@@ -81,12 +84,23 @@ export default function ProjectDialog({ openProject, projectId, setOpenCreateMee
         }
     }
 
-
     const onClickEnter = active ? ((meetId: number) => () => addMeetUser.mutate({ meetId })) : undefined
     const onClickLeave = active ? ((meetId: number) => () => deleteMeetUser.mutate({ meetId })) : undefined
+    const onShare = async () => {
+        try {
+            await navigator.share({
+                title: project?.title,
+                text: project?.description,
+                url: `https://selfproject.ru/project/${project?.id}`
+            });
+        }
+        catch(e) {
+            console.log('share error', e);
+        }
+    }
 
     return (
-        <Dialog onClose={onClose} open={openProject} fullScreen TransitionComponent={TransitionDialog}>
+        <>
             <AppBar position="sticky">
                 <Toolbar variant="dense">
                     <IconButton
@@ -94,7 +108,7 @@ export default function ProjectDialog({ openProject, projectId, setOpenCreateMee
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        onClick={onClose}
+                        onClick={() => window.history.back()}
                     >
                         <ArrowBackIos style={{ color: 'white' }}/>
                     </IconButton>
@@ -122,14 +136,9 @@ export default function ProjectDialog({ openProject, projectId, setOpenCreateMee
                         open={isMenuOpen}
                         onClose={handleMenuClose}
                     >
-                        <MenuItem onClick={() => {
-                            setOpenCreateMeet({ projectId, activeStep: 1 })
-                            handleMenuClose()
-                        }}>Новая встреча</MenuItem>
-                        <MenuItem onClick={() => {
-                            onClick()
-                            handleMenuClose()
-                        }}>Выйти</MenuItem>
+                        <MenuItem onClick={() => navigate(`/project`)}>Новая встреча</MenuItem>
+                        <MenuItem onClick={onShare}>Поделиться</MenuItem>
+                        <MenuItem onClick={() => navigate(`/logout`)}>Выйти</MenuItem>
                     </Menu>
                 </Toolbar>
             </AppBar>
@@ -181,6 +190,6 @@ export default function ProjectDialog({ openProject, projectId, setOpenCreateMee
                     </Stack>
                 </Container>
             </div>
-        </Dialog>
+        </>
     );
 }
