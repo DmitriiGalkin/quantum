@@ -5,11 +5,18 @@ import Registration from "./pages/Registration";
 import Callback from "./pages/Callback";
 
 import {ProtectedLayout} from "./layouts/ProtectedLayout";
+import {MainLayout} from "./layouts/MainLayout";
+
 import {createBrowserRouter, createRoutesFromElements} from "react-router-dom";
 import {AuthLayout} from "./layouts/AuthLayout";
 import Main from './pages/Main'
 import './App.css'
 import ProjectDialog from "./pages/Project";
+import Meets from "./pages/Meets";
+import Projects from "./pages/Projects";
+import Tasks from "./pages/Tasks";
+import Uniques from "./pages/Uniques";
+
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -19,7 +26,13 @@ export const router = createBrowserRouter(
             <Route path="/callback" element={<Callback />} />
             <Route element={<ProtectedLayout />}>
                 <Route index element={<Main />}/>
-                <Route path="/project/:id" element={<ProjectDialog />}/>
+                <Route element={<MainLayout />}>
+                    <Route path="/meets" element={<Meets />}/>
+                    <Route path="/projects" element={<Projects />}/>
+                    <Route path="/tasks" element={<Tasks />}/>
+                    <Route path="/uniques" element={<Uniques />}/>
+                    <Route path="/project/:id" element={<ProjectDialog />}/>
+                </Route>
             </Route>
         </Route>
     )
