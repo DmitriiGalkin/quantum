@@ -14,7 +14,7 @@ dbConn.connect(function(err) {
 });
 
 dbConn.query(`SET time_zone='+00:00'`, function (err, res) {
-    console.log(err, res);
+    // console.log(err, res);
 });
 
 module.exports = dbConn;

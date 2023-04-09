@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@mui/styles';
 import {
     AppBar,
@@ -19,12 +19,11 @@ import {useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet, NewMeet} from "../modules/meet";
-import Dialog from "@mui/material/Dialog";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import QAvatar from "../components/QAvatar";
-import {TransitionDialog} from "../components/TransitionDialog";
 import {useNavigate, useParams} from "react-router-dom";
+import CreateMeet from "../dialogs/CreateMeet";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -54,10 +53,11 @@ export default function Project() {
     const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const { data: project } = useProject(Number(projectId))
+    const { data: project, refetch } = useProject(Number(projectId))
     const active = user && project?.users.map(({ id}) => id).includes(user.id)
 
     const classes = useStyles();
+    const [openCreateMeet, setOpenCreateMeet] = useState<NewMeet>()
 
     const addProjectUser = useAddProjectUser(project?.id)
     const deleteProjectUser = useDeleteProjectUser(project?.id)
@@ -108,7 +108,7 @@ export default function Project() {
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        onClick={() => window.history.back()}
+                        onClick={() => window.history.length ? window.history.back() : navigate('/')}
                     >
                         <ArrowBackIos style={{ color: 'white' }}/>
                     </IconButton>
@@ -136,9 +136,12 @@ export default function Project() {
                         open={isMenuOpen}
                         onClose={handleMenuClose}
                     >
-                        <MenuItem onClick={() => navigate(`/project`)}>Новая встреча</MenuItem>
+                        <MenuItem onClick={() => {
+                            setOpenCreateMeet({ projectId: project?.id, activeStep: 1 })
+                            handleMenuClose()
+                        }}>Новая встреча</MenuItem>
                         <MenuItem onClick={onShare}>Поделиться</MenuItem>
-                        <MenuItem onClick={() => navigate(`/logout`)}>Выйти</MenuItem>
+                        <MenuItem onClick={() => onClick()}>Выйти из проекта</MenuItem>
                     </Menu>
                 </Toolbar>
             </AppBar>
@@ -190,6 +193,10 @@ export default function Project() {
                     </Stack>
                 </Container>
             </div>
+            <CreateMeet openCreateMeet={openCreateMeet} onClose={() => {
+                setOpenCreateMeet(undefined)
+                refetch()
+            }} />
         </>
     );
 }

@@ -2,6 +2,7 @@ import React from 'react';
 
 import {Box, Card, CardContent, Typography} from "@mui/material";
 import {Project} from "../modules/project";
+import {DEFAULT_COLOR, SELECTED_COLOR} from "./MeetCard";
 
 interface ProjectCardProps {
     project: Project
@@ -10,8 +11,8 @@ interface ProjectCardProps {
     onClick?: () => void
 }
 export default function ProjectCard({ project, active, selected, onClick }: ProjectCardProps) {
-    // const firstMeetDateTitle = convertToMeetDatetime(project.meet?.datetime)
-    const backgroundColor = selected ? 'rgba(255,204,0,0.6)' : ( active ? 'rgba(255,204,0,0.4)' : undefined)
+    // const firstMeetDateTitle = convertToMeetDatetime(project.meet?.datetime) E1F1FA CDEBFC
+    const backgroundColor = selected ? SELECTED_COLOR : ( active ? DEFAULT_COLOR : undefined)
     return (
         <Card onClick={onClick} style={{ backgroundColor }}>
             <CardContent>

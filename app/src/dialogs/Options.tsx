@@ -2,17 +2,19 @@ import React, {useEffect, useState} from 'react';
 import ForwardAppBar from "../components/ForwardAppBar";
 import {User, useUpdateUser, useUser} from "../modules/user";
 import QContainer from "../components/QContainer";
-import {Box, Button, Grid, IconButton, Stack, TextField} from "@mui/material";
+import {Box, Button, Grid, Stack, TextField} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import Avatar, {
-    genConfig,
-    Sex,
     EarSize,
+    EyeStyle,
+    genConfig,
+    GlassesStyle,
     HairStyle,
     HatStyle,
-    EyeStyle,
-    GlassesStyle,
-    NoseStyle, MouthStyle, ShirtStyle
+    MouthStyle,
+    NoseStyle,
+    Sex,
+    ShirtStyle
 } from "react-nice-avatar";
 import {TransitionDialog} from "../components/TransitionDialog";
 
@@ -29,7 +31,7 @@ const AvatarM = {
 }
 
 const avatarOptions = [
-    //{ title: 'Пол', key: 'sex'},
+    { title: 'Пол', key: 'sex'},
     { title: 'Уши', key: 'earSize'},
     { title: 'Волосы', key: 'hairStyle'},
     //{ title: 'Шапка', key: 'hatStyle'},
@@ -72,16 +74,15 @@ const next = (key: f, selected: string): any => {
 export default function OptionsDialog({ openOptions, onClose }: OptionsDialogProps) {
     const { data: serverUser } = useUser()
     const [user, setUser] = useState<User>()
-    const [avatar, setAvatar] = useState<AvatarProps>({ ...genConfig(String(user?.id)), hatStyle: 'none' })
-    console.log(avatar,'avatar')
     const updateUser = useUpdateUser()
 
     const onClickAvatar = (key: f) => () => {
-        const avatarN = {...user?.avatar, [key]: next(key, avatar[key] || '')} as AvatarProps
+        const avatar = !user?.avatar ? genConfig(String(user?.id)) : user.avatar
+        const avatarN = {...avatar, [key]: next(key, avatar[key] || '')} as AvatarProps
         user && setUser({ ...user, avatar: avatarN})
     }
     const onClickSave = () => {
-        user && updateUser.mutate(user) // TODO: оставить только редактирование
+        user && updateUser.mutate(user)
         onClose()
     }
     useEffect(() => {

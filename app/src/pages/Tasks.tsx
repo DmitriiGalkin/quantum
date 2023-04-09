@@ -2,15 +2,17 @@ import React from 'react';
 import {Box, Stack} from "@mui/material";
 import TaskCard from "../components/TaskCard";
 import {useOnlyUserTasks} from "../modules/task";
+import {useNavigate} from "react-router-dom";
 
 export default function TasksPage() {
     const { data: tasks = [] } = useOnlyUserTasks()
+    const navigate = useNavigate();
 
     return (
         <>
             {Boolean(tasks.length) ? (
                 <Stack spacing={2}>
-                    {tasks.map((task) => <TaskCard key={task.id} task={task} onClick={() => setUserTaskId(task.id)} />)}
+                    {tasks.map((task) => <TaskCard key={task.id} task={task} onClick={() => navigate(`/task/${task.id}`)} />)}
                 </Stack>
             ) : (
                 <Box

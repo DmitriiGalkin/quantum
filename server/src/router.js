@@ -33,7 +33,7 @@ router.post('/user', userController.create);
 router.post('/user/login', userController.islogin);
 router.post('/logi', userController.logi);
 router.get('/user/:id', userController.findById);
-router.put('/user/:id', userController.update);
+router.put('/user', useUser, userController.update);
 
 router.post('/userProject/:projectId', useUser, projectController.createUserProject );
 router.delete('/userProject/:projectId', useUser, projectController.deleteUserProject );

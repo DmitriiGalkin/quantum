@@ -1,13 +1,20 @@
 import React from 'react';
 import {Box, IconButton, Stack, Typography} from "@mui/material";
-import TaskCard from "../components/TaskCard";
-import {useOnlyUserTasks} from "../modules/task";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ArrowUpward from "@mui/icons-material/ArrowUpward";
-import {useOnlyUserUniques} from "../modules/user";
+import {useEditUserpoints, useOnlyUserUniques, useUser} from "../modules/user";
+import {useEditUnique} from "../modules/unique";
 
 export default function TasksPage() {
     const { data: uniques = [] } = useOnlyUserUniques()
+    const { data: userD } = useUser()
+    const editUser = useEditUserpoints(1)
+    const editUnique = useEditUnique(1)
+
+    const toTop = ({ user, unique, points }: any) => {
+        editUser.mutate(user.points - points)
+        editUnique.mutate({ ...unique, points: unique.points + points })
+    }
 
     return (
         <>

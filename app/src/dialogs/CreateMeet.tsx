@@ -12,6 +12,7 @@ import {Place, usePlace, usePlaces} from "../modules/place";
 import PlaceCard from "../components/PlaceCard";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
+import {useNavigate} from "react-router-dom";
 
 export function valuetext(value: number) {
     return `${value}°C2222`;
@@ -34,14 +35,13 @@ export const getProjectDefaultDatetime = (): [string, string] => {
 }
 
 export interface CreateMeetDialogProps {
-    setProjectId: (projectId: number) => void
     openCreateMeet?: NewMeet
     onClose: () => void;
-    setOpenProject: (open: boolean) => void
 }
-export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId, setOpenProject }: CreateMeetDialogProps) {
+export default function CreateMeetDialog({ onClose, openCreateMeet }: CreateMeetDialogProps) {
     const [meet, setMeet] = useState<NewMeet | undefined>()
     const { data: places = [] } = usePlaces()
+    const navigate = useNavigate();
 
     const addMeet = useAddMeet()
 
@@ -53,8 +53,7 @@ export default function CreateMeetDialog({ onClose, openCreateMeet, setProjectId
         if (meet) {
             const meetWithTimezone = {...meet }
             addMeet.mutateAsync(meetWithTimezone).then(() => {
-                meet.projectId && setProjectId(meet.projectId)
-                setOpenProject(true)
+                navigate(`/project/${meet.projectId}`)
             })
             onClose()
         }

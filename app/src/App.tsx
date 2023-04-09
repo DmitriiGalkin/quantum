@@ -9,13 +9,14 @@ import {MainLayout} from "./layouts/MainLayout";
 
 import {createBrowserRouter, createRoutesFromElements} from "react-router-dom";
 import {AuthLayout} from "./layouts/AuthLayout";
-import Main from './pages/Main'
 import './App.css'
 import ProjectDialog from "./pages/Project";
 import Meets from "./pages/Meets";
 import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
 import Uniques from "./pages/Uniques";
+import PlaceDialog from "./pages/Place";
+import MapDialog from "./pages/Map";
 
 
 export const router = createBrowserRouter(
@@ -25,14 +26,15 @@ export const router = createBrowserRouter(
             <Route path="/registration" element={<Registration />} />
             <Route path="/callback" element={<Callback />} />
             <Route element={<ProtectedLayout />}>
-                <Route index element={<Main />}/>
                 <Route element={<MainLayout />}>
-                    <Route path="/meets" element={<Meets />}/>
+                    <Route index element={<Meets />}/>
                     <Route path="/projects" element={<Projects />}/>
                     <Route path="/tasks" element={<Tasks />}/>
                     <Route path="/uniques" element={<Uniques />}/>
-                    <Route path="/project/:id" element={<ProjectDialog />}/>
                 </Route>
+                <Route path="/map" element={<MapDialog />}/>
+                <Route path="/project/:id" element={<ProjectDialog />}/>
+                <Route path="/place/:id" element={<PlaceDialog />}/>
             </Route>
         </Route>
     )

@@ -10,6 +10,10 @@ interface MeetCardProps {
     onClickEnter?: () => void
     onClickLeave?: () => void
 }
+
+export const SELECTED_COLOR = '#CDEBFC'
+export const DEFAULT_COLOR = '#E1F1FA'
+
 export default function MeetCard({ meet, onClickEnter, onClickLeave }: MeetCardProps) {
     const { data: user } = useUser()
     const time = convertToMeetTime(meet.datetime)
@@ -24,8 +28,8 @@ export default function MeetCard({ meet, onClickEnter, onClickLeave }: MeetCardP
     }
 
     return (
-        <Box style={{ padding: '8px 16px', backgroundColor: active ? 'rgba(255,204,0,0.4)' : undefined }} onClick={onClick}>
-            <Box style={{ display: 'flex', alignItems: 'center' }}>
+        <Box style={{ height: 75, padding: '8px 16px', backgroundColor: active ? SELECTED_COLOR : DEFAULT_COLOR }} onClick={onClick}>
+            <Box style={{ display: 'flex' }}>
                 <Box style={{ flexGrow: 1 }}>
                     <Typography variant="h6">
                         {meet.project?.title}

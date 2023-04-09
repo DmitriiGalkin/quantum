@@ -24,6 +24,9 @@ const theme = createTheme({
             fontSize: 14,
             fontWeight: 400,
         },
+        allVariants: {
+            color: "#1B3B6B"
+        },
     },
     spacing: 6,
     palette: {

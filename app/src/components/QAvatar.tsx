@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function QAvatar(user: User) {
     const classes = useStyles();
-    const config = genConfig(String(user.id))
-    return <Avatar className={classes.large} {...config} />
+    const avatar = user.avatar ? user.avatar : genConfig(String(user.id))
+    return <Avatar className={classes.large} {...avatar} />
 }
 
 

@@ -1,39 +1,88 @@
-import {Navigate, Outlet} from "react-router-dom";
+import {Outlet, useLocation, useNavigate, useOutletContext} from "react-router-dom";
 import {useAuth} from "../tools/auth";
 import {
-    AppBar, BottomNavigation, BottomNavigationAction,
+    AppBar,
+    BottomNavigation,
+    BottomNavigationAction,
     Box,
     Container,
     IconButton,
-    Link,
     Menu,
     MenuItem,
     Paper,
-    Stack,
-    Toolbar,
-    Typography
+    Theme,
+    Toolbar
 } from "@mui/material";
 import MapIcon from "@mui/icons-material/Map";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {TabPanel} from "../components/tabs";
-import Day from "../components/Day";
-import {Meet} from "../modules/meet";
-import ProjectCard from "../components/ProjectCard";
-import TaskCard from "../components/TaskCard";
+import {NewMeet} from "../modules/meet";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import ArrowUpward from "@mui/icons-material/ArrowUpward";
 import GroupsIcon from "@mui/icons-material/Groups";
 import RocketIcon from "@mui/icons-material/Rocket";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import Map from "../dialogs/Map";
-import Place from "../dialogs/Place";
 import CreateProject from "../dialogs/CreateProject";
 import CreateMeet from "../dialogs/CreateMeet";
 import Options from "../dialogs/Options";
-import Task from "../dialogs/task";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import {makeStyles} from "@mui/styles";
+import {User, useUser} from "../modules/user";
 
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        height: '100vh',
+        backgroundColor: theme.palette.background.paper,
+    },
+    contentAll: {
+        height: '100vh',
+        padding: '60px 0 68px 0',
+    },
+    bottomNavigation: {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10
+    },
+    appBar: {
+        zIndex: 10,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0
+    },
+}));
+type ContextType = {
+    user: User | null
+    setOpenCreateProject: (open: boolean) => void
+};
+
+const MAIN_PAGES = ['', 'projects', 'tasks', 'uniques']
 export const MainLayout = () => {
+    const { data: user } = useUser()
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const classes = useStyles();
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const { logout } = useAuth();
+    const [openCreateProject, setOpenCreateProject] = useState(false)
+    const [openCreateMeet, setOpenCreateMeet] = useState<NewMeet>()
+    const [openOptions, setOpenOptions] = useState(false)
+
+    const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const isMenuOpen = Boolean(anchorEl);
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+    const bottomNavigationValue = MAIN_PAGES.findIndex((pageName) => '/' + pageName === location.pathname) || 0
+    const [user2, setUser2] = React.useState<User | null>(null);
+    useEffect(() => {
+        user && setUser2(user)
+    }, [user])
+
     return (
         <>
             <Box className={classes.root}>
@@ -52,18 +101,10 @@ export const MainLayout = () => {
                                 </svg>
                             </Box>
                             <Box sx={{ flexGrow: 1 }} />
-                            <IconButton
-                                size="large"
-                                aria-label="show 17 new notifications"
-                                color="inherit"
-                                onClick={() => setOpenMap(true)}
-                            >
+                            <IconButton size="large" color="inherit" onClick={() => navigate(`/map`)}>
                                 <MapIcon style={{ color: 'white' }} />
                             </IconButton>
-                            <IconButton               size="large"
-                                                      edge="end"
-                                                      onClick={handleProfileMenuOpen}
-                                                      color="inherit">
+                            <IconButton size="large" edge="end" onClick={handleProfileMenuOpen} color="inherit">
                                 <MoreVertIcon style={{ color: 'white' }}/>
                             </IconButton>
                             <Menu
@@ -81,12 +122,10 @@ export const MainLayout = () => {
                                 open={isMenuOpen}
                                 onClose={handleMenuClose}
                             >
-                                {Boolean(projects.length) && (
-                                    <MenuItem onClick={() => {
-                                        setOpenCreateMeet({})
-                                        handleMenuClose()
-                                    }}>Новая встреча</MenuItem>
-                                )}
+                                <MenuItem onClick={() => {
+                                    setOpenCreateMeet({})
+                                    handleMenuClose()
+                                }}>Новая встреча</MenuItem>
                                 <MenuItem onClick={() => {
                                     setOpenCreateProject(true)
                                     handleMenuClose()
@@ -102,32 +141,30 @@ export const MainLayout = () => {
                 </div>
                 <div style={{minHeight: '100vh', height: '100%'}}>
                     <Box className={classes.contentAll} flexDirection="column" display='flex'>
-                        <Container disableGutters>
-                            <Outlet />
+                        <Container>
+                            <Outlet context={{ user: user2, setOpenCreateProject }} />
                         </Container>
                     </Box>
                 </div>
                 <div className={classes.bottomNavigation}>
                     <Paper elevation={2}>
-                        <BottomNavigation
-                            value={tab}
-                            onChange={(event, newValue) => setTab(newValue)}
-                            showLabels
-                        >
-                            <BottomNavigationAction label="Встречи" icon={<GroupsIcon />} />
-                            <BottomNavigationAction label="Проекты" icon={<RocketIcon />} />
-                            <BottomNavigationAction label="Задания" icon={<EmojiEventsIcon />} />
-                            <BottomNavigationAction label="Ценности" icon={<AutoAwesomeIcon />} />
+                        <BottomNavigation showLabels value={bottomNavigationValue}>
+                            <BottomNavigationAction label="Встречи" icon={<GroupsIcon />} onClick={() => navigate(`/`)} />
+                            <BottomNavigationAction label="Проекты" icon={<RocketIcon />} onClick={() => navigate(`/projects`)} />
+                            <BottomNavigationAction label="Задания" icon={<EmojiEventsIcon />} onClick={() => navigate(`/tasks`)} />
+                            <BottomNavigationAction label="Ценности" icon={<AutoAwesomeIcon />} onClick={() => navigate(`/uniques`)} />
                         </BottomNavigation>
                     </Paper>
                 </div>
             </Box>
-            <Map open={openMap} onClose={() => setOpenMap(false)} setPlaceId={setPlaceId} setOpenPlace={setOpenPlace} />
-            <Place openPlace={openPlace} onClose={() => setOpenPlace(false)} placeId={placeId} projects={projects} setProjectId={setProjectId} setOpenProject={setOpenProject} />
-            <CreateProject openCreateProject={openCreateProject} onClose={() => setOpenCreateProject(false)} setOpenProject={setOpenProject} setProjectId={setProjectId} />
-            <CreateMeet openCreateMeet={openCreateMeet} onClose={() => setOpenCreateMeet(undefined)} setOpenProject={setOpenProject} setProjectId={setProjectId} />
+            <CreateProject openCreateProject={openCreateProject} onClose={() => setOpenCreateProject(false)} />
+            <CreateMeet openCreateMeet={openCreateMeet} onClose={() => setOpenCreateMeet(undefined)} />
             <Options openOptions={openOptions} onClose={() => setOpenOptions(false)} />
-            {userTaskId && <Task userTaskId={userTaskId} onClose={() => setUserTaskId(undefined)} />}
+            {/*{userTaskId && <Task userTaskId={userTaskId} onClose={() => setUserTaskId(undefined)} />}*/}
         </>
     )
 };
+
+export function useUser2() {
+    return useOutletContext<ContextType>();
+}

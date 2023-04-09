@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Project, useAddProject, useProject, useUpdateProject} from "../modules/project";
 import ForwardAppBar from "../components/ForwardAppBar";
 import QContainer from "../components/QContainer";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Button, Stack, TextField} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
@@ -19,20 +19,18 @@ export interface CreateProjectDialogProps {
     openCreateProject: boolean
     isEdit?: boolean
     onClose: () => void
-    setOpenProject: (open: boolean) => void
-    setProjectId: (projectId: number) => void
 }
-export default function CreateProjectDialog({ openCreateProject, isEdit, onClose, setOpenProject, setProjectId }: CreateProjectDialogProps) {
+export default function CreateProjectDialog({ openCreateProject, isEdit, onClose }: CreateProjectDialogProps) {
     const { id } = useParams();
     const { data: projectOld } = useProject(id ? Number(id) : 0)
     const [project, setProject] = useState(projectOld || DEFAULT_PROJECT)
     const addProject = useAddProject()
     const updateProject = useUpdateProject()
+    const navigate = useNavigate();
 
     const onClickSave = () => {
         isEdit ? updateProject.mutate(project) : addProject.mutateAsync(project).then((projectId) => {
-            setProjectId(projectId)
-            setOpenProject(true)
+            navigate(`/project/${projectId}`)
         })
         onClose()
     };

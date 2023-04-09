@@ -5,6 +5,7 @@ var User = function(user){
     this.email = user.email;
     this.password = user.password;
     this.title = user.title;
+    this.avatar = user.avatar;
     this.token = user.token;
     this.points = user.points;
 };
@@ -15,8 +16,9 @@ User.create = function (user, result) {
     });
 };
 // Обновление участника
-User.update = function(id, user, result){
-    dbConn.query("UPDATE user SET title=?,points=?,email=?,password=?,token=? WHERE id = ?", [user.title,user.points,user.email,user.password,user.token, id], function (err, res) {
+User.update = function(userId, user, result){
+    const avatar = JSON.stringify(user.avatar)
+    dbConn.query("UPDATE user SET title=?,points=?,email=?,password=?,token=?,avatar=? WHERE id = ?", [user.title,user.points,user.email,user.password,user.token, avatar, userId], function (err, res) {
         result(null, res);
     });
 };
@@ -36,25 +38,28 @@ User.islogin = function (email, password, result) {
 // Участник
 User.findById = function (id, result) {
     dbConn.query("Select * from user where id = ? ", id, function (err, res) {
-        result(null, res);
+        result(null, parse(res));
     });
 };
+const parse = (res) => {
+    return res //.map((r) => ({ ...r, avatar: JSON.parse(r.avatar)}))
+}
 // Участник по token
 User.findByToken = function (id, result) {
     dbConn.query("Select * from user where token = ? ", id, function (err, res) {
-        result(null, res.length ? res[0] : null);
+        result(null, res.length ? parse(res)[0] : null);
     });
 };
 // Участники встречи
 User.findByMeet = function (meet, result) {
     dbConn.query("Select * from user LEFT JOIN user_meet ON user.id = user_meet.userId where meetId = ?", meet.id, function (err, res) {
-        result(null, res);
+        result(null, parse(res));
     });
 };
 // Участники проекта
 User.findByProject = function (project, result) {
-    dbConn.query("Select * from user LEFT JOIN user_project ON user.id = user_project.userId where projectId = ?", project.id, function (err, users) {
-        result(null, users);
+    dbConn.query("Select * from user LEFT JOIN user_project ON user.id = user_project.userId where projectId = ?", project.id, function (err, res) {
+        result(null, parse(res));
     });
 };
 // Начислеине баллов
