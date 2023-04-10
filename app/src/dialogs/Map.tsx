@@ -3,9 +3,6 @@ import {usePlaces} from "../modules/place";
 import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
 import {useNavigate} from "react-router-dom";
-import {AppBar, Box, IconButton, Toolbar} from "@mui/material";
-import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
-import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
 import Back from "../components/Back";
@@ -23,14 +20,7 @@ export default function MapDialog({onClose, open}: MapDialogProps) {
         <Dialog onClose={onClose} open={open} fullScreen keepMounted TransitionComponent={TransitionDialog}>
             <Back title="Карта проектов" onClick={onClose}/>
             <YMaps>
-                <Map
-                    defaultState={{
-                        center: [x, y],
-                        zoom: 12,
-                    }}
-                    width="100%"
-                    height="100%"
-                >
+                <Map defaultState={{ center: [x, y], zoom: 12 }} width="100%" height="100%">
                     {places.map((place) => (
                         <Placemark
                             key={place.id}

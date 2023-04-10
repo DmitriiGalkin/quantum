@@ -3,8 +3,8 @@ import {User, useUpdateUser, useUser} from "../modules/user";
 import QContainer from "../components/QContainer";
 import {Box, Button, ClickAwayListener, Grid, Stack, TextField} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
-import { HexColorPicker } from "react-colorful";
-import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import {HexColorPicker} from "react-colorful";
+import Tooltip from '@mui/material/Tooltip';
 
 import Avatar, {
     EarSize,

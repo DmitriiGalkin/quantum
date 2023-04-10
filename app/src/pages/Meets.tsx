@@ -36,5 +36,3 @@ export default function MeetsPage() {
         </>
     );
 }
-//onClick={() => setOpenMap(true)}
-//onClick={() => setOpenCreateProject(true)}

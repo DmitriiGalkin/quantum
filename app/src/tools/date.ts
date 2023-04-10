@@ -7,7 +7,10 @@ export const formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 export const formatter2 = DateTimeFormatter.ofPattern('yyyy-MM-dd');
 
 const MONTH_SHORT_TITLES = ['ЯНВ', 'ФЕВ', 'МАР', 'АПР', 'МАЙ', 'ИЮН', 'ИЮЛ','АВГ', 'СЕН', 'ОКТ', 'НОЯ', 'ДЕК']
+const MONTH_LONG_TITLES = ['ЯНВАРЯ', 'ФЕВРАЛЯ', 'МАРТА', 'АПРЕЛЯ', 'МАЯ', 'ИЮНЯ', 'ИЮЛЯ','АВГУСТА', 'СЕНТЯБРЯ', 'ОКТЯБРЯ', 'НОЯБРЯ', 'ДЕКАБРЯ']
+
 export const getMonthShortTitle = (index: number) => MONTH_SHORT_TITLES[index - 1]
+export const getMonthLongTitle = (index: number) => MONTH_LONG_TITLES[index - 1]
 
 const DAYS_OF_WEEK = new Map([
     ['Su', 'Вс'],

@@ -3,6 +3,7 @@ var async = require("async");
 const Meet = require('../models/meetModel');
 const User = require('../models/userModel');
 const Project = require('../models/projectModel');
+const Place = require('../models/placeModel');
 const UserMeet = require('../models/userMeetModel');
 
 // Создание встречи
@@ -41,7 +42,9 @@ exports.findByUser = function(req, res) {
     Meet.findAllByUserId(req.user.id, function(err, meets) {
         async.map(meets, User.findByMeet, function(err, meetsUsers) {
             async.map(meets, Project.findByMeet, function(err, meetsProject) {
-                res.send(meets.map((p, index) => ({ ...p, project: meetsProject[index], users: meetsUsers[index], active: meetsUsers[index]?.find((user) => user.id === req.user.id) })));
+                async.map(meets, Place.findByMeet, function(err, meetsPlace) {
+                    res.send(meets.map((p, index) => ({ ...p, project: meetsProject[index], place: meetsPlace[index], users: meetsUsers[index], active: meetsUsers[index]?.find((user) => user.id === req.user.id) })));
+                });
             });
         });
     });

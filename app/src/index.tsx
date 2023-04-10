@@ -20,8 +20,10 @@ import Meets from "./pages/Meets";
 import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
 import Uniques from "./pages/Uniques";
-import ProjectDialog from "./pages/Project";
-import PlaceDialog from "./pages/Place";
+import Project from "./pages/Project";
+import Place from "./pages/Place";
+import Task from "./pages/Task";
+import {GOOGLE_O_AUTH_PROVIDER_CLIENT_ID} from "./tools/auth";
 
 const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(
@@ -40,26 +42,26 @@ const router = createBrowserRouter(
                     <Route path="/tasks" element={<Tasks />}/>
                     <Route path="/uniques" element={<Uniques />}/>
                 </Route>
-                <Route path="/project/:id" element={<ProjectDialog />}/>
-                <Route path="/place/:id" element={<PlaceDialog />}/>
+                <Route path="/project/:id" element={<Project />}/>
+                <Route path="/place/:id" element={<Place />}/>
+                <Route path="/task/:id" element={<Task />}/>
             </Route>
         </Route>
     )
 );
 
 root.render(
-    <GoogleOAuthProvider clientId="804980223837-9e350rj8p8glgbqel5c5rmh6jafnf1u2.apps.googleusercontent.com">
-
-  <React.StrictMode>
-      <ThemeProvider theme={theme}>
-          <QueryClientProvider client={queryClient}>
-              <CssBaseline />
-              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
-                  <RouterProvider router={router} />
-              </LocalizationProvider>
-          </QueryClientProvider>
-      </ThemeProvider>
-  </React.StrictMode>
+    <GoogleOAuthProvider clientId={GOOGLE_O_AUTH_PROVIDER_CLIENT_ID}>
+      <React.StrictMode>
+          <ThemeProvider theme={theme}>
+              <QueryClientProvider client={queryClient}>
+                  <CssBaseline />
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
+                      <RouterProvider router={router} />
+                  </LocalizationProvider>
+              </QueryClientProvider>
+          </ThemeProvider>
+      </React.StrictMode>
     </GoogleOAuthProvider>,
 
 );

@@ -66,6 +66,7 @@ export const useAuth = () => {
     return useContext(AuthContext);
 };
 
+export const GOOGLE_O_AUTH_PROVIDER_CLIENT_ID = "804980223837-9e350rj8p8glgbqel5c5rmh6jafnf1u2.apps.googleusercontent.com"
 const GOOGLE_AUTH_URI = 'https://accounts.google.com/o/oauth2/auth'; // Запрос на авторизацию
 export const GOOGLE_TOKEN_URI = 'https://accounts.google.com/o/oauth2/token'; // Запрос токена
 // export const GOOGLE_USER_INFO_URI = 'https://www.googleapis.com/oauth2/v1/userinfo'; // Информация по пользователю

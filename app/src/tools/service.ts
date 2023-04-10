@@ -1,15 +1,13 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {UseMutationResult} from "@tanstack/react-query";
 
-const SAME_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://selfproject.ru/api' // 'http://localhost:4000' // 'https://selfproject.ru/api'
+const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://selfproject.ru/api'
 export const ACCESS_TOKEN = 'access_token'
 
 export const createService = (): AxiosInstance => {
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
-
     const service = axios.create()
     service.interceptors.request.use((config: AxiosRequestConfig) => ({
-        baseURL: SAME_URL,
+        baseURL: BASE_URL,
         ...config,
     }))
     service.interceptors.request.use((config: AxiosRequestConfig) => {

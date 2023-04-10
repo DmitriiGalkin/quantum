@@ -6,9 +6,9 @@ const UserTask = require('../models/userTaskModel');
 
 // Задание участника
 exports.findById = function(req, res) {
-    UserTask.findById(req.params.id, function(err, tasks) {
-        Task.findByUserTask(tasks[0], function(err, task) {
-            res.json({...tasks[0], task});
+    UserTask.findById(req.params.id, function(err, userTask) {
+        Task.findByUserTask(userTask, function(err, task) {
+            res.json({...userTask, task});
         });
     });
 };
@@ -25,8 +25,8 @@ exports.update = function(req, res) {
 // Задания участника
 exports.findByUser = function(req, res) {
     UserTask.findAllByUserId(req.user.id, function(err, userTasks) {
-        async.map(userTasks, Task.findByUserTask, function(err, userTasksWithTask) {
-            res.send(userTasksWithTask);
+        async.map(userTasks, Task.findByUserTask, function(err, tasks) {
+            res.send(userTasks.map((userTask, index) => ({...userTask, task: tasks[index]})));
         });
     });
 };

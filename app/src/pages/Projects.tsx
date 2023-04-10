@@ -1,5 +1,5 @@
 import React from 'react';
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard from "../components/cards/ProjectCard";
 import {Box, Stack} from "@mui/material";
 import {useOnlyUserProjects} from "../modules/user";
 import {useNavigate} from "react-router-dom";

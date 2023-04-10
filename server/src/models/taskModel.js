@@ -8,7 +8,7 @@ var Task = function(data){
 // Задание
 Task.findByUserTask = function (userTask, result) {
     dbConn.query("Select * from task where id = ? ", userTask.taskId, function (err, res) {
-        result(null, { ...userTask, task: res[0] });
+        result(null, res.length ? res[0] : undefined);
     });
 };
 module.exports = Task;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Place} from "../modules/place";
+import {Place} from "../../modules/place";
 import {Card, CardContent, Typography} from "@mui/material";
 
 interface PlaceCardProps {

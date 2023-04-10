@@ -14,7 +14,7 @@ Meet.create = function (data, result) {
 };
 // Встречи проекта
 Meet.findByProject = function (project, result) {
-    dbConn.query("Select * from meet where projectId = ? ", project.id, function (err, res) {
+    dbConn.query("Select * from meet where projectId = ? AND DATE(datetime) >= CURDATE() ", project.id, function (err, res) {
         result(null, res);
     });
 };

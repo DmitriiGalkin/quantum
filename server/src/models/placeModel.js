@@ -30,6 +30,12 @@ Place.findById = function (id, result) {
         result(null, res.length ? res[0] : undefined);
     });
 };
+// Пространство встречи
+Place.findByMeet = function (meet, result) {
+    dbConn.query("Select * from place where  id = ? ", meet.placeId, function (err, res) {
+        result(null, res.length ? res[0] : undefined);
+    });
+};
 // Place.findByUserId = function (id, result) {
 //     dbConn.query("Select * from place where userId = ? ", id, function (err, res) {
 //         result(null, res);

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import {usePlace} from "../modules/place";
-import {AppBar, Box, Container, IconButton, Stack, Toolbar} from "@mui/material";
-import ProjectCard from "../components/ProjectCard";
-import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
+import {Container, Stack} from "@mui/material";
+import Project from "../components/cards/ProjectCard";
 import {useNavigate, useParams} from "react-router-dom";
+import Back from "../components/Back";
+import QContainer from "../components/QContainer";
 
 export default function PlaceDialog() {
     const { id: placeId } = useParams();
@@ -16,31 +17,15 @@ export default function PlaceDialog() {
 
     return (
         <>
-            <AppBar position="sticky">
-                <Toolbar variant="dense">
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        onClick={() => window.history.length ? window.history.back() : navigate('/')}
-                    >
-                        <ArrowBackIos style={{ color: 'white' }}/>
-                    </IconButton>
-                    <Typography variant="h6" color="white" component="div">
-                        {place.title}
-                    </Typography>
-                    <Box sx={{ flexGrow: 1 }} />
-                </Toolbar>
-            </AppBar>
-            <Container disableGutters sx={{ padding: '24px 18px' }}>
+            <Back title={place.title}/>
+            <QContainer>
                 <Stack spacing={2}>
                     <Typography>
                         {place.description}
                     </Typography>
                     <Stack spacing={2}>
                         {place.projects.map((project) => (
-                            <ProjectCard
+                            <Project
                                 key={project.id}
                                 project={project}
                                 // active={userProjectsIds.includes(project.id)}
@@ -49,7 +34,7 @@ export default function PlaceDialog() {
                         ))}
                     </Stack>
                 </Stack>
-            </Container>
+            </QContainer>
         </>
     );
 }

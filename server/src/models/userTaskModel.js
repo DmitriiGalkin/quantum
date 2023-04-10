@@ -9,7 +9,7 @@ var UserTask = function(data){
 // Задание участника
 UserTask.findById = function (id, result) {
     dbConn.query("Select * from user_task where id = ? ", id, function (err, res) {
-        result(null, res);
+        result(null, res.length ? res[0] : undefined);
     });
 };
 // Задания участника

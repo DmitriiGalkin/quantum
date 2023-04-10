@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, Slider, Stack, Typography} from "@mui/material";
 import {NewMeet, useAddMeet} from "../modules/meet";
-import {TabPanel} from "../components/tabs";
-import ProjectCard from "../components/ProjectCard";
+import TabPanel from "../components/TabPanel";
+import ProjectCard from "../components/cards/ProjectCard";
 import {useUserProjects} from "../modules/user";
 import {Project, useProject} from "../modules/project";
 import {CalendarPicker} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
 import {Place, usePlace, usePlaces} from "../modules/place";
-import PlaceCard from "../components/PlaceCard";
+import PlaceCard from "../components/cards/PlaceCard";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
 import {useNavigate} from "react-router-dom";

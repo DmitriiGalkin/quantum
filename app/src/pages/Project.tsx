@@ -1,29 +1,18 @@
 import React, {useState} from 'react';
 import {makeStyles} from '@mui/styles';
-import {
-    AppBar,
-    Box,
-    Button,
-    Container,
-    IconButton,
-    Menu,
-    MenuItem,
-    Stack,
-    Theme,
-    Toolbar,
-    Typography
-} from "@mui/material";
+import {Box, Button, Container, Stack, Theme, Typography} from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import {useAddMeetUser, useAddProjectUser, useDeleteMeetUser, useDeleteProjectUser, useUser} from "../modules/user";
 import {useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet, NewMeet} from "../modules/meet";
-import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import QAvatar from "../components/QAvatar";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import CreateMeet from "../dialogs/CreateMeet";
+import Back from "../components/Back";
+import {getOnShare} from "../tools/share";
+import QContainer from "../components/QContainer";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -44,9 +33,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function Project() {
     const { id: projectId } = useParams();
     const { data: user } = useUser()
-    const navigate = useNavigate();
 
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
     const { data: project, refetch } = useProject(Number(projectId))
     const active = user && project?.users.map(({ id}) => id).includes(user.id)
 
@@ -62,14 +50,6 @@ export default function Project() {
 
     const meetsGroup = getMeetsGroup(project?.meets)
 
-    const handleProjectMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const isMenuOpen = Boolean(anchorEl);
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
-
     const onClick = () => {
         if (active) {
             deleteProjectUser.mutate({ projectId: project.id })
@@ -80,68 +60,24 @@ export default function Project() {
 
     const onClickEnter = active ? ((meetId: number) => () => addMeetUser.mutate({ meetId })) : undefined
     const onClickLeave = active ? ((meetId: number) => () => deleteMeetUser.mutate({ meetId })) : undefined
-    const onShare = async () => {
-        try {
-            await navigator.share({
+    const menuItems = [
+        { title: 'Новая встреча', onClick: () => {
+                setOpenCreateMeet({ projectId: project?.id, activeStep: 1 })
+            }},
+        { title: 'Поделиться', onClick: getOnShare({
                 title: project?.title,
                 text: project?.description,
-                url: `https://selfproject.ru/project/${project?.id}`
-            });
-        }
-        catch(e) {
-            console.log('share error', e);
-        }
-    }
+                url: `/project/${project?.id}`
+            })},
+        { title: 'Выйти из проекта', onClick: () => onClick()},
+    ]
 
     return (
         <>
-            <AppBar position="sticky">
-                <Toolbar variant="dense">
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        onClick={() => window.history.length ? window.history.back() : navigate('/')}
-                    >
-                        <ArrowBackIos style={{ color: 'white' }}/>
-                    </IconButton>
-                    <Typography variant="h6" color="white" component="div">
-                        {project.title}
-                    </Typography>
-                    <Box sx={{ flexGrow: 1 }} />
-                    {active && (
-                        <IconButton size="large" edge="end" onClick={handleProjectMenuOpen}>
-                            <MoreVertIcon style={{ color: 'white' }}/>
-                        </IconButton>
-                    )}
-                    <Menu
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        id={'primary-search-account-menu'}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={isMenuOpen}
-                        onClose={handleMenuClose}
-                    >
-                        <MenuItem onClick={() => {
-                            setOpenCreateMeet({ projectId: project?.id, activeStep: 1 })
-                            handleMenuClose()
-                        }}>Новая встреча</MenuItem>
-                        <MenuItem onClick={onShare}>Поделиться</MenuItem>
-                        <MenuItem onClick={() => onClick()}>Выйти из проекта</MenuItem>
-                    </Menu>
-                </Toolbar>
-            </AppBar>
+            <Back title={project.title} menuItems={menuItems} />
             <div className={classes.container}>
-                <Container disableGutters sx={{ padding: '24px 18px' }}>
-                    <Stack spacing={2}>
+                <QContainer>
+                    <Stack spacing={3}>
                         <Typography>
                             {project.description}
                         </Typography>
@@ -157,16 +93,11 @@ export default function Project() {
                             </Button>
                         )}
                         {Boolean(project.meets.length) && (
-                            <Stack spacing={2}>
-                                <Typography variant="h5">
-                                    Встречи
-                                </Typography>
-                                <div>
-                                    {meetsGroup.map(([date, meets]) => (
-                                        <Day key={date} date={date} meets={meets as Meet[]} onClickEnter={onClickEnter} onClickLeave={onClickLeave}/>
-                                    ))}
-                                </div>
-                            </Stack>
+                            <div>
+                                {meetsGroup.map(([date, meets]) => (
+                                    <Day key={date} date={date} meets={meets as Meet[]} onClickEnter={onClickEnter} onClickLeave={onClickLeave}/>
+                                ))}
+                            </div>
                         )}
                         <Stack spacing={2}>
                             <Typography variant="h5">
@@ -189,7 +120,7 @@ export default function Project() {
                             </div>
                         </Stack>
                     </Stack>
-                </Container>
+                </QContainer>
             </div>
             <CreateMeet openCreateMeet={openCreateMeet} onClose={() => {
                 setOpenCreateMeet(undefined)
