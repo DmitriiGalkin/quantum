@@ -116,6 +116,8 @@ export default function CreateMeetDialog({ onClose, openCreateMeet }: CreateMeet
                 </TabPanel>
                 <TabPanel value={meet?.activeStep || 0} index={2}>
                     <div>
+                        <ProjectCard project={project}/>
+                        <PlaceCard place={place}/>
                         <Box sx={{
                             fontSize: '15px',
                             '& .MuiPickersFadeTransitionGroup-root': {
@@ -161,14 +163,6 @@ export default function CreateMeetDialog({ onClose, openCreateMeet }: CreateMeet
                                 step={15} // Каждые 15 минут
                             />
                         </Box>
-                        <Typography variant="h5">
-                            Проект
-                        </Typography>
-                        <ProjectCard project={project}/>
-                        <Typography variant="h5">
-                            Место
-                        </Typography>
-                        <PlaceCard place={place}/>
                         <Button
                             onClick={onClickSave}
                             fullWidth

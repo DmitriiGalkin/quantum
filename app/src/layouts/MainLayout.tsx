@@ -5,7 +5,6 @@ import {
     BottomNavigation,
     BottomNavigationAction,
     Box,
-    Container,
     IconButton,
     Menu,
     MenuItem,
@@ -29,6 +28,7 @@ import React, {useEffect, useState} from "react";
 import {makeStyles} from "@mui/styles";
 import {User, useUser} from "../modules/user";
 import QContainer from "../components/QContainer";
+import {More} from "../components/More";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -88,6 +88,12 @@ export const MainLayout = () => {
         user && setUser2(user)
     }, [user])
 
+    const menuItems = [
+        { title: 'Новая встреча', onClick: () => setOpenCreateMeet({}) },
+        { title: 'Новый проект', onClick: () => setOpenCreateProject(true) },
+        { title: 'Настройки', onClick: () => setOpenOptions(true) },
+        { title: 'Выход', onClick: () => logout() },
+    ]
     return (
         <>
             <Box className={classes.root}>
@@ -103,38 +109,7 @@ export const MainLayout = () => {
                             <IconButton size="large" onClick={() => setOpenMap(true)}>
                                 <MapIcon style={{ color: 'white' }} />
                             </IconButton>
-                            <IconButton size="large" edge="end" onClick={handleProfileMenuOpen}>
-                                <MoreVertIcon style={{ color: 'white' }}/>
-                            </IconButton>
-                            <Menu
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                id={'primary-search-account-menu'}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={isMenuOpen}
-                                onClose={handleMenuClose}
-                            >
-                                <MenuItem onClick={() => {
-                                    setOpenCreateMeet({})
-                                    handleMenuClose()
-                                }}>Новая встреча</MenuItem>
-                                <MenuItem onClick={() => {
-                                    setOpenCreateProject(true)
-                                    handleMenuClose()
-                                }}>Новый проект</MenuItem>
-                                <MenuItem onClick={() => {
-                                    setOpenOptions(true)
-                                    handleMenuClose()
-                                }}>Настройки</MenuItem>
-                                <MenuItem onClick={() => logout()}>Выход</MenuItem>
-                            </Menu>
+                            <More menuItems={menuItems}/>
                         </Toolbar>
                     </AppBar>
                 </div>
