@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Project, useAddProject, useProject, useUpdateProject} from "../modules/project";
-import ForwardAppBar from "../components/ForwardAppBar";
+import Back from "../components/Back";
 import QContainer from "../components/QContainer";
 import {useNavigate, useParams} from "react-router-dom";
 import {Button, Stack, TextField} from "@mui/material";
@@ -34,10 +34,11 @@ export default function CreateProjectDialog({ openCreateProject, isEdit, onClose
         })
         onClose()
     };
+    const title = isEdit ? 'Редактирование проекта' : "Создание проекта"
 
     return (
         <Dialog onClose={onClose} open={openCreateProject} fullScreen TransitionComponent={TransitionDialog}>
-            <ForwardAppBar title={isEdit ? 'Редактирование проекта' : "Создание проекта"} onClick={onClose}/>
+            <Back title={title} onClick={onClose}/>
             <QContainer>
                 <Stack spacing={2}>
                     <TextField

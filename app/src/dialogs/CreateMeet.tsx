@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, Slider, Stack, Typography} from "@mui/material";
-import ForwardAppBar from "../components/ForwardAppBar";
 import {NewMeet, useAddMeet} from "../modules/meet";
 import {TabPanel} from "../components/tabs";
 import ProjectCard from "../components/ProjectCard";
@@ -13,6 +12,7 @@ import PlaceCard from "../components/PlaceCard";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
 import {useNavigate} from "react-router-dom";
+import Back from "../components/Back";
 
 export function valuetext(value: number) {
     return `${value}°C2222`;
@@ -84,7 +84,7 @@ export default function CreateMeetDialog({ onClose, openCreateMeet }: CreateMeet
     return (
         <Dialog onClose={onClose} open={!!openCreateMeet} fullScreen TransitionComponent={TransitionDialog}>
             <div>
-                <ForwardAppBar title="Создать встречу" onClick={onClose}/>
+                <Back title="Создать встречу" onClick={onClose}/>
                 <TabPanel value={meet?.activeStep || 0} index={0}>
                     <Typography variant="h5" sx={{ paddingBottom: 1 }}>
                         Выберите проект для встречи

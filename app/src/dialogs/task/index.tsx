@@ -1,5 +1,5 @@
 import React from 'react';
-import ForwardAppBar from "../../components/ForwardAppBar";
+import Back from "../../components/Back";
 import {useEditUserTask, useUserTask} from "../../modules/task";
 import {Container} from "@mui/material";
 import SelectEmotion from "./SelectEmotion";
@@ -27,7 +27,7 @@ export default function TaskDialog({ userTaskId, onClose }: TaskDialogProps) {
 
     return (
         <Dialog onClose={onClose} open={true} fullScreen>
-            <ForwardAppBar title={userTask?.task.title} onClick={onClose} />
+            <Back title={userTask?.task.title} onClick={onClose} />
             <Container style={{ paddingTop: 20 }}>
                 <SelectEmotion onClick={(v) => onClick(v)}/>
             </Container>

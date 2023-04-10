@@ -20,6 +20,8 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import GroupsIcon from "@mui/icons-material/Groups";
 import RocketIcon from "@mui/icons-material/Rocket";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import Map from "../dialogs/Map";
+
 import CreateProject from "../dialogs/CreateProject";
 import CreateMeet from "../dialogs/CreateMeet";
 import Options from "../dialogs/Options";
@@ -54,6 +56,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type ContextType = {
     user: User | null
     setOpenCreateProject: (open: boolean) => void
+    setOpenMap: (open: boolean) => void
 };
 
 const MAIN_PAGES = ['', 'projects', 'tasks', 'uniques']
@@ -66,6 +69,7 @@ export const MainLayout = () => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { logout } = useAuth();
+    const [openMap, setOpenMap] = useState(false)
     const [openCreateProject, setOpenCreateProject] = useState(false)
     const [openCreateMeet, setOpenCreateMeet] = useState<NewMeet>()
     const [openOptions, setOpenOptions] = useState(false)
@@ -101,10 +105,10 @@ export const MainLayout = () => {
                                 </svg>
                             </Box>
                             <Box sx={{ flexGrow: 1 }} />
-                            <IconButton size="large" color="inherit" onClick={() => navigate(`/map`)}>
+                            <IconButton size="large" onClick={() => setOpenMap(true)}>
                                 <MapIcon style={{ color: 'white' }} />
                             </IconButton>
-                            <IconButton size="large" edge="end" onClick={handleProfileMenuOpen} color="inherit">
+                            <IconButton size="large" edge="end" onClick={handleProfileMenuOpen}>
                                 <MoreVertIcon style={{ color: 'white' }}/>
                             </IconButton>
                             <Menu
@@ -142,7 +146,7 @@ export const MainLayout = () => {
                 <div style={{minHeight: '100vh', height: '100%'}}>
                     <Box className={classes.contentAll} flexDirection="column" display='flex'>
                         <Container>
-                            <Outlet context={{ user: user2, setOpenCreateProject }} />
+                            <Outlet context={{ user: user2, setOpenCreateProject, setOpenMap }} />
                         </Container>
                     </Box>
                 </div>
@@ -157,10 +161,10 @@ export const MainLayout = () => {
                     </Paper>
                 </div>
             </Box>
+            <Map open={openMap} onClose={() => setOpenMap(false)} />
             <CreateProject openCreateProject={openCreateProject} onClose={() => setOpenCreateProject(false)} />
             <CreateMeet openCreateMeet={openCreateMeet} onClose={() => setOpenCreateMeet(undefined)} />
             <Options openOptions={openOptions} onClose={() => setOpenOptions(false)} />
-            {/*{userTaskId && <Task userTaskId={userTaskId} onClose={() => setUserTaskId(undefined)} />}*/}
         </>
     )
 };

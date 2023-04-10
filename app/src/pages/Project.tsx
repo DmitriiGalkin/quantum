@@ -41,12 +41,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-// export interface ProjectDialogProps {
-//     projectId?: number;
-//     openProject: boolean
-//     setOpenCreateMeet: (newMeet: NewMeet) => void
-//     onClose: () => void;
-// }
 export default function Project() {
     const { id: projectId } = useParams();
     const { data: user } = useUser()
@@ -163,33 +157,37 @@ export default function Project() {
                             </Button>
                         )}
                         {Boolean(project.meets.length) && (
-                            <div className={classes.block}>
+                            <Stack spacing={2}>
                                 <Typography variant="h5">
                                     Встречи
                                 </Typography>
-                                {meetsGroup.map(([date, meets]) => (
-                                    <Day key={date} date={date} meets={meets as Meet[]} onClickEnter={onClickEnter} onClickLeave={onClickLeave}/>
-                                ))}
-                            </div>
+                                <div>
+                                    {meetsGroup.map(([date, meets]) => (
+                                        <Day key={date} date={date} meets={meets as Meet[]} onClickEnter={onClickEnter} onClickLeave={onClickLeave}/>
+                                    ))}
+                                </div>
+                            </Stack>
                         )}
-                        <div className={classes.block}>
+                        <Stack spacing={2}>
                             <Typography variant="h5">
                                 Участники
                             </Typography>
-                            {project.users?.map((user) => (
-                                <Box key={user.id} sx={{padding: 1, display: "flex"}}>
-                                    <QAvatar {...user}/>
-                                    <Box sx={{flexGrow:1, paddingLeft: 2}}>
-                                        <Typography variant="subtitle1">
-                                            {user.title}
-                                        </Typography>
-                                        <Typography>
-                                            Вдохновитель
-                                        </Typography>
+                            <div>
+                                {project.users?.map((user) => (
+                                    <Box key={user.id} sx={{padding: 1, display: "flex"}}>
+                                        <QAvatar {...user}/>
+                                        <Box sx={{flexGrow:1, paddingLeft: 2}}>
+                                            <Typography variant="subtitle1">
+                                                {user.title}
+                                            </Typography>
+                                            <Typography>
+                                                Вдохновитель
+                                            </Typography>
+                                        </Box>
                                     </Box>
-                                </Box>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        </Stack>
                     </Stack>
                 </Container>
             </div>
