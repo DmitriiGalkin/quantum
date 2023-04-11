@@ -23,8 +23,8 @@ User.update = function(userId, user, result){
     });
 };
 // Обновление токена
-User.logi = function(token, result){
-    dbConn.query("UPDATE user SET token=? WHERE id = 1", [token], function (err, res) {
+User.logi = function(token, email, result){
+    dbConn.query("UPDATE user SET token=? WHERE email = ?", [token, email], function (err, res) {
         result(null, res);
     });
 };

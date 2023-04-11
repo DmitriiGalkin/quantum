@@ -25,8 +25,21 @@ exports.update = function(req, res) {
 };
 // Обновление токена
 exports.logi = function(req, res) {
-    User.logi(req.body.access_token, function(err, users) {
+    User.logi(req.body.access_token, req.body.email, function(err, users) {
         if (err) res.send(err);
+        if (!Boolean(users.length)){
+
+            // Начинаем создавать пользователя
+            const title = req.body.given_name + ' ' + req.body.family_name
+            const new_user = new User({...req.body, title, token: req.body.access_token });
+            if(req.body.constructor === Object && Object.keys(req.body).length === 0){
+                res.status(400).send({ error:true, message: 'Сбой конструктора участника при создании участника через гугл' });
+            } else {
+                User.create(new_user, function(err, data) {
+                    res.send({ error: false, message: "Участник создан", data });
+                });
+            }
+        }
         res.send(users && users[0]);
     });
 };

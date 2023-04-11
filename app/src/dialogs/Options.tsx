@@ -20,6 +20,7 @@ import Avatar, {
 } from "react-nice-avatar";
 import {TransitionDialog} from "../components/TransitionDialog";
 import Back from "../components/Back";
+import { getSignedUrl } from "../tools/s3";
 
 const AvatarM = {
     sex: ['man', 'woman'],
@@ -38,9 +39,9 @@ const AvatarM = {
 
 const avatarOptions = [
     //{ title: 'Пол', key: 'sex', },
-    { title: 'Цвет лица', key: 'faceColor'},
     { title: 'Уши', key: 'earSize'},
     { title: 'Волосы', key: 'hairStyle'},
+    { title: 'Цвет лица', key: 'faceColor'},
     { title: 'Цвет волос', key: 'hairColor', type: 'color'},
     //{ title: 'Шапка', key: 'hatStyle'},
     { title: 'Глаза', key: 'eyeStyle'},
@@ -110,14 +111,21 @@ export default function OptionsDialog({ openOptions, onClose }: OptionsDialogPro
     const handleTooltipOpen = (key: f) => {
         setOpen(key);
     };
+
+    const f = () => {
+        const l = getSignedUrl()
+        l.then((r)=>console.log(r,'r'))
+        console.log(l,'l');
+    }
     return (
         <Dialog onClose={onClose} open={openOptions} fullScreen TransitionComponent={TransitionDialog}>
             <Back title="Настройки" onClick={onClose}/>
+            <div onClick={f}>Загрузка</div>
             <QContainer>
                 <Stack spacing={2}>
                     <Stack direction="row" spacing={2}>
                         <Box>
-                            <Avatar style={{ width: '12rem', height: '12rem' }} {...user?.avatar} />
+                            <Avatar style={{ width: '10rem', height: '10rem' }} {...user?.avatar} />
                         </Box>
                         <Grid container spacing={2}>
                             {avatarOptions.map(({ title, key, type}) => {
@@ -136,10 +144,10 @@ export default function OptionsDialog({ openOptions, onClose }: OptionsDialogPro
                                                         disableHoverListener
                                                         disableTouchListener
                                                         title={
-                                                            <HexColorPicker color={user?.avatar[key]} onChange={onClickAvatar(key)} />
+                                                            <HexColorPicker color={user?.avatar?.[key]} onChange={onClickAvatar(key)} />
                                                         }
                                                     >
-                                                        <Button onClick={() => handleTooltipOpen(key)} variant="outlined" size="small">
+                                                        <Button style={{fontSize: 10}} onClick={() => handleTooltipOpen(key)} variant="outlined" size="small">
                                                             {title}
                                                         </Button>
                                                     </Tooltip>
@@ -151,7 +159,7 @@ export default function OptionsDialog({ openOptions, onClose }: OptionsDialogPro
 
                                 return (
                                     <Grid key={key} item xs={6}>
-                                        <Button onClick={() => onClickAvatar(key)()} variant="outlined" size="small">
+                                        <Button style={{fontSize: 10}} onClick={() => onClickAvatar(key)()} variant="outlined" size="small">
                                             {title}
                                         </Button>
                                     </Grid>

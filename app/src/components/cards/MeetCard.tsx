@@ -27,10 +27,13 @@ export default function MeetCard({ meet, onClickEnter, onClickLeave }: MeetCardP
 
     return (
         <QCard onClick={onClick} active={active}>
-            <Box style={{ display: 'flex', height: 75 }}>
+            <Box style={{ display: 'flex', height: 95 }}>
                 <Box style={{ flexGrow: 1 }}>
                     <Typography variant="h6">
-                        {meet.project?.title} в {meet.place?.title}
+                        {meet.project?.title}
+                    </Typography>
+                    <Typography variant="h6" color="textSecondary">
+                        {meet.place?.title}
                     </Typography>
                     {Boolean(meet.users.length) ? (
                         <Box sx={{ display: 'flex', paddingTop: 1 }}>

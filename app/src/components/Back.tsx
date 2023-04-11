@@ -15,7 +15,7 @@ interface BackProps {
 }
 export function Back({ title, onClick, menuItems }: BackProps) {
     const navigate = useNavigate();
-    const onBackClick = onClick ? onClick : (() => window.history.length ? window.history.back() : navigate('/'))
+    const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
 
     return (
         <AppBar position="static">
