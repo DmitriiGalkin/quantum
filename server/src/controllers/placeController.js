@@ -19,7 +19,13 @@ exports.findById = function(req, res) {
             async.map(projects, Meet.findByProject, function(err, projectsMeets) {
                 async.map(projects, Place.findByProject, function(err, projectsPlaces) {
                     async.map(projects, User.findByProject, function(err, projectsUsers) {
-                        res.send({...place, projects: projects.map((p, index) => ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index]}))});
+                        res.send({
+                            ...place,
+                            projects: projects.map((p, index) => {
+                                const active = projectsUsers[index]?.some((user) => user.userId === req.user.id)
+                                return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active})
+                            })
+                        });
                     });
                 });
             });

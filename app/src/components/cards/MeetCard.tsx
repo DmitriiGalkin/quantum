@@ -5,24 +5,22 @@ import {AvatarGroup, Box, Typography} from "@mui/material";
 import QAvatar from "../QAvatar";
 import {useToggleMeetUser} from "../../modules/user";
 import QCard from "../QCard";
-import {useProfileContext} from "../../layouts/ProfileLayout";
 
 interface MeetCardProps {
     meet: Meet
+    refetch: () => void
 }
 
-export default function MeetCard({ meet }: MeetCardProps) {
-    const { meetIds, refetchProfile } = useProfileContext();
+export default function MeetCard({ meet, refetch }: MeetCardProps) {
     const toggleMeetUser = useToggleMeetUser()
 
     const time = convertToMeetTime(meet.datetime)
-    const active = meetIds?.includes(meet.id)
     const onClick = () => toggleMeetUser.mutateAsync({ meetId: meet.id }).then(() => {
-        refetchProfile()
+        refetch()
     })
 
     return (
-        <QCard onClick={onClick} active={active}>
+        <QCard onClick={onClick} active={meet.active}>
             <Box style={{ display: 'flex', height: 95 }}>
                 <Box style={{ flexGrow: 1 }}>
                     <Typography variant="h6">

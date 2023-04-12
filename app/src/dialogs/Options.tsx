@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {User, useUpdateUser} from "../modules/user";
+import {User, useUpdateUser, useUser} from "../modules/user";
 import QContainer from "../components/QContainer";
 import {Box, Button, ClickAwayListener, Grid, Stack, TextField} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
@@ -21,7 +21,6 @@ import Avatar, {
 import {TransitionDialog} from "../components/TransitionDialog";
 import Back from "../components/Back";
 import {getSignedUrl} from "../tools/s3";
-import {useProfileContext} from "../layouts/ProfileLayout";
 
 const AvatarM = {
     sex: ['man', 'woman'],
@@ -84,7 +83,7 @@ const next = (key: f, selected: string): any => {
 
 
 export default function OptionsDialog({ openOptions, onClose }: OptionsDialogProps) {
-    const { user: profileUser } = useProfileContext();
+    const { data: profileUser } = useUser();
 
     const [user, setUser] = useState<User>()
     const updateUser = useUpdateUser()

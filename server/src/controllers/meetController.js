@@ -1,5 +1,5 @@
 'use strict';
-var async = require("async");
+const async = require("async");
 const Meet = require('../models/meetModel');
 const User = require('../models/userModel');
 const Project = require('../models/projectModel');
@@ -48,7 +48,10 @@ exports.findByUser = function(req, res) {
         async.map(meets, User.findByMeet, function(err, meetsUsers) {
             async.map(meets, Project.findByMeet, function(err, meetsProject) {
                 async.map(meets, Place.findByMeet, function(err, meetsPlace) {
-                    res.send(meets.map((p, index) => ({ ...p, project: meetsProject[index], place: meetsPlace[index], users: meetsUsers[index], active: meetsUsers[index]?.find((user) => user.id === req.user.id) })));
+                    res.send(meets.map((p, index) => {
+                        const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
+                        return ({ ...p, project: meetsProject[index], place: meetsPlace[index], users: meetsUsers[index], active })
+                    }));
                 });
             });
         });

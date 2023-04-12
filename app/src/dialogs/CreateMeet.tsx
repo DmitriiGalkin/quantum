@@ -9,8 +9,6 @@ import {CalendarPicker} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
 import {Place, usePlace, usePlaces} from "../modules/place";
 import PlaceCard from "../components/cards/PlaceCard";
-import Dialog from "@mui/material/Dialog";
-import {TransitionDialog} from "../components/TransitionDialog";
 import {useNavigate} from "react-router-dom";
 import Back from "../components/Back";
 

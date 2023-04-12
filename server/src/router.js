@@ -58,7 +58,7 @@ router.put('/project/:id', projectController.update);
  * Места
  */
 router.get('/places', placeController.findAll);
-router.get('/place/:id', placeController.findById);
+router.get('/place/:id', useUser, placeController.findById);
 router.post('/place', placeController.create);
 
 /**

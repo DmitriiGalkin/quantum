@@ -37,8 +37,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface DayProps {
     date: string
     meets: Meet[]
+    refetch: () => void
 }
-export default function Day({ date, meets }: DayProps): JSX.Element {
+export default function Day({ date, meets, refetch }: DayProps): JSX.Element {
     const classes = useStyles();
     if (!date) { return <></> }
     const localDate = LocalDate.parse(date)
@@ -62,7 +63,7 @@ export default function Day({ date, meets }: DayProps): JSX.Element {
                     <div key={meet.id}>
                         {Boolean(index) && <Divider light variant="middle" />}
                         <div key={meet.id}>
-                            <MeetCard meet={meet} />
+                            <MeetCard meet={meet} refetch={refetch} />
                         </div>
                     </div>
                 )}

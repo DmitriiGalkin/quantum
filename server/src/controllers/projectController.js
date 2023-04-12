@@ -18,7 +18,8 @@ exports.findById = function(req, res) {
                 Meet.findByProject(project, function(err, meets) {
                     async.map(meets, User.findByMeet, function(err, meetsUsers) {
                         async.map(meets, Place.findByMeet, function(err, meetsPlace) {
-                            res.send({ ...project, users, meets: meets.map((p, index) => ({ ...p, users: meetsUsers[index], place: meetsPlace[index], project})), active: users.find((u) => req.user.id === u.id) });
+                            const active = users.some((u) => req.user.id === u.id)
+                            res.send({ ...project, users, meets: meets.map((p, index) => ({ ...p, users: meetsUsers[index], place: meetsPlace[index], project})), active });
                         });
                     });
                 });
@@ -75,7 +76,10 @@ exports.findByUser = function(req, res) {
         async.map(projects, Meet.findByProject, function(err, projectsMeets) {
             async.map(projects, Place.findByProject, function(err, projectsPlaces) {
                 async.map(projects, User.findByProject, function(err, projectsUsers) {
-                    res.send(projects.map((p, index) => ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index]})));
+                    res.send(projects.map((p, index) => {
+                        const active = projectsUsers[index]?.some((user) => user.userId === req.user.id)
+                        return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active})
+                    }));
                 });
             });
         })

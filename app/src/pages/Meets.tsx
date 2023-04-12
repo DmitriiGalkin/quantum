@@ -4,11 +4,11 @@ import {Meet} from "../modules/meet";
 import Day from "../components/Day";
 import {getMeetsGroup} from "../tools/helper";
 import {Box, Link, Stack} from "@mui/material";
-import {useUserMeet} from "../modules/user";
+import {useMeets} from "../modules/user";
 import {useMain} from "../layouts/MainLayout";
 
 export default function MeetsPage() {
-    const { data: meets = [] } = useUserMeet()
+    const { data: meets = [], refetch } = useMeets()
     const meetsGroup = getMeetsGroup(meets)
 
     const { setOpenCreateProject, setOpenMap } = useMain();
@@ -17,7 +17,7 @@ export default function MeetsPage() {
             {Boolean(meetsGroup.length) ? (
                 <Stack spacing={2}>
                     {meetsGroup.map(([date, meets]) => (
-                        <Day key={date} date={date} meets={meets as Meet[]} />
+                        <Day key={date} date={date} meets={meets as Meet[]} refetch={refetch} />
                     ))}
                 </Stack>
             ) : (

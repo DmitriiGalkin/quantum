@@ -2,13 +2,12 @@ import React from 'react';
 import Back from "../components/Back";
 import {useEditUserTask, useUserTask} from "../modules/task";
 import SelectEmotion from "../components/SelectEmotion";
-import {useEditUserpoints} from "../modules/user";
+import {useEditUserpoints, useUser} from "../modules/user";
 import {useNavigate, useParams} from "react-router-dom";
-import {useProfileContext} from "../layouts/ProfileLayout";
 
 export default function Task() {
     const { id: taskId } = useParams();
-    const { user } = useProfileContext();
+    const { data: user } = useUser();
     const { data: userTask } = useUserTask(Number(taskId))
     const navigate = useNavigate();
 
@@ -18,7 +17,7 @@ export default function Task() {
     const onClick = (v: number) => {
         editTask.mutate({ ...userTask, results: JSON.stringify({ emotion: v }) }) // сохраняем результат
         setTimeout(() => {
-            editUser.mutate(user.points + Number(userTask?.task.points)) // начисляем баллы
+            editUser.mutate(Number(user?.points) + Number(userTask?.task.points)) // начисляем баллы
         }, 10)
         navigate('/tasks')
     };

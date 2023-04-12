@@ -10,10 +10,10 @@ interface ProjectCardProps {
     selected?: boolean
     onClick?: () => void
 }
-export default function ProjectCard({ project, active, selected, onClick }: ProjectCardProps) {
+export default function ProjectCard({ project, selected, onClick }: ProjectCardProps) {
     // const firstMeetDateTitle = convertToMeetDatetime(project.meet?.datetime) E1F1FA CDEBFC
     return (
-        <QCard onClick={onClick} active={active} selected={selected}>
+        <QCard onClick={onClick} active={project.active} selected={selected}>
             <Typography variant="h5">
                 {project.title}
             </Typography>

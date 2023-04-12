@@ -12,7 +12,7 @@ export default function ProjectsPage() {
         <>
             {Boolean(projects.length) ? (
                 <Stack spacing={2}>
-                    {projects.map((project) => <ProjectCard key={project.id} project={project} active={true} onClick={() => navigate(`/project/${project.id}`)}/>)}
+                    {projects.map((project) => <ProjectCard key={project.id} project={project} onClick={() => navigate(`/project/${project.id}`)}/>)}
                 </Stack>
             ) : (
                 <Box

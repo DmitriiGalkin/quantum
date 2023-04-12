@@ -2,7 +2,7 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import {usePlace} from "../modules/place";
 import {Stack} from "@mui/material";
-import Project from "../components/cards/ProjectCard";
+import ProjectCard from "../components/cards/ProjectCard";
 import {useNavigate, useParams} from "react-router-dom";
 import Back from "../components/Back";
 import QContainer from "../components/QContainer";
@@ -12,7 +12,6 @@ export default function PlaceDialog() {
     const navigate = useNavigate();
 
     const { data: place } = usePlace(Number(placeId))
-    // const userProjectsIds = projects.map((p) => p.id)
     if (!place) return null;
 
     return (
@@ -25,10 +24,9 @@ export default function PlaceDialog() {
                     </Typography>
                     <Stack spacing={2}>
                         {place.projects.map((project) => (
-                            <Project
+                            <ProjectCard
                                 key={project.id}
                                 project={project}
-                                // active={userProjectsIds.includes(project.id)}
                                 onClick={() => navigate(`/project/${project.id}`)}
                             />
                         ))}

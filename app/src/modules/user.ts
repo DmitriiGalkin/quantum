@@ -25,9 +25,9 @@ export const useProfileData = (): UseQueryResult<Profile> => {
     return useQuery(['profile'], () => service.get(`/profile`))
 }
 
-// export const useUser = (): UseQueryResult<User> => {
-//     return useQuery(['user'], () => service.get(`/user`))
-// }
+export const useUser = (): UseQueryResult<User> => {
+    return useQuery(['user'], () => service.get(`/user`))
+}
 export const useOnlyUserUniques = (): UseQueryResult<Unique[]> => {
     return useQuery(['userUniques'], () => service.get(`/uniques`))
 }
@@ -50,8 +50,8 @@ export const useEditUserpoints = (): UseMutate<number> => {
 export const useUserByLogin = (): UseMutate<LoginData> => useMutation((data) => service.post("/user/login", data))
 
 
-export const useUserMeet = (): UseQueryResult<Meet[]> => {
-    return useQuery(['userMeets'], () => service.get(`/meets`))
+export const useMeets = (): UseQueryResult<Meet[]> => {
+    return useQuery(['meets'], () => service.get(`/meets`))
 }
 export const useOnlyUserProjects = (): UseQueryResult<Project[]> => {
     return useQuery(['projects'], () => service.get(`/projects`))

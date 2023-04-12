@@ -16,7 +16,8 @@ import React, {useState} from "react";
 import {makeStyles} from "@mui/styles";
 import QContainer from "../components/QContainer";
 import {More} from "../components/More";
-import {ProfileContextType, useProfileContext} from "./ProfileLayout";
+import Dialog from "@mui/material/Dialog";
+import {TransitionDialog} from "../components/TransitionDialog";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -45,8 +46,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const MAIN_PAGES = ['', 'projects', 'tasks', 'uniques']
 export const MainLayout = () => {
-    const profile = useProfileContext();
-
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -54,12 +53,12 @@ export const MainLayout = () => {
     const { logout } = useAuth();
     const [openMap, setOpenMap] = useState(false)
     const [openCreateProject, setOpenCreateProject] = useState(false)
-    const [openCreateMeet, setOpenCreateMeet] = useState<NewMeet>()
+    const [newMeet, setNewMeet] = useState<NewMeet>()
     const [openOptions, setOpenOptions] = useState(false)
     const bottomNavigationValue = MAIN_PAGES.findIndex((pageName) => '/' + pageName === location.pathname) || 0
 
     const menuItems = [
-        { title: 'Новая встреча', onClick: () => setOpenCreateMeet({}) },
+        { title: 'Новая встреча', onClick: () => setNewMeet({}) },
         { title: 'Новый проект', onClick: () => setOpenCreateProject(true) },
         { title: 'Настройки', onClick: () => setOpenOptions(true) },
         { title: 'Выход', onClick: () => logout() },
@@ -92,7 +91,7 @@ export const MainLayout = () => {
                 <div style={{minHeight: '100vh', height: '100%'}}>
                     <Box className={classes.contentAll} flexDirection="column" display='flex'>
                         <QContainer>
-                            <Outlet context={{ setOpenCreateProject, setOpenMap, ...profile }} />
+                            <Outlet context={{ setOpenCreateProject, setOpenMap }} />
                         </QContainer>
                     </Box>
                 </div>
@@ -109,13 +108,15 @@ export const MainLayout = () => {
             </Box>
             <Map open={openMap} onClose={() => setOpenMap(false)} />
             <CreateProject openCreateProject={openCreateProject} onClose={() => setOpenCreateProject(false)} />
-            <CreateMeet newMeet={openCreateMeet} onClose={() => setOpenCreateMeet(undefined)} />
+            <Dialog onClose={() => setNewMeet(undefined)} open={!!newMeet} fullScreen TransitionComponent={TransitionDialog}>
+                {!!newMeet && (<CreateMeet newMeet={newMeet} onClose={() => setNewMeet(undefined)} />)}
+            </Dialog>
             <Options openOptions={openOptions} onClose={() => setOpenOptions(false)} />
         </>
     )
 };
 
-interface MainContextType extends ProfileContextType {
+interface MainContextType {
     setOpenCreateProject: (open: boolean) => void
     setOpenMap: (open: boolean) => void
 }

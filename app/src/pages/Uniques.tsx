@@ -2,13 +2,12 @@ import React from 'react';
 import {Box, IconButton, Stack, Typography} from "@mui/material";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ArrowUpward from "@mui/icons-material/ArrowUpward";
-import {useEditUserpoints, useOnlyUserUniques} from "../modules/user";
+import {useEditUserpoints, useOnlyUserUniques, useUser} from "../modules/user";
 import {useEditUnique} from "../modules/unique";
-import {useProfileContext} from "../layouts/ProfileLayout";
 
 export default function TasksPage() {
     const { data: uniques = [] } = useOnlyUserUniques()
-    const { user } = useProfileContext();
+    const { data: user } = useUser();
     const editUser = useEditUserpoints()
     const editUnique = useEditUnique(1)
 

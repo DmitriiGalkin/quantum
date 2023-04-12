@@ -13,7 +13,6 @@ import CreateMeet from "../dialogs/CreateMeet";
 import Back from "../components/Back";
 import {getOnShare} from "../tools/share";
 import QContainer from "../components/QContainer";
-import {useProfileContext} from "../layouts/ProfileLayout";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
 
@@ -35,10 +34,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function Project() {
     const { id: projectId } = useParams();
-    const { projectIds } = useProfileContext();
     const { data: project, refetch } = useProject(Number(projectId))
 
-    const active = projectIds?.includes(Number(projectId))
     const classes = useStyles();
     const [newMeet, setNewMeet] = useState<NewMeet>()
 
@@ -50,7 +47,7 @@ export default function Project() {
     const meetsGroup = getMeetsGroup(project?.meets)
 
     const onClick = () => {
-        if (active) {
+        if (project.active) {
             deleteProjectUser.mutate({ projectId: project.id })
         } else {
             addProjectUser.mutate({ projectId: project.id })
@@ -76,7 +73,7 @@ export default function Project() {
                         <Typography>
                             {project.description}
                         </Typography>
-                        {!active && (
+                        {!project.active && (
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -90,7 +87,7 @@ export default function Project() {
                         {Boolean(project.meets.length) && (
                             <div>
                                 {meetsGroup.map(([date, meets]) => (
-                                    <Day key={date} date={date} meets={meets as Meet[]} />
+                                    <Day key={date} date={date} meets={meets as Meet[]} refetch={refetch} />
                                 ))}
                             </div>
                         )}
