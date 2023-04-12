@@ -1,18 +1,10 @@
 'use strict';
 const User = require('../models/userModel');
 var jwt = require('jsonwebtoken');
+const async = require("async");
+const Project = require("../models/projectModel");
+const Meet = require("../models/meetModel");
 
-// Создание участника
-exports.create = function(req, res) {
-    const new_user = new User(req.body);
-    if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-        res.status(400).send({ error:true, message: 'Сбой конструктора участника при создании участника' });
-    } else {
-        User.create(new_user, function(err, data) {
-            res.json({ error: false, message: "Участник создан", data });
-        });
-    }
-};
 // Обновление участника
 exports.update = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
@@ -61,10 +53,16 @@ exports.findById = function(req, res) {
         res.send(users && users[0]);
     });
 };
+
 // Профиль
 exports.findByUser = function(req, res) {
-    User.findById(req.user.id, function(err, users) {
-        res.send(users && users[0]);
+    async.parallel([
+        User.findById(req.user.id),
+        Project.findAllByUserId(req.user.id),
+        Meet.findAllByUserId2(req.user.id),
+    ], function(err, results) {
+        const [user, projects, user_meets] = results
+        res.send({ ...user, projectIds: projects.map((project) => project.id), meetIds: user_meets.map((user_meet) => user_meet.meetId)});
     });
 };
 

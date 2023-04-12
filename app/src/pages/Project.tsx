@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {makeStyles} from '@mui/styles';
-import {Box, Button, Container, Stack, Theme, Typography} from "@mui/material";
+import {Box, Button, Stack, Theme, Typography} from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
-import {useAddMeetUser, useAddProjectUser, useDeleteMeetUser, useDeleteProjectUser, useUser} from "../modules/user";
+import {useAddProjectUser, useDeleteProjectUser} from "../modules/user";
 import {useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
@@ -13,6 +13,9 @@ import CreateMeet from "../dialogs/CreateMeet";
 import Back from "../components/Back";
 import {getOnShare} from "../tools/share";
 import QContainer from "../components/QContainer";
+import {useProfileContext} from "../layouts/ProfileLayout";
+import Dialog from "@mui/material/Dialog";
+import {TransitionDialog} from "../components/TransitionDialog";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -32,19 +35,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function Project() {
     const { id: projectId } = useParams();
-    const { data: user } = useUser()
-
-
+    const { projectIds } = useProfileContext();
     const { data: project, refetch } = useProject(Number(projectId))
-    const active = user && project?.users.map(({ id}) => id).includes(user.id)
 
+    const active = projectIds?.includes(Number(projectId))
     const classes = useStyles();
-    const [openCreateMeet, setOpenCreateMeet] = useState<NewMeet>()
+    const [newMeet, setNewMeet] = useState<NewMeet>()
 
     const addProjectUser = useAddProjectUser(project?.id)
     const deleteProjectUser = useDeleteProjectUser(project?.id)
-    const addMeetUser = useAddMeetUser(Number(projectId))
-    const deleteMeetUser = useDeleteMeetUser(Number(projectId))
 
     if (!project) { return null }
 
@@ -58,12 +57,8 @@ export default function Project() {
         }
     }
 
-    const onClickEnter = active ? ((meetId: number) => () => addMeetUser.mutate({ meetId })) : undefined
-    const onClickLeave = active ? ((meetId: number) => () => deleteMeetUser.mutate({ meetId })) : undefined
     const menuItems = [
-        { title: 'Новая встреча', onClick: () => {
-                setOpenCreateMeet({ projectId: project?.id, activeStep: 1 })
-            }},
+        { title: 'Новая встреча', onClick: () => setNewMeet({ projectId: project?.id, activeStep: 1 })},
         { title: 'Поделиться', onClick: getOnShare({
                 title: project?.title,
                 text: project?.description,
@@ -95,37 +90,41 @@ export default function Project() {
                         {Boolean(project.meets.length) && (
                             <div>
                                 {meetsGroup.map(([date, meets]) => (
-                                    <Day key={date} date={date} meets={meets as Meet[]} onClickEnter={onClickEnter} onClickLeave={onClickLeave}/>
+                                    <Day key={date} date={date} meets={meets as Meet[]} />
                                 ))}
                             </div>
                         )}
-                        <Stack spacing={2}>
-                            <Typography variant="h5">
-                                Участники
-                            </Typography>
-                            <div>
-                                {project.users?.map((user) => (
-                                    <Box key={user.id} sx={{padding: 1, display: "flex"}}>
-                                        <QAvatar {...user}/>
-                                        <Box sx={{flexGrow:1, paddingLeft: 2}}>
-                                            <Typography variant="subtitle1">
-                                                {user.title}
-                                            </Typography>
-                                            <Typography>
-                                                Вдохновитель
-                                            </Typography>
+                        {Boolean(project.users?.length) && (
+                            <Stack spacing={2}>
+                                <Typography variant="h5">
+                                    Участники
+                                </Typography>
+                                <div>
+                                    {project.users?.map((user) => (
+                                        <Box key={user.id} sx={{padding: 1, display: "flex"}}>
+                                            <QAvatar {...user}/>
+                                            <Box sx={{flexGrow:1, paddingLeft: 2}}>
+                                                <Typography variant="subtitle1">
+                                                    {user.title}
+                                                </Typography>
+                                                <Typography>
+                                                    Вдохновитель
+                                                </Typography>
+                                            </Box>
                                         </Box>
-                                    </Box>
-                                ))}
-                            </div>
-                        </Stack>
+                                    ))}
+                                </div>
+                            </Stack>
+                        )}
                     </Stack>
                 </QContainer>
             </div>
-            <CreateMeet openCreateMeet={openCreateMeet} onClose={() => {
-                setOpenCreateMeet(undefined)
-                refetch()
-            }} />
+            <Dialog onClose={() => setNewMeet(undefined)} open={!!newMeet} fullScreen TransitionComponent={TransitionDialog}>
+                {!!newMeet && (<CreateMeet newMeet={newMeet} onClose={() => {
+                    setNewMeet(undefined)
+                    refetch()
+                }} />)}
+            </Dialog>
         </>
     );
 }

@@ -1,7 +1,5 @@
 import React from 'react';
-import BackIcon from '@mui/icons-material/ArrowBackIos';
-import {AppBar, Box, IconButton, Menu, MenuItem, Skeleton, Toolbar, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {IconButton, Menu, MenuItem} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface MenuItemProps {
@@ -48,7 +46,7 @@ export function More({ menuItems }: MoreProps) {
                         onClick()
                         handleMenuClose()
                     }
-                    return <MenuItem onClick={onClickWithClose}>{title}</MenuItem>
+                    return <MenuItem key={title} onClick={onClickWithClose}>{title}</MenuItem>
                 })}
             </Menu>
         </>

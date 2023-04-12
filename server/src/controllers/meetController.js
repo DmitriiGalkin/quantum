@@ -20,26 +20,31 @@ exports.create = function(req, res) {
         });
     }
 };
-// Добавление участника на встречу
-exports.createUserMeet = function(req, res) {
-    const userMeet = new UserMeet({...req.params, userId: req.user.id});
-    if(req.body.constructor === Object && Object.keys(req.params).length === 0){
-        res.status(400).send({ error:true, message: 'Please provide all required field' });
-    }else{
-        UserMeet.create(userMeet, function() {
-            res.json({error:false,message:"Добавление участника на встречу"});
-        });
-    }
+
+// Добавление или удаление участника встречи
+exports.toggleUserMeet = function(req, res) {
+    UserMeet.findById(req.user.id, req.params.meetId, function(err, userMeet) {
+        if (userMeet) {
+            UserMeet.delete( req.user.id, req.params.meetId, function() {
+                res.json({ error:false, message: 'Удаление участника из встречи' });
+            });
+        } else {
+            const userMeet = new UserMeet({...req.params, userId: req.user.id});
+            if(req.body.constructor === Object && Object.keys(req.params).length === 0){
+                res.status(400).send({ error:true, message: 'Ошибка конструктора создания регистрации на встречу' });
+            }else{
+                UserMeet.create(userMeet, function() {
+                    res.json({error:false,message:"Добавление участника на встречу"});
+                });
+            }
+        }
+    })
+
 };
-// Удаление участника из встречи
-exports.deleteUserMeet = function(req, res) {
-    UserMeet.delete( req.user.id, req.params.meetId, function() {
-        res.json({ error:false, message: 'Удаление участника из встречи' });
-    });
-};
+
 // Встречи участника
 exports.findByUser = function(req, res) {
-    Meet.findAllByUserId(req.user.id, function(err, meets) {
+    Meet.findAllByUserId(req.user.id)(function(err, meets) {
         async.map(meets, User.findByMeet, function(err, meetsUsers) {
             async.map(meets, Project.findByMeet, function(err, meetsProject) {
                 async.map(meets, Place.findByMeet, function(err, meetsPlace) {

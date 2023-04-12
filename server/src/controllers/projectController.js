@@ -10,15 +10,20 @@ const UserProject = require('../models/userProjectModel');
 // Проект
 exports.findById = function(req, res) {
     Project.findById(req.params.id, function(err, project) {
-        User.findByProject(project, function(err, users) {
-            Meet.findByProject(project, function(err, meets) {
-                async.map(meets, User.findByMeet, function(err, meetsUsers) {
-                    async.map(meets, Place.findByMeet, function(err, meetsPlace) {
-                        res.send({ ...project, users, meets: meets.map((p, index) => ({ ...p, users: meetsUsers[index], place: meetsPlace[index], project})), active: users.find((u) => req.user.id === u.id) });
+        // Если проект не найден
+        if (!project) {
+            res.status(400).send({ error:true, message: 'Проект с таким номером не найден' });
+        } else {
+            User.findByProject(project, function(err, users) {
+                Meet.findByProject(project, function(err, meets) {
+                    async.map(meets, User.findByMeet, function(err, meetsUsers) {
+                        async.map(meets, Place.findByMeet, function(err, meetsPlace) {
+                            res.send({ ...project, users, meets: meets.map((p, index) => ({ ...p, users: meetsUsers[index], place: meetsPlace[index], project})), active: users.find((u) => req.user.id === u.id) });
+                        });
                     });
                 });
             });
-        });
+        }
     });
 };
 // Создание проекта
@@ -63,16 +68,16 @@ exports.deleteUserProject = function(req, res) {
         res.json({ error:false, message: 'Удаление участника из проекта' });
     });
 };
+
 // Проекты участника
 exports.findByUser = function(req, res) {
-    Project.findAllByUserId(req.user.id, function(err, projects) {
+    Project.findAllByUserId(req.user.id)(function(err, projects) {
         async.map(projects, Meet.findByProject, function(err, projectsMeets) {
             async.map(projects, Place.findByProject, function(err, projectsPlaces) {
                 async.map(projects, User.findByProject, function(err, projectsUsers) {
                     res.send(projects.map((p, index) => ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index]})));
                 });
             });
-        });
+        })
     });
 };
-

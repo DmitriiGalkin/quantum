@@ -14,7 +14,7 @@ import {Route} from "react-router";
 import {AuthLayout} from "./layouts/AuthLayout";
 import Login from "./pages/Login";
 import Callback from "./pages/Callback";
-import {ProtectedLayout} from "./layouts/ProtectedLayout";
+import {ProfileLayout} from "./layouts/ProfileLayout";
 import {MainLayout} from "./layouts/MainLayout";
 import Meets from "./pages/Meets";
 import Projects from "./pages/Projects";
@@ -35,7 +35,7 @@ const router = createBrowserRouter(
         <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
             <Route path="/callback" element={<Callback />} />
-            <Route element={<ProtectedLayout />}>
+            <Route element={<ProfileLayout />}>
                 <Route element={<MainLayout />}>
                     <Route index element={<Meets />}/>
                     <Route path="/projects" element={<Projects />}/>

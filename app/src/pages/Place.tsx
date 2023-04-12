@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import {usePlace} from "../modules/place";
-import {Container, Stack} from "@mui/material";
+import {Stack} from "@mui/material";
 import Project from "../components/cards/ProjectCard";
 import {useNavigate, useParams} from "react-router-dom";
 import Back from "../components/Back";

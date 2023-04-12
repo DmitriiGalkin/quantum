@@ -2,13 +2,14 @@ import React from 'react';
 import {Box, IconButton, Stack, Typography} from "@mui/material";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ArrowUpward from "@mui/icons-material/ArrowUpward";
-import {useEditUserpoints, useOnlyUserUniques, useUser} from "../modules/user";
+import {useEditUserpoints, useOnlyUserUniques} from "../modules/user";
 import {useEditUnique} from "../modules/unique";
+import {useProfileContext} from "../layouts/ProfileLayout";
 
 export default function TasksPage() {
     const { data: uniques = [] } = useOnlyUserUniques()
-    const { data: userD } = useUser()
-    const editUser = useEditUserpoints(1)
+    const { user } = useProfileContext();
+    const editUser = useEditUserpoints()
     const editUnique = useEditUnique(1)
 
     const toTop = ({ user, unique, points }: any) => {
@@ -29,7 +30,7 @@ export default function TasksPage() {
                                 {unique.points}
                             </Typography>
                             <AutoAwesomeIcon style={{ width: 20, height: 20 }} color="primary"/>
-                            {userD?.points && <IconButton size="small" onClick={() => toTop({ user: userD, unique, points: 1 })}>
+                            {user?.points && <IconButton size="small" onClick={() => toTop({ user, unique, points: 1 })}>
                                 <ArrowUpward/>
                             </IconButton>}
                         </Box>

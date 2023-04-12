@@ -19,7 +19,13 @@ Meet.findByProject = function (project, result) {
     });
 };
 // Встречи участника
-Meet.findAllByUserId = function (id, result) {
+Meet.findAllByUserId2 = (id) => function (result) {
+    dbConn.query("SELECT * FROM user_meet WHERE userId = ?", id, function (err, res) {
+        result(null, res);
+    });
+};
+// Встречи участника
+Meet.findAllByUserId = (id) => function (result) {
     dbConn.query("Select meet.* from meet LEFT JOIN project ON project.id = meet.projectId LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ? AND DATE(datetime) >= CURDATE()", id, function (err, res) {
         result(null, res);
     });

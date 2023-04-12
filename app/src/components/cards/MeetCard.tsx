@@ -3,27 +3,23 @@ import {Meet} from "../../modules/meet";
 import {convertToMeetTime} from "../../tools/date";
 import {AvatarGroup, Box, Typography} from "@mui/material";
 import QAvatar from "../QAvatar";
-import {useUser} from "../../modules/user";
+import {useToggleMeetUser} from "../../modules/user";
 import QCard from "../QCard";
+import {useProfileContext} from "../../layouts/ProfileLayout";
 
 interface MeetCardProps {
     meet: Meet
-    onClickEnter?: () => void
-    onClickLeave?: () => void
 }
 
-export default function MeetCard({ meet, onClickEnter, onClickLeave }: MeetCardProps) {
-    const { data: user } = useUser()
-    const time = convertToMeetTime(meet.datetime)
-    const active = user && meet.users.map((user) => user.id).includes(user.id)
+export default function MeetCard({ meet }: MeetCardProps) {
+    const { meetIds, refetchProfile } = useProfileContext();
+    const toggleMeetUser = useToggleMeetUser()
 
-    const onClick = () => {
-        if (active) {
-            onClickLeave && onClickLeave()
-        } else {
-            onClickEnter && onClickEnter()
-        }
-    }
+    const time = convertToMeetTime(meet.datetime)
+    const active = meetIds?.includes(meet.id)
+    const onClick = () => toggleMeetUser.mutateAsync({ meetId: meet.id }).then(() => {
+        refetchProfile()
+    })
 
     return (
         <QCard onClick={onClick} active={active}>

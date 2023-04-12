@@ -1,5 +1,5 @@
 import {createContext, useContext, useMemo} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {useUserByLogin} from "../modules/user";
 import service, {ACCESS_TOKEN} from "./service";
 
@@ -7,10 +7,30 @@ export const AuthContext = createContext('auth' as any);
 
 export interface LoginData { email: string, password: string }
 
+export const useNavigateAfterLogin = () => {
+    const navigate = useNavigate();
+
+    const backUrl = localStorage.getItem('backUrl')
+    if (backUrl) {
+        return () => {
+            localStorage.removeItem("image")
+            navigate(backUrl ? backUrl : "/", { replace: true });
+        }
+    }
+    return () => navigate("/", { replace: true });
+}
+
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const access_token = localStorage.getItem(ACCESS_TOKEN)
+    const redirect = useNavigateAfterLogin()
     const navigate = useNavigate();
     const userByLogin = useUserByLogin()
+    const [searchParams] = useSearchParams();
+    const backUrl = searchParams.get("backUrl")
+
+    if (backUrl) {
+        localStorage.setItem('backUrl', backUrl);
+    }
 
     // Нативный логин
     const login = async (data: LoginData) => {
@@ -22,7 +42,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
                     return config;
                 },
             );
-            navigate("/", { replace: true });
+            redirect()
         })
     };
 

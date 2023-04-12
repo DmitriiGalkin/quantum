@@ -8,6 +8,7 @@ const meetController =   require('./controllers/meetController');
 const placeController =   require('./controllers/placeController');
 const taskController =   require('./controllers/taskController');
 const uniqueController =   require('./controllers/uniqueController');
+const profileController =   require('./controllers/profileController');
 
 /**
  * Подхватываем токен и авторизуем пользователя
@@ -26,10 +27,14 @@ function useUser(req, res, next) {
 }
 
 /**
+ * Профиль пользователя
+ */
+router.get('/profile', useUser, profileController.findByUser);
+
+/**
  * Участники
  */
 router.get('/user', useUser, userController.findByUser);
-router.post('/user', userController.create);
 router.post('/user/login', userController.islogin);
 router.post('/logi', userController.logi);
 router.get('/user/:id', userController.findById);
@@ -37,8 +42,7 @@ router.put('/user', useUser, userController.update);
 
 router.post('/userProject/:projectId', useUser, projectController.createUserProject );
 router.delete('/userProject/:projectId', useUser, projectController.deleteUserProject );
-router.post('/user/:meetId/meet', useUser, meetController.createUserMeet );
-router.delete('/user/:meetId/meet', useUser, meetController.deleteUserMeet );
+router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );
 
 router.post('/userpoints', useUser, userController.userpoints);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Place} from "../../modules/place";
-import {Card, CardContent, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
 import QCard from "../QCard";
 
 interface PlaceCardProps {

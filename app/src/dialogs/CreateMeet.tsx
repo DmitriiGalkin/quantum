@@ -35,10 +35,10 @@ export const getProjectDefaultDatetime = (): [string, string] => {
 }
 
 export interface CreateMeetDialogProps {
-    openCreateMeet?: NewMeet
+    newMeet?: NewMeet
     onClose: () => void;
 }
-export default function CreateMeetDialog({ onClose, openCreateMeet }: CreateMeetDialogProps) {
+export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogProps) {
     const [meet, setMeet] = useState<NewMeet | undefined>()
     const { data: places = [] } = usePlaces()
     const navigate = useNavigate();
@@ -55,7 +55,7 @@ export default function CreateMeetDialog({ onClose, openCreateMeet }: CreateMeet
             addMeet.mutateAsync(meetWithTimezone).then(() => {
                 navigate(`/project/${meet.projectId}`)
             })
-            onClose()
+            // onClose()
         }
     };
 
@@ -78,103 +78,101 @@ export default function CreateMeetDialog({ onClose, openCreateMeet }: CreateMeet
     };
 
     useEffect(() => {
-        setMeet(openCreateMeet)
-    }, [openCreateMeet])
+        setMeet(newMeet)
+    }, [newMeet])
 
     return (
-        <Dialog onClose={onClose} open={!!openCreateMeet} fullScreen TransitionComponent={TransitionDialog}>
-            <div>
-                <Back title="Создать встречу" onClick={onClose}/>
-                <TabPanel value={meet?.activeStep || 0} index={0}>
-                    <Typography variant="h5" sx={{ paddingBottom: 1 }}>
-                        Выберите проект для встречи
-                    </Typography>
-                    <Stack spacing={2}>
-                        {projects.map((project) => <ProjectCard key={project.id} active project={project} selected={meet?.projectId === project.id} onClick={() => {
-                            const [datetime, endDatetime] = getProjectDefaultDatetime()
-                            setMeet({
-                                ...meet,
-                                projectId: project.id,
-                                datetime,
-                                endDatetime,
-                                activeStep: 1,
-                            })
-                        }}/>)}
-                    </Stack>
-                </TabPanel>
-                <TabPanel value={meet?.activeStep || 0} index={1}>
-                    <Typography variant="h5" sx={{ paddingBottom: 1 }}>
-                        Выберите место для встречи
-                    </Typography>
-                    <Stack spacing={2}>
-                        {places.map((place) => (
-                            <PlaceCard key={place.id} place={place} selected={meet?.placeId === place.id} onClick={() => {
-                                setMeet({ ...meet, placeId: place.id, activeStep: 2, })
-                            }}/>
-                        ))}
-                    </Stack>
-                </TabPanel>
-                <TabPanel value={meet?.activeStep || 0} index={2}>
-                    <div>
-                        <ProjectCard project={project}/>
-                        <PlaceCard place={place}/>
-                        <Box sx={{
-                            fontSize: '15px',
-                            '& .MuiPickersFadeTransitionGroup-root': {
-                                fontFamily: 'Manrope, Arial',
-                                fontSize: 16,
-                                fontWeight: 700,
-                                textTransform: 'capitalize',
-                            },
-                            '& .MuiPickersCalendarHeader-root': {
-                                justifyContent: "space-between",
-                                width: '100%',
-                                marginTop: 1,
-                            },
-                            '& .MuiPickersCalendarHeader-labelContainer .MuiPickersCalendarHeader-switchViewButton': {
-                                display: 'none',
-                            },
-                            '& .MuiPickersDay-root.Mui-selected': {
-                                backgroundColor: (theme)=> theme.palette.primary.main + '!important',
-                            }
-                        }}>
-                            <CalendarPicker onChange={calendarPickerOnChange} date={calendarPickerDate} disablePast/>
-                        </Box>
-                        <Box sx={{
-                            width: '280px',
-                            margin: '0 auto',
-                            '& .MuiSlider-valueLabel': {
-                                fontFamily: 'Bebas Neue',
-                                padding: '4px 6px',
-                            }
-                        }}>
-                            <Typography variant="h5" sx={{ paddingBottom: 6 }}>
-                                Укажите время
-                            </Typography>
-                            <Slider
-                                value={sliderValue}
-                                onChange={sliderOnChange}
-                                valueLabelDisplay="on"
-                                aria-labelledby="range-slider"
-                                valueLabelFormat={valuetext2}
-                                getAriaValueText={valuetext}
-                                min={600} // Когда начинает работать место, в котором проводится проект
-                                max={1080} // Когда заканчивает работать место, в котором проводится проект
-                                step={15} // Каждые 15 минут
-                            />
-                        </Box>
-                        <Button
-                            onClick={onClickSave}
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                            size="large"
-                        >
-                            Создать
-                        </Button>
-                    </div>
-                </TabPanel>
-            </div>
-        </Dialog>
+        <div>
+            <Back title="Создать встречу" onClick={onClose}/>
+            <TabPanel value={meet?.activeStep || 0} index={0}>
+                <Typography variant="h5" sx={{ paddingBottom: 1 }}>
+                    Выберите проект для встречи
+                </Typography>
+                <Stack spacing={2}>
+                    {projects.map((project) => <ProjectCard key={project.id} active project={project} selected={meet?.projectId === project.id} onClick={() => {
+                        const [datetime, endDatetime] = getProjectDefaultDatetime()
+                        setMeet({
+                            ...meet,
+                            projectId: project.id,
+                            datetime,
+                            endDatetime,
+                            activeStep: 1,
+                        })
+                    }}/>)}
+                </Stack>
+            </TabPanel>
+            <TabPanel value={meet?.activeStep || 0} index={1}>
+                <Typography variant="h5" sx={{ paddingBottom: 1 }}>
+                    Выберите место для встречи
+                </Typography>
+                <Stack spacing={2}>
+                    {places.map((place) => (
+                        <PlaceCard key={place.id} place={place} selected={meet?.placeId === place.id} onClick={() => {
+                            setMeet({ ...meet, placeId: place.id, activeStep: 2, })
+                        }}/>
+                    ))}
+                </Stack>
+            </TabPanel>
+            <TabPanel value={meet?.activeStep || 0} index={2}>
+                <div>
+                    <ProjectCard project={project}/>
+                    <PlaceCard place={place}/>
+                    <Box sx={{
+                        fontSize: '15px',
+                        '& .MuiPickersFadeTransitionGroup-root': {
+                            fontFamily: 'Manrope, Arial',
+                            fontSize: 16,
+                            fontWeight: 700,
+                            textTransform: 'capitalize',
+                        },
+                        '& .MuiPickersCalendarHeader-root': {
+                            justifyContent: "space-between",
+                            width: '100%',
+                            marginTop: 1,
+                        },
+                        '& .MuiPickersCalendarHeader-labelContainer .MuiPickersCalendarHeader-switchViewButton': {
+                            display: 'none',
+                        },
+                        '& .MuiPickersDay-root.Mui-selected': {
+                            backgroundColor: (theme)=> theme.palette.primary.main + '!important',
+                        }
+                    }}>
+                        <CalendarPicker onChange={calendarPickerOnChange} date={calendarPickerDate} disablePast/>
+                    </Box>
+                    <Box sx={{
+                        width: '280px',
+                        margin: '0 auto',
+                        '& .MuiSlider-valueLabel': {
+                            fontFamily: 'Bebas Neue',
+                            padding: '4px 6px',
+                        }
+                    }}>
+                        <Typography variant="h5" sx={{ paddingBottom: 6 }}>
+                            Укажите время
+                        </Typography>
+                        <Slider
+                            value={sliderValue}
+                            onChange={sliderOnChange}
+                            valueLabelDisplay="on"
+                            aria-labelledby="range-slider"
+                            valueLabelFormat={valuetext2}
+                            getAriaValueText={valuetext}
+                            min={600} // Когда начинает работать место, в котором проводится проект
+                            max={1080} // Когда заканчивает работать место, в котором проводится проект
+                            step={15} // Каждые 15 минут
+                        />
+                    </Box>
+                    <Button
+                        onClick={onClickSave}
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                        size="large"
+                    >
+                        Создать
+                    </Button>
+                </div>
+            </TabPanel>
+        </div>
     );
 }

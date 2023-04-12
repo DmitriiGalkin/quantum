@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 import {
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
     GOOGLE_REDIRECT_URI,
     GOOGLE_TOKEN_URI,
-    GOOGLE_USER_INFO_URI
+    GOOGLE_USER_INFO_URI,
+    useNavigateAfterLogin
 } from "../tools/auth";
 import service, {ACCESS_TOKEN, UseMutate} from "../tools/service";
 
@@ -62,7 +63,7 @@ const googleService = createService()
  * Посадочная страница успешной авторизации в гугле
  */
 export default function CallbackPage() {
-    const navigate = useNavigate();
+    const redirect = useNavigateAfterLogin()
     const [searchParams] = useSearchParams();
     const code = searchParams.get("code")
 
@@ -106,7 +107,7 @@ export default function CallbackPage() {
                         return Promise.reject(error);
                     }
                 );
-                navigate("/");
+                redirect()
             }).catch(console.log);
         }).catch(console.log);
     }

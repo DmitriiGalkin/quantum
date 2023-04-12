@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {User, useUpdateUser, useUser} from "../modules/user";
+import {User, useUpdateUser} from "../modules/user";
 import QContainer from "../components/QContainer";
 import {Box, Button, ClickAwayListener, Grid, Stack, TextField} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
@@ -20,7 +20,8 @@ import Avatar, {
 } from "react-nice-avatar";
 import {TransitionDialog} from "../components/TransitionDialog";
 import Back from "../components/Back";
-import { getSignedUrl } from "../tools/s3";
+import {getSignedUrl} from "../tools/s3";
+import {useProfileContext} from "../layouts/ProfileLayout";
 
 const AvatarM = {
     sex: ['man', 'woman'],
@@ -43,7 +44,7 @@ const avatarOptions = [
     { title: 'Волосы', key: 'hairStyle'},
     { title: 'Цвет лица', key: 'faceColor'},
     { title: 'Цвет волос', key: 'hairColor', type: 'color'},
-    //{ title: 'Шапка', key: 'hatStyle'},
+    { title: 'Шапка', key: 'hatStyle'},
     { title: 'Глаза', key: 'eyeStyle'},
     { title: 'Очки', key: 'glassesStyle'},
     { title: 'Нос', key: 'noseStyle'},
@@ -83,7 +84,8 @@ const next = (key: f, selected: string): any => {
 
 
 export default function OptionsDialog({ openOptions, onClose }: OptionsDialogProps) {
-    const { data: serverUser } = useUser()
+    const { user: profileUser } = useProfileContext();
+
     const [user, setUser] = useState<User>()
     const updateUser = useUpdateUser()
 
@@ -98,8 +100,8 @@ export default function OptionsDialog({ openOptions, onClose }: OptionsDialogPro
         onClose()
     }
     useEffect(() => {
-        serverUser && setUser(serverUser)
-    }, [serverUser])
+        profileUser && setUser(profileUser)
+    }, [profileUser])
 
 
     const [open, setOpen] = React.useState<f | undefined>(undefined);

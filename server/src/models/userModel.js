@@ -36,11 +36,26 @@ User.islogin = function (email, password, result) {
     });
 };
 // Участник
-User.findById = function (id, result) {
+User.findById = (id) => function (result) {
     dbConn.query("Select * from user where id = ? ", id, function (err, res) {
-        result(null, parse(res));
+        result(null, res.length ? res[0] : undefined);
     });
 };
+// function(callback) {
+//     setTimeout(function() {
+//         callback(null, 'one');
+//     }, 200);
+// }
+// Участник
+// User.findById = function (id) {
+//     return new Promise((resolve, reject) => {
+//         dbConn.query("Select * from user where id = ? ", id, function (err, res) {
+//             if (err) reject(err)
+//             else resolve(res);
+//         });
+//     })
+//
+// };
 const parse = (res) => {
     return res //.map((r) => ({ ...r, avatar: JSON.parse(r.avatar)}))
 }
