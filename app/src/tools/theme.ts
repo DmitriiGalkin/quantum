@@ -1,7 +1,7 @@
 import {createTheme} from '@mui/material/styles';
 
 export const SELECTED_COLOR = '#CDEBFC'
-export const DEFAULT_COLOR = '#E1F1FA'
+export const DEFAULT_COLOR = 'rgb(255 251 40 / 21%)' // '#E1F1FA'
 
 // A custom theme for this app
 const theme = createTheme({

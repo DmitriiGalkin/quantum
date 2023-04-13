@@ -6,26 +6,24 @@ import {Place} from "./place";
 
 export interface Meet {
     id: number
+    projectId: number
     placeId?: number | null,
     title?: string
-    description?: string
     datetime: string
     active?: boolean
-    projectId: number
     project: Project
     place: Place
     users: User[]
-    endDatetime?: string,
+    // description?: string
 }
 
 export interface NewMeet {
+    id?: number
     activeStep?: number
     title?: string
-    description?: string
     projectId?: number
     placeId?: number
     datetime?: string
-    endDatetime?: string
 }
 
 export const useMeets = (): UseQueryResult<Meet[]> => {
@@ -36,3 +34,5 @@ export const useMeetUsers = (id: number): UseQueryResult<User[]> => {
 }
 
 export const useAddMeet = (): UseMutate<NewMeet> => useMutation((meet) => service.post("/meet", meet))
+export const useEditMeet = (): UseMutate<NewMeet> => useMutation((meet) => service.put(`/meet/${meet.id}`, meet))
+

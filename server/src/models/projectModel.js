@@ -4,6 +4,7 @@ var dbConn = require('../db');
 var Project = function(project){
     this.title = project.title;
     this.description = project.description;
+    this.image = project.image;
 };
 // Создание проекта
 Project.create = function (project, result) {
@@ -13,7 +14,7 @@ Project.create = function (project, result) {
 };
 // Обновление проекта
 Project.update = function(id, project, result){
-    dbConn.query("UPDATE project SET title=?,description=?,placeId=? WHERE id = ?", [project.title,project.description, project.placeId, id], function (err, res) {
+    dbConn.query("UPDATE project SET title=?,description=?,image=? WHERE id = ?", [project.title,project.description,project.image, id], function (err, res) {
         result(null, res);
     });
 };

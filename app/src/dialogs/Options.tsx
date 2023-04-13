@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {User, useUpdateUser, useUser} from "../modules/user";
 import QContainer from "../components/QContainer";
+import Up from "./Up";
 import {Box, Button, ClickAwayListener, Grid, Stack, TextField} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {HexColorPicker} from "react-colorful";
@@ -20,7 +21,7 @@ import Avatar, {
 } from "react-nice-avatar";
 import {TransitionDialog} from "../components/TransitionDialog";
 import Back from "../components/Back";
-import {getSignedUrl} from "../tools/s3";
+// import {getSignedUrl} from "../tools/s3";
 
 const AvatarM = {
     sex: ['man', 'woman'],
@@ -113,15 +114,10 @@ export default function OptionsDialog({ openOptions, onClose }: OptionsDialogPro
         setOpen(key);
     };
 
-    const f = () => {
-        const l = getSignedUrl()
-        l.then((r)=>console.log(r,'r'))
-        console.log(l,'l');
-    }
     return (
         <Dialog onClose={onClose} open={openOptions} fullScreen TransitionComponent={TransitionDialog}>
             <Back title="Настройки" onClick={onClose}/>
-            <div onClick={f}>Загрузка</div>
+            <Up/>
             <QContainer>
                 <Stack spacing={2}>
                     <Stack direction="row" spacing={2}>

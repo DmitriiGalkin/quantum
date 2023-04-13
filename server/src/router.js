@@ -30,6 +30,7 @@ function useUser(req, res, next) {
  * Профиль пользователя
  */
 router.get('/profile', useUser, profileController.findByUser);
+router.post('/s3', useUser, projectController.s3);
 
 /**
  * Участники
@@ -66,6 +67,8 @@ router.post('/place', placeController.create);
  */
 router.get('/meets', useUser, meetController.findByUser);
 router.post('/meet', useUser, meetController.create);
+router.put('/meet/:id', meetController.update);
+router.delete('/meet/:id', useUser, meetController.delete );
 
 /**
  * Задания

@@ -1,11 +1,24 @@
 'use strict';
-var async = require("async");
+const async = require("async");
+const formidable = require('formidable');
+const fs = require('fs');
+const path = require('path')
+const mime = require('mime');
+const { v4: uuid } = require('uuid');
+
+
+// const { PutObjectCommand, CreateBucketCommand } = require('@aws-sdk/client-s3');
+
+// const s3Client = require('../sampleClient.js');
+const { PutObjectCommand } = require('@aws-sdk/client-s3');
+const S3 = require('../s3');
 
 const Project = require('../models/projectModel');
 const Meet = require('../models/meetModel');
 const Place = require('../models/placeModel');
 const User = require('../models/userModel');
 const UserProject = require('../models/userProjectModel');
+// var YandexCloud = require('../aws');
 
 // Проект
 exports.findById = function(req, res) {
@@ -19,7 +32,15 @@ exports.findById = function(req, res) {
                     async.map(meets, User.findByMeet, function(err, meetsUsers) {
                         async.map(meets, Place.findByMeet, function(err, meetsPlace) {
                             const active = users.some((u) => req.user.id === u.id)
-                            res.send({ ...project, users, meets: meets.map((p, index) => ({ ...p, users: meetsUsers[index], place: meetsPlace[index], project})), active });
+                            res.send({
+                                ...project,
+                                users,
+                                meets: meets.map((p, index) => {
+                                    const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
+                                    return ({ ...p, users: meetsUsers[index], place: meetsPlace[index], project, active})
+                                }),
+                                active
+                            });
                         });
                     });
                 });
@@ -42,14 +63,82 @@ exports.create = function(req, res) {
     }
 };
 
+// function uploadImage(req, cb) {
+//     let form = new formidable.IncomingForm();
+//
+//     form.parse(req, async function (error, fields, files) {
+//         const file = files.customFile
+//         console.log(files,'files')
+//         const filename = uuid() + path.extname(file.originalFilename)
+//
+//         const params = {
+//             Bucket: 'quantum-education', // имя bucket
+//             Key: filename, // имя файла в облаке
+//             Body: fs.readFileSync(file.filepath), // данные файла в blob
+//             ContentType: mime.getType(file.originalFilename), // тип файла
+//         }
+//
+//         await new Promise(function(resolve, reject) {
+//             S3.send(new PutObjectCommand(params)).then(
+//                 (data) => {
+//                     console.log(data)
+//                     resolve(data)
+//                 },
+//                 (error) => {
+//                     console.log(error)
+//                     reject(error)
+//                 }
+//             );
+//         });
+//
+//         cb(filename)
+//     })
+// }
+
+// Загрузка картинки
+exports.s3 = function(req, res) {
+    let form = new formidable.IncomingForm();
+
+    form.parse(req, async function (error, fields, files) {
+        const file = files.customFile
+        console.log(files,'files')
+        const filename = uuid() + path.extname(file.originalFilename)
+
+        const params = {
+            Bucket: 'quantum-education', // имя bucket
+            Key: filename, // имя файла в облаке
+            Body: fs.readFileSync(file.filepath), // данные файла в blob
+            ContentType: mime.getType(file.originalFilename), // тип файла
+        }
+
+        await new Promise(function(resolve, reject) {
+            S3.send(new PutObjectCommand(params)).then(
+                (data) => {
+                    console.log(data)
+                    resolve(data)
+                },
+                (error) => {
+                    console.log(error)
+                    reject(error)
+                }
+            );
+        });
+
+        cb(filename)
+    })
+};
+
 // Обновление проекта
 exports.update = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
-        Project.update(req.params.id, new Project(req.body), function() {
-            res.json({ error:false, message: 'Проект обновлен' });
-        });
+        uploadImage(req, function(image) {
+            const obj = new Project({...req.body, image})
+            Project.update(req.params.id, obj, function() {
+                res.json({ error:false, message: 'Проект обновлен' });
+            });
+        })
     }
 };
 // Добавление участника в проект

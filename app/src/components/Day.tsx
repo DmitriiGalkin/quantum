@@ -49,11 +49,11 @@ export default function Day({ date, meets, refetch }: DayProps): JSX.Element {
     return (
         <div className={classes.meetsGroup} key={date}>
             <div className={classes.date}>
-                <Stack spacing={2} direction="row" alignItems="flex-end">
+                <Stack spacing={1} direction="row" alignItems="flex-end">
                     <Typography style={{ fontFamily: 'Bebas Neue', fontSize: 26, lineHeight: '28px' }}>
                         {day}
                     </Typography>
-                    <Typography className={classes.month} variant="subtitle1">
+                    <Typography className={classes.month} variant="subtitle1" color="textSecondary">
                         {monthShortTitle}
                     </Typography>
                 </Stack>

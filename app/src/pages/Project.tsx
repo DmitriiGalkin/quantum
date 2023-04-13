@@ -7,6 +7,7 @@ import {useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet, NewMeet} from "../modules/meet";
+import {Project} from "../modules/project";
 import QAvatar from "../components/QAvatar";
 import {useParams} from "react-router-dom";
 import CreateMeet from "../dialogs/CreateMeet";
@@ -15,6 +16,7 @@ import {getOnShare} from "../tools/share";
 import QContainer from "../components/QContainer";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
+import CreateProjectDialog from "../dialogs/CreateProject";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -32,12 +34,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export default function Project() {
+export default function ProjectPage() {
     const { id: projectId } = useParams();
     const { data: project, refetch } = useProject(Number(projectId))
 
     const classes = useStyles();
     const [newMeet, setNewMeet] = useState<NewMeet>()
+    const [editProject, setEditProject] = useState<Project>()
 
     const addProjectUser = useAddProjectUser(project?.id)
     const deleteProjectUser = useDeleteProjectUser(project?.id)
@@ -61,6 +64,7 @@ export default function Project() {
                 text: project?.description,
                 url: `/project/${project?.id}`
             })},
+        { title: 'Редактировать', onClick: () => setEditProject(project)},
         { title: 'Выйти из проекта', onClick: () => onClick()},
     ]
 
@@ -119,6 +123,12 @@ export default function Project() {
             <Dialog onClose={() => setNewMeet(undefined)} open={!!newMeet} fullScreen TransitionComponent={TransitionDialog}>
                 {!!newMeet && (<CreateMeet newMeet={newMeet} onClose={() => {
                     setNewMeet(undefined)
+                    refetch()
+                }} />)}
+            </Dialog>
+            <Dialog onClose={() => setEditProject(undefined)} open={!!editProject} fullScreen TransitionComponent={TransitionDialog}>
+                {!!editProject && (<CreateProjectDialog onClose={() => {
+                    setEditProject(undefined)
                     refetch()
                 }} />)}
             </Dialog>

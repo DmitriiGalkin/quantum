@@ -11,7 +11,7 @@ export default function MeetsPage() {
     const { data: meets = [], refetch } = useMeets()
     const meetsGroup = getMeetsGroup(meets)
 
-    const { setOpenCreateProject, setOpenMap } = useMain();
+    const { setNewProject, setOpenMap } = useMain();
     return (
         <>
             {Boolean(meetsGroup.length) ? (
@@ -27,7 +27,7 @@ export default function MeetsPage() {
                     alignItems="center"
                     minHeight="80vh"
                 >
-                    <span>Встреч нет. Попробуйте найти интересные проекты на <Link onClick={() => setOpenMap(true)}>карте</Link>. Или <Link onClick={() => setOpenCreateProject(true)}>создать свой</Link>!</span>
+                    <span>Встреч нет. Попробуйте найти интересные проекты на <Link onClick={() => setOpenMap(true)}>карте</Link>. Или <Link onClick={() => setNewProject(true)}>создать свой</Link>!</span>
                 </Box>
             )}
         </>

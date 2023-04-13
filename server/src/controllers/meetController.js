@@ -21,6 +21,24 @@ exports.create = function(req, res) {
     }
 };
 
+// Обновление встречи
+exports.update = function(req, res) {
+    if(req.body.constructor === Object && Object.keys(req.body).length === 0){
+        res.status(400).send({ error:true, message: 'Please provide all required field' });
+    }else{
+        const obj = new Meet(req.body)
+        Meet.update(req.params.id, obj, function() {
+            res.json({ error:false, message: 'Встреча обновлен' });
+        });
+    }
+};
+// Удаление встречи
+exports.delete = function(req, res) {
+    Meet.delete(req.params.id, function() {
+        res.json({ error:false, message: 'Удаление встречи' });
+    });
+};
+
 // Добавление или удаление участника встречи
 exports.toggleUserMeet = function(req, res) {
     UserMeet.findById(req.user.id, req.params.meetId, function(err, userMeet) {

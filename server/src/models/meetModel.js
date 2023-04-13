@@ -4,6 +4,7 @@ var dbConn = require('../db');
 var Meet = function(data){
     this.projectId = data.projectId;
     this.placeId = data.placeId;
+    this.title = data.title;
     this.datetime = data.datetime;
 };
 // Создание встречи
@@ -12,6 +13,19 @@ Meet.create = function (data, result) {
         result(null, res.insertId);
     });
 };
+// Обновление встречи
+Meet.update = function(id, meet, result){
+    dbConn.query("UPDATE meet SET title=?, projectId=?, placeId=?, datetime=? WHERE id = ?", [meet.title,meet.projectId,meet.placeId,meet.datetime, id], function (err, res) {
+        result(null, res);
+    });
+};
+// Удаление встречи
+Meet.delete = function(id, result){
+    dbConn.query(`DELETE FROM meet WHERE id = ?`, id, function (err, res) {
+        result(null, res);
+    });
+};
+
 // Встречи проекта
 Meet.findByProject = function (project, result) {
     dbConn.query("Select * from meet where projectId = ? AND DATE(datetime) >= CURDATE() ", project.id, function (err, res) {

@@ -6,14 +6,15 @@ interface QCardProps {
     active?: boolean
     selected?: boolean
     onClick?: () => void
+    onContextMenu?: (event: React.MouseEvent) => void
     children: React.ReactNode
 }
-export default function QCard({ onClick, active, selected, children }: QCardProps) {
+export default function QCard({ onClick, active, selected, children, onContextMenu }: QCardProps) {
     const backgroundColor = selected ? SELECTED_COLOR : ( active ? DEFAULT_COLOR : undefined)
 
     return (
         <Box>
-            <div style={{ padding: '8px 16px', margin: '0 -12px 0 -12px', backgroundColor }} onClick={onClick}>
+            <div style={{ padding: '8px 16px', margin: '0 -18px 0 -18px', backgroundColor }} onClick={onClick} onContextMenu={onContextMenu}>
                 {children}
             </div>
         </Box>

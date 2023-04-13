@@ -52,17 +52,19 @@ export const MainLayout = () => {
     const classes = useStyles();
     const { logout } = useAuth();
     const [openMap, setOpenMap] = useState(false)
-    const [openCreateProject, setOpenCreateProject] = useState(false)
+    const [newProject, setNewProject] = useState(false)
     const [newMeet, setNewMeet] = useState<NewMeet>()
     const [openOptions, setOpenOptions] = useState(false)
     const bottomNavigationValue = MAIN_PAGES.findIndex((pageName) => '/' + pageName === location.pathname) || 0
 
     const menuItems = [
         { title: 'Новая встреча', onClick: () => setNewMeet({}) },
-        { title: 'Новый проект', onClick: () => setOpenCreateProject(true) },
+        { title: 'Новый проект', onClick: () => setNewProject(true) },
         { title: 'Настройки', onClick: () => setOpenOptions(true) },
         { title: 'Выход', onClick: () => logout() },
     ]
+
+    console.log(newMeet,'newMeet')
     return (
         <>
             <Box className={classes.root}>
@@ -91,7 +93,7 @@ export const MainLayout = () => {
                 <div style={{minHeight: '100vh', height: '100%'}}>
                     <Box className={classes.contentAll} flexDirection="column" display='flex'>
                         <QContainer>
-                            <Outlet context={{ setOpenCreateProject, setOpenMap }} />
+                            <Outlet context={{ setNewProject, setOpenMap }} />
                         </QContainer>
                     </Box>
                 </div>
@@ -107,7 +109,10 @@ export const MainLayout = () => {
                 </div>
             </Box>
             <Map open={openMap} onClose={() => setOpenMap(false)} />
-            <CreateProject openCreateProject={openCreateProject} onClose={() => setOpenCreateProject(false)} />
+            <Dialog onClose={() => setNewProject(false)} open={newProject} fullScreen TransitionComponent={TransitionDialog}>
+                {newProject && (<CreateProject onClose={() => setNewProject(false)} />)}
+            </Dialog>
+
             <Dialog onClose={() => setNewMeet(undefined)} open={!!newMeet} fullScreen TransitionComponent={TransitionDialog}>
                 {!!newMeet && (<CreateMeet newMeet={newMeet} onClose={() => setNewMeet(undefined)} />)}
             </Dialog>
@@ -117,7 +122,7 @@ export const MainLayout = () => {
 };
 
 interface MainContextType {
-    setOpenCreateProject: (open: boolean) => void
+    setNewProject: (open: boolean) => void
     setOpenMap: (open: boolean) => void
 }
 export function useMain() {

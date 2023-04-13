@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Slider, Stack, Typography} from "@mui/material";
-import {NewMeet, useAddMeet} from "../modules/meet";
+import {Box, Button, Slider, Stack, TextField, Typography} from "@mui/material";
+import {Meet, NewMeet, useAddMeet, useEditMeet} from "../modules/meet";
 import TabPanel from "../components/TabPanel";
 import ProjectCard from "../components/cards/ProjectCard";
 import {useUserProjects} from "../modules/user";
@@ -33,15 +33,16 @@ export const getProjectDefaultDatetime = (): [string, string] => {
 }
 
 export interface CreateMeetDialogProps {
-    newMeet?: NewMeet
+    newMeet: NewMeet
     onClose: () => void;
 }
 export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogProps) {
-    const [meet, setMeet] = useState<NewMeet | undefined>()
+    const [meet, setMeet] = useState<NewMeet>({} as NewMeet)
     const { data: places = [] } = usePlaces()
     const navigate = useNavigate();
 
     const addMeet = useAddMeet()
+    const editMeet = useEditMeet()
 
     const { data: projects = [] } = useUserProjects()
     const { data: project = {} as Project } = useProject(meet?.projectId)
@@ -50,10 +51,16 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
     const onClickSave = () => {
         if (meet) {
             const meetWithTimezone = {...meet }
-            addMeet.mutateAsync(meetWithTimezone).then(() => {
-                navigate(`/project/${meet.projectId}`)
-            })
-            // onClose()
+            if (meet.id) {
+                editMeet.mutateAsync(meetWithTimezone).then(() => {
+                    navigate(`/project/${meet.projectId}`)
+                })
+            } else {
+                addMeet.mutateAsync(meetWithTimezone).then(() => {
+                    navigate(`/project/${meet.projectId}`)
+                })
+            }
+            onClose()
         }
     };
 
@@ -65,35 +72,35 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
         setMeet({
             ...meet,
             datetime: date.startOf('day').add(dayjs(meet?.datetime).hour(), 'hour').add(dayjs(meet?.datetime).minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
-        })
+        } as NewMeet)
     }
     const sliderOnChange = (event: any, newValue: number | number[]) => {
         const minutes = newValue as number
         setMeet({
             ...meet,
             datetime: dayjs(meet?.datetime).startOf('day').add(minutes, 'minute').format('YYYY-MM-DDTHH:mm:ss'),
-        })
+        } as NewMeet)
     };
 
     useEffect(() => {
-        setMeet(newMeet)
+        newMeet && setMeet(newMeet)
     }, [newMeet])
+    const title = meet.id ? 'Редактировать встречу' : 'Создать встречу'
 
     return (
         <div>
-            <Back title="Создать встречу" onClick={onClose}/>
+            <Back title={title} onClick={onClose}/>
             <TabPanel value={meet?.activeStep || 0} index={0}>
                 <Typography variant="h5" sx={{ paddingBottom: 1 }}>
-                    Выберите проект для встречи
+                    Проект встречи
                 </Typography>
                 <Stack spacing={2}>
                     {projects.map((project) => <ProjectCard key={project.id} active project={project} selected={meet?.projectId === project.id} onClick={() => {
-                        const [datetime, endDatetime] = getProjectDefaultDatetime()
+                        const [datetime] = getProjectDefaultDatetime()
                         setMeet({
                             ...meet,
                             projectId: project.id,
                             datetime,
-                            endDatetime,
                             activeStep: 1,
                         })
                     }}/>)}
@@ -101,7 +108,7 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
             </TabPanel>
             <TabPanel value={meet?.activeStep || 0} index={1}>
                 <Typography variant="h5" sx={{ paddingBottom: 1 }}>
-                    Выберите место для встречи
+                    Место встречи
                 </Typography>
                 <Stack spacing={2}>
                     {places.map((place) => (
@@ -115,6 +122,14 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                 <div>
                     <ProjectCard project={project}/>
                     <PlaceCard place={place}/>
+                    <TextField
+                        name='title'
+                        label="Название"
+                        variant="standard"
+                        fullWidth
+                        value={meet?.title}
+                        onChange={(e) => setMeet({ ...meet, title: e.target.value})}
+                    />
                     <Box sx={{
                         fontSize: '15px',
                         '& .MuiPickersFadeTransitionGroup-root': {
