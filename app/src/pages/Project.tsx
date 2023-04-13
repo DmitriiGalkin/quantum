@@ -74,6 +74,11 @@ export default function ProjectPage() {
             <div className={classes.container}>
                 <QContainer>
                     <Stack spacing={3}>
+                        {project.image && (
+                            <div>
+                                <img src={project.image} alt="" style={{width:'100%'}} />
+                            </div>
+                        )}
                         <Typography>
                             {project.description}
                         </Typography>

@@ -20,6 +20,10 @@ const User = require('../models/userModel');
 const UserProject = require('../models/userProjectModel');
 // var YandexCloud = require('../aws');
 
+const getS3imageURL = (image) => {
+    return 'https://storage.yandexcloud.net/quantum-education/' + image
+}
+
 // Проект
 exports.findById = function(req, res) {
     Project.findById(req.params.id, function(err, project) {
@@ -34,6 +38,7 @@ exports.findById = function(req, res) {
                             const active = users.some((u) => req.user.id === u.id)
                             res.send({
                                 ...project,
+                                image: getS3imageURL(project.image),
                                 users,
                                 meets: meets.map((p, index) => {
                                     const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
@@ -100,8 +105,7 @@ exports.s3 = function(req, res) {
     let form = new formidable.IncomingForm();
 
     form.parse(req, async function (error, fields, files) {
-        const file = files.customFile
-        console.log(files,'files')
+        const file = files.image
         const filename = uuid() + path.extname(file.originalFilename)
 
         const params = {
@@ -124,7 +128,7 @@ exports.s3 = function(req, res) {
             );
         });
 
-        cb(filename)
+        res.json(filename);
     })
 };
 
@@ -133,12 +137,10 @@ exports.update = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
-        uploadImage(req, function(image) {
-            const obj = new Project({...req.body, image})
-            Project.update(req.params.id, obj, function() {
-                res.json({ error:false, message: 'Проект обновлен' });
-            });
-        })
+        const obj = new Project(req.body)
+        Project.update(req.params.id, obj, function() {
+            res.json({ error:false, message: 'Проект обновлен' });
+        });
     }
 };
 // Добавление участника в проект

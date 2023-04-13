@@ -9,6 +9,7 @@ export interface Project {
     id: number,
     title: string,
     description: string,
+    image: string,
     active?: boolean, // пользователь является участником проекта
     favorite?: boolean, // пользователь добавил проект в избранное
     ageLimit?: AgeLimit // Возрастное ограничение

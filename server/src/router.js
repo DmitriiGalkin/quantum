@@ -30,7 +30,7 @@ function useUser(req, res, next) {
  * Профиль пользователя
  */
 router.get('/profile', useUser, profileController.findByUser);
-router.post('/s3', useUser, projectController.s3);
+router.post('/s3', projectController.s3);
 
 /**
  * Участники

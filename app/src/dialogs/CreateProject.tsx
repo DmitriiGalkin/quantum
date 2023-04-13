@@ -54,12 +54,12 @@ export default function CreateProjectDialog({ onClose }: CreateProjectDialogProp
     //     });
     // }
 
-    const onClickSave = () => {
+    const onClickSave = (image: string) => {
         // const image = uploadS3Image()
 
-        project.id ? updateProject.mutateAsync(project).then(() => {
+        project.id ? updateProject.mutateAsync({ ...project, image }).then(() => {
             onClose()
-        }) : addProject.mutateAsync(project).then((projectId) => {
+        }) : addProject.mutateAsync({ ...project, image }).then((projectId) => {
             navigate(`/project/${projectId}`)
         })
     };
@@ -84,31 +84,25 @@ export default function CreateProjectDialog({ onClose }: CreateProjectDialogProp
         formData.append("image", file);
 
         console.log(formData,'formData')
-        axios.post('http://localhost::4000/s3', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then((data) => console.log(data))
-            .catch((err) => console.error(err));
-
-        // 👇 Uploading the file using the fetch API to the server
-        // axios.post('http://localhost::4000/s3', {
-        //     method: 'POST',
-        //     body: file,
-        //     // 👇 Set headers manually for single file upload
+        // axios.post('http://localhost::4000/s3', formData, {
         //     headers: {
-        //         'content-type': file.type,
-        //         'content-length': `${file.size}`, // 👈 Headers need to be a string
-        //     },
-        // })
-        //     .then((res) => res.json())
-        //     .then((data) => console.log(data))
+        //         'Content-Type': 'multipart/form-data'
+        //     }
+        // }).then((data) => console.log(data))
         //     .catch((err) => console.error(err));
+
+        axios({
+            method: "post",
+            url: 'http://localhost:4000/s3',
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
+        }).then((data) => {
+            onClickSave(data.data)
+        });
+// onClickSave
     };
 
-    console.log(file,'file')
     const src = file && URL.createObjectURL(file)
-    console.log(src,'src')
 
 
     return (
