@@ -31,6 +31,6 @@ exports.upload = function(req, res) {
             );
         });
 
-        res.json(filename);
+        res.json('https://storage.yandexcloud.net/quantum-education/' + filename);
     })
 };

@@ -19,11 +19,12 @@ function useUser(req, res, next) {
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
     User.findByToken(token, function(err, user) {
-        if (!user) {
+        if (!user || user === null) {
             res.sendStatus(401)
+        } else {
+            req.user = user
+            next()
         }
-        req.user = user
-        next()
     });
 }
 

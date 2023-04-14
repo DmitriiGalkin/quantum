@@ -3,11 +3,10 @@ import {makeStyles} from '@mui/styles';
 import {Box, Button, Stack, Theme, Typography} from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import {useAddProjectUser, useDeleteProjectUser} from "../modules/user";
-import {useProject} from "../modules/project";
+import {Project, useProject} from "../modules/project";
 import {getMeetsGroup} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet, NewMeet} from "../modules/meet";
-import {Project} from "../modules/project";
 import QAvatar from "../components/QAvatar";
 import {useParams} from "react-router-dom";
 import CreateMeet from "../dialogs/CreateMeet";
@@ -17,6 +16,7 @@ import QContainer from "../components/QContainer";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
 import CreateProjectDialog from "../dialogs/CreateProject";
+import Image from "../components/Image";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -74,11 +74,7 @@ export default function ProjectPage() {
             <div className={classes.container}>
                 <QContainer>
                     <Stack spacing={3}>
-                        {project.image && (
-                            <div>
-                                <img src={project.image} alt="" style={{width:'100%'}} />
-                            </div>
-                        )}
+                        {project.image && <Image src={project.image}/>}
                         <Typography>
                             {project.description}
                         </Typography>
@@ -94,11 +90,11 @@ export default function ProjectPage() {
                             </Button>
                         )}
                         {Boolean(project.meets.length) && (
-                            <div>
+                            <Stack spacing={3}>
                                 {meetsGroup.map(([date, meets]) => (
                                     <Day key={date} date={date} meets={meets as Meet[]} refetch={refetch} />
                                 ))}
-                            </div>
+                            </Stack>
                         )}
                         {Boolean(project.users?.length) && (
                             <Stack spacing={2}>

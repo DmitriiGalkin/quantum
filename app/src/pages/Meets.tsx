@@ -15,7 +15,7 @@ export default function MeetsPage() {
     return (
         <>
             {Boolean(meetsGroup.length) ? (
-                <Stack spacing={2}>
+                <Stack spacing={3}>
                     {meetsGroup.map(([date, meets]) => (
                         <Day key={date} date={date} meets={meets as Meet[]} refetch={refetch} />
                     ))}

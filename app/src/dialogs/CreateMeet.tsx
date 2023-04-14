@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, Slider, Stack, TextField, Typography} from "@mui/material";
-import {Meet, NewMeet, useAddMeet, useEditMeet} from "../modules/meet";
+import {NewMeet, useAddMeet, useEditMeet} from "../modules/meet";
 import TabPanel from "../components/TabPanel";
 import ProjectCard from "../components/cards/ProjectCard";
 import {useUserProjects} from "../modules/user";

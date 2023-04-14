@@ -1,9 +1,10 @@
 import React from 'react';
 
-import {Box, CardContent, CardMedia, Stack, Typography} from "@mui/material";
+import {CardContent, Typography} from "@mui/material";
 import {Project} from "../../modules/project";
 import QCard from "../QCard";
 import Grid from '@mui/material/Unstable_Grid2';
+import Image from "../Image";
 
 interface ProjectCardProps {
     project: Project
@@ -12,35 +13,28 @@ interface ProjectCardProps {
     onClick?: () => void
 }
 
-
 export default function ProjectCard({ project, selected, onClick }: ProjectCardProps) {
-    // const firstMeetDateTitle = convertToMeetDatetime(project.meet?.datetime) E1F1FA CDEBFC
     return (
         <QCard onClick={onClick} active={project.active} selected={selected}>
-            {project.image && (
-                <CardMedia
-                    component="img"
-                    sx={{ width: '33%' }}
-                    style={{ objectFit: 'cover'}}
-                    image={project.image}
-                    alt={project.title}
-                />
-            )}
-            <CardContent>
-                <Typography variant="h5">
-                    {project.title}
-                </Typography>
-                <div style={{ display: 'flex' }}>
-                    <Box>
-                        {/*<Typography variant="subtitle1" color="primary">*/}
-                        {/*    {firstMeetDateTitle}*/}
-                        {/*</Typography>*/}
-                        <Typography>
-                            {project.description}
-                        </Typography>
-                    </Box>
-                </div>
-            </CardContent>
+            <div style={{ flexGrow: 1 }}>
+                <Grid container direction="row">
+                    {project.image && (
+                        <Grid xs={3}>
+                            <Image src={project.image} paddingTop="150%"/>
+                        </Grid>
+                    )}
+                    <Grid xs={9}>
+                        <CardContent>
+                            <Typography variant="h5">
+                                {project.title}
+                            </Typography>
+                            <Typography style={{ overflow: 'hidden', height: 60 }}>
+                                {project.description}
+                            </Typography>
+                        </CardContent>
+                    </Grid>
+                </Grid>
+            </div>
         </QCard>
     );
 }

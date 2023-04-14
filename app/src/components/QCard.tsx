@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Card, Paper} from "@mui/material";
+import {Card} from "@mui/material";
 import {DEFAULT_COLOR, SELECTED_COLOR} from "../tools/theme";
 
 interface QCardProps {

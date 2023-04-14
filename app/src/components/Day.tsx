@@ -5,7 +5,6 @@ import {Divider, Stack, Theme, Typography} from "@mui/material";
 import {makeStyles} from '@mui/styles';
 import {LocalDate} from "@js-joda/core";
 import MeetCard from "./cards/MeetCard";
-import {DEFAULT_COLOR} from "../tools/theme";
 
 const useStyles = makeStyles((theme: Theme) => ({
     month: {

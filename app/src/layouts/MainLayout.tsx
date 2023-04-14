@@ -77,7 +77,7 @@ export const MainLayout = () => {
                     </Toolbar>
                 </AppBar>
                 <div style={{minHeight: '100vh', height: '100%'}}>
-                    <div style={{ paddingBottom: 68 }}>
+                    <div style={{ paddingBottom: 56 }}>
                         <QContainer>
                             <Outlet context={{ setNewProject, setOpenMap }} />
                         </QContainer>

@@ -33,7 +33,6 @@ exports.findById = function(req, res) {
                             const active = users.some((u) => req.user.id === u.id)
                             res.send({
                                 ...project,
-                                image: project.image && getS3imageURL(project.image),
                                 users,
                                 meets: meets.map((p, index) => {
                                     const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
@@ -100,8 +99,7 @@ exports.findByUser = function(req, res) {
                 async.map(projects, User.findByProject, function(err, projectsUsers) {
                     res.send(projects.map((p, index) => {
                         const active = projectsUsers[index]?.some((user) => user.userId === req.user.id)
-                        const image = p.image && getS3imageURL(p.image)
-                        return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active, image})
+                        return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active})
                     }));
                 });
             });
