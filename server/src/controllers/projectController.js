@@ -6,10 +6,6 @@ const path = require('path')
 const mime = require('mime');
 const { v4: uuid } = require('uuid');
 
-
-// const { PutObjectCommand, CreateBucketCommand } = require('@aws-sdk/client-s3');
-
-// const s3Client = require('../sampleClient.js');
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
 const S3 = require('../s3');
 
@@ -18,7 +14,6 @@ const Meet = require('../models/meetModel');
 const Place = require('../models/placeModel');
 const User = require('../models/userModel');
 const UserProject = require('../models/userProjectModel');
-// var YandexCloud = require('../aws');
 
 const getS3imageURL = (image) => {
     return 'https://storage.yandexcloud.net/quantum-education/' + image
@@ -38,7 +33,7 @@ exports.findById = function(req, res) {
                             const active = users.some((u) => req.user.id === u.id)
                             res.send({
                                 ...project,
-                                image: getS3imageURL(project.image),
+                                image: project.image && getS3imageURL(project.image),
                                 users,
                                 meets: meets.map((p, index) => {
                                     const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
@@ -66,70 +61,6 @@ exports.create = function(req, res) {
             });
         });
     }
-};
-
-// function uploadImage(req, cb) {
-//     let form = new formidable.IncomingForm();
-//
-//     form.parse(req, async function (error, fields, files) {
-//         const file = files.customFile
-//         console.log(files,'files')
-//         const filename = uuid() + path.extname(file.originalFilename)
-//
-//         const params = {
-//             Bucket: 'quantum-education', // имя bucket
-//             Key: filename, // имя файла в облаке
-//             Body: fs.readFileSync(file.filepath), // данные файла в blob
-//             ContentType: mime.getType(file.originalFilename), // тип файла
-//         }
-//
-//         await new Promise(function(resolve, reject) {
-//             S3.send(new PutObjectCommand(params)).then(
-//                 (data) => {
-//                     console.log(data)
-//                     resolve(data)
-//                 },
-//                 (error) => {
-//                     console.log(error)
-//                     reject(error)
-//                 }
-//             );
-//         });
-//
-//         cb(filename)
-//     })
-// }
-
-// Загрузка картинки
-exports.s3 = function(req, res) {
-    let form = new formidable.IncomingForm();
-
-    form.parse(req, async function (error, fields, files) {
-        const file = files.image
-        const filename = uuid() + path.extname(file.originalFilename)
-
-        const params = {
-            Bucket: 'quantum-education', // имя bucket
-            Key: filename, // имя файла в облаке
-            Body: fs.readFileSync(file.filepath), // данные файла в blob
-            ContentType: mime.getType(file.originalFilename), // тип файла
-        }
-
-        await new Promise(function(resolve, reject) {
-            S3.send(new PutObjectCommand(params)).then(
-                (data) => {
-                    console.log(data)
-                    resolve(data)
-                },
-                (error) => {
-                    console.log(error)
-                    reject(error)
-                }
-            );
-        });
-
-        res.json(filename);
-    })
 };
 
 // Обновление проекта
@@ -169,7 +100,8 @@ exports.findByUser = function(req, res) {
                 async.map(projects, User.findByProject, function(err, projectsUsers) {
                     res.send(projects.map((p, index) => {
                         const active = projectsUsers[index]?.some((user) => user.userId === req.user.id)
-                        return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active})
+                        const image = p.image && getS3imageURL(p.image)
+                        return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active, image})
                     }));
                 });
             });

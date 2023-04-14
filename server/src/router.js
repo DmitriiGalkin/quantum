@@ -9,6 +9,7 @@ const placeController =   require('./controllers/placeController');
 const taskController =   require('./controllers/taskController');
 const uniqueController =   require('./controllers/uniqueController');
 const profileController =   require('./controllers/profileController');
+const imageController =   require('./controllers/imageController');
 
 /**
  * Подхватываем токен и авторизуем пользователя
@@ -30,7 +31,11 @@ function useUser(req, res, next) {
  * Профиль пользователя
  */
 router.get('/profile', useUser, profileController.findByUser);
-router.post('/s3', projectController.s3);
+
+/**
+ * Картинки
+ */
+router.post('/image', imageController.upload);
 
 /**
  * Участники

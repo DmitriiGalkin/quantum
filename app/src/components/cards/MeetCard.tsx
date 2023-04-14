@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Meet, NewMeet} from "../../modules/meet";
 import {convertToMeetTime} from "../../tools/date";
-import {AvatarGroup, Box, Menu, MenuItem, Typography} from "@mui/material";
+import {AvatarGroup, Box, CardContent, Menu, MenuItem, Typography} from "@mui/material";
 import QAvatar from "../QAvatar";
 import {useDeleteMeet, useToggleMeetUser} from "../../modules/user";
 import QCard from "../QCard";
@@ -65,7 +65,7 @@ export default function MeetCard({ meet, refetch }: MeetCardProps) {
 
     return (
         <QCard onClick={onClick} active={meet.active} onContextMenu={handleContextMenu}>
-            <Box style={{ display: 'flex', height: 95 }}>
+            <CardContent sx={{ flex: '1 0 auto', display: 'flex' }}>
                 <Box style={{ flexGrow: 1 }}>
                     <Typography variant="h6" onContextMenu={()=>console.log('1')}>
                         {title}
@@ -73,24 +73,26 @@ export default function MeetCard({ meet, refetch }: MeetCardProps) {
                     <Typography variant="h6" color="textSecondary">
                         {description}
                     </Typography>
-                    {Boolean(meet.users.length) ? (
-                        <Box sx={{ display: 'flex', paddingTop: 1 }}>
-                            <AvatarGroup max={meet.active ? 8 : 7}  sx={{
-                                '& .MuiAvatar-root': { width: 30, height: 30, fontSize: 15 },
-                            }}>
-                                {meet.users?.map((user) => <QAvatar key={user.id} {...user} />)}
-                            </AvatarGroup>
-                        </Box>
-                    ) : (
-                        <Typography variant="body2" color="textSecondary">
-                            Участников нет
-                        </Typography>
-                    )}
+                    <div style={{ height: 30 }}>
+                        {Boolean(meet.users.length) ? (
+                            <Box sx={{ display: 'flex', paddingTop: 1 }}>
+                                <AvatarGroup max={meet.active ? 8 : 7}  sx={{
+                                    '& .MuiAvatar-root': { width: 30, height: 30, fontSize: 15 },
+                                }}>
+                                    {meet.users?.map((user) => <QAvatar key={user.id} {...user} />)}
+                                </AvatarGroup>
+                            </Box>
+                        ) : (
+                            <Typography variant="body2" color="textSecondary">
+                                Участников нет
+                            </Typography>
+                        )}
+                    </div>
                 </Box>
                 <Typography variant="subtitle1">
                     {time}
                 </Typography>
-            </Box>
+            </CardContent>
             <Menu
                 open={contextMenu !== null}
                 onClose={handleClose}
@@ -110,3 +112,7 @@ export default function MeetCard({ meet, refetch }: MeetCardProps) {
         </QCard>
     );
 }
+
+<Box style={{ display: 'flex', height: 95 }}>
+
+</Box>

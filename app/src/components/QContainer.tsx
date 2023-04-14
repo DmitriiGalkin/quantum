@@ -15,7 +15,7 @@ export default function QContainer({children}: QContainerProps) {
 
     return (
         <div className={classes.content}>
-            <Container style={{ padding: '18px' }}>
+            <Container style={{ paddingTop: '12px' }}>
                 {children}
             </Container>
         </div>

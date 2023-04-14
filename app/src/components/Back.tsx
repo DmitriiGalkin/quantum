@@ -18,7 +18,7 @@ export function Back({ title, onClick, menuItems }: BackProps) {
     const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
 
     return (
-        <AppBar position="static">
+        <AppBar position="sticky">
             <Toolbar variant="dense">
                 <IconButton onClick={onBackClick} size="large" edge="start">
                     <BackIcon style={{ color: 'white' }}/>

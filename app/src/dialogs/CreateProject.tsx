@@ -3,8 +3,9 @@ import {Project, useAddProject, useProject, useUpdateProject} from "../modules/p
 import Back from "../components/Back";
 import QContainer from "../components/QContainer";
 import {useNavigate, useParams} from "react-router-dom";
-import {Button, Stack, TextField} from "@mui/material";
+import {Button, CardMedia, Stack, TextField} from "@mui/material";
 import axios from "axios";
+import {useUploadImage} from "../modules/image";
 // import S3 from "../tools/s3";
 // import path from "path";
 // import fs from "fs";
@@ -22,53 +23,21 @@ export default function CreateProjectDialog({ onClose }: CreateProjectDialogProp
     const { id } = useParams();
     const { data: projectOld } = useProject(id ? Number(id) : 0)
     const [project, setProject] = useState(projectOld || {} as Project)
-    const [previewImage, setPreviewImage] = useState<string | undefined>()
 
     const addProject = useAddProject()
     const updateProject = useUpdateProject()
+    const uploadImage = useUploadImage()
+
     const navigate = useNavigate();
 
-    // const uploadS3Image = async () => {
-    //     console.log(previewImage, 'previewImage')
-    //     const file = previewImage
-    //     const filename = uuid() + '.' + String(re.exec(file.name)?.[1])
-    //
-    //     const params = {
-    //         Bucket: 'quantum-education', // имя bucket
-    //         Key: filename, // имя файла в облаке
-    //         Body: blobfile, //fs.readFileSync(file.filepath), // данные файла в blob
-    //         ContentType: file.type, // тип файла
-    //     }
-    //
-    //     await new Promise(function(resolve, reject) {
-    //         S3.send(new PutObjectCommand(params)).then(
-    //             (data: any) => {
-    //                 console.log(data)
-    //                 resolve(data)
-    //             },
-    //             (error: any) => {
-    //                 console.log(error)
-    //                 reject(error)
-    //             }
-    //         );
-    //     });
-    // }
-
     const onClickSave = (image: string) => {
-        // const image = uploadS3Image()
-
         project.id ? updateProject.mutateAsync({ ...project, image }).then(() => {
             onClose()
         }) : addProject.mutateAsync({ ...project, image }).then((projectId) => {
             navigate(`/project/${projectId}`)
         })
     };
-    const title = project.id ? 'Редактирование проекта' : "Создание проекта"
-// previewImage: ,
 
-    const selectFile = (event: any) => {
-        setPreviewImage(URL.createObjectURL(event.target.files[0]))
-    }
     const [file, setFile] = useState<File>();
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -80,30 +49,15 @@ export default function CreateProjectDialog({ onClose }: CreateProjectDialogProp
             return;
         }
 
-        var formData = new FormData();
+        const formData = new FormData();
         formData.append("image", file);
 
-        console.log(formData,'formData')
-        // axios.post('http://localhost::4000/s3', formData, {
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data'
-        //     }
-        // }).then((data) => console.log(data))
-        //     .catch((err) => console.error(err));
-
-        axios({
-            method: "post",
-            url: 'http://localhost:4000/s3',
-            data: formData,
-            headers: { "Content-Type": "multipart/form-data" },
-        }).then((data) => {
-            onClickSave(data.data)
-        });
-// onClickSave
+        uploadImage.mutateAsync(formData).then((image) => onClickSave(image))
     };
 
-    const src = file && URL.createObjectURL(file)
-
+    const src = file ? URL.createObjectURL(file) : project.image
+    const title = project.id ? 'Редактирование проекта' : "Создание проекта"
+    const saveButtonTitle = project.id ? 'Сохранить' : "Создать"
 
     return (
         <>
@@ -111,12 +65,14 @@ export default function CreateProjectDialog({ onClose }: CreateProjectDialogProp
             <QContainer>
                 <Stack spacing={2}>
                         {src && (
-                            <div>
-                                <img src={src} alt="" />
-                            </div>
+                            <CardMedia
+                                component="img"
+                                image={src}
+                                alt={project.title}
+                            />
                         )}
                         <Button
-                            variant="contained"
+                            variant="outlined"
                             component="label"
                         >
                             Upload File
@@ -154,7 +110,7 @@ export default function CreateProjectDialog({ onClose }: CreateProjectDialogProp
                             sx={{ mt: 3, mb: 2 }}
                             size="large"
                         >
-                            Создать
+                            {saveButtonTitle}
                         </Button>
                 </Stack>
             </QContainer>
