@@ -5,29 +5,44 @@ import QContainer from "../components/QContainer";
 import {useNavigate, useParams} from "react-router-dom";
 import {Button, Stack, TextField} from "@mui/material";
 import {useUploadImage} from "../modules/image";
-import Image from "../components/Image";
+import ImageComponent from "../components/Image";
+import {compress} from "../tools/image";
+import {LoaderWrapper} from "../components/LoaderWrapper";
 
 export interface CreateProjectDialogProps {
     onClose: () => void
 }
+
 export default function CreateProjectDialog({ onClose }: CreateProjectDialogProps) {
     const navigate = useNavigate();
     const { id } = useParams();
     const { data: projectOld } = useProject(id ? Number(id) : 0)
     const [project, setProject] = useState(projectOld || {} as Project)
+    const [compressLoading, setCompressLoading] = useState(false) // Флаг что идет процесс сжатия картинки
+    const [imageLoading, setImageLoading] = useState(true) // Флаг загрузки изображения по внешнему src
+
     const addProject = useAddProject()
     const updateProject = useUpdateProject()
     const uploadImage = useUploadImage()
 
     const title = project.id ? 'Редактирование проекта' : "Создание проекта"
     const saveButtonTitle = project.id ? 'Сохранить' : "Создать"
+    const loading = compressLoading || uploadImage.isLoading || imageLoading
 
     const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            const formData = new FormData();
-            formData.append("image", e.target.files[0]);
+            const file = e.target.files[0]
+            setCompressLoading(true)
+            compress(file, function(file) {
+                setCompressLoading(false)
+                const formData = new FormData();
+                formData.append("image", file);
+                return uploadImage.mutateAsync(formData).then((image) => {
+                    setProject({...project, image})
+                    setImageLoading(true)
+                }).catch((e) => console.log(e,'e'))
+            })
 
-            return uploadImage.mutateAsync(formData).then((image) => setProject({...project, image}))
         }
     };
     const onClickSave = () => {
@@ -43,7 +58,9 @@ export default function CreateProjectDialog({ onClose }: CreateProjectDialogProp
             <Back title={title} onClick={onClose}/>
             <QContainer>
                 <Stack spacing={2}>
-                    {project.image && <Image src={project.image}/>}
+                    <LoaderWrapper isLoad={loading}>
+                        {project.image && <ImageComponent src={project.image} onLoad={() => setImageLoading(false)}/>}
+                    </LoaderWrapper>
                     <Button
                         variant="outlined"
                         component="label"

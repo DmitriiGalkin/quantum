@@ -62,7 +62,7 @@ const parse = (res) => {
 // Участник по token
 User.findByToken = function (id, result) {
     dbConn.query("Select * from user where token = ? ", id, function (err, res) {
-        result(null, res.length ? parse(res)[0] : null);
+        result(null, (res && res.length) ? parse(res)[0] : null);
     });
 };
 // Участники встречи

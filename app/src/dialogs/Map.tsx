@@ -20,7 +20,7 @@ export default function MapDialog({onClose, open}: MapDialogProps) {
         <Dialog onClose={onClose} open={open} fullScreen keepMounted TransitionComponent={TransitionDialog}>
             <Back title="Карта проектов" onClick={onClose}/>
             <YMaps>
-                <Map defaultState={{ center: [x, y], zoom: 12 }} width="100%" height="100%">
+                <Map defaultState={{ center: [x, y], zoom: 16 }} width="100%" height="100%">
                     {places.map((place) => (
                         <Placemark
                             key={place.id}

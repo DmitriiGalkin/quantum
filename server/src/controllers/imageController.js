@@ -23,9 +23,11 @@ exports.upload = function(req, res) {
                 ContentType: mime.getType(file.originalFilename), // тип файла
             })).then(
                 (data) => {
+                    console.log(data,'data')
                     resolve(data)
                 },
                 (error) => {
+                    console.log(error,'error')
                     reject(error)
                 }
             );
