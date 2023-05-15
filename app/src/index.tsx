@@ -21,8 +21,11 @@ import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
 import Uniques from "./pages/Uniques";
 import Project from "./pages/Project";
+import Community from "./pages/Community";
 import Place from "./pages/Place";
 import Task from "./pages/Task";
+import Map from "./pages/Map";
+
 import {GOOGLE_O_AUTH_PROVIDER_CLIENT_ID} from "./tools/auth";
 
 const queryClient = new QueryClient()
@@ -42,8 +45,10 @@ const router = createBrowserRouter(
                     <Route path="/tasks" element={<Tasks />}/>
                     <Route path="/uniques" element={<Uniques />}/>
                 </Route>
+                <Route path="/map" element={<Map />}/>
                 <Route path="/project/:id" element={<Project />}/>
                 <Route path="/place/:id" element={<Place />}/>
+                <Route path="/community/:id" element={<Community />}/>
                 <Route path="/task/:id" element={<Task />}/>
             </Route>
         </Route>

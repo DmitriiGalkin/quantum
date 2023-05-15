@@ -56,7 +56,9 @@ export const useMeets = (): UseQueryResult<Meet[]> => {
 export const useOnlyUserProjects = (): UseQueryResult<Project[]> => {
     return useQuery(['projects'], () => service.get(`/projects`))
 }
-
+export const useRecommendationProjects = (): UseQueryResult<Project[]> => {
+    return useQuery(['recommendation_projects'], () => service.get(`/recommendation_projects`))
+}
 
 
 
@@ -82,6 +84,34 @@ export const useDeleteProjectUser = (projectId?: number): UseMutate<ProjectUser>
         onSuccess() {
             queryClient.invalidateQueries(['profile'])
             queryClient.invalidateQueries(['project', projectId])
+        },
+    })
+}
+
+/**
+ * Участие пользователя в сообществе
+ */
+interface CommunityUser {
+    communityId: number
+    userId?: number
+}
+export const useAddCommunityUser = (communityId?: number): UseMutate<CommunityUser> => {
+    const queryClient = useQueryClient()
+
+    return useMutation(({ communityId }) => service.post(`/userCommunity/${communityId}`), {
+        onSuccess() {
+            queryClient.invalidateQueries(['profile'])
+            queryClient.invalidateQueries(['community', communityId])
+        },
+    })
+}
+export const useDeleteCommunityUser = (communityId?: number): UseMutate<CommunityUser> => {
+    const queryClient = useQueryClient()
+
+    return useMutation(({ communityId }) => service.delete(`/userCommunity/${communityId}`), {
+        onSuccess() {
+            queryClient.invalidateQueries(['profile'])
+            queryClient.invalidateQueries(['community', communityId])
         },
     })
 }

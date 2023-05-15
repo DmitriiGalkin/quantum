@@ -37,9 +37,24 @@ Project.findByPlace = function (place, result) {
         result(null, res);
     });
 };
+
+// Проекты сообщества
+// - это проекты участников сообщества
+Project.findByCommunity = function (place, result) {
+    dbConn.query('SELECT project.* FROM user_community LEFT JOIN project ON user_community.userId = project.userId WHERE user_community.communityId = ? GROUP BY project.id', place.id, function (err, res) {
+        result(null, res);
+    });
+};
+
 // Проекты участника
 Project.findAllByUserId = id => function (result) {
     dbConn.query('SELECT * FROM project LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ?', id, function (err, res) {
+        result(null, res);
+    });
+};
+// Рекомендованные проекты участнику
+Project.findRecommendationByUserId = id => function (result) {
+    dbConn.query('SELECT * FROM project EXCEPT SELECT project.* FROM project LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ?', id, function (err, res) {
         result(null, res);
     });
 };

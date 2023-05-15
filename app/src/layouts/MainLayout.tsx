@@ -7,11 +7,12 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import GroupsIcon from "@mui/icons-material/Groups";
 import RocketIcon from "@mui/icons-material/Rocket";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import Map from "../dialogs/Map";
+import Map from "../pages/Map";
 
 import CreateProject from "../dialogs/CreateProject";
 import CreateMeet from "../dialogs/CreateMeet";
 import Options from "../dialogs/Options";
+import Communitys from "../dialogs/Communitys";
 import React, {useState} from "react";
 import {makeStyles} from "@mui/styles";
 import QContainer from "../components/QContainer";
@@ -44,11 +45,13 @@ export const MainLayout = () => {
     const [newProject, setNewProject] = useState(false)
     const [newMeet, setNewMeet] = useState<NewMeet>()
     const [openOptions, setOpenOptions] = useState(false)
+    const [openCommunity, setOpenCommunity] = useState(false)
     const bottomNavigationValue = MAIN_PAGES.findIndex((pageName) => '/' + pageName === location.pathname) || 0
 
     const menuItems = [
         { title: 'Новая встреча', onClick: () => setNewMeet({}) },
         { title: 'Новый проект', onClick: () => setNewProject(true) },
+        { title: 'Сообщества', onClick: () => setOpenCommunity(true) },
         { title: 'Настройки', onClick: () => setOpenOptions(true) },
         { title: 'Выход', onClick: () => logout() },
     ]
@@ -70,7 +73,7 @@ export const MainLayout = () => {
                             </svg>
                         </Box>
                         <Box sx={{ flexGrow: 1 }} />
-                        <IconButton size="large" onClick={() => setOpenMap(true)}>
+                        <IconButton size="large" onClick={() => navigate(`/map`)}>
                             <MapIcon style={{ color: 'white' }} />
                         </IconButton>
                         <More menuItems={menuItems}/>
@@ -94,14 +97,13 @@ export const MainLayout = () => {
                     </Paper>
                 </div>
             </Box>
-            <Map open={openMap} onClose={() => setOpenMap(false)} />
             <Dialog onClose={() => setNewProject(false)} open={newProject} fullScreen TransitionComponent={TransitionDialog}>
                 {newProject && (<CreateProject onClose={() => setNewProject(false)} />)}
             </Dialog>
-
             <Dialog onClose={() => setNewMeet(undefined)} open={!!newMeet} fullScreen TransitionComponent={TransitionDialog}>
                 {!!newMeet && (<CreateMeet newMeet={newMeet} onClose={() => setNewMeet(undefined)} />)}
             </Dialog>
+            <Communitys openCommunity={openCommunity} onClose={() => setOpenCommunity(false)} />
             <Options openOptions={openOptions} onClose={() => setOpenOptions(false)} />
         </>
     )

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {User, useUpdateUser, useUser} from "../modules/user";
 import QContainer from "../components/QContainer";
-import Up from "./Up";
 import {Box, Button, ClickAwayListener, Grid, Stack, TextField} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import {HexColorPicker} from "react-colorful";
@@ -117,7 +116,6 @@ export default function OptionsDialog({ openOptions, onClose }: OptionsDialogPro
     return (
         <Dialog onClose={onClose} open={openOptions} fullScreen TransitionComponent={TransitionDialog}>
             <Back title="Настройки" onClick={onClose}/>
-            <Up/>
             <QContainer>
                 <Stack spacing={2}>
                     <Stack direction="row" spacing={2}>
