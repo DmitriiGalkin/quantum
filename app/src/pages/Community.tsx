@@ -35,6 +35,7 @@ export default function CommunityPage() {
                 text: community?.description,
                 url: `/community/${community?.id}`
             })},
+        { title: 'Участники', onClick: () => console.log('1')},
         // { title: 'Редактировать', onClick: () => setEditProject(project)},
         { title: 'Выйти из сообщества', onClick: () => onClick()},
     ]
@@ -55,7 +56,7 @@ export default function CommunityPage() {
                             startIcon={<SaveIcon />}
                             onClick={onClick}
                         >
-                            Участвовать в проекте
+                            Участвовать в сообществе
                         </Button>
                     )}
                     <Stack spacing={2}>

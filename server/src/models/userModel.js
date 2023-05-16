@@ -77,6 +77,13 @@ User.findByProject = function (project, result) {
         result(null, parse(res));
     });
 };
+// Участники сообщества
+User.findByCommunity = function (community, result) {
+    dbConn.query("Select * from user LEFT JOIN user_community ON user.id = user_community.userId where communityId = ?", community.id, function (err, res) {
+        result(null, parse(res));
+    });
+};
+
 // Начислеине баллов
 User.userpoints = function (userId, points, result) {
     dbConn.query("UPDATE user SET points=? WHERE id = ?", [points, userId], function (err, res) {

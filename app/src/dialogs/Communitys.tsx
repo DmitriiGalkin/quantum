@@ -19,7 +19,7 @@ export default function CommunitysDialog({ openCommunity, onClose }: CommunitysD
 
     return (
         <Dialog onClose={onClose} open={openCommunity} fullScreen TransitionComponent={TransitionDialog}>
-            <Back title="Настройки" onClick={onClose}/>
+            <Back title="Сообщества" onClick={onClose}/>
             <QContainer>
                 {(Boolean(communitys.length)) ? (
                     <Stack spacing={2}>

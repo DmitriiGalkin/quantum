@@ -3,18 +3,19 @@ var dbConn = require('../db');
 
 var UserCommunity = function(data){
     this.userId = data.userId;
-    this.projectId = data.projectId;
+    this.communityId = data.communityId;
 };
 // Добавление участника в проект
-UserProject.create = function (newEmp, result) {
-    dbConn.query("INSERT INTO user_project set ?", newEmp, function (err, res) {
+UserCommunity.create = function (newEmp, result) {
+    dbConn.query("INSERT INTO user_community set ?", newEmp, function (err, res) {
         result(null, res.insertId);
     });
 };
 // Удаление участника из проекта
-UserProject.delete = function(projectId, userId, result){
-    dbConn.query(`DELETE FROM user_project WHERE projectId = ${projectId} AND userId = ${userId}`, function (err, res) {
+UserCommunity.delete = function(communityId, userId, result){
+    console.log(communityId, 'communityId', userId, 'userId')
+    dbConn.query(`DELETE FROM user_community WHERE communityId = ${communityId} AND userId = ${userId}`, function (err, res) {
         result(null, res);
     });
 };
-module.exports = UserProject;
+module.exports = UserCommunity;
