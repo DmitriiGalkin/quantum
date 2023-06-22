@@ -21,6 +21,7 @@ import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
 import Uniques from "./pages/Uniques";
 import Project from "./pages/Project";
+import Meet from "./pages/Meet";
 import Community from "./pages/Community";
 import Place from "./pages/Place";
 import Task from "./pages/Task";
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
                     <Route path="/uniques" element={<Uniques />}/>
                 </Route>
                 <Route path="/map" element={<Map />}/>
+                <Route path="/meet/:id" element={<Meet />}/>
                 <Route path="/project/:id" element={<Project />}/>
                 <Route path="/place/:id" element={<Place />}/>
                 <Route path="/community/:id" element={<Community />}/>

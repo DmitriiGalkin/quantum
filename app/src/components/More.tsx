@@ -23,9 +23,12 @@ export function More({ menuItems }: MoreProps) {
 
     return (
         <>
-            <IconButton size="large" edge="end" onClick={handleProjectMenuOpen}>
-                <MoreVertIcon style={{ color: 'white' }}/>
-            </IconButton>
+            <div onClick={handleProjectMenuOpen}>
+                <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 2H22" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                    <path d="M7 10L22 10" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                </svg>
+            </div>
             <Menu
                 anchorEl={anchorEl}
                 anchorOrigin={{

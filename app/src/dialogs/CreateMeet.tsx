@@ -33,7 +33,7 @@ export const getProjectDefaultDatetime = (): [string, string] => {
 }
 
 export interface CreateMeetDialogProps {
-    newMeet: NewMeet
+    newMeet?: NewMeet
     onClose: () => void;
 }
 export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogProps) {

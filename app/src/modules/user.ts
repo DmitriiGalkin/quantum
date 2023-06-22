@@ -9,6 +9,7 @@ import {AvatarProps} from "../dialogs/Options";
 export interface User {
     id: number
     title: string
+    image: string
     avatar: AvatarProps
     points: number
     email?: string

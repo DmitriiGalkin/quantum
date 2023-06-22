@@ -1,12 +1,16 @@
 import {createTheme} from '@mui/material/styles';
 
 export const SELECTED_COLOR = '#CDEBFC'
-export const DEFAULT_COLOR = 'rgb(255 251 40 / 21%)' // '#E1F1FA'
+export const DEFAULT_COLOR = 'white'
 
 // A custom theme for this app
 const theme = createTheme({
     typography: {
-        fontFamily: 'Manrope, Arial',
+        fontFamily: 'Avenir',
+        h1: {
+            fontSize: 30,
+            fontWeight: 400,
+        },
         h4: {
             fontSize: 24,
             fontWeight: 700,
@@ -16,7 +20,7 @@ const theme = createTheme({
             fontWeight: 700,
         },
         h6: {
-            fontSize: 15,
+            fontSize: 19,
             fontWeight: 500,
         },
         subtitle1: {
@@ -24,7 +28,7 @@ const theme = createTheme({
             fontWeight: 700,
         },
         body1: {
-            fontSize: 14,
+            fontSize: 18,
             fontWeight: 400,
         },
         allVariants: {
@@ -43,6 +47,9 @@ const theme = createTheme({
         secondary: {
             main: '#FFCE00',
             contrastText: '#674100',
+        },
+        success: {
+            main: '#7139FF',
         },
         text: {
             primary: '#777777',

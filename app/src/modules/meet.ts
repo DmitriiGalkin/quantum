@@ -29,6 +29,11 @@ export interface NewMeet {
 export const useMeets = (): UseQueryResult<Meet[]> => {
     return useQuery(['meets'], () => service.get(`/meet`),)
 }
+export const useMeet = (id?: number): UseQueryResult<Meet> => {
+    return useQuery(['meet', id], () => service.get(`/meet/${id}`), {
+        enabled: Boolean(id),
+    })
+}
 export const useMeetUsers = (id: number): UseQueryResult<User[]> => {
     return useQuery(['meetUsers', id], () => service.get(`/meet/${id}/users`),)
 }

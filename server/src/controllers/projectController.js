@@ -53,7 +53,7 @@ exports.create = function(req, res) {
     if (req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     } else {
-        Project.create(project, function(err, projectId) {
+        Project.create({...project, userId: req.user.id}, function(err, projectId) {
             const userProject = new UserProject({projectId, userId: req.user.id});
             UserProject.create(userProject, function() {
                 res.json(projectId);

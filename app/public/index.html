@@ -9,38 +9,26 @@
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <title>Quantum - образовательная платформа для детских проектов</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap">
+
   <style>
     @font-face {
-      font-family: 'Source Sans Pro';
-      font-style: normal;
-      font-weight: 300;
-      src: local('Source Sans Pro Light'), local('SourceSansPro-Light'), url(https://themes.googleusercontent.com/static/fonts/sourcesanspro/v7/toadOcfmlt9b38dHJxOBGNbE_oMaV8t2eFeISPpzbdE.woff) format('woff');
-    }
-    @font-face {
-      font-family: 'Source Sans Pro';
-      font-style: normal;
+      font-family: 'Avenir';
+      src: url('fonts/AvenirNextCyr-Regular.woff') format('woff');
       font-weight: 400;
-      src: local('Source Sans Pro'), local('SourceSansPro-Regular'), url(https://themes.googleusercontent.com/static/fonts/sourcesanspro/v7/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff) format('woff');
-    }
-    @font-face {
-      font-family: 'Source Sans Pro';
       font-style: normal;
-      font-weight: 700;
-      src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://themes.googleusercontent.com/static/fonts/sourcesanspro/v7/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff) format('woff');
     }
     @font-face {
-      font-family: 'Source Sans Pro';
-      font-style: italic;
-      font-weight: 400;
-      src: local('Source Sans Pro Italic'), local('SourceSansPro-It'), url(https://themes.googleusercontent.com/static/fonts/sourcesanspro/v7/M2Jd71oPJhLKp0zdtTvoMzNrcjQuD0pTu1za2FULaMs.woff) format('woff');
+      font-family: 'Avenir';
+      src: url('fonts/AvenirNextCyr-Medium.woff') format('woff');
+      font-weight: 500;
+      font-style: normal;
     }
-
+    @font-face {
+      font-family: 'Avenir';
+      src: url('fonts/AvenirNextCyr-Demi.woff') format('woff');
+      font-weight: 900;
+      font-style: normal;
+    }
     body {
       font-size: 14px;
       height: 100%;
@@ -48,6 +36,19 @@
 
     #root {
       height: 100%;
+    }
+
+    #container {
+      display: flex;           /* establish flex container */
+      flex-direction: column;  /* make main axis vertical */
+      justify-content: center; /* center items vertically, in this case */
+      align-items: center;     /* center items horizontally, in this case */
+      height: 50px;
+    }
+    .box {
+      width: 300px;
+      margin: 5px;
+      text-align: center;     /* will center text in <p>, which is not a flex item */
     }
 
     input:-webkit-autofill,

@@ -12,8 +12,8 @@ interface QCardProps {
 export default function QCard({ onClick, active, selected, children, onContextMenu }: QCardProps) {
     const backgroundColor = selected ? SELECTED_COLOR : ( active ? DEFAULT_COLOR : undefined)
     return (
-        <Card sx={{ display: 'flex', backgroundColor }} onClick={onClick} onContextMenu={onContextMenu}>
+        <div style={{ display: 'flex', backgroundColor, borderRadius: 19 }} onClick={onClick} onContextMenu={onContextMenu}>
             {children}
-        </Card>
+        </div>
     )
 }

@@ -20,3 +20,4 @@ export function groupBy<K, V>(list: Array<V>, keyGetter: (input: V) => K): Map<K
 // @ts-ignore
 export const getMeetsGroup = (meets?: Meet[]) => [...Array.from(groupBy(meets || [], (meet) => convertToMeetsGroupTime(meet.datetime)))];
 
+export const getMeetsGroup2 = (meets?: Meet[]) => [...Array.from(groupBy(meets || [], (meet) => convertToMeetsGroupTime(meet.datetime)))].map(([a,b])=> ({ id: a, meets: b}));

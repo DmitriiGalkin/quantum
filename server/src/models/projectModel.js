@@ -5,6 +5,7 @@ var Project = function(project){
     this.title = project.title;
     this.description = project.description;
     this.image = project.image;
+    this.userId = project.user;
 };
 // Создание проекта
 Project.create = function (project, result) {
@@ -48,7 +49,7 @@ Project.findByCommunity = function (place, result) {
 
 // Проекты участника
 Project.findAllByUserId = id => function (result) {
-    dbConn.query('SELECT * FROM project LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ?', id, function (err, res) {
+    dbConn.query('SELECT project.* FROM user_project LEFT JOIN project ON user_project.projectId = project.id WHERE user_project.userId = ?', id, function (err, res) {
         result(null, res || []);
     });
 };

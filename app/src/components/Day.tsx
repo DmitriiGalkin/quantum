@@ -6,12 +6,12 @@ import {makeStyles} from '@mui/styles';
 import {LocalDate} from "@js-joda/core";
 import MeetCard from "./cards/MeetCard";
 
-const useStyles = makeStyles((theme: Theme) => ({
-    month: {
-        fontSize: 13,
-        fontWeight: 700,
-    },
-}));
+// const useStyles = makeStyles((theme: Theme) => ({
+//     month: {
+//         fontSize: 13,
+//         fontWeight: 700,
+//     },
+// }));
 
 interface DayProps {
     date: string
@@ -19,7 +19,7 @@ interface DayProps {
     refetch: () => void
 }
 export default function Day({ date, meets, refetch }: DayProps): JSX.Element {
-    const classes = useStyles();
+    // const classes = useStyles();
     if (!date) { return <></> }
     const localDate = LocalDate.parse(date)
     const day = localDate.dayOfMonth()
@@ -28,17 +28,13 @@ export default function Day({ date, meets, refetch }: DayProps): JSX.Element {
     return (
         <Stack spacing={1} key={date}>
             <Stack spacing={1} direction="row" alignItems="flex-end">
-                <Typography style={{ fontFamily: 'Bebas Neue', fontSize: 26, lineHeight: '28px' }}>
-                    {day}
-                </Typography>
-                <Typography className={classes.month} variant="subtitle1" color="textSecondary">
-                    {monthShortTitle}
+                <Typography style={{ fontSize: '21.37px', lineHeight: '40.4px', textTransform: 'lowercase' }}>
+                    {day} {monthShortTitle}
                 </Typography>
             </Stack>
-            <Stack spacing={1}>
+            <Stack spacing={3}>
                 {meets.map((meet, index) =>
                     <div key={meet.id}>
-                        {Boolean(index) && <Divider light variant="middle" />}
                         <div key={meet.id}>
                             <MeetCard meet={meet} refetch={refetch} />
                         </div>

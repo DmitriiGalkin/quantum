@@ -77,6 +77,7 @@ router.post('/place', placeController.create);
  * Встречи
  */
 router.get('/meets', useUser, meetController.findByUser);
+router.get('/meet/:id', useUser, meetController.findById);
 router.post('/meet', useUser, meetController.create);
 router.put('/meet/:id', meetController.update);
 router.delete('/meet/:id', useUser, meetController.delete );

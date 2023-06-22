@@ -26,6 +26,12 @@ Meet.delete = function(id, result){
     });
 };
 
+// Встреча по номеру
+Meet.findById = function (id, result) {
+    dbConn.query("Select * from meet WHERE id = ?", id, function (err, res) {
+        result(null, res[0]);
+    });
+};
 // Встречи проекта
 Meet.findByProject = function (project, result) {
     dbConn.query("Select * from meet where projectId = ? AND DATE(datetime) >= CURDATE() ", project.id, function (err, res) {
@@ -40,7 +46,7 @@ Meet.findAllByUserId2 = (id) => function (result) {
 };
 // Встречи участника
 Meet.findAllByUserId = (id) => function (result) {
-    dbConn.query("Select meet.* from meet LEFT JOIN project ON project.id = meet.projectId LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ? AND DATE(datetime) >= CURDATE()", id, function (err, res) {
+    dbConn.query("Select meet.* from meet LEFT JOIN project ON project.id = meet.projectId LEFT JOIN user_project ON user_project.projectId = project.id WHERE user_project.userId = ? AND DATE(datetime) >= CURDATE()", id, function (err, res) {
         result(null, res || []);
     });
 };

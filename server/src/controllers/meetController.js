@@ -75,3 +75,17 @@ exports.findByUser = function(req, res) {
         });
     });
 };
+// Встреча
+exports.findById = function(req, res) {
+    Meet.findById(req.params.id, function(err, meet) {
+        if (!meet) {
+            res.status(400).send({ error:true, message: 'Встреча с таким номером не найдена' });
+        } else {
+            Project.findByMeet(meet, function(err, project) {
+                User.findByMeet(meet, function(err, users) {
+                    res.send({...meet, project, users});
+                });
+            });
+        }
+    });
+};
