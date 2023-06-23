@@ -7,7 +7,6 @@ import {useNavigate} from "react-router-dom";
 export default function ProjectsPage() {
     const { data: projects = [] } = useOnlyUserProjects()
     const { data: recommendationProjects = [] } = useRecommendationProjects()
-
     const navigate = useNavigate();
 
     return (
@@ -37,4 +36,3 @@ export default function ProjectsPage() {
         </>
     );
 }
-//. Попробуйте найти интересные проекты на <Link onClick={() => setOpenMap(true)}>карте</Link>.

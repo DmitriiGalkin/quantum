@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Slider, Stack, TextField, Typography} from "@mui/material";
+import {Button, Stack} from "@mui/material";
 import {NewMeet, useAddMeet, useEditMeet} from "../modules/meet";
-import TabPanel from "../components/TabPanel";
-import ProjectCard from "../components/cards/ProjectCard";
 import {useUserProjects} from "../modules/user";
-import {Project, useProject} from "../modules/project";
-import {CalendarPicker} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
-import {Place, usePlace, usePlaces} from "../modules/place";
-import PlaceCard from "../components/cards/PlaceCard";
+import {usePlaces} from "../modules/place";
 import {useNavigate} from "react-router-dom";
 import Back from "../components/Back";
+import InputField from "../components/fields/InputField";
+import ProjectField from "../components/fields/ProjectField";
+import PlaceField from "../components/fields/PlaceField";
+import DateField from "../components/fields/DateField";
+import TimeField from "../components/fields/TimeField";
 
 export function valuetext(value: number) {
     return `${value}°C2222`;
@@ -45,8 +45,6 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
     const editMeet = useEditMeet()
 
     const { data: projects = [] } = useUserProjects()
-    const { data: project = {} as Project } = useProject(meet?.projectId)
-    const { data: place = {} as Place } = usePlace(meet?.placeId)
 
     const onClickSave = () => {
         if (meet) {
@@ -64,9 +62,6 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
         }
     };
 
-    const calendarPickerDate = dayjs(meet?.datetime)
-    const sliderValue = dayjs(meet?.datetime).hour() * 60 + dayjs(meet?.datetime).minute()
-
     const calendarPickerOnChange = (date: Dayjs | null) => {
         if (!date) return
         setMeet({
@@ -74,107 +69,65 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
             datetime: date.startOf('day').add(dayjs(meet?.datetime).hour(), 'hour').add(dayjs(meet?.datetime).minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
         } as NewMeet)
     }
-    const sliderOnChange = (event: any, newValue: number | number[]) => {
-        const minutes = newValue as number
+    const timeOnChange = (date: Dayjs | null) => {
+        if (!date) return
         setMeet({
             ...meet,
-            datetime: dayjs(meet?.datetime).startOf('day').add(minutes, 'minute').format('YYYY-MM-DDTHH:mm:ss'),
+            datetime: dayjs(meet?.datetime).startOf('day').add(date.hour(), 'hour').add(date.minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
         } as NewMeet)
-    };
+    }
 
     useEffect(() => {
         newMeet && setMeet(newMeet)
     }, [newMeet])
-    const title = meet.id ? 'Редактировать встречу' : 'Создать встречу'
+    const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
 
     return (
         <div>
             <Back title={title} onClick={onClose}/>
-            <TabPanel value={meet?.activeStep || 0} index={0}>
-                <Typography variant="h5" sx={{ paddingBottom: 1 }}>
-                    Проект встречи
-                </Typography>
-                <Stack spacing={2}>
-                    {projects.map((project) => <ProjectCard key={project.id} active project={project} selected={meet?.projectId === project.id} onClick={() => {
-                        const [datetime] = getProjectDefaultDatetime()
-                        setMeet({
-                            ...meet,
-                            projectId: project.id,
-                            datetime,
-                            activeStep: 1,
-                        })
-                    }}/>)}
-                </Stack>
-            </TabPanel>
-            <TabPanel value={meet?.activeStep || 0} index={1}>
-                <Typography variant="h5" sx={{ paddingBottom: 1 }}>
-                    Место встречи
-                </Typography>
-                <Stack spacing={2}>
-                    {places.map((place) => (
-                        <PlaceCard key={place.id} place={place} selected={meet?.placeId === place.id} onClick={() => {
-                            setMeet({ ...meet, placeId: place.id, activeStep: 2, })
-                        }}/>
-                    ))}
-                </Stack>
-            </TabPanel>
-            <TabPanel value={meet?.activeStep || 0} index={2}>
-                <div>
-                    <ProjectCard project={project}/>
-                    <PlaceCard place={place}/>
-                    <TextField
+            <div style={{ padding: '25px 22px'}}>
+                <Stack spacing={4}>
+                    <InputField
                         name='title'
-                        label="Название"
+                        label="Название встречи"
                         variant="standard"
                         fullWidth
                         value={meet?.title}
                         onChange={(e) => setMeet({ ...meet, title: e.target.value})}
                     />
-                    <Box sx={{
-                        fontSize: '15px',
-                        '& .MuiPickersFadeTransitionGroup-root': {
-                            fontFamily: 'Manrope, Arial',
-                            fontSize: 16,
-                            fontWeight: 700,
-                            textTransform: 'capitalize',
-                        },
-                        '& .MuiPickersCalendarHeader-root': {
-                            justifyContent: "space-between",
-                            width: '100%',
-                            marginTop: 1,
-                        },
-                        '& .MuiPickersCalendarHeader-labelContainer .MuiPickersCalendarHeader-switchViewButton': {
-                            display: 'none',
-                        },
-                        '& .MuiPickersDay-root.Mui-selected': {
-                            backgroundColor: (theme)=> theme.palette.primary.main + '!important',
-                        }
-                    }}>
-                        <CalendarPicker onChange={calendarPickerOnChange} date={calendarPickerDate} disablePast/>
-                    </Box>
-                    <Box sx={{
-                        width: '280px',
-                        margin: '0 auto',
-                        '& .MuiSlider-valueLabel': {
-                            fontFamily: 'Bebas Neue',
-                            padding: '4px 6px',
-                        }
-                    }}>
-                        <Typography variant="h5" sx={{ paddingBottom: 6 }}>
-                            Укажите время
-                        </Typography>
-                        <Slider
-                            value={sliderValue}
-                            onChange={sliderOnChange}
-                            valueLabelDisplay="on"
-                            aria-labelledby="range-slider"
-                            valueLabelFormat={valuetext2}
-                            getAriaValueText={valuetext}
-                            min={600} // Когда начинает работать место, в котором проводится проект
-                            max={1080} // Когда заканчивает работать место, в котором проводится проект
-                            step={15} // Каждые 15 минут
+                    <InputField
+                        name='title'
+                        label="Описание"
+                        variant="standard"
+                        fullWidth
+                        value={meet?.title}
+                        onChange={(e) => setMeet({ ...meet, title: e.target.value})}
+                    />
+                    <ProjectField
+                        label="Проект"
+                        selectedProjectId={meet.projectId}
+                        projects={projects}
+                        onChange={(project) => setMeet({ ...meet, projectId: project.id})}
+                    />
+                    <PlaceField
+                        label="Место"
+                        selectedPlaceId={meet.placeId}
+                        places={places}
+                        onChange={(place) => setMeet({ ...meet, placeId: place.id})}
+                    />
+                    <DateField
+                        label="Дата"
+                        selectedDate={meet.datetime}
+                        onChange={(datetime) => calendarPickerOnChange(dayjs(datetime))}
+                    />
+                    <Stack spacing={2}>
+                        <TimeField
+                            label="Время"
+                            onChange={(datetime) => timeOnChange(datetime)}
                         />
-                    </Box>
+                    </Stack>
+                </Stack>
+                <div>
                     <Button
                         onClick={onClickSave}
                         fullWidth
@@ -185,7 +138,7 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                         Создать
                     </Button>
                 </div>
-            </TabPanel>
+            </div>
         </div>
     );
 }

@@ -12,18 +12,18 @@ exports.findAll = function(req, res) {
         res.send(places);
     });
 };
-// Пространство
+// Пространство со встречами
 exports.findById = function(req, res) {
     Place.findById(req.params.id, function(err, place) {
-        Project.findByPlace(place, function(err, projects) {
-            async.map(projects, Meet.findByProject, function(err, projectsMeets) {
-                async.map(projects, Place.findByProject, function(err, projectsPlaces) {
-                    async.map(projects, User.findByProject, function(err, projectsUsers) {
+        Meet.findByPlace(place, function(err, meets) {
+            async.map(meets, User.findByMeet, function(err, meetsUsers) {
+                async.map(meets, Project.findByMeet, function(err, meetsProject) {
+                    async.map(meets, Place.findByMeet, function(err, meetsPlace) {
                         res.send({
                             ...place,
-                            projects: projects.map((p, index) => {
-                                const active = projectsUsers[index]?.some((user) => user.userId === req.user.id)
-                                return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active})
+                            meets: meets.map((p, index) => {
+                                const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
+                                return ({ ...p, project: meetsProject[index], place: meetsPlace[index], users: meetsUsers[index], active })
                             })
                         });
                     });
@@ -32,6 +32,29 @@ exports.findById = function(req, res) {
         });
     });
 };
+// Пространство с проектами
+// exports.findById = function(req, res) {
+//     Place.findById(req.params.id, function(err, place) {
+//         Meet.findByPlace(place, function(err, meets) {
+//             Project.findByPlace(place, function(err, projects) {
+//                 async.map(projects, Meet.findByProject, function(err, projectsMeets) {
+//                     async.map(projects, Place.findByProject, function(err, projectsPlaces) {
+//                         async.map(projects, User.findByProject, function(err, projectsUsers) {
+//                             res.send({
+//                                 ...place,
+//                                 projects: projects.map((p, index) => {
+//                                     const active = projectsUsers[index]?.some((user) => user.userId === req.user.id)
+//                                     return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active})
+//                                 }),
+//                                 meets
+//                             });
+//                         });
+//                     });
+//                 });
+//             });
+//         });
+//     });
+// };
 // Создание пространства
 exports.create = function(req, res) {
     const place = new Place(req.body);

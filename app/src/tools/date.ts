@@ -35,6 +35,15 @@ export const convertToMeetTime = (datetime?: string): string => {
 }
 
 /**
+ * Server datetime to 'MM-dd'
+ */
+export const convertToMeetDate = (datetime?: string): string => {
+    if (!datetime) return '';
+    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")).plusHours(3)
+    return localDateTime.format(DateTimeFormatter.ofPattern('dd')) + ' ' + MONTH_LONG_TITLES[Number(localDateTime.format(DateTimeFormatter.ofPattern('MM')))]
+}
+
+/**
  * Server datetime to 'yyyy-MM-dd'
  */
 export const convertToMeetsGroupTime = (datetime?: string): string => {

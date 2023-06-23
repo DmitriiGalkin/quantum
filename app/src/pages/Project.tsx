@@ -17,6 +17,7 @@ import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
 import CreateProjectDialog from "../dialogs/CreateProject";
 import Image from "../components/Image";
+import Back2 from "../components/Back2";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -70,7 +71,7 @@ export default function ProjectPage() {
 
     return (
         <>
-            <Back title={project.title} menuItems={menuItems} />
+            <Back2 title={project.title} menuItems={menuItems} />
             <div className={classes.container}>
                 <QContainer>
                     <Stack spacing={3}>

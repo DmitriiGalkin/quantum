@@ -9,6 +9,7 @@ import {useCommunity} from "../modules/community";
 import {getOnShare} from "../tools/share";
 import {useAddCommunityUser, useDeleteCommunityUser} from "../modules/user";
 import SaveIcon from "@mui/icons-material/Save";
+import Back2 from "../components/Back2";
 
 export default function CommunityPage() {
     const { id: communityId } = useParams();
@@ -42,7 +43,7 @@ export default function CommunityPage() {
 
     return (
         <>
-            <Back title={community.title} menuItems={menuItems}/>
+            <Back2 title={community.title} menuItems={menuItems}/>
             <QContainer>
                 <Stack spacing={2}>
                     <Typography>

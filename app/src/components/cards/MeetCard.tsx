@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Meet, NewMeet} from "../../modules/meet";
-import {convertToMeetTime} from "../../tools/date";
+import {convertToMeetDate, convertToMeetTime} from "../../tools/date";
 import {Avatar, AvatarGroup, Box, Button, CardContent, Menu, MenuItem, Stack, Typography} from "@mui/material";
 import QAvatar from "../QAvatar";
 import {useDeleteMeet, useToggleMeetUser} from "../../modules/user";
@@ -16,7 +16,8 @@ import {useNavigate} from "react-router-dom";
 
 interface MeetCardProps {
     meet: Meet
-    refetch: () => void
+    selected?: boolean
+    refetch?: () => void
 }
 const useStyles = makeStyles(() => ({
     blockInner: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles(() => ({
         borderRadius: 9.5,
     },
 }));
-export default function MeetCard({ meet, refetch }: MeetCardProps) {
+export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
     const toggleMeetUser = useToggleMeetUser()
     const deleteMeet = useDeleteMeet()
     const classes = useStyles();
@@ -47,11 +48,13 @@ export default function MeetCard({ meet, refetch }: MeetCardProps) {
     const [newMeet, setNewMeet] = useState<NewMeet>()
 
     const time = convertToMeetTime(meet.datetime)
+    const date = convertToMeetDate(meet.datetime)
+
     const onClick = (e: React.MouseEvent) => {
         e.stopPropagation()
         if (contextMenu === null) {
             toggleMeetUser.mutateAsync({ meetId: meet.id }).then(() => {
-                refetch()
+                refetch && refetch()
             })
         }
     }
@@ -83,13 +86,13 @@ export default function MeetCard({ meet, refetch }: MeetCardProps) {
     };
     const onDeleteClick = () => {
         deleteMeet.mutateAsync(meet).then(() => {
-            refetch()
+            refetch && refetch()
         })
         handleClose()
     };
 
     return (
-        <div style={{ padding: 11, backgroundColor: DEFAULT_COLOR, borderRadius: 16 }} onClick={() => navigate(`/meet/${meet.id}`)}>
+        <div style={{ padding: 11, backgroundColor: DEFAULT_COLOR, borderRadius: 16, border: `2px solid ${selected ? 'orange' : 'transparent'}` }} onClick={() => navigate(`/meet/${meet.id}`)}>
             <Stack spacing={2} direction="row" onContextMenu={handleContextMenu}>
                 <div style={{ width: 90, minWidth: 90 }}>
                     <div className={classes.blockInner}>
@@ -102,19 +105,19 @@ export default function MeetCard({ meet, refetch }: MeetCardProps) {
                             {title}
                         </div>
                         <div>
-                            <Stack spacing={0} direction="row" justifyContent="space-between">
+                            <Stack spacing={0} direction="row" justifyContent="space-between" alignContent="center">
                                 <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
                                     <svg width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11 5.53211C11 2.47706 8.53731 0 5.5 0C2.46269 0 0 2.47706 0 5.53211C0 7.15596 0.693201 8.61468 1.80141 9.62385C1.80141 9.62844 1.80597 9.63303 1.80597 9.63303L4.92081 12.7661C5.23093 13.078 5.73715 13.078 6.05182 12.7661C6.05182 12.7661 9.39013 9.44495 9.55431 9.26606C10.4527 8.2844 11 6.97248 11 5.53211Z" fill="#7139FF"/>
                                         <path d="M8 5.5C8 6.88333 6.88333 8 5.5 8C4.11667 8 3 6.87778 3 5.5C3 4.12222 4.11667 3 5.5 3C6.87778 3 8 4.12222 8 5.5Z" fill="white"/>
                                     </svg>
                                     <div style={{ fontSize: 13, color: 'black', opacity: 0.7 }}>
-                                        {/*{placeTitle}*/}ВДНХ
+                                        {placeTitle}
                                     </div>
                                 </Stack>
-                                <Typography variant="h5" style={{ color: '#7139FF', fontSize: 13, fontWeight: 900, letterSpacing: -0.369231 }}>
-                                    {/*{time}*/}3 июня • 15:00
-                                </Typography>
+                                <span style={{ color: '#7139FF', fontSize: 13, fontWeight: 900, letterSpacing: -0.369231, textTransform: 'lowercase' }}>
+                                    {date} {time}
+                                </span>
                             </Stack>
                             <div style={{ flex: '1 0 auto', display: 'flex', height: 30, paddingTop: 8 }}>
                                 <div style={{ flexGrow: 1 }}>
@@ -122,7 +125,7 @@ export default function MeetCard({ meet, refetch }: MeetCardProps) {
                                         <Box sx={{ display: 'flex' }}>
                                             <AvatarGroup max={4}>
                                                 {meet.users.map((user) => (
-                                                    <Avatar alt={user.title} src={user.image} sx={{ width: 21, height: 21 }} />
+                                                    <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 21, height: 21 }} />
                                                 ))}
                                             </AvatarGroup>
                                         </Box>

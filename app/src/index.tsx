@@ -4,7 +4,7 @@ import reportWebVitals from './tools/reportWebVitals';
 import {createBrowserRouter, createRoutesFromElements, RouterProvider} from "react-router-dom";
 import {QueryClient, QueryClientProvider,} from '@tanstack/react-query'
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {LocalizationProvider} from '@mui/x-date-pickers';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import theme from "./tools/theme";
 import CssBaseline from '@mui/material/CssBaseline';
 import {ThemeProvider} from '@mui/material/styles';
@@ -18,16 +18,15 @@ import {ProfileLayout} from "./layouts/ProfileLayout";
 import {MainLayout} from "./layouts/MainLayout";
 import Meets from "./pages/Meets";
 import Projects from "./pages/Projects";
-import Tasks from "./pages/Tasks";
-import Uniques from "./pages/Uniques";
 import Project from "./pages/Project";
 import Meet from "./pages/Meet";
 import Community from "./pages/Community";
 import Place from "./pages/Place";
-import Task from "./pages/Task";
 import Map from "./pages/Map";
 
 import {GOOGLE_O_AUTH_PROVIDER_CLIENT_ID} from "./tools/auth";
+import {DashboardLayout} from "./layouts/DashboardLayout";
+import DashboardPlace from "./pages/DashboardPlace";
 
 const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(
@@ -43,15 +42,15 @@ const router = createBrowserRouter(
                 <Route element={<MainLayout />}>
                     <Route index element={<Meets />}/>
                     <Route path="/projects" element={<Projects />}/>
-                    <Route path="/tasks" element={<Tasks />}/>
-                    <Route path="/uniques" element={<Uniques />}/>
                 </Route>
                 <Route path="/map" element={<Map />}/>
                 <Route path="/meet/:id" element={<Meet />}/>
                 <Route path="/project/:id" element={<Project />}/>
                 <Route path="/place/:id" element={<Place />}/>
                 <Route path="/community/:id" element={<Community />}/>
-                <Route path="/task/:id" element={<Task />}/>
+            </Route>
+            <Route element={<DashboardLayout />}>
+                <Route path="/dashboard/place/:id" element={<DashboardPlace />}/>
             </Route>
         </Route>
     )

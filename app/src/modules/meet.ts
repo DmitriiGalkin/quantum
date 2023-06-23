@@ -9,6 +9,7 @@ export interface Meet {
     projectId: number
     placeId?: number | null,
     title?: string
+    description?: string
     datetime: string
     active?: boolean
     project: Project

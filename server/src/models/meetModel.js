@@ -34,7 +34,13 @@ Meet.findById = function (id, result) {
 };
 // Встречи проекта
 Meet.findByProject = function (project, result) {
-    dbConn.query("Select * from meet where projectId = ? AND DATE(datetime) >= CURDATE() ", project.id, function (err, res) {
+    dbConn.query("Select * from meet where projectId = ? AND DATE(datetime) >= CURDATE()", project.id, function (err, res) {
+        result(null, res);
+    });
+};
+// Встречи пространства
+Meet.findByPlace = function (place, result) {
+    dbConn.query('Select * from meet where placeId = ? AND DATE(datetime) >= CURDATE() ORDER BY datetime', place.id, function (err, res) {
         result(null, res);
     });
 };
