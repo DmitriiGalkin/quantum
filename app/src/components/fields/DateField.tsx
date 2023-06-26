@@ -21,14 +21,14 @@ export function DateField({ label, selectedDate, onChange }: DateFieldProps) {
     const week = getWeek(selectedDate2)
 
     return (
-        <>
+        <Stack spacing={2} direction="column">
             <div style={{ fontWeight: 900, fontSize: 18, color: '#070707' }}>
                 {label}
             </div>
             <div>
                 <Calendar week={week} onChange={onChange} />
             </div>
-        </>
+        </Stack>
     );
 }
 

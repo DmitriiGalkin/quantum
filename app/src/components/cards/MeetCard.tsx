@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Meet, NewMeet} from "../../modules/meet";
 import {convertToMeetDate, convertToMeetTime} from "../../tools/date";
 import {Avatar, AvatarGroup, Box, Button, CardContent, Menu, MenuItem, Stack, Typography} from "@mui/material";
-import QAvatar from "../QAvatar";
 import {useDeleteMeet, useToggleMeetUser} from "../../modules/user";
 import QCard from "../QCard";
 import Dialog from "@mui/material/Dialog";
@@ -59,7 +58,7 @@ export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
         }
     }
     const title = meet.title ? meet.title : meet.project?.title
-    const placeTitle = meet.title ? meet.project?.title + ', ' + meet.place?.title : meet.place?.title
+    const placeTitle = meet.place?.title
 
 
     const handleContextMenu = (event: React.MouseEvent) => {
@@ -96,7 +95,7 @@ export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
             <Stack spacing={2} direction="row" onContextMenu={handleContextMenu}>
                 <div style={{ width: 90, minWidth: 90 }}>
                     <div className={classes.blockInner}>
-                        <img src={meet.project.image} className={classes.image}/>
+                        <img src={meet.image ? meet.image : meet.project.image} className={classes.image}/>
                     </div>
                 </div>
                 <div style={{ flexGrow: 1 }}>
@@ -160,24 +159,3 @@ export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
         </div>
     );
 }
-
-// <Box style={{ display: 'flex', height: 95 }}>
-//
-// </Box>
-
-// <Menu
-//     open={contextMenu !== null}
-//     onClose={handleClose}
-//     anchorReference="anchorPosition"
-//     anchorPosition={
-//         contextMenu !== null
-//             ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-//             : undefined
-//     }
-// >
-//     <MenuItem onClick={onEditClick}>Редактировать</MenuItem>
-//     <MenuItem onClick={onDeleteClick}>Удалить</MenuItem>
-// </Menu>
-// <Dialog onClose={() => setNewMeet(undefined)} open={!!newMeet} fullScreen TransitionComponent={TransitionDialog}>
-//     {!!newMeet && (<CreateMeet newMeet={newMeet} onClose={() => setNewMeet(undefined)} />)}
-// </Dialog>

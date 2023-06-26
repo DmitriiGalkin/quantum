@@ -37,7 +37,7 @@ export default function ProjectFieldCard({ project, selected, onClick }: Project
     return (
         <div onClick={() => onClick(project)}>
             <div className={classes.blockInner}>
-                <img src={project.image} className={classes.image} style={{ border: `2px solid ${selected ? '#FF8F28' : 'transparent' }`}} />
+                <img src={project.image} className={classes.image} style={{ outline: `4px solid ${selected ? '#7139FF' : 'transparent' }`}} />
             </div>
             <div style={{ paddingTop: 11, fontSize: 13, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center' }}>{project.title}</div>
         </div>

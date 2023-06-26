@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
         width: '100%',
         height: '100%',
         objectFit: 'cover',
-        borderRadius: 35,
+        borderRadius: 25,
     },
 }));
 
@@ -31,12 +31,10 @@ export default function PlaceCard({ place, selected, onClick }: PlaceCardProps) 
 
     return (
         <div onClick={() => onClick(place)}>
-            <div style={{ width: 80, minWidth: 80 }}>
-                <div className={classes.blockInner}>
-                    <img src={place.image} className={classes.image} style={{ border: `2px solid ${selected ? '#FF8F28' : 'transparent' }`}}/>
-                </div>
+            <div className={classes.blockInner}>
+                <img src={place.image} className={classes.image} style={{ outline: `4px solid ${selected ? '#7139FF' : 'transparent' }`}}/>
             </div>
-            <div style={{ paddingTop: 11, fontSize: 13 }}>{place.title}</div>
+            <div style={{ paddingTop: 11, fontSize: 13, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center' }}>{place.title}</div>
         </div>
     );
 }

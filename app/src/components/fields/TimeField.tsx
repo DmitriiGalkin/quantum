@@ -2,6 +2,7 @@ import React from 'react';
 import {TimePicker} from "antd";
 import dayjs, {Dayjs} from "dayjs";
 import locale from "antd/es/date-picker/locale/ru_RU";
+import {Stack} from "@mui/material";
 
 const format = 'HH:mm';
 
@@ -11,7 +12,7 @@ interface TimeFieldProps {
 }
 export function TimeField({ label, onChange }: TimeFieldProps) {
     return (
-        <>
+        <Stack spacing={2} direction="column">
             <div style={{ fontWeight: 900, fontSize: 18, color: '#070707' }}>
                 {label}
             </div>
@@ -23,7 +24,7 @@ export function TimeField({ label, onChange }: TimeFieldProps) {
                     onChange={onChange}
                 />
             </div>
-        </>
+        </Stack>
     );
 }
 

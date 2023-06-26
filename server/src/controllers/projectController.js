@@ -94,15 +94,17 @@ exports.deleteUserProject = function(req, res) {
 // Проекты участника
 exports.findByUser = function(req, res) {
     Project.findAllByUserId(req.user.id)(function(err, projects) {
-        async.map(projects, Meet.findByProject, function(err, projectsMeets) {
-            async.map(projects, Place.findByProject, function(err, projectsPlaces) {
-                async.map(projects, User.findByProject, function(err, projectsUsers) {
-                    res.send(projects.map((p, index) => {
-                        const active = projectsUsers[index]?.some((user) => user.userId === req.user.id)
-                        return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active})
-                    }));
+        async.map(projects, User.findByProjectOne, function(err, projectsUser) {
+            async.map(projects, Meet.findByProject, function(err, projectsMeets) {
+                async.map(projects, Place.findByProject, function(err, projectsPlaces) {
+                    async.map(projects, User.findByProject, function(err, projectsUsers) {
+                        res.send(projects.map((p, index) => {
+                            const active = projectsUsers[index]?.some((user) => user.userId === req.user.id)
+                            return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], user: projectsUser[index], active})
+                        }));
+                    });
                 });
-            });
+            })
         })
     });
 };

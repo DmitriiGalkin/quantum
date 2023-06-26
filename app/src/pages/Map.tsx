@@ -3,7 +3,7 @@ import {usePlaces} from "../modules/place";
 import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
 import {useNavigate} from "react-router-dom";
-import Back from "../components/Back";
+import Back2 from "../components/Back2";
 
 export default function MapDialog() {
     const { data: places = [] } = usePlaces()
@@ -12,7 +12,9 @@ export default function MapDialog() {
 
     return (
         <>
-            <Back title="Карта проектов"/>
+            <div style={{ position: "absolute", top: 25, left: 21, right: 25, zIndex:10 }}>
+                <Back2 title="Карта проектов"/>
+            </div>
             <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
                 <YMaps>
                     <Map defaultState={{ center: [x, y], zoom: 16 }} width="100%" height="100%">

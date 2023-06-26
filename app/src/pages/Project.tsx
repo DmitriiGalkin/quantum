@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import {makeStyles} from '@mui/styles';
-import {Box, Button, Stack, Theme, Typography} from "@mui/material";
+import {Box, Stack, Theme, Typography} from "@mui/material";
+import Button from "../components/Button";
 import SaveIcon from '@mui/icons-material/Save';
 import {useAddProjectUser, useDeleteProjectUser} from "../modules/user";
 import {Project, useProject} from "../modules/project";
-import {getMeetsGroup} from "../tools/helper";
+import {getFilteredMeetsByDate, getMeetsGroup, getMeetsGroup2, getWeek} from "../tools/helper";
 import Day from "../components/Day";
 import {Meet, NewMeet} from "../modules/meet";
-import QAvatar from "../components/QAvatar";
 import {useParams} from "react-router-dom";
 import CreateMeet from "../dialogs/CreateMeet";
-import Back from "../components/Back";
 import {getOnShare} from "../tools/share";
 import QContainer from "../components/QContainer";
 import Dialog from "@mui/material/Dialog";
@@ -18,11 +17,17 @@ import {TransitionDialog} from "../components/TransitionDialog";
 import CreateProjectDialog from "../dialogs/CreateProject";
 import Image from "../components/Image";
 import Back2 from "../components/Back2";
+import Meets from "../components/Meets";
+import {LocalDate} from "@js-joda/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: `${theme.spacing(4)}px ${theme.spacing(4)}px 0 0`,
+        position: 'absolute',
+        top: -38,
+        backgroundColor: 'white',
+        width: '100%',
+        borderRadius: `38px 38px 0 0`,
+        padding: '25px 33px'
     },
     block: {
         border: `1px solid ${theme.palette.divider}`,
@@ -32,6 +37,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     large: {
         width: theme.spacing(5),
         height: theme.spacing(5),
+    },
+    image: {
+        width: '100%',
+        height: 150,
+        objectFit: 'cover',
     },
 }));
 
@@ -46,9 +56,16 @@ export default function ProjectPage() {
     const addProjectUser = useAddProjectUser(project?.id)
     const deleteProjectUser = useDeleteProjectUser(project?.id)
 
+    const localDate = LocalDate.now()
+    const [selectedDate, setSelectedDate] = useState<string>(localDate.toString())
+    const meetsGroup = getMeetsGroup2(project?.meets)
+    const week = getWeek(selectedDate, meetsGroup)
+    const filteredMeets = getFilteredMeetsByDate(project?.meets || [], selectedDate)
+
+
     if (!project) { return null }
 
-    const meetsGroup = getMeetsGroup(project?.meets)
+    // const meetsGroup = getMeetsGroup(project?.meets)
 
     const onClick = () => {
         if (project.active) {
@@ -69,58 +86,35 @@ export default function ProjectPage() {
         { title: 'Выйти из проекта', onClick: () => onClick()},
     ]
 
+
     return (
-        <>
-            <Back2 title={project.title} menuItems={menuItems} />
-            <div className={classes.container}>
-                <QContainer>
-                    <Stack spacing={3}>
-                        {project.image && <Image src={project.image}/>}
-                        <Typography>
-                            {project.description}
-                        </Typography>
-                        {!project.active && (
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                size="large"
-                                startIcon={<SaveIcon />}
-                                onClick={onClick}
-                            >
-                                Участвовать в проекте
+        <div style={{ position: "relative"}}>
+            <img src={project.image} className={classes.image}/>
+            <div style={{ position: "absolute", top: 25, left: 21, right: 25 }}>
+                <Back2 title={project.title} menuItems={menuItems} />
+            </div>
+            <div style={{ position: "relative"}}>
+                <div className={classes.container}>
+                    <div style={{ paddingTop: 10, color: '#070707', opacity: .6, fontSize: 18}}>
+                        Проект
+                    </div>
+                    <div style={{ fontSize: 24, color: "black" }}>
+                        {project.title}
+                    </div>
+                    <div style={{ paddingTop: 31, color: '#070707', opacity: .6, fontSize: 18}}>
+                        {project.description}
+                    </div>
+                    {!project.active && (
+                        <div style={{ paddingTop: 15 }}>
+                            <Button onClick={onClick}>
+                                Участвовать
                             </Button>
-                        )}
-                        {Boolean(project.meets.length) && (
-                            <Stack spacing={3}>
-                                {meetsGroup.map(([date, meets]) => (
-                                    <Day key={date} date={date} meets={meets as Meet[]} refetch={refetch} />
-                                ))}
-                            </Stack>
-                        )}
-                        {Boolean(project.users?.length) && (
-                            <Stack spacing={2}>
-                                <Typography variant="h5">
-                                    Участники
-                                </Typography>
-                                <div>
-                                    {project.users?.map((user) => (
-                                        <Box key={user.id} sx={{padding: 1, display: "flex"}}>
-                                            <QAvatar {...user}/>
-                                            <Box sx={{flexGrow:1, paddingLeft: 2}}>
-                                                <Typography variant="subtitle1">
-                                                    {user.title}
-                                                </Typography>
-                                                <Typography>
-                                                    Вдохновитель
-                                                </Typography>
-                                            </Box>
-                                        </Box>
-                                    ))}
-                                </div>
-                            </Stack>
-                        )}
-                    </Stack>
-                </QContainer>
+                        </div>
+                    )}
+                    <div style={{ paddingTop: 30 }}>
+                        <Meets meets={filteredMeets} refetch={refetch} week={week} onChangeDay={setSelectedDate} />
+                    </div>
+                </div>
             </div>
             <Dialog onClose={() => setNewMeet(undefined)} open={!!newMeet} fullScreen TransitionComponent={TransitionDialog}>
                 {!!newMeet && (<CreateMeet newMeet={newMeet} onClose={() => {
@@ -134,6 +128,29 @@ export default function ProjectPage() {
                     refetch()
                 }} />)}
             </Dialog>
-        </>
+        </div>
     );
 }
+
+// {Boolean(project.users?.length) && (
+//     <Stack spacing={2}>
+//         <Typography variant="h5">
+//             Участники
+//         </Typography>
+//         <div>
+//             {project.users?.map((user) => (
+//                 <Box key={user.id} sx={{padding: 1, display: "flex"}}>
+//                     <QAvatar {...user}/>
+//                     <Box sx={{flexGrow:1, paddingLeft: 2}}>
+//                         <Typography variant="subtitle1">
+//                             {user.title}
+//                         </Typography>
+//                         <Typography>
+//                             Вдохновитель
+//                         </Typography>
+//                     </Box>
+//                 </Box>
+//             ))}
+//         </div>
+//     </Stack>
+// )}

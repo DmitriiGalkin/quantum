@@ -83,7 +83,10 @@ exports.findById = function(req, res) {
         } else {
             Project.findByMeet(meet, function(err, project) {
                 User.findByMeet(meet, function(err, users) {
-                    res.send({...meet, project, users});
+                    Place.findByMeet(meet, function(err, place) {
+                        const active = users.some((user) => user.userId === 1)
+                        res.send({...meet, active, project, users, place});
+                    });
                 });
             });
         }

@@ -5,6 +5,8 @@ var Meet = function(data){
     this.projectId = data.projectId;
     this.placeId = data.placeId;
     this.title = data.title;
+    this.description = data.description;
+    this.image = data.image;
     this.datetime = data.datetime;
 };
 // Создание встречи

@@ -7,6 +7,7 @@ import MeetCard from "../components/cards/MeetCard";
 import {CalendarDay, getFilteredMeetsByDate, getMeetsGroup2, getWeek} from "../tools/helper";
 import {LocalDate} from "@js-joda/core";
 import {Meet} from "../modules/meet";
+import NewMeetCard from "./fields/NewMeetCard";
 
 interface MeetsProps {
     meets: Meet[]
@@ -19,8 +20,8 @@ export default function Meets({meets, refetch, onChangeDay, week, selectedMeet}:
     return (
         <Stack spacing={4} direction="column">
             <Calendar week={week} onChange={onChangeDay} />
-            {Boolean(meets.length) ? (
-                <Stack spacing={3}>
+            {Boolean(meets.length) && (
+                <Stack spacing={2}>
                     {meets.map((meet, index) =>
                         <div key={meet.id}>
                             <div key={meet.id}>
@@ -29,16 +30,10 @@ export default function Meets({meets, refetch, onChangeDay, week, selectedMeet}:
                         </div>
                     )}
                 </Stack>
-            ) : (
-                <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    minHeight="80vh"
-                >
-                    <span>Встреч нет</span>
-                </Box>
             )}
+            {/*<div style={{ width: 67, height: 67 }}>*/}
+            {/*    <NewMeetCard refetch={refetch} />*/}
+            {/*</div>*/}
         </Stack>
     );
 }

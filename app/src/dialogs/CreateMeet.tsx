@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Stack} from "@mui/material";
+import {Stack} from "@mui/material";
 import {NewMeet, useAddMeet, useEditMeet} from "../modules/meet";
 import {useUserProjects} from "../modules/user";
 import dayjs, {Dayjs} from "dayjs";
@@ -11,6 +11,9 @@ import ProjectField from "../components/fields/ProjectField";
 import PlaceField from "../components/fields/PlaceField";
 import DateField from "../components/fields/DateField";
 import TimeField from "../components/fields/TimeField";
+import ImageField from "../components/fields/ImageField";
+import TextareaField from "../components/fields/TextareaField";
+import Button from "../components/Button";
 
 export function valuetext(value: number) {
     return `${value}°C2222`;
@@ -44,7 +47,7 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
     const addMeet = useAddMeet()
     const editMeet = useEditMeet()
 
-    const { data: projects = [] } = useUserProjects()
+    const { data: projects = [], refetch } = useUserProjects()
 
     const onClickSave = () => {
         if (meet) {
@@ -90,24 +93,21 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                     <InputField
                         name='title'
                         label="Название встречи"
-                        variant="standard"
-                        fullWidth
                         value={meet?.title}
                         onChange={(e) => setMeet({ ...meet, title: e.target.value})}
                     />
-                    <InputField
+                    <TextareaField
                         name='title'
                         label="Описание"
-                        variant="standard"
-                        fullWidth
-                        value={meet?.title}
-                        onChange={(e) => setMeet({ ...meet, title: e.target.value})}
+                        value={meet?.description}
+                        onChange={(e) => setMeet({ ...meet, description: e.target.value})}
                     />
                     <ProjectField
                         label="Проект"
                         selectedProjectId={meet.projectId}
                         projects={projects}
                         onChange={(project) => setMeet({ ...meet, projectId: project.id})}
+                        refetch={refetch}
                     />
                     <PlaceField
                         label="Место"
@@ -126,15 +126,13 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                             onChange={(datetime) => timeOnChange(datetime)}
                         />
                     </Stack>
+                    <ImageField
+                        label="Загрузите обложку"
+                        onChange={(image) => setMeet({...meet, image})}
+                    />
                 </Stack>
-                <div>
-                    <Button
-                        onClick={onClickSave}
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        size="large"
-                    >
+                <div style={{ paddingTop: 22, marginLeft: -11, marginRight: -11 }}>
+                    <Button onClick={onClickSave}>
                         Создать
                     </Button>
                 </div>

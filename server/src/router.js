@@ -82,23 +82,4 @@ router.post('/meet', useUser, meetController.create);
 router.put('/meet/:id', meetController.update);
 router.delete('/meet/:id', useUser, meetController.delete );
 
-/**
- * Задания
- */
-router.get('/tasks', useUser, taskController.findByUser);
-router.get('/task/:id', taskController.findById);
-router.put('/task/:id', taskController.update);
-
-/**
- * Таланты
- */
-router.get('/uniques', useUser, uniqueController.findByUser);
-router.put('/unique/:id', uniqueController.update);
-
-/**
- * Сообщества
- */
-router.get('/communitys', communityController.findAll);
-router.get('/community/:id', useUser, communityController.findById);
-
 module.exports = router

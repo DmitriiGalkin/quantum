@@ -3,19 +3,19 @@ import {AppBar, Box, IconButton, Skeleton, Stack, TextField, Toolbar, Typography
 import {useNavigate} from "react-router-dom";
 import {TextFieldProps} from "@mui/material/TextField/TextField";
 
-interface InputFieldProps {
+interface TextareaFieldProps {
     label: string
     value?: string
     name: string
     onChange: (e: any) => void
 }
-export function InputField({ label, value, name, onChange }: InputFieldProps) {
+export function TextareaField({ label, value, name, onChange }: TextareaFieldProps) {
     return (
         <Stack spacing={2} direction="column">
             <div style={{ fontWeight: 900, fontSize: 18, color: '#070707' }}>
                 {label}
             </div>
-            <input type="text" name="name" value={value} onChange={onChange} style={{
+            <textarea name="name" value={value} onChange={onChange} rows={3} style={{
                 display: 'block',
                 width: '100%',
                 padding: '14px 15px',
@@ -33,4 +33,4 @@ export function InputField({ label, value, name, onChange }: InputFieldProps) {
     );
 }
 
-export default InputField;
+export default TextareaField;

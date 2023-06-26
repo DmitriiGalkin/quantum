@@ -4,8 +4,8 @@ var dbConn = require('../db');
 var User = function(user){
     this.email = user.email;
     this.password = user.password;
+    this.image = user.image;
     this.title = user.title;
-    this.avatar = user.avatar;
     this.token = user.token;
     this.points = user.points;
 };
@@ -17,8 +17,7 @@ User.create = function (user, result) {
 };
 // Обновление участника
 User.update = function(userId, user, result){
-    const avatar = JSON.stringify(user.avatar)
-    dbConn.query("UPDATE user SET title=?,points=?,email=?,password=?,token=?,avatar=? WHERE id = ?", [user.title,user.points,user.email,user.password,user.token, avatar, userId], function (err, res) {
+    dbConn.query("UPDATE user SET title=?,points=?,email=?,password=?,token=?,image=? WHERE id = ?", [user.title,user.points,user.email,user.password,user.token, user.image, userId], function (err, res) {
         result(null, res);
     });
 };
@@ -77,6 +76,13 @@ User.findByProject = function (project, result) {
         result(null, parse(res));
     });
 };
+// Организатор
+User.findByProjectOne = function (project, result) {
+    dbConn.query("Select * from user where id = ?", project.userId, function (err, res) {
+        result(null, (res && res.length) ? parse(res)[0] : null);
+    });
+};
+
 // Участники сообщества
 User.findByCommunity = function (community, result) {
     dbConn.query("Select * from user LEFT JOIN user_community ON user.id = user_community.userId where communityId = ?", community.id, function (err, res) {

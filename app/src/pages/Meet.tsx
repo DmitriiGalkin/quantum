@@ -8,7 +8,7 @@ import CreateMeet from "../dialogs/CreateMeet";
 import {useToggleMeetUser} from "../modules/user";
 import Back2 from "../components/Back2";
 import {getOnShare} from "../tools/share";
-import {Button} from "@mui/material";
+import Button from "../components/Button";
 
 export default function MeetPage() {
     const { id: meetId } = useParams();
@@ -30,31 +30,17 @@ export default function MeetPage() {
                 url: `/meet/${meet?.id}`
             })},
         { title: 'Редактировать', onClick: () => setEditMeet(meet)},
-        { title: 'Выйти из проекта', onClick: () => onClick()},
+        // { title: 'Выйти из проекта', onClick: () => onClick()},
     ]
 
     const renderHeader = () => <Back2 title={meet.title} menuItems={menuItems} />
     const renderFooter = () => meet.active ? (
-            <Button
-                color="success"
-                disabled={false}
-                size="large"
-                variant="outlined"
-                onClick={onClick}
-                fullWidth
-            >
+            <Button onClick={onClick} variant="outlined">
                 Покинуть встречу
             </Button>
         ) : (
-            <Button
-                color="success"
-                disabled={false}
-                size="large"
-                variant="contained"
-                onClick={onClick}
-                fullWidth
-            >
-                участвовать
+            <Button onClick={onClick}>
+                Участвовать
             </Button>
         )
 

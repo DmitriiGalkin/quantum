@@ -4,13 +4,11 @@ import {Unique} from "./unique";
 import {Project} from "./project";
 import {LoginData} from "../tools/auth";
 import {Meet} from "./meet";
-import {AvatarProps} from "../dialogs/Options";
 
 export interface User {
     id: number
     title: string
     image: string
-    avatar: AvatarProps
     points: number
     email?: string
     password?: string

@@ -1,11 +1,12 @@
 import React from 'react';
 import ProjectCard from "../components/cards/ProjectCard";
-import {Box, Stack, Typography} from "@mui/material";
+import {Box, Stack} from "@mui/material";
 import {useOnlyUserProjects, useRecommendationProjects} from "../modules/user";
 import {useNavigate} from "react-router-dom";
+import NewProjectCard from "../components/fields/NewProjectCard";
 
 export default function ProjectsPage() {
-    const { data: projects = [] } = useOnlyUserProjects()
+    const { data: projects = [], refetch } = useOnlyUserProjects()
     const { data: recommendationProjects = [] } = useRecommendationProjects()
     const navigate = useNavigate();
 
@@ -13,15 +14,10 @@ export default function ProjectsPage() {
         <>
             {(Boolean(projects.length) || Boolean(recommendationProjects.length)) ? (
                 <Stack spacing={2}>
-                    <Stack spacing={2}>
-                        {projects.map((project) => <ProjectCard key={project.id} project={project} onClick={() => navigate(`/project/${project.id}`)}/>)}
-                    </Stack>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        Рекомендуем проекты
-                    </Typography>
-                    <Stack spacing={2}>
-                        {recommendationProjects.map((project) => <ProjectCard key={project.id} project={project} onClick={() => navigate(`/project/${project.id}`)}/>)}
-                    </Stack>
+                    {projects.map((project) => <ProjectCard key={project.id} project={project} onClick={() => navigate(`/project/${project.id}`)}/>)}
+                    {/*<div style={{ width: 67, height: 67 }}>*/}
+                    {/*    <NewProjectCard refetch={refetch} />*/}
+                    {/*</div>*/}
                 </Stack>
             ) : (
             <Box

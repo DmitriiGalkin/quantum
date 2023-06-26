@@ -15,6 +15,7 @@ export interface Project {
     ageLimit?: AgeLimit // Возрастное ограничение
     users: User[]
     meets: Meet[]
+    user: User
 }
 
 

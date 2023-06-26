@@ -15,13 +15,15 @@ export interface Meet {
     project: Project
     place: Place
     users: User[]
-    // description?: string
+    image?: string
 }
 
 export interface NewMeet {
     id?: number
     activeStep?: number
     title?: string
+    description?: string
+    image?: string
     projectId?: number
     placeId?: number
     datetime?: string
