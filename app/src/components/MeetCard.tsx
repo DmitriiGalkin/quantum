@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {Meet, NewMeet} from "../modules/meet";
+import React from 'react';
+import {Meet} from "../modules/meet";
 import {convertToMeetDate, convertToMeetTime} from "../tools/date";
 import {Avatar, AvatarGroup, Box, Stack, Typography} from "@mui/material";
-import {useDeleteMeet, useToggleMeetUser} from "../modules/user";
+import {useToggleMeetUser} from "../modules/user";
 import {makeStyles} from '@mui/styles';
 import {DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
@@ -30,63 +30,23 @@ const useStyles = makeStyles(() => ({
 }));
 export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
     const toggleMeetUser = useToggleMeetUser()
-    const deleteMeet = useDeleteMeet()
     const classes = useStyles();
     const navigate = useNavigate();
-
-    const [contextMenu, setContextMenu] = React.useState<{
-        mouseX: number;
-        mouseY: number;
-    } | null>(null);
-    const [newMeet, setNewMeet] = useState<NewMeet>()
 
     const time = convertToMeetTime(meet.datetime)
     const date = convertToMeetDate(meet.datetime)
 
-    const onClick = (e: React.MouseEvent) => {
-        e.stopPropagation()
-        if (contextMenu === null) {
-            toggleMeetUser.mutateAsync({ meetId: meet.id }).then(() => {
-                refetch && refetch()
-            })
-        }
+    const onClick = () => {
+        toggleMeetUser.mutateAsync({ meetId: meet.id }).then(() => {
+            refetch && refetch()
+        })
     }
     const title = meet.title ? meet.title : meet.project?.title
     const placeTitle = meet.place?.title
 
-
-    const handleContextMenu = (event: React.MouseEvent) => {
-        event.preventDefault();
-        setContextMenu(
-            contextMenu === null
-                ? {
-                    mouseX: event.clientX + 2,
-                    mouseY: event.clientY - 6,
-                }
-                : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
-                  // Other native context menus might behave different.
-                  // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
-                null,
-        );
-    };
-
-    const handleClose = () => {
-        setContextMenu(null)
-    };
-    const onEditClick = () => {
-        setNewMeet(meet as NewMeet)
-        handleClose()
-    };
-    const onDeleteClick = () => {
-        deleteMeet.mutateAsync(meet).then(() => {
-            refetch && refetch()
-        })
-        handleClose()
-    };
-
     return (
         <div style={{ padding: 11, backgroundColor: DEFAULT_COLOR, borderRadius: 16, border: `2px solid ${selected ? 'orange' : 'transparent'}` }} onClick={() => navigate(`/meet/${meet.id}`)}>
-            <Stack spacing={2} direction="row" onContextMenu={handleContextMenu}>
+            <Stack spacing={2} direction="row">
                 <div style={{ width: 90, minWidth: 90 }}>
                     <div className={classes.blockInner}>
                         <img src={meet.image ? meet.image : meet.project.image} className={classes.image}/>
@@ -143,7 +103,6 @@ export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
                                             Участвовать
                                         </div>
                                     )}
-
                                 </div>
                             </div>
                         </div>

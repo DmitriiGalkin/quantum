@@ -73,22 +73,25 @@ exports.update = function(req, res) {
         });
     }
 };
-// Добавление участника в проект
-exports.createUserProject = function(req, res) {
-    const data = new UserProject({...req.params, userId: req.user.id});
-    if(req.body.constructor === Object && Object.keys(req.params).length === 0){
-        res.status(400).send({ error:true, message: 'Please provide all required field' });
-    }else{
-        UserProject.create(data, function() {
-            res.json({error:false,message:"Добавление участника в проект"});
-        });
-    }
-};
-// Удаление участника из проекта
-exports.deleteUserProject = function(req, res) {
-    UserProject.delete(req.params.projectId, req.user.id, function() {
-        res.json({ error:false, message: 'Удаление участника из проекта' });
-    });
+
+// Добавление или удаление участника встречи
+exports.toggleUserProject = function(req, res) {
+    UserProject.findById(req.user.id, req.params.projectId, function(err, userProject) {
+        if (userProject) {
+            UserProject.delete(req.params.projectId, req.user.id, function() {
+                res.json({ error:false, message: 'Удаление участника из проекта' });
+            });
+        } else {
+            const data = new UserProject({...req.params, userId: req.user.id});
+            if(req.body.constructor === Object && Object.keys(req.params).length === 0){
+                res.status(400).send({ error:true, message: 'Please provide all required field' });
+            }else{
+                UserProject.create(data, function() {
+                    res.json({error:false,message:"Добавление участника в проект"});
+                });
+            }
+        }
+    })
 };
 
 // Проекты участника

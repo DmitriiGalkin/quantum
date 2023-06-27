@@ -1,9 +1,7 @@
 import {createTheme} from '@mui/material/styles';
 
-export const SELECTED_COLOR = '#CDEBFC'
 export const DEFAULT_COLOR = 'white'
 
-// A custom theme for this app
 const theme = createTheme({
     typography: {
         fontFamily: 'Avenir',

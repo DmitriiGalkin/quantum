@@ -43,32 +43,6 @@ export const useOnlyUserProjects = (): UseQueryResult<Project[]> => {
     return useQuery(['projects'], () => service.get(`/projects`))
 }
 
-interface ProjectUser {
-    projectId: number
-    userId?: number
-}
-
-export const useAddProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
-    const queryClient = useQueryClient()
-
-    return useMutation(({ projectId }) => service.post(`/userProject/${projectId}`), {
-        onSuccess() {
-            queryClient.invalidateQueries(['profile'])
-            queryClient.invalidateQueries(['project', projectId])
-        },
-    })
-}
-export const useDeleteProjectUser = (projectId?: number): UseMutate<ProjectUser> => {
-    const queryClient = useQueryClient()
-
-    return useMutation(({ projectId }) => service.delete(`/userProject/${projectId}`), {
-        onSuccess() {
-            queryClient.invalidateQueries(['profile'])
-            queryClient.invalidateQueries(['project', projectId])
-        },
-    })
-}
-
 interface UserMeet {
     meetId: number
 }
@@ -77,3 +51,8 @@ export const useToggleMeetUser = (): UseMutate<UserMeet> => useMutation(({ meetI
 export const useUpdateProject = (): UseMutate<Project> => useMutation((project) => service.put(`/project/${project.id}`, project))
 
 export const useDeleteMeet = (): UseMutate<Meet> => useMutation((meet) => service.delete(`/meet/${meet.id}`))
+
+interface UserProject {
+    projectId: number
+}
+export const useToggleUserProject = (): UseMutate<UserProject> => useMutation(({ projectId }) => service.put("/userProject/" + projectId))

@@ -92,7 +92,6 @@ export default function CallbackPage() {
                         config.headers['Authorization'] = `Bearer ${googleToken.access_token}`;
                         return config;
                     }, function (error) {
-                        // Do something with request error
                         return Promise.reject(error);
                     }
                 );
@@ -117,7 +116,6 @@ export default function CallbackPage() {
                     config.headers['Authorization'] = `Bearer ${googleToken.access_token}`;
                     return config;
                 }, function (error) {
-                    // Do something with request error
                     return Promise.reject(error);
                 }
             );

@@ -30,7 +30,6 @@ export default function MeetPage() {
                 url: `/meet/${meet?.id}`
             })},
         { title: 'Редактировать', onClick: () => setEditMeet(meet)},
-        // { title: 'Выйти из проекта', onClick: () => onClick()},
     ]
 
     const renderHeader = () => <Back2 title={meet.title} menuItems={menuItems} />

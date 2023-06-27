@@ -8,7 +8,7 @@ export interface Project {
     title: string,
     description: string,
     image?: string,
-    active?: boolean, // пользователь является участником проекта
+    active?: boolean,
     users: User[]
     meets: Meet[]
     user: User

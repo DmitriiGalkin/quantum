@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {makeStyles} from '@mui/styles';
 import {Theme} from "@mui/material";
 import Button from "../components/Button";
-import {useAddProjectUser, useDeleteProjectUser} from "../modules/user";
+import {useToggleUserProject} from "../modules/user";
 import {Project, useProject} from "../modules/project";
 import {getFilteredMeetsByDate, getMeetsGroup2, getWeek} from "../tools/helper";
 import {NewMeet} from "../modules/meet";
@@ -49,8 +49,7 @@ export default function ProjectPage() {
     const [newMeet, setNewMeet] = useState<NewMeet>()
     const [editProject, setEditProject] = useState<Project>()
 
-    const addProjectUser = useAddProjectUser(project?.id)
-    const deleteProjectUser = useDeleteProjectUser(project?.id)
+    const toggleUserProject = useToggleUserProject()
 
     const localDate = LocalDate.now()
     const [selectedDate, setSelectedDate] = useState<string>(localDate.toString())
@@ -61,14 +60,8 @@ export default function ProjectPage() {
 
     if (!project) { return null }
 
-    // const meetsGroup = getMeetsGroup(project?.meets)
-
     const onClick = () => {
-        if (project.active) {
-            deleteProjectUser.mutate({ projectId: project.id })
-        } else {
-            addProjectUser.mutate({ projectId: project.id })
-        }
+        toggleUserProject.mutate({ projectId: project.id })
     }
 
     const menuItems = [
@@ -127,26 +120,3 @@ export default function ProjectPage() {
         </div>
     );
 }
-
-// {Boolean(project.users?.length) && (
-//     <Stack spacing={2}>
-//         <Typography variant="h5">
-//             Участники
-//         </Typography>
-//         <div>
-//             {project.users?.map((user) => (
-//                 <Box key={user.id} sx={{padding: 1, display: "flex"}}>
-//                     <QAvatar {...user}/>
-//                     <Box sx={{flexGrow:1, paddingLeft: 2}}>
-//                         <Typography variant="subtitle1">
-//                             {user.title}
-//                         </Typography>
-//                         <Typography>
-//                             Вдохновитель
-//                         </Typography>
-//                     </Box>
-//                 </Box>
-//             ))}
-//         </div>
-//     </Stack>
-// )}

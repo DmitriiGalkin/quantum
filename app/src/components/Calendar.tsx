@@ -38,4 +38,3 @@ export default function Calendar ({ week, onChange }: CalendarProps): JSX.Elemen
         </Stack>
     )
 }
-//

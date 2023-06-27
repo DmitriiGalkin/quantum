@@ -6,7 +6,6 @@ const userController =   require('./controllers/userController');
 const projectController =   require('./controllers/projectController');
 const meetController =   require('./controllers/meetController');
 const placeController =   require('./controllers/placeController');
-const profileController =   require('./controllers/profileController');
 const imageController =   require('./controllers/imageController');
 
 /**
@@ -27,11 +26,6 @@ function useUser(req, res, next) {
 }
 
 /**
- * Профиль пользователя
- */
-router.get('/profile', useUser, profileController.findByUser);
-
-/**
  * Картинки
  */
 router.post('/image', imageController.upload);
@@ -45,8 +39,7 @@ router.post('/logi', userController.logi);
 router.get('/user/:id', userController.findById);
 router.put('/user', useUser, userController.update);
 
-router.post('/userProject/:projectId', useUser, projectController.createUserProject );
-router.delete('/userProject/:projectId', useUser, projectController.deleteUserProject );
+router.put('/userProject/:projectId', useUser, projectController.toggleUserProject );
 router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );
 
 /**

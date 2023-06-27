@@ -57,7 +57,6 @@ exports.toggleUserMeet = function(req, res) {
             }
         }
     })
-
 };
 
 // Встречи участника
