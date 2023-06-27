@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import MeetComponent from "../components/Meet";
 import {useParams} from "react-router-dom";
-import {Meet, useMeet} from "../modules/meet";
+import {Meet, NewMeet, useMeet} from "../modules/meet";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
-import CreateMeet from "../dialogs/CreateMeet";
+import CreateMeet from "../components/CreateMeet";
 import {useToggleMeetUser} from "../modules/user";
 import Back2 from "../components/Back2";
 import {getOnShare} from "../tools/share";
@@ -56,7 +56,7 @@ export default function MeetPage() {
                 {!!editMeet && (<CreateMeet onClose={() => {
                     setEditMeet(undefined)
                     refetch()
-                }} />)}
+                }} newMeet={editMeet as NewMeet} />)}
             </Dialog>
         </>
     );

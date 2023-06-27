@@ -1,17 +1,12 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {useState} from 'react';
 import {Project, useAddProject, useProject, useUpdateProject} from "../modules/project";
-import Back from "../components/Back";
-import QContainer from "../components/QContainer";
+import Back from "./Back";
 import {useNavigate, useParams} from "react-router-dom";
-import {Stack, TextField} from "@mui/material";
-import {useUploadImage} from "../modules/image";
-import ImageComponent from "../components/Image";
-import {compress} from "../tools/image";
-import {LoaderWrapper} from "../components/LoaderWrapper";
-import InputField from "../components/fields/InputField";
-import TextareaField from "../components/fields/TextareaField";
-import ImageField from "../components/fields/ImageField";
-import Button from "../components/Button";
+import {Stack} from "@mui/material";
+import Input from "./fields/Input";
+import Textarea from "./fields/Textarea";
+import ImageField from "./fields/ImageField";
+import Button from "./Button";
 
 export interface CreateProjectDialogProps {
     onClose: () => void
@@ -23,15 +18,12 @@ export default function CreateProjectDialog({ onClose, close }: CreateProjectDia
     const { id } = useParams();
     const { data: projectOld } = useProject(id ? Number(id) : 0)
     const [project, setProject] = useState(projectOld || {} as Project)
-    const [imageLoading, setImageLoading] = useState(true) // Флаг загрузки изображения по внешнему src
 
     const addProject = useAddProject()
     const updateProject = useUpdateProject()
-    const uploadImage = useUploadImage()
 
     const title = project.id ? 'Редактирование проекта' : "Создание проекта"
-    const saveButtonTitle = project.id ? 'Сохранить' : "Создать"
-    const loading = uploadImage.isLoading || imageLoading
+    const saveButtonTitle = project.id ? 'Сохранить' : "Создать проект"
 
     const onClickSave = () => {
         project.id ? updateProject.mutateAsync(project).then(() => {
@@ -48,15 +40,15 @@ export default function CreateProjectDialog({ onClose, close }: CreateProjectDia
     return (
         <>
             <Back title={title} onClick={onClose}/>
-            <div style={{ padding: '25px 22px'}}>
+            <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={2}>
-                    <InputField
+                    <Input
                         name='title'
                         label="Название"
                         value={project.title}
                         onChange={(e) => setProject({ ...project, title: e.target.value})}
                     />
-                    <TextareaField
+                    <Textarea
                         name='title'
                         label="Описание"
                         value={project.description}
@@ -67,7 +59,7 @@ export default function CreateProjectDialog({ onClose, close }: CreateProjectDia
                         onChange={(image) => setProject({...project, image})}
                     />
                 </Stack>
-                <div style={{ paddingTop: 22, marginLeft: -11, marginRight: -11 }}>
+                <div style={{ paddingTop: 22 }}>
                     <Button onClick={onClickSave}>
                         {saveButtonTitle}
                     </Button>

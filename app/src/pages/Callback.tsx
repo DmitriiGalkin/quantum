@@ -57,8 +57,6 @@ export const createService = (): AxiosInstance => {
 
 const googleService = createService()
 
-
-
 /**
  * Посадочная страница успешной авторизации в гугле
  */

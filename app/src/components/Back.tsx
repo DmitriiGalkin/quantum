@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppBar, Box, IconButton, Skeleton, Stack, Toolbar, Typography} from "@mui/material";
+import {Skeleton, Stack} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 interface BackProps {
@@ -11,13 +11,13 @@ export function Back({ title, onClick }: BackProps) {
     const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
 
     return (
-        <Stack direction="row" justifyContent="space-between" style={{ position: 'sticky', padding: '15px 15px 14px 15px', background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)' }}>
-            <div style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" style={{ position: 'sticky', padding: '14px 18px 14px 18px', background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)' }}>
+            <div style={{ color: 'white', fontWeight: 'bold', fontSize: 20, letterSpacing: '-0.01em', lineHeight: '18px' }}>
                 {title || <Skeleton variant="text" sx={{ fontSize: '1rem', width: '100%' }} />}
             </div>
             <div onClick={onBackClick}>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.214794 11.9002C-0.0674326 12.1824 -0.0757333 12.6639 0.214794 12.9461C0.505321 13.2283 0.986767 13.2283 1.26899 12.9461L6.58149 7.63362L11.894 12.9461C12.1762 13.2283 12.666 13.2366 12.9482 12.9461C13.2304 12.6556 13.2304 12.1824 12.9482 11.9002L7.63569 6.57942L12.9482 1.26692C13.2304 0.984691 13.2387 0.503246 12.9482 0.221019C12.6577 -0.0695081 12.1762 -0.0695081 11.894 0.221019L6.58149 5.53352L1.26899 0.221019C0.986767 -0.0695081 0.497021 -0.0778089 0.214794 0.221019C-0.0674326 0.511547 -0.0674326 0.984691 0.214794 1.26692L5.52729 6.57942L0.214794 11.9002Z" fill="white"/>
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.163206 9.81321C-0.051237 10.0277 -0.0575441 10.3935 0.163206 10.6079C0.383956 10.8224 0.749771 10.8224 0.964214 10.6079L5.00079 6.57134L9.03736 10.6079C9.25181 10.8224 9.62393 10.8287 9.83837 10.6079C10.0528 10.3872 10.0528 10.0277 9.83837 9.81321L5.8018 5.77033L9.83837 1.73375C10.0528 1.51931 10.0591 1.1535 9.83837 0.939054C9.61762 0.718304 9.25181 0.718304 9.03736 0.939054L5.00079 4.97563L0.964214 0.939054C0.749771 0.718304 0.377649 0.711997 0.163206 0.939054C-0.051237 1.1598 -0.051237 1.51931 0.163206 1.73375L4.19978 5.77033L0.163206 9.81321Z" fill="white"/>
                 </svg>
             </div>
         </Stack>

@@ -1,20 +1,10 @@
-import {Outlet, useLocation, useNavigate, useOutletContext} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {useAuth} from "../tools/auth";
-import {
-    BottomNavigation,
-    BottomNavigationAction,
-    Box,
-    Paper,
-    Stack,
-    Theme,
-} from "@mui/material";
+import {Box, Stack, Theme,} from "@mui/material";
 import {NewMeet} from "../modules/meet";
-import GroupsIcon from "@mui/icons-material/Groups";
-import RocketIcon from "@mui/icons-material/Rocket";
-import CreateProject from "../dialogs/CreateProject";
-import CreateMeet from "../dialogs/CreateMeet";
-import Options from "../dialogs/Options";
-import Communitys from "../dialogs/Communitys";
+import CreateProject from "../components/CreateProject";
+import CreateMeet from "../components/CreateMeet";
+import Options from "../components/Options";
 import React, {useState} from "react";
 import {makeStyles} from "@mui/styles";
 import {More} from "../components/More";
@@ -43,28 +33,16 @@ export const MainLayout = () => {
     const location = useLocation();
     const classes = useStyles();
     const { logout } = useAuth();
-    const [openMap, setOpenMap] = useState(false)
     const [newProject, setNewProject] = useState(false)
     const [newMeet, setNewMeet] = useState<NewMeet>()
     const [openOptions, setOpenOptions] = useState(false)
-    const [openCommunity, setOpenCommunity] = useState(false)
     const bottomNavigationValue = MAIN_PAGES.findIndex((pageName) => '/' + pageName === location.pathname) || 0
 
     const firstMenuItems = [
-        // { title: 'Новая встреча', onClick: () => setNewMeet({}) },
         { title: 'Новый проект', onClick: () => setNewProject(true) },
-        // { title: 'Сообщества', onClick: () => setOpenCommunity(true) },
         { title: 'Настройки', onClick: () => setOpenOptions(true) },
         { title: 'Выход', onClick: () => logout() },
     ]
-
-    // const menuItems = [
-    //     { title: 'Новая встреча', onClick: () => setNewMeet({}) },
-    //     // { title: 'Новый проект', onClick: () => setNewProject(true) },
-    //     // { title: 'Сообщества', onClick: () => setOpenCommunity(true) },
-    //     // { title: 'Настройки', onClick: () => setOpenOptions(true) },
-    //     // { title: 'Выход', onClick: () => logout() },
-    // ]
 
     return (
         <>
@@ -96,7 +74,7 @@ export const MainLayout = () => {
                 </div>
                 <div style={{minHeight: '100vh', height: '100%', position: 'absolute', left:0,right:0,top:0,bottom:0, backgroundColor: '#F5F5F5'}}>
                     <div style={{ padding: '77px 15px 77px', backgroundColor: '#F5F5F5' }}>
-                        <Outlet context={{ setNewProject, setOpenMap }} />
+                        <Outlet />
                     </div>
                 </div>
                 <div className={classes.bottomNavigation} style={{ fontSize: 9 }}>
@@ -126,16 +104,9 @@ export const MainLayout = () => {
                         onClose={() => setNewMeet(undefined)}
                     />)}
             </Dialog>
-            {/*<Communitys openCommunity={openCommunity} onClose={() => setOpenCommunity(false)} />*/}
-            <Options openOptions={openOptions} onClose={() => setOpenOptions(false)} />
+            <Dialog onClose={() => setOpenOptions(false)} open={openOptions} fullScreen TransitionComponent={TransitionDialog}>
+                <Options onClose={() => setOpenOptions(false)}/>
+            </Dialog>
         </>
     )
 };
-
-interface MainContextType {
-    setNewProject: (open: boolean) => void
-    setOpenMap: (open: boolean) => void
-}
-export function useMain() {
-    return useOutletContext<MainContextType>();
-}

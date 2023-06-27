@@ -1,9 +1,9 @@
 import React from 'react';
 
 import {Avatar, Box, Stack} from "@mui/material";
-import {Project} from "../../modules/project";
+import {Project} from "../modules/project";
 import {makeStyles} from "@mui/styles";
-import {DEFAULT_COLOR} from "../../tools/theme";
+import {DEFAULT_COLOR} from "../tools/theme";
 
 interface ProjectCardProps {
     project: Project

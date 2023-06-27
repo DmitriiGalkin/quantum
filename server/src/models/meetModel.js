@@ -2,6 +2,7 @@
 var dbConn = require('../db');
 
 var Meet = function(data){
+    this.id = data.id;
     this.projectId = data.projectId;
     this.placeId = data.placeId;
     this.title = data.title;
@@ -17,7 +18,7 @@ Meet.create = function (data, result) {
 };
 // Обновление встречи
 Meet.update = function(id, meet, result){
-    dbConn.query("UPDATE meet SET title=?, projectId=?, placeId=?, datetime=? WHERE id = ?", [meet.title,meet.projectId,meet.placeId,meet.datetime, id], function (err, res) {
+    dbConn.query("UPDATE meet SET title=?, description=?, projectId=?, placeId=? WHERE id = ?", [meet.title, meet.description, meet.projectId, meet.placeId, id], function (err, res) {
         result(null, res);
     });
 };

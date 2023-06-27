@@ -53,11 +53,5 @@ Project.findAllByUserId = id => function (result) {
         result(null, res || []);
     });
 };
-// Рекомендованные проекты участнику
-Project.findRecommendationByUserId = id => function (result) {
-    dbConn.query('SELECT * FROM project EXCEPT SELECT project.* FROM project LEFT JOIN user_project ON user_project.projectId = project.id WHERE userId = ?', id, function (err, res) {
-        result(null, res || []);
-    });
-};
 
 module.exports = Project;

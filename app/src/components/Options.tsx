@@ -1,17 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {User, useUpdateUser, useUser} from "../modules/user";
 import {Stack, Theme} from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-
-import {TransitionDialog} from "../components/TransitionDialog";
-import Back from "../components/Back";
+import Back from "./Back";
 import {makeStyles} from "@mui/styles";
-import InputField from "../components/fields/InputField";
-import ImageField from "../components/fields/ImageField";
-import Button from "../components/Button";
+import Input from "./fields/Input";
+import ImageField from "./fields/ImageField";
+import Button from "./Button";
 
 export interface OptionsDialogProps {
-    openOptions: boolean
     onClose: () => void
 }
 
@@ -29,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export default function OptionsDialog({ openOptions, onClose }: OptionsDialogProps) {
+export default function OptionsDialog({ onClose }: OptionsDialogProps) {
     const { data: profileUser } = useUser();
     const classes = useStyles();
 
@@ -45,7 +41,7 @@ export default function OptionsDialog({ openOptions, onClose }: OptionsDialogPro
     }, [profileUser])
 
     return (
-        <Dialog onClose={onClose} open={openOptions} fullScreen TransitionComponent={TransitionDialog}>
+        <>
             <Back title="Настройки" onClick={onClose}/>
             <img src={user?.image} className={classes.image}/>
             <div className={classes.container}>
@@ -54,19 +50,19 @@ export default function OptionsDialog({ openOptions, onClose }: OptionsDialogPro
                         label="Аватарка"
                         onChange={(image) => user && setUser({...user, image})}
                     />
-                    <InputField
+                    <Input
                         name='email'
                         label="Телефон/Почта"
                         value={user?.email}
                         onChange={(e) => user && setUser({ ...user, email: e.target.value})}
                     />
-                    <InputField
+                    <Input
                         name='password'
                         label="Пароль"
                         value={user?.password}
                         onChange={(e) => user && setUser({ ...user, password: e.target.value})}
                     />
-                    <InputField
+                    <Input
                         name='title'
                         label="Имя и фамилия"
                         value={user?.title}
@@ -77,6 +73,6 @@ export default function OptionsDialog({ openOptions, onClose }: OptionsDialogPro
                     </Button>
                 </Stack>
             </div>
-        </Dialog>
+        </>
     );
 }

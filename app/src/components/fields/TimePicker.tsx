@@ -1,8 +1,7 @@
 import React from 'react';
-import {TimePicker} from "antd";
+import {TimePicker as TimePickerAnt} from "antd";
 import dayjs, {Dayjs} from "dayjs";
 import locale from "antd/es/date-picker/locale/ru_RU";
-import {Stack} from "@mui/material";
 
 const format = 'HH:mm';
 
@@ -10,22 +9,22 @@ interface TimeFieldProps {
     label: string
     onChange: (date: Dayjs | null) => void
 }
-export function TimeField({ label, onChange }: TimeFieldProps) {
+export function TimePicker({ label, onChange }: TimeFieldProps) {
     return (
-        <Stack spacing={2} direction="column">
-            <div style={{ fontWeight: 900, fontSize: 18, color: '#070707' }}>
+        <div>
+            <div style={{ fontWeight: 900, fontSize: 13, color: '#070707', letterSpacing: '0.01em' }}>
                 {label}
             </div>
-            <div>
-                <TimePicker
+            <div style={{ paddingTop: 8 }}>
+                <TimePickerAnt
                     defaultValue={dayjs('12:08', format)}
                     format={format} locale={locale}
                     getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
                     onChange={onChange}
                 />
             </div>
-        </Stack>
+        </div>
     );
 }
 
-export default TimeField;
+export default TimePicker;

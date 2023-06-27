@@ -108,19 +108,5 @@ exports.findByUser = function(req, res) {
         })
     });
 };
-// Рекомендованные проекты участника
-exports.findRecommendationByUser = function(req, res) {
-    Project.findRecommendationByUserId(req.user.id)(function(err, projects) {
-        async.map(projects, Meet.findByProject, function(err, projectsMeets) {
-            async.map(projects, Place.findByProject, function(err, projectsPlaces) {
-                async.map(projects, User.findByProject, function(err, projectsUsers) {
-                    res.send(projects.map((p, index) => {
-                        const active = projectsUsers[index]?.some((user) => user.userId === req.user.id)
-                        return ({ ...p, meets: projectsMeets[index], places: projectsPlaces[index], users: projectsUsers[index], active})
-                    }));
-                });
-            });
-        })
-    });
-};
+
 

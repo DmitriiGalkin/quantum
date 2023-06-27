@@ -1,6 +1,5 @@
 import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import service, {UseMutate} from "../tools/service";
-import {Unique} from "./unique";
 import {Project} from "./project";
 import {LoginData} from "../tools/auth";
 import {Meet} from "./meet";
@@ -27,24 +26,12 @@ export const useProfileData = (): UseQueryResult<Profile> => {
 export const useUser = (): UseQueryResult<User> => {
     return useQuery(['user'], () => service.get(`/user`))
 }
-export const useOnlyUserUniques = (): UseQueryResult<Unique[]> => {
-    return useQuery(['userUniques'], () => service.get(`/uniques`))
-}
 
 export const useUserProjects = (): UseQueryResult<Project[]> => {
     return useQuery(['userProjects'], () => service.get(`/projects`),)
 }
 
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
-
-export const useEditUserpoints = (): UseMutate<number> => {
-    const queryClient = useQueryClient()
-    return useMutation((points) => service.post(`/userpoints/`, {points}), {
-        onSuccess() {
-            queryClient.invalidateQueries(['tasks'])
-        },
-    })
-}
 
 export const useUserByLogin = (): UseMutate<LoginData> => useMutation((data) => service.post("/user/login", data))
 
@@ -55,11 +42,6 @@ export const useMeets = (): UseQueryResult<Meet[]> => {
 export const useOnlyUserProjects = (): UseQueryResult<Project[]> => {
     return useQuery(['projects'], () => service.get(`/projects`))
 }
-export const useRecommendationProjects = (): UseQueryResult<Project[]> => {
-    return useQuery(['recommendation_projects'], () => service.get(`/recommendation_projects`))
-}
-
-
 
 interface ProjectUser {
     projectId: number
@@ -86,35 +68,6 @@ export const useDeleteProjectUser = (projectId?: number): UseMutate<ProjectUser>
         },
     })
 }
-
-/**
- * Участие пользователя в сообществе
- */
-interface CommunityUser {
-    communityId: number
-    userId?: number
-}
-export const useAddCommunityUser = (communityId?: number): UseMutate<CommunityUser> => {
-    const queryClient = useQueryClient()
-
-    return useMutation(({ communityId }) => service.post(`/userCommunity/${communityId}`), {
-        onSuccess() {
-            queryClient.invalidateQueries(['profile'])
-            queryClient.invalidateQueries(['community', communityId])
-        },
-    })
-}
-export const useDeleteCommunityUser = (communityId?: number): UseMutate<CommunityUser> => {
-    const queryClient = useQueryClient()
-
-    return useMutation(({ communityId }) => service.delete(`/userCommunity/${communityId}`), {
-        onSuccess() {
-            queryClient.invalidateQueries(['profile'])
-            queryClient.invalidateQueries(['community', communityId])
-        },
-    })
-}
-
 
 interface UserMeet {
     meetId: number

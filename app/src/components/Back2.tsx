@@ -1,6 +1,5 @@
 import React from 'react';
-import BackIcon from '@mui/icons-material/ArrowBackIos';
-import {AppBar, Box, IconButton, Skeleton, Stack, Toolbar, Typography} from "@mui/material";
+import {Stack} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {More} from "./More";
 
@@ -19,9 +18,9 @@ export function Back({ title, onClick, menuItems }: BackProps) {
 
     return (
         <Stack spacing={2} direction="row" justifyContent="space-between" style={{ width: '100%' }}>
-            <div style={{ padding: '15px 12px', background: '#FFFFFF', borderRadius: '21.2px' }} onClick={onBackClick}>
-                <svg width="28" height="23" viewBox="0 0 28 23" fill="none" xmlns="http://www.w3.org/2000/svg" style={{     display: 'block' }}>
-                    <path d="M0 11.4292C0 11.8061 0.165859 12.1529 0.467421 12.4394L10.4793 22.4362C10.7808 22.7227 11.0975 22.8584 11.4593 22.8584C12.1982 22.8584 12.7862 22.3156 12.7862 21.5617C12.7862 21.1998 12.6505 20.8379 12.4093 20.6117L9.03177 17.1739L3.95046 12.545L7.59935 12.7711H26.6731C27.4572 12.7711 28 12.2132 28 11.4292C28 10.6451 27.4572 10.0872 26.6731 10.0872H7.59935L3.96554 10.3134L9.03177 5.68444L12.4093 2.24663C12.6505 2.00539 12.7862 1.65859 12.7862 1.29672C12.7862 0.542811 12.1982 0 11.4593 0C11.0975 0 10.7808 0.120625 10.4491 0.452343L0.467421 10.419C0.165859 10.7054 0 11.0522 0 11.4292Z" fill="black"/>
+            <div style={{ padding: '13px 10px 13px 12px', background: '#FFFFFF', borderRadius: 18 }} onClick={onBackClick}>
+                <svg style={{ display: 'block' }} width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 8C0 8.26385 0.118471 8.5066 0.333872 8.70712L7.48519 15.7045C7.70059 15.905 7.92676 16 8.18524 16C8.71298 16 9.13301 15.6201 9.13301 15.0923C9.13301 14.8391 9.03608 14.5858 8.86376 14.4274L6.45127 12.0211L2.82176 8.781L5.42811 8.93931H19.0522C19.6123 8.93931 20 8.54881 20 8C20 7.45119 19.6123 7.06069 19.0522 7.06069H5.42811L2.83253 7.219L6.45127 3.97889L8.86376 1.57256C9.03608 1.40369 9.13301 1.16095 9.13301 0.907652C9.13301 0.379947 8.71298 0 8.18524 0C7.92676 0 7.70059 0.0844327 7.46365 0.316623L0.333872 7.29288C0.118471 7.4934 0 7.73615 0 8Z" fill="black"/>
                 </svg>
             </div>
             <div>

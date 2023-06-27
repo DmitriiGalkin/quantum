@@ -1,16 +1,10 @@
 import React, {useState} from 'react';
-import {Meet, NewMeet} from "../../modules/meet";
-import {convertToMeetDate, convertToMeetTime} from "../../tools/date";
-import {Avatar, AvatarGroup, Box, Button, CardContent, Menu, MenuItem, Stack, Typography} from "@mui/material";
-import {useDeleteMeet, useToggleMeetUser} from "../../modules/user";
-import QCard from "../QCard";
-import Dialog from "@mui/material/Dialog";
-import {TransitionDialog} from "../TransitionDialog";
-import CreateMeet from "../../dialogs/CreateMeet";
+import {Meet, NewMeet} from "../modules/meet";
+import {convertToMeetDate, convertToMeetTime} from "../tools/date";
+import {Avatar, AvatarGroup, Box, Stack, Typography} from "@mui/material";
+import {useDeleteMeet, useToggleMeetUser} from "../modules/user";
 import {makeStyles} from '@mui/styles';
-import {DEFAULT_COLOR} from "../../tools/theme";
-import SaveIcon from "@mui/icons-material/Save";
-import ProjectCard from "./ProjectCard";
+import {DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
 
 interface MeetCardProps {

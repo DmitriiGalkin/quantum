@@ -1,8 +1,4 @@
 import React, {ChangeEvent} from 'react';
-import {TimePicker} from "antd";
-import dayjs, {Dayjs} from "dayjs";
-import locale from "antd/es/date-picker/locale/ru_RU";
-import {Button, Stack} from "@mui/material";
 import {compress} from "../../tools/image";
 import {useUploadImage} from "../../modules/image";
 
@@ -28,30 +24,32 @@ export function ImageField({ label, onChange }: ImageFieldProps) {
     };
 
     return (
-        <Stack spacing={2} direction="column">
-            <div style={{ fontWeight: 900, fontSize: 18, color: '#070707' }}>
+        <div>
+            <div style={{ fontWeight: 900, fontSize: 13, color: '#070707', letterSpacing: '0.01em' }}>
                 {label}
             </div>
-            <div style={{
-                display: 'block',
-                width: '100%',
-                padding: '14px 15px',
-                fontSize: '16px',
-                lineHeight: 1.5,
-                color: '#212529',
-                backgroundColor: '#F5F5F5',
-                backgroundClip: 'padding-box',
-                borderRadius: 10
-            }}>
-                <input
-                    type="file"
-                    id="file"
-                    name="customFile"
-                    accept="image/*"
-                    onChange={onChangeFile}
-                />
+            <div style={{ paddingTop: 8 }}>
+                <div style={{
+                    display: 'block',
+                    width: '100%',
+                    padding: '14px 15px',
+                    fontSize: '16px',
+                    lineHeight: 1.5,
+                    color: '#212529',
+                    backgroundColor: '#F5F5F5',
+                    backgroundClip: 'padding-box',
+                    borderRadius: 10
+                }}>
+                    <input
+                        type="file"
+                        id="file"
+                        name="customFile"
+                        accept="image/*"
+                        onChange={onChangeFile}
+                    />
+                </div>
             </div>
-        </Stack>
+        </div>
     );
 }
 

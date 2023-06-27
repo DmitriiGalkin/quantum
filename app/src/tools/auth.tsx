@@ -46,20 +46,6 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
         })
     };
 
-    // // Гугл логин
-    // const googleLogin = async (data: LoginData) => {
-    //     userByLogin.mutateAsync(data).then((result: any) => {
-    //         localStorage.setItem(ACCESS_TOKEN, result.access_token);
-    //         service.interceptors.request.use(
-    //             config => {
-    //                 config.headers['Authorization'] = `Bearer ${result.access_token}`;
-    //                 return config;
-    //             },
-    //         );
-    //         navigate("/");
-    //     })
-    // };
-
     const logout = () => {
         localStorage.removeItem(ACCESS_TOKEN);
         service.interceptors.request.use(

@@ -66,10 +66,3 @@ exports.findByUser = function(req, res) {
         res.send({ ...user, projectIds: projects.map((project) => project.id), meetIds: user_meets.map((user_meet) => user_meet.meetId)});
     });
 };
-
-// Начисление баллов
-exports.userpoints = function(req, res) {
-    User.userpoints(req.user.id, req.body.points, function(err, users) {
-        res.send(users && users[0]);
-    });
-};

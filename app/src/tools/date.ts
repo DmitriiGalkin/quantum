@@ -1,4 +1,5 @@
 import {DateTimeFormatter, LocalDateTime} from "@js-joda/core";
+import dayjs from "dayjs";
 
 // Форматирование даты, используемое для отправки на бек
 export const serverDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -66,4 +67,11 @@ export const toServerDatetime = (d?: string): string => {
 
     const localDateTime = LocalDateTime.parse(d, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
     return localDateTime.format(serverDateTimeFormatter)
+}
+
+export const getProjectDefaultDatetime = (): [string, string] => {
+    const datetime = dayjs(dayjs().format('YYYY-MM-DD')).hour(10).format('YYYY-MM-DDTHH:mm:ss')
+    const endDatetime = dayjs(dayjs().format('YYYY-MM-DD')).hour(11).format('YYYY-MM-DDTHH:mm:ss')
+
+    return [datetime, endDatetime]
 }

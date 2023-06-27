@@ -1,25 +1,23 @@
 import React from 'react';
-import {Theme, Tooltip} from "@mui/material";
-import {makeStyles} from "@mui/styles";
-import Avatar, {genConfig} from 'react-nice-avatar'
-import {User} from "../modules/user";
+
 interface Props {
     variant?: 'outlined'
     children: string | JSX.Element | JSX.Element[]
-    onClick: () => void
+    onClick?: () => void
+    href?: string
 }
-export default function Button({ children, variant, onClick }: Props) {
+export default function Button({ children, variant, onClick, href }: Props) {
     if (variant === 'outlined'){
         return (
-            <div style={{ fontSize: 24, fontWeight: 500, padding: 17, color: '#7139FF', border: '1px solid #7139FF', borderRadius: 20, textAlign: 'center' }} onClick={onClick}>
+            <a href={href} style={{ display: 'block', height:'100%', fontSize: 19, fontWeight: 500, padding: 13.5, color: '#7139FF', border: '1px solid #7139FF', borderRadius: 16, textAlign: 'center' }} onClick={() => onClick && onClick()}>
                 {children}
-            </div>
+            </a>
         )
     }
 
     return (
-        <div style={{ backgroundColor: '#7139FF', fontSize: 24, fontWeight: 500, padding: 17, color: 'white', border: '1px solid #7139FF', borderRadius: 20, textAlign: 'center' }} onClick={onClick}>
+        <a href={href} style={{ display: 'block', height:'100%', backgroundColor: '#7139FF', fontSize: 19, fontWeight: 500, padding: 13.5, color: 'white', border: '1px solid #7139FF', borderRadius: 16, textAlign: 'center' }} onClick={() => onClick && onClick()}>
             {children}
-        </div>
+        </a>
     )
 }

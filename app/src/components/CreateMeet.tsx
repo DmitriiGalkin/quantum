@@ -3,37 +3,20 @@ import {Stack} from "@mui/material";
 import {NewMeet, useAddMeet, useEditMeet} from "../modules/meet";
 import {useUserProjects} from "../modules/user";
 import dayjs, {Dayjs} from "dayjs";
-import {usePlaces} from "../modules/place";
+import {Place, usePlaces} from "../modules/place";
 import {useNavigate} from "react-router-dom";
-import Back from "../components/Back";
-import InputField from "../components/fields/InputField";
-import ProjectField from "../components/fields/ProjectField";
-import PlaceField from "../components/fields/PlaceField";
-import DateField from "../components/fields/DateField";
-import TimeField from "../components/fields/TimeField";
-import ImageField from "../components/fields/ImageField";
-import TextareaField from "../components/fields/TextareaField";
-import Button from "../components/Button";
-
-export function valuetext(value: number) {
-    return `${value}°C2222`;
-}
-function toHoursAndMinutes(totalMinutes: number) {
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    return { hours, minutes };
-}
-export function valuetext2(value: number) {
-    const {hours, minutes} = toHoursAndMinutes(value)
-    return `${hours}:${minutes === 0 ? '00' : minutes}`;
-}
-
-export const getProjectDefaultDatetime = (): [string, string] => {
-    const datetime = dayjs(dayjs().format('YYYY-MM-DD')).hour(10).format('YYYY-MM-DDTHH:mm:ss')
-    const endDatetime = dayjs(dayjs().format('YYYY-MM-DD')).hour(11).format('YYYY-MM-DDTHH:mm:ss')
-
-    return [datetime, endDatetime]
-}
+import Back from "./Back";
+import Input from "./fields/Input";
+import DatePicker from "./fields/DatePicker";
+import TimePicker from "./fields/TimePicker";
+import ImageField from "./fields/ImageField";
+import Textarea from "./fields/Textarea";
+import Button from "./Button";
+import {Select} from "./fields/Select";
+import {Project} from "../modules/project";
+import Dialog from "@mui/material/Dialog";
+import {TransitionDialog} from "./TransitionDialog";
+import CreateProject from "./CreateProject";
 
 export interface CreateMeetDialogProps {
     newMeet?: NewMeet
@@ -46,6 +29,7 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
 
     const addMeet = useAddMeet()
     const editMeet = useEditMeet()
+    const [newProject, setNewProject] = useState(false)
 
     const { data: projects = [], refetch } = useUserProjects()
 
@@ -84,44 +68,48 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
         newMeet && setMeet(newMeet)
     }, [newMeet])
     const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
+    const saveButtonTitle = meet.id ? 'Сохранить' : "Создать встречу"
 
     return (
         <div>
             <Back title={title} onClick={onClose}/>
-            <div style={{ padding: '25px 22px'}}>
-                <Stack spacing={4}>
-                    <InputField
+            <div style={{ padding: '16px 18px'}}>
+                <Stack spacing={5}>
+                    <Input
                         name='title'
                         label="Название встречи"
                         value={meet?.title}
                         onChange={(e) => setMeet({ ...meet, title: e.target.value})}
+                        placeholder="Введите название встречи"
                     />
-                    <TextareaField
+                    <Textarea
                         name='title'
                         label="Описание"
                         value={meet?.description}
                         onChange={(e) => setMeet({ ...meet, description: e.target.value})}
+                        placeholder="Кратко опишите встречу"
                     />
-                    <ProjectField
+                    <Select<Project>
                         label="Проект"
-                        selectedProjectId={meet.projectId}
-                        projects={projects}
+                        selectedId={meet.projectId}
+                        items={projects}
                         onChange={(project) => setMeet({ ...meet, projectId: project.id})}
-                        refetch={refetch}
+                        onAdd={()=>setNewProject(true)}
                     />
-                    <PlaceField
+                    <Select<Place>
                         label="Место"
-                        selectedPlaceId={meet.placeId}
-                        places={places}
+                        selectedId={meet.placeId}
+                        items={places}
                         onChange={(place) => setMeet({ ...meet, placeId: place.id})}
+                        onAdd={()=>setNewProject(true)}
                     />
-                    <DateField
+                    <DatePicker
                         label="Дата"
                         selectedDate={meet.datetime}
                         onChange={(datetime) => calendarPickerOnChange(dayjs(datetime))}
                     />
                     <Stack spacing={2}>
-                        <TimeField
+                        <TimePicker
                             label="Время"
                             onChange={(datetime) => timeOnChange(datetime)}
                         />
@@ -131,12 +119,18 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                         onChange={(image) => setMeet({...meet, image})}
                     />
                 </Stack>
-                <div style={{ paddingTop: 22, marginLeft: -11, marginRight: -11 }}>
+                <div style={{ paddingTop: 22 }}>
                     <Button onClick={onClickSave}>
-                        Создать
+                        {saveButtonTitle}
                     </Button>
                 </div>
             </div>
+            <Dialog onClose={() => setNewProject(false)} open={newProject} fullScreen TransitionComponent={TransitionDialog}>
+                {newProject && (<CreateProject onClose={() => {
+                    setNewProject(false)
+                    refetch()
+                }} close />)}
+            </Dialog>
         </div>
     );
 }

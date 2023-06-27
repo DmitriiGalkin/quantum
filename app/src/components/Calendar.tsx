@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
-import {Meet, NewMeet} from "../modules/meet";
-import {Box, Stack} from "@mui/material";
-import {LocalDate} from "@js-joda/core";
-import {CalendarDay, getWeek} from "../tools/helper";
+import React from 'react';
+import {Stack} from "@mui/material";
+import {CalendarDay} from "../tools/helper";
 
 interface CalendarProps {
     week: CalendarDay[]

@@ -1,13 +1,9 @@
-import React, {useState} from 'react';
-import {Box, Link, Stack} from "@mui/material";
-import {useMeets} from "../modules/user";
-import {useMain} from "../layouts/MainLayout";
+import React from 'react';
+import {Stack} from "@mui/material";
 import Calendar from "../components/Calendar";
-import MeetCard from "../components/cards/MeetCard";
-import {CalendarDay, getFilteredMeetsByDate, getMeetsGroup2, getWeek} from "../tools/helper";
-import {LocalDate} from "@js-joda/core";
+import MeetCard from "./MeetCard";
+import {CalendarDay} from "../tools/helper";
 import {Meet} from "../modules/meet";
-import NewMeetCard from "./fields/NewMeetCard";
 
 interface MeetsProps {
     meets: Meet[]
@@ -31,9 +27,6 @@ export default function Meets({meets, refetch, onChangeDay, week, selectedMeet}:
                     )}
                 </Stack>
             )}
-            {/*<div style={{ width: 67, height: 67 }}>*/}
-            {/*    <NewMeetCard refetch={refetch} />*/}
-            {/*</div>*/}
         </Stack>
     );
 }

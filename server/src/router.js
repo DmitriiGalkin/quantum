@@ -6,9 +6,6 @@ const userController =   require('./controllers/userController');
 const projectController =   require('./controllers/projectController');
 const meetController =   require('./controllers/meetController');
 const placeController =   require('./controllers/placeController');
-const taskController =   require('./controllers/taskController');
-const uniqueController =   require('./controllers/uniqueController');
-const communityController =   require('./controllers/сommunityController');
 const profileController =   require('./controllers/profileController');
 const imageController =   require('./controllers/imageController');
 
@@ -50,11 +47,7 @@ router.put('/user', useUser, userController.update);
 
 router.post('/userProject/:projectId', useUser, projectController.createUserProject );
 router.delete('/userProject/:projectId', useUser, projectController.deleteUserProject );
-router.post('/userCommunity/:communityId', useUser, communityController.createUserCommunity );
-router.delete('/userCommunity/:communityId', useUser, communityController.deleteUserCommunity );
 router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );
-
-router.post('/userpoints', useUser, userController.userpoints);
 
 /**
  * Проекты
@@ -63,8 +56,6 @@ router.get('/projects', useUser, projectController.findByUser);
 router.get('/project/:id', useUser, projectController.findById);
 router.post('/project', useUser, projectController.create);
 router.put('/project/:id', projectController.update);
-
-router.get('/recommendation_projects', useUser, projectController.findRecommendationByUser);
 
 /**
  * Места
