@@ -4,9 +4,10 @@ import {useUploadImage} from "../../modules/image";
 
 interface ImageFieldProps {
     label: string
+    value?: string
     onChange: (image: string) => void
 }
-export function ImageField({ label, onChange }: ImageFieldProps) {
+export function ImageField({ label, onChange, value }: ImageFieldProps) {
     const uploadImage = useUploadImage()
 
     const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +47,9 @@ export function ImageField({ label, onChange }: ImageFieldProps) {
                         name="customFile"
                         accept="image/*"
                         onChange={onChangeFile}
+                        style={{display:'none'}}
                     />
+                    <label htmlFor="file">{value ? 'Картинка выбрана' : 'Выбрать файл'}</label>
                 </div>
             </div>
         </div>

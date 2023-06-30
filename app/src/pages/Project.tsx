@@ -11,7 +11,7 @@ import CreateMeet from "../components/CreateMeet";
 import {getOnShare} from "../tools/share";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
-import CreateProjectDialog from "../components/CreateProject";
+import CreateProject from "../components/CreateProject";
 import Back2 from "../components/Back2";
 import Meets from "../components/Meets";
 import {LocalDate} from "@js-joda/core";
@@ -79,7 +79,7 @@ export default function ProjectPage() {
     return (
         <div style={{ position: "relative"}}>
             <img src={project.image} className={classes.image}/>
-            <div style={{ position: "absolute", top: 25, left: 21, right: 25 }}>
+            <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
                 <Back2 title={project.title} menuItems={menuItems} />
             </div>
             <div style={{ position: "relative"}}>
@@ -112,7 +112,7 @@ export default function ProjectPage() {
                 }} />)}
             </Dialog>
             <Dialog onClose={() => setEditProject(undefined)} open={!!editProject} fullScreen TransitionComponent={TransitionDialog}>
-                {!!editProject && (<CreateProjectDialog onClose={() => {
+                {!!editProject && (<CreateProject onClose={() => {
                     setEditProject(undefined)
                     refetch()
                 }} />)}

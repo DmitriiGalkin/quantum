@@ -12,7 +12,7 @@ export default function MapDialog() {
 
     return (
         <>
-            <div style={{ position: "absolute", top: 25, left: 21, right: 25, zIndex:10 }}>
+            <div style={{ position: "absolute", top: 18, left: 16, right: 16, zIndex:10 }}>
                 <Back2 title="Карта проектов"/>
             </div>
             <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>

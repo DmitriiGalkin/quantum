@@ -7,9 +7,10 @@ const format = 'HH:mm';
 
 interface TimeFieldProps {
     label: string
+    value?: string
     onChange: (date: Dayjs | null) => void
 }
-export function TimePicker({ label, onChange }: TimeFieldProps) {
+export function TimePicker({ label, value, onChange }: TimeFieldProps) {
     return (
         <div>
             <div style={{ fontWeight: 900, fontSize: 13, color: '#070707', letterSpacing: '0.01em' }}>
@@ -17,7 +18,7 @@ export function TimePicker({ label, onChange }: TimeFieldProps) {
             </div>
             <div style={{ paddingTop: 8 }}>
                 <TimePickerAnt
-                    defaultValue={dayjs('12:08', format)}
+                    value={dayjs(value, format)}
                     format={format} locale={locale}
                     getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
                     onChange={onChange}

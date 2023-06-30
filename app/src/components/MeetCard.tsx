@@ -36,7 +36,8 @@ export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
     const time = convertToMeetTime(meet.datetime)
     const date = convertToMeetDate(meet.datetime)
 
-    const onClick = () => {
+    const onClick = (e: React.MouseEvent) => {
+        e.stopPropagation()
         toggleMeetUser.mutateAsync({ meetId: meet.id }).then(() => {
             refetch && refetch()
         })

@@ -8,12 +8,12 @@ import Textarea from "./fields/Textarea";
 import ImageField from "./fields/ImageField";
 import Button from "./Button";
 
-export interface CreateProjectDialogProps {
+export interface CreateProjectProps {
     onClose: () => void
     close?: boolean
 }
 
-export default function CreateProjectDialog({ onClose, close }: CreateProjectDialogProps) {
+export default function CreateProject({ onClose, close }: CreateProjectProps) {
     const navigate = useNavigate();
     const { id } = useParams();
     const { data: projectOld } = useProject(id ? Number(id) : 0)
@@ -56,6 +56,7 @@ export default function CreateProjectDialog({ onClose, close }: CreateProjectDia
                     />
                     <ImageField
                         label="Загрузите обложку"
+                        value={project.image}
                         onChange={(image) => setProject({...project, image})}
                     />
                 </Stack>

@@ -4,7 +4,6 @@ import {NewMeet, useAddMeet, useEditMeet} from "../modules/meet";
 import {useUserProjects} from "../modules/user";
 import dayjs, {Dayjs} from "dayjs";
 import {Place, usePlaces} from "../modules/place";
-import {useNavigate} from "react-router-dom";
 import Back from "./Back";
 import Input from "./fields/Input";
 import DatePicker from "./fields/DatePicker";
@@ -17,6 +16,7 @@ import {Project} from "../modules/project";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "./TransitionDialog";
 import CreateProject from "./CreateProject";
+import {convertToMeetTime} from "../tools/date";
 
 export interface CreateMeetDialogProps {
     newMeet?: NewMeet
@@ -25,7 +25,6 @@ export interface CreateMeetDialogProps {
 export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogProps) {
     const [meet, setMeet] = useState<NewMeet>({} as NewMeet)
     const { data: places = [] } = usePlaces()
-    const navigate = useNavigate();
 
     const addMeet = useAddMeet()
     const editMeet = useEditMeet()
@@ -38,14 +37,13 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
             const meetWithTimezone = {...meet }
             if (meet.id) {
                 editMeet.mutateAsync(meetWithTimezone).then(() => {
-                    navigate(`/project/${meet.projectId}`)
+                    onClose()
                 })
             } else {
                 addMeet.mutateAsync(meetWithTimezone).then(() => {
-                    navigate(`/project/${meet.projectId}`)
+                    onClose()
                 })
             }
-            onClose()
         }
     };
 
@@ -63,6 +61,7 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
             datetime: dayjs(meet?.datetime).startOf('day').add(date.hour(), 'hour').add(date.minute(), 'minute').format('YYYY-MM-DDTHH:mm:ss'),
         } as NewMeet)
     }
+    const time = convertToMeetTime(meet.datetime)
 
     useEffect(() => {
         newMeet && setMeet(newMeet)
@@ -111,6 +110,7 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                     <Stack spacing={2}>
                         <TimePicker
                             label="Время"
+                            value={time}
                             onChange={(datetime) => timeOnChange(datetime)}
                         />
                     </Stack>
