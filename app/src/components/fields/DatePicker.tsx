@@ -5,21 +5,35 @@ import Calendar from "../Calendar";
 import dayjs from "dayjs";
 
 interface DateFieldProps {
-    label: string
-    selectedDate?: string
+    label?: string
+    value?: string
     onChange: (date: string) => void
 }
-export function DatePicker({ label, selectedDate, onChange }: DateFieldProps) {
-    const selectedDate2 = dayjs(selectedDate).format('YYYY-MM-DD')
+export function DatePicker({ label, value, onChange }: DateFieldProps) {
+    const data = dayjs(value)
+    const selectedDate2 = data.format('YYYY-MM-DD')
     const week = getWeek(selectedDate2)
+
+    const calendarPickerOnChange = (date: string) => {
+        if (!date) return
+        const hour = data.hour()
+        const minute = data.minute()
+
+        onChange(dayjs(date).startOf('day')
+            .add(hour-3, 'hour')
+            .add(minute, 'minute')
+            .format('YYYY-MM-DD HH:mm:ss'))
+    }
 
     return (
         <Stack spacing={2} direction="column">
-            <div style={{ fontWeight: 900, fontSize: 13, color: '#070707', letterSpacing: '0.01em' }}>
-                {label}
-            </div>
+            {label && (
+                <div style={{ fontWeight: 900, fontSize: 13, color: '#070707', letterSpacing: '0.01em' }}>
+                    {label}
+                </div>
+            )}
             <div>
-                <Calendar week={week} onChange={onChange} />
+                <Calendar week={week} onChange={calendarPickerOnChange} />
             </div>
         </Stack>
     );

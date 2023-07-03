@@ -42,7 +42,7 @@ export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
             refetch && refetch()
         })
     }
-    const title = meet.title ? meet.title : meet.project?.title
+    const title = meet.title
     const placeTitle = meet.place?.title
 
     return (
@@ -50,7 +50,7 @@ export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
             <Stack spacing={2} direction="row">
                 <div style={{ width: 90, minWidth: 90 }}>
                     <div className={classes.blockInner}>
-                        <img src={meet.image ? meet.image : meet.project.image} className={classes.image}/>
+                        <img src={meet.image} className={classes.image}/>
                     </div>
                 </div>
                 <div style={{ flexGrow: 1 }}>

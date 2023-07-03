@@ -70,12 +70,6 @@ User.findByMeet = function (meet, result) {
         result(null, parse(res));
     });
 };
-// Участники проекта
-User.findByProject = function (project, result) {
-    dbConn.query("Select * from user LEFT JOIN user_project ON user.id = user_project.userId where projectId = ?", project.id, function (err, res) {
-        result(null, parse(res));
-    });
-};
 // Организатор
 User.findByProjectOne = function (project, result) {
     dbConn.query("Select * from user where id = ?", project.userId, function (err, res) {

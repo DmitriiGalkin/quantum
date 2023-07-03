@@ -14,7 +14,7 @@ export function Input({ label, value, name, onChange, placeholder }: InputFieldP
                 {label}
             </div>
             <div style={{ paddingTop: 8 }}>
-                <input type="text" name={name} value={value} onChange={onChange} placeholder={placeholder} style={{
+                <input type="text" name={name} value={value || ''} onChange={onChange} placeholder={placeholder} style={{
                     display: 'block',
                     width: '100%',
                     padding: '11px 12px 10px',

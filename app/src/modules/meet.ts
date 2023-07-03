@@ -1,21 +1,19 @@
 import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
 import service, {UseMutate} from "../tools/service";
 import {User} from "./user";
-import {Project} from "./project";
 import {Place} from "./place";
 
 export interface Meet {
     id: number
-    projectId: number
-    placeId?: number | null,
     title?: string
     description?: string
     datetime: string
     active?: boolean
-    project: Project
     place: Place
     users: User[]
     image?: string
+    x?: string
+    y?: string
 }
 
 export interface NewMeet {
@@ -24,9 +22,10 @@ export interface NewMeet {
     title?: string
     description?: string
     image?: string
-    projectId?: number
     placeId?: number
     datetime?: string
+    x?: string
+    y?: string
 }
 
 export const useMeets = (): UseQueryResult<Meet[]> => {

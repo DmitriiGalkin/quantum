@@ -1,6 +1,5 @@
-import {useMutation, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
+import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
 import service, {UseMutate} from "../tools/service";
-import {Project} from "./project";
 import {LoginData} from "../tools/auth";
 import {Meet} from "./meet";
 
@@ -27,10 +26,6 @@ export const useUser = (): UseQueryResult<User> => {
     return useQuery(['user'], () => service.get(`/user`))
 }
 
-export const useUserProjects = (): UseQueryResult<Project[]> => {
-    return useQuery(['userProjects'], () => service.get(`/projects`),)
-}
-
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
 
 export const useUserByLogin = (): UseMutate<LoginData> => useMutation((data) => service.post("/user/login", data))
@@ -39,20 +34,11 @@ export const useUserByLogin = (): UseMutate<LoginData> => useMutation((data) => 
 export const useMeets = (): UseQueryResult<Meet[]> => {
     return useQuery(['meets'], () => service.get(`/meets`))
 }
-export const useOnlyUserProjects = (): UseQueryResult<Project[]> => {
-    return useQuery(['projects'], () => service.get(`/projects`))
-}
 
 interface UserMeet {
     meetId: number
 }
 
 export const useToggleMeetUser = (): UseMutate<UserMeet> => useMutation(({ meetId }) => service.put("/userMeet/" + meetId))
-export const useUpdateProject = (): UseMutate<Project> => useMutation((project) => service.put(`/project/${project.id}`, project))
 
 export const useDeleteMeet = (): UseMutate<Meet> => useMutation((meet) => service.delete(`/meet/${meet.id}`))
-
-interface UserProject {
-    projectId: number
-}
-export const useToggleUserProject = (): UseMutate<UserProject> => useMutation(({ projectId }) => service.put("/userProject/" + projectId))

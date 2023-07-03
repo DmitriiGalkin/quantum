@@ -2,7 +2,6 @@
 const User = require('../models/userModel');
 var jwt = require('jsonwebtoken');
 const async = require("async");
-const Project = require("../models/projectModel");
 const Meet = require("../models/meetModel");
 
 // Обновление участника
@@ -59,10 +58,9 @@ exports.findById = function(req, res) {
 exports.findByUser = function(req, res) {
     async.parallel([
         User.findById(req.user.id),
-        Project.findAllByUserId(req.user.id),
         Meet.findAllByUserId2(req.user.id),
     ], function(err, results) {
-        const [user, projects, user_meets] = results
-        res.send({ ...user, projectIds: projects.map((project) => project.id), meetIds: user_meets.map((user_meet) => user_meet.meetId)});
+        const [user, user_meets] = results
+        res.send({ ...user, meetIds: user_meets.map((user_meet) => user_meet.meetId)});
     });
 };

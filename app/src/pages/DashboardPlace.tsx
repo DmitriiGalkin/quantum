@@ -2,7 +2,6 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {usePlace} from "../modules/place";
 import {Stack} from "@mui/material";
-import ProjectCard from "../components/ProjectCard";
 import {useParams} from "react-router-dom";
 import Meets from "../components/Meets";
 import Grid from '@mui/material/Unstable_Grid2';
@@ -64,9 +63,6 @@ export default function DashboardPlace() {
                     </Grid>
                     <Grid xs={4}>
                         {selectedMeet && <MeetComponent meet={selectedMeet}/>}
-                    </Grid>
-                    <Grid xs={4}>
-                        {selectedMeet && <ProjectCard project={selectedMeet?.project}/>}
                     </Grid>
                 </Grid>
             </div>

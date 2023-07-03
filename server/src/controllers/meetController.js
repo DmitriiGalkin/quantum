@@ -2,7 +2,6 @@
 const async = require("async");
 const Meet = require('../models/meetModel');
 const User = require('../models/userModel');
-const Project = require('../models/projectModel');
 const Place = require('../models/placeModel');
 const UserMeet = require('../models/userMeetModel');
 
@@ -63,13 +62,11 @@ exports.toggleUserMeet = function(req, res) {
 exports.findByUser = function(req, res) {
     Meet.findAllByUserId(req.user.id)(function(err, meets) {
         async.map(meets, User.findByMeet, function(err, meetsUsers) {
-            async.map(meets, Project.findByMeet, function(err, meetsProject) {
-                async.map(meets, Place.findByMeet, function(err, meetsPlace) {
-                    res.send(meets.map((p, index) => {
-                        const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
-                        return ({ ...p, project: meetsProject[index], place: meetsPlace[index], users: meetsUsers[index], active })
-                    }));
-                });
+            async.map(meets, Place.findByMeet, function(err, meetsPlace) {
+                res.send(meets.map((p, index) => {
+                    const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
+                    return ({ ...p, place: meetsPlace[index], users: meetsUsers[index], active })
+                }));
             });
         });
     });
@@ -80,12 +77,10 @@ exports.findById = function(req, res) {
         if (!meet) {
             res.status(400).send({ error:true, message: 'Встреча с таким номером не найдена' });
         } else {
-            Project.findByMeet(meet, function(err, project) {
-                User.findByMeet(meet, function(err, users) {
-                    Place.findByMeet(meet, function(err, place) {
-                        const active = users.some((user) => user.userId === 1)
-                        res.send({...meet, active, project, users, place});
-                    });
+            User.findByMeet(meet, function(err, users) {
+                Place.findByMeet(meet, function(err, place) {
+                    const active = users.some((user) => user.userId === 1)
+                    res.send({...meet, active, users, place});
                 });
             });
         }

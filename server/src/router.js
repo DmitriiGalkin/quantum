@@ -3,7 +3,6 @@ const router = express.Router()
 const User = require('./models/userModel');
 
 const userController =   require('./controllers/userController');
-const projectController =   require('./controllers/projectController');
 const meetController =   require('./controllers/meetController');
 const placeController =   require('./controllers/placeController');
 const imageController =   require('./controllers/imageController');
@@ -39,16 +38,7 @@ router.post('/logi', userController.logi);
 router.get('/user/:id', userController.findById);
 router.put('/user', useUser, userController.update);
 
-router.put('/userProject/:projectId', useUser, projectController.toggleUserProject );
 router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );
-
-/**
- * Проекты
- */
-router.get('/projects', useUser, projectController.findByUser);
-router.get('/project/:id', useUser, projectController.findById);
-router.post('/project', useUser, projectController.create);
-router.put('/project/:id', projectController.update);
 
 /**
  * Места

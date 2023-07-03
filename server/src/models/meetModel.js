@@ -3,8 +3,8 @@ var dbConn = require('../db');
 
 var Meet = function(data){
     this.id = data.id;
-    this.projectId = data.projectId;
-    this.placeId = data.placeId;
+    this.x = data.x;
+    this.y = data.y;
     this.title = data.title;
     this.description = data.description;
     this.image = data.image;
@@ -12,13 +12,15 @@ var Meet = function(data){
 };
 // Создание встречи
 Meet.create = function (data, result) {
+    console.log(data,'data')
     dbConn.query("INSERT INTO meet set ?", data, function (err, res) {
-        result(null, res.insertId);
+        console.log(err,'err')
+        result(err, res.insertId);
     });
 };
 // Обновление встречи
 Meet.update = function(id, meet, result){
-    dbConn.query("UPDATE meet SET title=?, description=?, projectId=?, placeId=? WHERE id = ?", [meet.title, meet.description, meet.projectId, meet.placeId, id], function (err, res) {
+    dbConn.query("UPDATE meet SET title=?, description=?, placeId=? WHERE id = ?", [meet.title, meet.description, meet.placeId, id], function (err, res) {
         result(null, res);
     });
 };
@@ -35,12 +37,6 @@ Meet.findById = function (id, result) {
         result(null, res[0]);
     });
 };
-// Встречи проекта
-Meet.findByProject = function (project, result) {
-    dbConn.query("Select * from meet where projectId = ? AND DATE(datetime) >= CURDATE()", project.id, function (err, res) {
-        result(null, res);
-    });
-};
 // Встречи пространства
 Meet.findByPlace = function (place, result) {
     dbConn.query('Select * from meet where placeId = ? AND DATE(datetime) >= CURDATE() ORDER BY datetime', place.id, function (err, res) {
@@ -55,7 +51,8 @@ Meet.findAllByUserId2 = (id) => function (result) {
 };
 // Встречи участника
 Meet.findAllByUserId = (id) => function (result) {
-    dbConn.query("Select meet.* from meet LEFT JOIN project ON project.id = meet.projectId LEFT JOIN user_project ON user_project.projectId = project.id WHERE user_project.userId = ? AND DATE(datetime) >= CURDATE()", id, function (err, res) {
+    dbConn.query("Select * from meet where DATE(datetime) >= CURDATE()", function (err, res) {
+        console.log(err,'err')
         result(null, res || []);
     });
 };

@@ -17,8 +17,6 @@ import Callback from "./pages/Callback";
 import {ProfileLayout} from "./layouts/ProfileLayout";
 import {MainLayout} from "./layouts/MainLayout";
 import Meets from "./pages/Meets";
-import Projects from "./pages/Projects";
-import Project from "./pages/Project";
 import Meet from "./pages/Meet";
 import Place from "./pages/Place";
 import Map from "./pages/Map";
@@ -40,11 +38,9 @@ const router = createBrowserRouter(
             <Route element={<ProfileLayout />}>
                 <Route element={<MainLayout />}>
                     <Route index element={<Meets />}/>
-                    <Route path="/projects" element={<Projects />}/>
                 </Route>
                 <Route path="/map" element={<Map />}/>
                 <Route path="/meet/:id" element={<Meet />}/>
-                <Route path="/project/:id" element={<Project />}/>
                 <Route path="/place/:id" element={<Place />}/>
             </Route>
             <Route element={<DashboardLayout />}>

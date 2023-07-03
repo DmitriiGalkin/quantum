@@ -18,12 +18,6 @@ Place.findAll = function (result) {
         result(null, res);
     });
 };
-// Пространства проекта
-Place.findByProject = function (project, result) {
-    dbConn.query("SELECT place.*, meet.projectId FROM place LEFT JOIN meet ON meet.placeId = place.id WHERE projectId = ? GROUP BY place.id", project.id, function (err, res) {
-        result(null, res);
-    });
-};
 // Пространство
 Place.findById = function (id, result) {
     dbConn.query("Select * from place where  id = ? ", id, function (err, res) {

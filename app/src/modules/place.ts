@@ -1,6 +1,5 @@
 import {useQuery, UseQueryResult} from "@tanstack/react-query";
 import service from "../tools/service";
-import {Project} from "./project";
 import {Meet} from "./meet";
 
 export interface Place {
@@ -12,7 +11,6 @@ export interface Place {
     tags: string[]
     x: string
     y: string
-    projects: Project[]
     meets: Meet[]
 }
 

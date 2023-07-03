@@ -75,7 +75,7 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
 
     return (
         <div style={{ position: "relative"}}>
-            <img src={meet.image ? meet.image : meet.project.image} className={classes.image}/>
+            <img src={meet.image} className={classes.image}/>
             <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
                 {renderHeader && renderHeader()}
             </div>
