@@ -62,12 +62,10 @@ exports.toggleUserMeet = function(req, res) {
 exports.findByUser = function(req, res) {
     Meet.findAllByUserId(req.user.id)(function(err, meets) {
         async.map(meets, User.findByMeet, function(err, meetsUsers) {
-            async.map(meets, Place.findByMeet, function(err, meetsPlace) {
-                res.send(meets.map((p, index) => {
-                    const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
-                    return ({ ...p, place: meetsPlace[index], users: meetsUsers[index], active })
-                }));
-            });
+            res.send(meets.map((p, index) => {
+                const active = meetsUsers[index]?.some((user) => user.userId === req.user.id)
+                return ({ ...p, users: meetsUsers[index], active })
+            }));
         });
     });
 };

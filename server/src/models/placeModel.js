@@ -30,11 +30,6 @@ Place.findByMeet = function (meet, result) {
         result(null, res.length ? res[0] : undefined);
     });
 };
-// Place.findByUserId = function (id, result) {
-//     dbConn.query("Select * from place where userId = ? ", id, function (err, res) {
-//         result(null, res);
-//     });
-// };
 
 
 module.exports = Place;

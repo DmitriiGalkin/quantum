@@ -10,13 +10,15 @@ import ImageField from "./fields/ImageField";
 import Textarea from "./fields/Textarea";
 import Button from "./Button";
 import {Select} from "./fields/Select";
+import {Grid} from "@mui/material";
+import dayjs from "dayjs";
 
 export interface CreateMeetDialogProps {
     newMeet?: NewMeet
     onClose: () => void;
 }
 export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogProps) {
-    const [meet, setMeet] = useState<NewMeet>({ x: '55.933093', y: '37.054661'} as NewMeet)
+    const [meet, setMeet] = useState<NewMeet>({ x: '55.933093', y: '37.054661', datetime: dayjs().format('YYYY-MM-DD HH:mm:ss')} as NewMeet)
     const { data: places = [] } = usePlaces()
     const addMeet = useAddMeet()
     const editMeet = useEditMeet()
@@ -36,12 +38,8 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
         }
     };
 
-    useEffect(() => {
-        if (newMeet) {
-            console.log(newMeet, 'newMeet useEffect')
-            setMeet(newMeet)
-        }
-    }, [newMeet])
+    useEffect(() => newMeet && setMeet(newMeet), [newMeet])
+
     const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
     const saveButtonTitle = meet.id ? 'Сохранить' : "Создать встречу"
     return (
@@ -53,13 +51,26 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                         value={meet.datetime}
                         onChange={(datetime) => setMeet({...meet, datetime })}
                     />
-                    <Input
-                        name='title'
-                        label="Название встречи"
-                        value={meet?.title}
-                        onChange={(e) => setMeet({ ...meet, title: e.target.value})}
-                        placeholder="Введите название встречи"
-                    />
+                    <Grid container spacing={2}>
+                        <Grid xs={8}>
+                            <div style={{ paddingRight: 8 }}>
+                                <Input
+                                    name='title'
+                                    label="Название"
+                                    value={meet?.title}
+                                    onChange={(e) => setMeet({ ...meet, title: e.target.value})}
+                                    placeholder="Введите название встречи"
+                                />
+                            </div>
+                        </Grid>
+                        <Grid xs={4}>
+                            <TimePicker
+                                label="Время"
+                                value={meet.datetime}
+                                onChange={(datetime) => setMeet({...meet, datetime })}
+                            />
+                        </Grid>
+                    </Grid>
                     <Textarea
                         name='title'
                         label="Описание"
@@ -67,22 +78,15 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                         onChange={(e) => setMeet({ ...meet, description: e.target.value})}
                         placeholder="Кратко опишите встречу"
                     />
+                    <ImageField
+                        label="Загрузите обложку"
+                        onChange={(image) => setMeet({...meet, image})}
+                    />
                     <Select<Place>
                         label="Место"
                         selectedId={meet.placeId}
                         items={places}
                         onChange={(place) => setMeet({ ...meet, placeId: place.id})}
-                    />
-                    <Stack spacing={2}>
-                        <TimePicker
-                            label="Время"
-                            value={meet.datetime}
-                            onChange={(datetime) => setMeet({...meet, datetime })}
-                        />
-                    </Stack>
-                    <ImageField
-                        label="Загрузите обложку"
-                        onChange={(image) => setMeet({...meet, image})}
                     />
                 </Stack>
                 <div style={{ paddingTop: 22 }}>
