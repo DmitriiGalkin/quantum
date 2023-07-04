@@ -7,7 +7,7 @@ import {TransitionDialog} from "../components/TransitionDialog";
 import CreateMeet from "../components/CreateMeet";
 import {useToggleMeetUser} from "../modules/user";
 import Back2 from "../components/Back2";
-import {getOnShare} from "../tools/share";
+import {getOnShare} from "../tools/pwa";
 import Button from "../components/Button";
 import {useAuth} from "../tools/auth";
 
@@ -29,7 +29,7 @@ export default function MeetPage() {
 
     const menuItems = [
         { title: 'Поделиться', onClick: getOnShare({
-                title: meet?.title,
+                title: 'Приглашаю на встречу: ' + meet?.title,
                 url: `/meet/${meet?.id}`
         })},
     ]

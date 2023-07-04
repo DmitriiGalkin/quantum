@@ -8,17 +8,20 @@ import TimePicker from "./fields/TimePicker";
 import ImageField from "./fields/ImageField";
 import Textarea from "./fields/Textarea";
 import Button from "./Button";
-import {Grid} from "@mui/material";
 import dayjs from "dayjs";
+import {useNavigate} from "react-router-dom";
+import {convertToMeetsGroupTime} from "../tools/date";
 
 export interface CreateMeetDialogProps {
     newMeet?: NewMeet
+    refetch?: () => void
     onClose: () => void;
 }
 export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogProps) {
     const [meet, setMeet] = useState<NewMeet>({ x: '55.933093', y: '37.054661', datetime: dayjs().format('YYYY-MM-DD HH:mm:ss')} as NewMeet)
     const addMeet = useAddMeet()
     const editMeet = useEditMeet()
+    const navigate = useNavigate();
 
     const onClickSave = () => {
         if (meet) {
@@ -30,6 +33,7 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
             } else {
                 addMeet.mutateAsync(meetWithTimezone).then(() => {
                     onClose()
+                    navigate(`/?date=${convertToMeetsGroupTime(meet.datetime)}`)
                 })
             }
         }
@@ -47,26 +51,22 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                         value={meet.datetime}
                         onChange={(datetime) => setMeet({...meet, datetime })}
                     />
-                    <Grid container spacing={2}>
-                        <Grid xs={8}>
-                            <div style={{ paddingRight: 8 }}>
-                                <Input
-                                    name='title'
-                                    label="Название"
-                                    value={meet?.title}
-                                    onChange={(e) => setMeet({ ...meet, title: e.target.value})}
-                                    placeholder="Введите название встречи"
-                                />
-                            </div>
-                        </Grid>
-                        <Grid xs={4}>
-                            <TimePicker
-                                label="Время"
-                                value={meet.datetime}
-                                onChange={(datetime) => setMeet({...meet, datetime })}
+                    <Stack spacing={2} flexDirection="row">
+                        <div style={{ paddingRight: 8, flexGrow: 1 }}>
+                            <Input
+                                name='title'
+                                label="Название"
+                                value={meet?.title}
+                                onChange={(e) => setMeet({ ...meet, title: e.target.value})}
+                                placeholder="Введите название встречи"
                             />
-                        </Grid>
-                    </Grid>
+                        </div>
+                        <TimePicker
+                            label="Время"
+                            value={meet.datetime}
+                            onChange={(datetime) => setMeet({...meet, datetime })}
+                        />
+                    </Stack>
                     <Textarea
                         name='title'
                         label="Описание"

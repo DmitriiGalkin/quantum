@@ -1,14 +1,21 @@
 {
   "short_name": "Quantum",
-  "name": "Quantum - организация встреч",
+  "name": "Quantum - сервис организации встреч",
+  "description": "Быстро. Просто. Вживую. Здесь и сейчас",
   "icons": [
     {
       "src": "android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     }
   ],
   "display": "standalone",
   "theme_color": "#FFB628",
-  "background_color": "#FFB628"
+  "background_color": "#FFB628",
+  "start_url": "/"
 }

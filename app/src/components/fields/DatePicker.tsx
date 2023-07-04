@@ -20,7 +20,7 @@ export function DatePicker({ label, value, onChange }: DateFieldProps) {
         const minute = data.minute()
 
         onChange(dayjs(date).startOf('day')
-            .add(hour-3, 'hour')
+            .add(hour, 'hour')
             .add(minute, 'minute')
             .format('YYYY-MM-DD HH:mm:ss'))
     }

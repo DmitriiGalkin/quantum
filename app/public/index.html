@@ -5,11 +5,16 @@
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="theme-color" content="#FFA427">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Образовательная платформа для детских проектов" />
+  <meta name="description" content="Быстро. Просто. Вживую. Здесь и сейчас" />
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <script src="https://api-maps.yandex.ru/3.0/?apikey=ce32ffcd-d432-4c13-9035-407aa9f344a0&lang=ru_RU"></script>
-  <title>Quantum - организация встреч</title>
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('sw.js')
+    }
+  </script>
+  <title>Quantum - сервис организации встреч</title>
 
   <style>
     @font-face {
@@ -67,6 +72,12 @@
     input:-webkit-autofill,
     input:-webkit-autofill:focus {
       transition: background-color 600000s 0s, color 600000s 0s;
+    }
+
+    @media all and (display-mode: standalone) {
+      body {
+        background-color: yellow;
+      }
     }
   </style>
 </head>

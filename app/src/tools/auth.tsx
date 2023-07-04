@@ -1,7 +1,10 @@
-import {createContext, useContext, useMemo} from "react";
+import React, {createContext, useContext, useMemo, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useUserByLogin} from "../modules/user";
 import service, {ACCESS_TOKEN} from "./service";
+import Dialog from "@mui/material/Dialog";
+import {TransitionDialog} from "../components/TransitionDialog";
+import Login from "../pages/Login";
 
 export const AuthContext = createContext('auth' as any);
 
@@ -27,6 +30,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const userByLogin = useUserByLogin()
     const [searchParams] = useSearchParams();
     const backUrl = searchParams.get("backUrl")
+    const [openLogin, setOpenLogin] = useState(false)
 
     if (backUrl) {
         localStorage.setItem('backUrl', backUrl);
@@ -60,13 +64,20 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const value = useMemo(
         () => ({
             isAuth: !!access_token,
+            openLogin: () => setOpenLogin(true),
             access_token,
             login,
             logout
         }),
         [access_token]
     );
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={value}>
+        {children}
+        <Dialog onClose={() => setOpenLogin(false)} open={openLogin} fullScreen TransitionComponent={TransitionDialog}>
+            {openLogin && (
+                <Login onClose={() => setOpenLogin(false)} />)}
+        </Dialog>
+    </AuthContext.Provider>;
 };
 
 export const useAuth = () => {
