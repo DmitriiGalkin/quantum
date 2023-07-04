@@ -6,6 +6,7 @@ import {makeStyles} from "@mui/styles";
 import Input from "./fields/Input";
 import ImageField from "./fields/ImageField";
 import Button from "./Button";
+import {useAuth} from "../tools/auth";
 
 export interface OptionsDialogProps {
     onClose: () => void
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function OptionsDialog({ onClose }: OptionsDialogProps) {
     const { data: profileUser } = useUser();
     const classes = useStyles();
+    const { logout } = useAuth();
 
     const [user, setUser] = useState<User>()
     const updateUser = useUpdateUser()
@@ -70,6 +72,10 @@ export default function OptionsDialog({ onClose }: OptionsDialogProps) {
                     />
                     <Button onClick={onClickSave} variant="outlined">
                         Сохранить
+                    </Button>
+
+                    <Button onClick={() => logout()} variant="outlined">
+                        Выйти из профиля
                     </Button>
                 </Stack>
             </div>

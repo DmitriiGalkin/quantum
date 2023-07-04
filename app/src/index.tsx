@@ -36,8 +36,8 @@ const router = createBrowserRouter(
                 <Route element={<MainLayout />}>
                     <Route index element={<Meets />}/>
                 </Route>
-                <Route path="/map" element={<Map />}/>
                 <Route path="/meet/:id" element={<Meet />}/>
+                <Route path="/map" element={<Map />}/>
             </Route>
         </Route>
     )

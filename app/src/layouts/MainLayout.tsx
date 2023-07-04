@@ -1,11 +1,9 @@
 import {Outlet, useNavigate} from "react-router-dom";
-import {useAuth} from "../tools/auth";
-import {Box, Stack, Theme,} from "@mui/material";
+import {Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Theme,} from "@mui/material";
 import CreateMeet from "../components/CreateMeet";
 import Options from "../components/Options";
 import React, {useState} from "react";
 import {makeStyles} from "@mui/styles";
-import {More} from "../components/More";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components/TransitionDialog";
 
@@ -28,14 +26,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const MainLayout = () => {
     const navigate = useNavigate();
     const classes = useStyles();
-    const { logout } = useAuth();
+    const [openDrawer, setOpenDrawer] = useState(false)
     const [openMeet, setOpenMeet] = useState(false)
     const [openOptions, setOpenOptions] = useState(false)
-
-    const firstMenuItems = [
-        { title: 'Настройки', onClick: () => setOpenOptions(true) },
-        { title: 'Выход', onClick: () => logout() },
-    ]
 
     return (
         <>
@@ -43,7 +36,12 @@ export const MainLayout = () => {
                 <div style={{ position: 'fixed', zIndex: 10, left:0,right:0,top:0, padding: '15px 15px 14px 15px', background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)' }}>
                     <Stack spacing={2} direction="row" justifyContent="space-between" style={{ width: '100%' }}>
                         <Stack spacing={4} direction="row" justifyContent="space-between" alignItems="center">
-                            <More menuItems={firstMenuItems}/>
+                            <div onClick={() => setOpenDrawer(true)}>
+                                <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 2H22" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                                    <path d="M7 10L22 10" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                                </svg>
+                            </div>
                             <svg width="98" height="26" viewBox="0 0 98 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" clipRule="evenodd" d="M19.8159 13.0468C19.8159 17.1482 16.4911 20.473 12.3897 20.473C8.28829 20.473 4.96345 17.1482 4.96345 13.0468C4.96345 8.94539 8.28829 5.62055 12.3897 5.62055C16.4911 5.62055 19.8159 8.94539 19.8159 13.0468ZM16.9671 24.2688C15.5548 24.8455 14.0094 25.1633 12.3897 25.1633C5.69793 25.1633 0.273193 19.7385 0.273193 13.0468C0.273193 6.35504 5.69793 0.930298 12.3897 0.930298C19.0814 0.930298 24.5062 6.35504 24.5062 13.0468C24.5062 15.4155 23.8265 17.6254 22.6515 19.4922C22.0547 19.1229 21.351 18.9097 20.5976 18.9097C18.439 18.9097 16.6891 20.6596 16.6891 22.8182C16.6891 23.3308 16.7877 23.8203 16.9671 24.2688Z" fill="white"/>
                                 <circle cx="20.5976" cy="22.8183" r="2.34513" fill="white"/>
@@ -71,6 +69,27 @@ export const MainLayout = () => {
                     </div>
                 </div>
             </Box>
+            <Drawer
+                anchor='left'
+                open={openDrawer}
+                onClose={() => setOpenDrawer(false)}
+            >
+                <div style={{ width: 250 }}>
+                    <List>
+                        <ListItem disablePadding>
+                            <ListItemButton onClick={() => setOpenOptions(true)}>
+                                <ListItemIcon>
+                                    <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2 2H22" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                                        <path d="M7 10L22 10" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                                    </svg>
+                                </ListItemIcon>
+                                <ListItemText primary="Профиль" />
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                </div>
+            </Drawer>
             <Dialog onClose={() => setOpenMeet(false)} open={openMeet} fullScreen TransitionComponent={TransitionDialog}>
                 {openMeet && (
                     <CreateMeet onClose={() => setOpenMeet(false)} />)}
