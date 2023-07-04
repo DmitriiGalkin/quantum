@@ -18,7 +18,6 @@ import {ProfileLayout} from "./layouts/ProfileLayout";
 import {MainLayout} from "./layouts/MainLayout";
 import Meets from "./pages/Meets";
 import Meet from "./pages/Meet";
-import Map from "./pages/Map";
 
 import {GOOGLE_O_AUTH_PROVIDER_CLIENT_ID} from "./tools/auth";
 
@@ -37,7 +36,6 @@ const router = createBrowserRouter(
                     <Route index element={<Meets />}/>
                 </Route>
                 <Route path="/meet/:id" element={<Meet />}/>
-                <Route path="/map" element={<Map />}/>
             </Route>
         </Route>
     )
