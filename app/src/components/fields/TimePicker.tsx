@@ -12,18 +12,11 @@ interface TimeFieldProps {
 }
 export function TimePicker({ label, value, onChange }: TimeFieldProps) {
     const data = dayjs(value)
-
     const timeOnChange = (date: Dayjs | null) => {
         if (!date) return
-
-        const f = data.startOf('day')
-            .add(date.hour(), 'hour')
-            .add(date.minute(), 'minute')
-            .format('YYYY-MM-DD hh:mm:ss')
-        onChange( f)
+        onChange(data.startOf('date').add(date.hour(), 'hour').add(date.minute(), 'minute').format('YYYY-MM-DD HH:mm:ss'))
     }
-    const v = dayjs(value, format)
-
+    const v = dayjs(value)
     return (
         <div>
             <div style={{ fontWeight: 900, fontSize: 13, color: '#070707', letterSpacing: '0.01em' }}>
@@ -32,7 +25,8 @@ export function TimePicker({ label, value, onChange }: TimeFieldProps) {
             <div style={{ paddingTop: 8 }}>
                 <TimePickerAnt
                     value={v}
-                    format={format} locale={locale}
+                    format={format}
+                    locale={locale}
                     getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
                     onChange={timeOnChange}
                 />

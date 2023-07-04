@@ -25,13 +25,13 @@ const DAYS_OF_WEEK = new Map([
     ['Sa', 'Сб']
 ])
 export const getDayOfWeek = (day: string) => DAYS_OF_WEEK.get(day) as string
-
+const PATTERN = "yyyy-MM-dd HH:mm:ss"
 /**
  * Server datetime to 'HH:mm'
  */
 export const convertToMeetTime = (datetime?: string): string => {
     if (!datetime) return '';
-    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")).plusHours(3)
+    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN)).plusHours(3)
     return localDateTime.format(DateTimeFormatter.ofPattern('HH:mm'))
 }
 
@@ -40,7 +40,7 @@ export const convertToMeetTime = (datetime?: string): string => {
  */
 export const convertToMeetDate = (datetime?: string): string => {
     if (!datetime) return '';
-    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")).plusHours(3)
+    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN)).plusHours(3)
     return localDateTime.format(DateTimeFormatter.ofPattern('dd')) + ' ' + getMonthShortTitle(Number(localDateTime.format(DateTimeFormatter.ofPattern('MM'))))
 }
 
@@ -49,7 +49,7 @@ export const convertToMeetDate = (datetime?: string): string => {
  */
 export const convertToMeetDateLong = (datetime?: string): string => {
     if (!datetime) return '';
-    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")).plusHours(3)
+    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN)).plusHours(3)
     return localDateTime.format(DateTimeFormatter.ofPattern('dd')) + ' ' + getMonthLongTitle(Number(localDateTime.format(DateTimeFormatter.ofPattern('MM'))))
 }
 
@@ -58,13 +58,6 @@ export const convertToMeetDateLong = (datetime?: string): string => {
  */
 export const convertToMeetsGroupTime = (datetime?: string): string => {
     if (!datetime) return '';
-    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))
+    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN))
     return localDateTime.format(formatter2)
-}
-
-export const toServerDatetime = (d?: string): string => {
-    if (!d) return '';
-
-    const localDateTime = LocalDateTime.parse(d, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
-    return localDateTime.format(serverDateTimeFormatter)
 }

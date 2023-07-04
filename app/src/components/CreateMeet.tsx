@@ -34,7 +34,6 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
             }
         }
     };
-
     useEffect(() => newMeet && setMeet(newMeet), [newMeet])
 
     const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
