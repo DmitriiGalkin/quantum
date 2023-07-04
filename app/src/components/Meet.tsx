@@ -4,6 +4,7 @@ import {Avatar, AvatarGroup, Box, Stack, Theme} from "@mui/material";
 import {Meet} from "../modules/meet";
 import {convertToMeetDateLong, convertToMeetTime} from "../tools/date";
 import Grid from "@mui/material/Unstable_Grid2";
+import {useAuth} from "../tools/auth";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -35,6 +36,7 @@ interface MeetComponentProps {
     renderFooter?: () => JSX.Element
 }
 export default function MeetComponent({meet, renderHeader, renderFooter}: MeetComponentProps) {
+
     const classes = useStyles();
 
     if (!meet) { return null }

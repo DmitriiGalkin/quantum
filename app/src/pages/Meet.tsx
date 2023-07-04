@@ -9,8 +9,11 @@ import {useToggleMeetUser} from "../modules/user";
 import Back2 from "../components/Back2";
 import {getOnShare} from "../tools/share";
 import Button from "../components/Button";
+import {useAuth} from "../tools/auth";
 
 export default function MeetPage() {
+    const { isAuth } = useAuth();
+
     const { id: meetId } = useParams();
     const { data: meet, refetch } = useMeet(Number(meetId))
     const [editMeet, setEditMeet] = useState<Meet>()
@@ -28,9 +31,11 @@ export default function MeetPage() {
         { title: 'Поделиться', onClick: getOnShare({
                 title: meet?.title,
                 url: `/meet/${meet?.id}`
-            })},
-        { title: 'Редактировать', onClick: () => setEditMeet(meet)},
+        })},
     ]
+    if (isAuth) {
+        menuItems.push({ title: 'Редактировать', onClick: async () => setEditMeet(meet)})
+    }
 
     const renderHeader = () => <Back2 title={meet.title} menuItems={menuItems} />
     const renderFooter = () => meet.active ? (
@@ -49,7 +54,7 @@ export default function MeetPage() {
             <MeetComponent
                 meet={meet}
                 renderHeader={renderHeader}
-                renderFooter={renderFooter}
+                renderFooter={isAuth ? renderFooter : undefined }
             />
             <Dialog onClose={() => setEditMeet(undefined)} open={!!editMeet} fullScreen TransitionComponent={TransitionDialog}>
                 {!!editMeet && (<CreateMeet onClose={() => {

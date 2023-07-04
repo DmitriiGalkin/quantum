@@ -12,9 +12,9 @@ var Meet = function(data){
 };
 // Создание встречи
 Meet.create = function (data, result) {
-    console.log(data,'data')
+    //console.log(data,'data')
     dbConn.query("INSERT INTO meet set ?", data, function (err, res) {
-        console.log(err,'err')
+        //console.log(err,'err')
         result(err, res.insertId);
     });
 };
@@ -30,7 +30,12 @@ Meet.delete = function(id, result){
         result(null, res);
     });
 };
-
+// Встречи
+Meet.findAll = () => function (result) {
+    dbConn.query("Select * from meet where DATE(datetime) >= CURDATE()", function (err, res) {
+        result(null, res || []);
+    });
+};
 // Встреча по номеру
 Meet.findById = function (id, result) {
     dbConn.query("Select * from meet WHERE id = ?", id, function (err, res) {
@@ -46,7 +51,7 @@ Meet.findAllByUserId2 = (id) => function (result) {
 // Встречи участника
 Meet.findAllByUserId = (id) => function (result) {
     dbConn.query("Select * from meet where DATE(datetime) >= CURDATE()", function (err, res) {
-        console.log(err,'err')
+        //console.log(err,'err')
         result(null, res || []);
     });
 };

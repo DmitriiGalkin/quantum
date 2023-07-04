@@ -12,15 +12,20 @@ const imageController =   require('./controllers/imageController');
 function useUser(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) return res.sendStatus(401)
-    User.findByToken(token, function(err, user) {
-        if (!user || user === null) {
-            res.sendStatus(401)
-        } else {
-            req.user = user
-            next()
-        }
-    });
+    if (token == null) {
+        req.user = null
+        next()
+    } else {
+        User.findByToken(token, function(err, user) {
+            if (user) {
+                req.user = user
+                next()
+            } else {
+                req.user = null
+                next()
+            }
+        });
+    }
 }
 
 /**
@@ -42,7 +47,7 @@ router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );
 /**
  * Встречи
  */
-router.get('/meets', useUser, meetController.findByUser);
+router.get('/meets', useUser, meetController.findAll);
 router.get('/meet/:id', useUser, meetController.findById);
 router.post('/meet', useUser, meetController.create);
 router.put('/meet/:id', meetController.update);

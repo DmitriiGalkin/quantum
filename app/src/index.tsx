@@ -12,9 +12,7 @@ import {GoogleOAuthProvider} from '@react-oauth/google';
 import 'dayjs/locale/ru';
 import {Route} from "react-router";
 import {AuthLayout} from "./layouts/AuthLayout";
-import Login from "./pages/Login";
 import Callback from "./pages/Callback";
-import {ProfileLayout} from "./layouts/ProfileLayout";
 import {MainLayout} from "./layouts/MainLayout";
 import Meets from "./pages/Meets";
 import Meet from "./pages/Meet";
@@ -29,14 +27,11 @@ const root = ReactDOM.createRoot(
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route element={<AuthLayout />}>
-            <Route path="/login" element={<Login />} />
             <Route path="/callback" element={<Callback />} />
-            <Route element={<ProfileLayout />}>
-                <Route element={<MainLayout />}>
-                    <Route index element={<Meets />}/>
-                </Route>
-                <Route path="/meet/:id" element={<Meet />}/>
+            <Route element={<MainLayout />}>
+                <Route index element={<Meets />}/>
             </Route>
+            <Route path="/meet/:id" element={<Meet />}/>
         </Route>
     )
 );

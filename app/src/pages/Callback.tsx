@@ -78,14 +78,14 @@ export default function CallbackPage() {
     const googleInfoUser = useGoogleInfoUser()
 
     const login = async () => {
-        console.log('login пошел')
+        //console.log('login пошел')
         // Запрашиваем данные пользователя с Гугл
         googleInfoUser.mutateAsync(1).then((user: any) => {
-            console.log(user, 'user')
+            //console.log(user, 'user')
             // Запрашиваем данные авторизации
             logi.mutateAsync({ ...googleToken, ...user }).then((r) => {
                 localStorage.setItem(ACCESS_TOKEN, googleToken.access_token);
-                console.log(googleToken.access_token,'then access_token')
+                //console.log(googleToken.access_token,'then access_token')
 
                 service.interceptors.request.use(
                     config => {
@@ -97,7 +97,7 @@ export default function CallbackPage() {
                 );
                 service.interceptors.request.use(
                     config => {
-                        console.log(config,'config')
+                        // console.log(config,'config')
                         return config;
                     }, function (error) {
                         // Do something with request error

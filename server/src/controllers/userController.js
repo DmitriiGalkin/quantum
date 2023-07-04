@@ -26,7 +26,7 @@ exports.logi = function(req, res) {
             if(req.body.constructor === Object && Object.keys(req.body).length === 0){
                 res.status(400).send({ error:true, message: 'Сбой конструктора участника при создании участника через гугл' });
             } else {
-                console.log(new_user, 'Создание пользователя Гугла')
+                // console.log(new_user, 'Создание пользователя Гугла')
                 User.create(new_user, function(err, data) {
                     res.send({ error: false, message: "Участник создан", data });
                 });

@@ -74,7 +74,10 @@ export default function OptionsDialog({ onClose }: OptionsDialogProps) {
                         Сохранить
                     </Button>
 
-                    <Button onClick={() => logout()} variant="outlined">
+                    <Button onClick={() => {
+                        logout()
+                        onClose()
+                    }} variant="outlined">
                         Выйти из профиля
                     </Button>
                 </Stack>

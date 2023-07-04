@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
 
     const value = useMemo(
         () => ({
+            isAuth: !!access_token,
             access_token,
             login,
             logout
