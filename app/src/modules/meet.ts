@@ -1,7 +1,6 @@
 import {useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
 import service, {UseMutate} from "../tools/service";
 import {User} from "./user";
-import {Place} from "./place";
 
 export interface Meet {
     id: number
@@ -9,7 +8,6 @@ export interface Meet {
     description?: string
     datetime: string
     active?: boolean
-    place: Place
     users: User[]
     image?: string
     x?: string
@@ -22,7 +20,6 @@ export interface NewMeet {
     title?: string
     description?: string
     image?: string
-    placeId?: number
     datetime?: string
     x?: string
     y?: string

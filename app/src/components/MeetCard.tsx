@@ -43,7 +43,6 @@ export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
         })
     }
     const title = meet.title
-    const placeTitle = meet.place?.title
 
     return (
         <div style={{ padding: 11, backgroundColor: DEFAULT_COLOR, borderRadius: 16, border: `2px solid ${selected ? 'orange' : 'transparent'}` }} onClick={() => navigate(`/meet/${meet.id}`)}>
@@ -66,7 +65,7 @@ export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
                                         <path d="M8 5.5C8 6.88333 6.88333 8 5.5 8C4.11667 8 3 6.87778 3 5.5C3 4.12222 4.11667 3 5.5 3C6.87778 3 8 4.12222 8 5.5Z" fill="white"/>
                                     </svg>
                                     <div style={{ fontSize: 13, color: 'black', opacity: 0.7 }}>
-                                        {placeTitle}
+                                        10 м.
                                     </div>
                                 </Stack>
                                 <span style={{ color: '#7139FF', fontSize: 13, fontWeight: 900, letterSpacing: -0.369231, textTransform: 'lowercase' }}>

@@ -2,7 +2,6 @@
 const async = require("async");
 const Meet = require('../models/meetModel');
 const User = require('../models/userModel');
-const Place = require('../models/placeModel');
 const UserMeet = require('../models/userMeetModel');
 
 // Создание встречи
@@ -76,10 +75,8 @@ exports.findById = function(req, res) {
             res.status(400).send({ error:true, message: 'Встреча с таким номером не найдена' });
         } else {
             User.findByMeet(meet, function(err, users) {
-                Place.findByMeet(meet, function(err, place) {
-                    const active = users.some((user) => user.userId === 1)
-                    res.send({...meet, active, users, place});
-                });
+                const active = users.some((user) => user.userId === 1)
+                res.send({...meet, active, users});
             });
         }
     });

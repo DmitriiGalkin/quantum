@@ -4,7 +4,6 @@ const User = require('./models/userModel');
 
 const userController =   require('./controllers/userController');
 const meetController =   require('./controllers/meetController');
-const placeController =   require('./controllers/placeController');
 const imageController =   require('./controllers/imageController');
 
 /**
@@ -39,13 +38,6 @@ router.get('/user/:id', userController.findById);
 router.put('/user', useUser, userController.update);
 
 router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );
-
-/**
- * Места
- */
-router.get('/places', placeController.findAll);
-router.get('/place/:id', useUser, placeController.findById);
-router.post('/place', placeController.create);
 
 /**
  * Встречи

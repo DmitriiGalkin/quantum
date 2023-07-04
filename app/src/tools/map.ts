@@ -1,11 +1,13 @@
-import {Place} from "../modules/place";
+import {Meet} from "../modules/meet";
+
+// const 'ce32ffcd-d432-4c13-9035-407aa9f344a0'
 
 /**
  * Высчитываем центр
  */
-export const getCenter = (place: Place[]) => {
-    const xs = place.map((place) => Number(place.x))
-    const ys = place.map((place) => Number(place.y))
+export const getCenter = (meet: Meet[]) => {
+    const xs = meet.map((m) => Number(m.x))
+    const ys = meet.map((m) => Number(m.y))
 
     const maxX = getMaxOfArray(xs)
     const minX = getMinOfArray(xs)

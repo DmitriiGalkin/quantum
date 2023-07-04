@@ -1,13 +1,13 @@
 import React from 'react';
-import {usePlaces} from "../modules/place";
 import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
 import {useNavigate} from "react-router-dom";
 import Back2 from "../components/Back2";
+import {useMeets} from "../modules/user";
 
 export default function MapDialog() {
-    const { data: places = [] } = usePlaces()
-    const [x,y] = getCenter(places)
+    const { data: meets = [] } = useMeets()
+    const [x,y] = getCenter(meets)
     const navigate = useNavigate();
 
     return (
@@ -18,16 +18,16 @@ export default function MapDialog() {
             <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
                 <YMaps>
                     <Map defaultState={{ center: [x, y], zoom: 16 }} width="100%" height="100%">
-                        {places.map((place) => (
+                        {meets.map((meet) => (
                             <Placemark
-                                key={place.id}
+                                key={meet.id}
                                 modules={["geoObject.addon.balloon"]}
-                                defaultGeometry={[place.x, place.y]}
+                                defaultGeometry={[meet.x, meet.y]}
                                 options={{
                                     preset: 'islands#icon',
                                     iconColor: '#FFA427',
                                 }}
-                                onClick={() => navigate(`/place/${place.id}`)}
+                                onClick={() => navigate(`/meet/${meet.id}`)}
                             />
                         ))}
                     </Map>

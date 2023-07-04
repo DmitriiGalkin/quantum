@@ -71,8 +71,8 @@ export const MainLayout = () => {
                     </div>
                 </div>
             </Box>
-            <Dialog onClose={() => setOpenMeet(false)} open={!!openMeet} fullScreen TransitionComponent={TransitionDialog}>
-                {!!openMeet && (
+            <Dialog onClose={() => setOpenMeet(false)} open={openMeet} fullScreen TransitionComponent={TransitionDialog}>
+                {openMeet && (
                     <CreateMeet onClose={() => setOpenMeet(false)} />)}
             </Dialog>
             <Dialog onClose={() => setOpenOptions(false)} open={openOptions} fullScreen TransitionComponent={TransitionDialog}>

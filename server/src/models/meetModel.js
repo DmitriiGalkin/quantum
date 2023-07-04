@@ -20,7 +20,7 @@ Meet.create = function (data, result) {
 };
 // Обновление встречи
 Meet.update = function(id, meet, result){
-    dbConn.query("UPDATE meet SET title=?, description=?, placeId=? WHERE id = ?", [meet.title, meet.description, meet.placeId, id], function (err, res) {
+    dbConn.query("UPDATE meet SET title=?, description=? WHERE id = ?", [meet.title, meet.description, id], function (err, res) {
         result(null, res);
     });
 };
@@ -35,12 +35,6 @@ Meet.delete = function(id, result){
 Meet.findById = function (id, result) {
     dbConn.query("Select * from meet WHERE id = ?", id, function (err, res) {
         result(null, res[0]);
-    });
-};
-// Встречи пространства
-Meet.findByPlace = function (place, result) {
-    dbConn.query('Select * from meet where placeId = ? AND DATE(datetime) >= CURDATE() ORDER BY datetime', place.id, function (err, res) {
-        result(null, res);
     });
 };
 // Встречи участника

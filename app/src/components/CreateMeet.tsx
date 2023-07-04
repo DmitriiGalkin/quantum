@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
 import {NewMeet, useAddMeet, useEditMeet} from "../modules/meet";
-import {Place, usePlaces} from "../modules/place";
 import Back from "./Back";
 import Input from "./fields/Input";
 import DatePicker from "./fields/DatePicker";
@@ -9,7 +8,6 @@ import TimePicker from "./fields/TimePicker";
 import ImageField from "./fields/ImageField";
 import Textarea from "./fields/Textarea";
 import Button from "./Button";
-import {Select} from "./fields/Select";
 import {Grid} from "@mui/material";
 import dayjs from "dayjs";
 
@@ -19,7 +17,6 @@ export interface CreateMeetDialogProps {
 }
 export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogProps) {
     const [meet, setMeet] = useState<NewMeet>({ x: '55.933093', y: '37.054661', datetime: dayjs().format('YYYY-MM-DD HH:mm:ss')} as NewMeet)
-    const { data: places = [] } = usePlaces()
     const addMeet = useAddMeet()
     const editMeet = useEditMeet()
 
@@ -81,12 +78,6 @@ export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogP
                     <ImageField
                         label="Загрузите обложку"
                         onChange={(image) => setMeet({...meet, image})}
-                    />
-                    <Select<Place>
-                        label="Место"
-                        selectedId={meet.placeId}
-                        items={places}
-                        onChange={(place) => setMeet({ ...meet, placeId: place.id})}
                     />
                 </Stack>
                 <div style={{ paddingTop: 22 }}>

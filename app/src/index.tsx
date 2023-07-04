@@ -18,12 +18,9 @@ import {ProfileLayout} from "./layouts/ProfileLayout";
 import {MainLayout} from "./layouts/MainLayout";
 import Meets from "./pages/Meets";
 import Meet from "./pages/Meet";
-import Place from "./pages/Place";
 import Map from "./pages/Map";
 
 import {GOOGLE_O_AUTH_PROVIDER_CLIENT_ID} from "./tools/auth";
-import {DashboardLayout} from "./layouts/DashboardLayout";
-import DashboardPlace from "./pages/DashboardPlace";
 
 const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(
@@ -41,10 +38,6 @@ const router = createBrowserRouter(
                 </Route>
                 <Route path="/map" element={<Map />}/>
                 <Route path="/meet/:id" element={<Meet />}/>
-                <Route path="/place/:id" element={<Place />}/>
-            </Route>
-            <Route element={<DashboardLayout />}>
-                <Route path="/dashboard/place/:id" element={<DashboardPlace />}/>
             </Route>
         </Route>
     )
