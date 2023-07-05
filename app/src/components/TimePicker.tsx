@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import dayjs from "dayjs";
 import {convertToMeetTime} from "../tools/date";
 import {useInputStyles} from "./helper";
@@ -10,28 +10,25 @@ interface TimeFieldProps {
     value?: string
     onChange: (date: string) => void
 }
-export function TimePicker({ label, name, value: defaultValue, onChange }: TimeFieldProps) {
+export function TimePicker({ label, name, value, onChange }: TimeFieldProps) {
     const classes = useInputStyles();
-    const [value, setValue] = useState(convertToMeetTime(defaultValue) || '00:00');
 
     const onChangeReactIosTimePicker = (timeValue: string) => {
-        setValue(timeValue);
         const date = timeValue.split(':');
 
-        onChange(dayjs(defaultValue)
+        onChange(dayjs(value)
             .startOf('date')
             .add(Number(date[0]), 'hour')
             .add(Number(date[1]), 'minute')
             .format('YYYY-MM-DD HH:mm:ss'))
     }
-
     return (
         <div>
             <label htmlFor={name}>{label}</label>
             <ReactIosTimePicker
                 id={name}
                 onChange={onChangeReactIosTimePicker}
-                value={value}
+                value={convertToMeetTime(value)}
                 controllers={false}
                 inputClassName={classes.input}
             />

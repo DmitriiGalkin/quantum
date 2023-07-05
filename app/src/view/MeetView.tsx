@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MeetComponent from "./Meet";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteMeet, useMeet} from "../tools/service";
@@ -14,12 +14,15 @@ import {convertToMeetsGroupTime} from "../tools/date";
 export default function MeetPage() {
     const { isAuth } = useAuth();
     const navigate = useNavigate();
+    const [meet, setMeet] = useState<Meet>()
 
     const { id: meetId } = useParams();
-    const { data: meet, refetch } = useMeet(Number(meetId))
+    const { data: defaultMeet, refetch } = useMeet(Number(meetId))
     const [editMeet, setEditMeet] = useState<Meet>()
     const toggleMeetUser = useToggleMeetUser()
     const deleteMeet = useDeleteMeet()
+
+    useEffect(() => defaultMeet && setMeet(defaultMeet), [defaultMeet])
 
     if (!meet) return null;
 
@@ -60,7 +63,7 @@ export default function MeetPage() {
                 {!!editMeet && (<CreateMeet onClose={() => {
                     setEditMeet(undefined)
                     refetch()
-                }} newMeet={editMeet} />)}
+                }} meet={editMeet} setMeet={setEditMeet} />)}
             </Dialog>
         </>
     );

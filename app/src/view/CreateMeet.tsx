@@ -1,19 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Stack} from "@mui/material";
 import {useAddMeet, useEditMeet} from "../tools/service";
 import {Meet} from "../tools/dto";
 import {DialogHeader, TimePicker, Input, DatePicker, ImageField, Textarea, Button} from "../components";
-import dayjs from "dayjs";
 import {useNavigate} from "react-router-dom";
 import {convertToMeetsGroupTime} from "../tools/date";
 
 export interface CreateMeetDialogProps {
-    newMeet?: Meet
+    meet: Meet
     refetch?: () => void
-    onClose: () => void;
+    onClose: () => void
+    setMeet: (meet: Meet) => void
 }
-export default function CreateMeet({ onClose, newMeet }: CreateMeetDialogProps) {
-    const [meet, setMeet] = useState<Meet>({ id: 0, title: '', x: '55.933093', y: '37.054661', datetime: dayjs().format('YYYY-MM-DD HH:mm:ss')})
+export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogProps) {
     const addMeet = useAddMeet()
     const editMeet = useEditMeet()
     const navigate = useNavigate();
@@ -33,7 +32,6 @@ export default function CreateMeet({ onClose, newMeet }: CreateMeetDialogProps) 
             }
         }
     };
-    useEffect(() => newMeet && setMeet(newMeet), [newMeet])
 
     const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
     const saveButtonTitle = meet.id ? 'Сохранить' : "Создать встречу"
@@ -68,7 +66,7 @@ export default function CreateMeet({ onClose, newMeet }: CreateMeetDialogProps) 
                     <Textarea
                         name='title'
                         label="Описание"
-                        value={meet?.description}
+                        value={meet.description}
                         onChange={(e) => setMeet({ ...meet, description: e.target.value})}
                         placeholder="Кратко опишите встречу"
                     />

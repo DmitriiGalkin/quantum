@@ -7,6 +7,8 @@ import {makeStyles} from "@mui/styles";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components";
 import {useAuth} from "../tools/auth";
+import dayjs from "dayjs";
+import {Meet} from "../tools/dto";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -49,6 +51,7 @@ export default function MainLayout(): JSX.Element {
     const classes = useStyles();
     const [openMeet, setOpenMeet] = useState(false)
     const [openOptions, setOpenOptions] = useState(false)
+    const [meet, setMeet] = useState<Meet>()
 
     return (
         <>
@@ -75,7 +78,7 @@ export default function MainLayout(): JSX.Element {
                             </svg>
                         </Stack>
                         {isAuth ? (
-                            <div onClick={() => setOpenMeet(true)} style={{ display: 'flex' }}>
+                            <div onClick={() => setMeet({ id: 0, title: '', description:'', x: '55.933093', y: '37.054661', datetime: dayjs().format('YYYY-MM-DD HH:mm:ss')})} style={{ display: 'flex' }}>
                                 <svg width="18" height="18" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M1.49642 12.4964H9.50358V20.5036C9.50358 21.3174 10.173 22 11 22C11.827 22 12.4964 21.3174 12.4964 20.5036V12.4964H20.5036C21.3174 12.4964 22 11.827 22 11C22 10.173 21.3174 9.50358 20.5036 9.50358H12.4964V1.49642C12.4964 0.682578 11.827 0 11 0C10.173 0 9.50358 0.682578 9.50358 1.49642V9.50358H1.49642C0.682578 9.50358 0 10.173 0 11C0 11.827 0.682578 12.4964 1.49642 12.4964Z" fill="white"/>
                                 </svg>
@@ -94,9 +97,9 @@ export default function MainLayout(): JSX.Element {
                     <Outlet />
                 </div>
             </Box>
-            <Dialog onClose={() => setOpenMeet(false)} open={openMeet} fullScreen TransitionComponent={TransitionDialog}>
-                {openMeet && (
-                    <CreateMeet onClose={() => setOpenMeet(false)} />)}
+            <Dialog onClose={() => setMeet(undefined)} open={Boolean(meet)} fullScreen TransitionComponent={TransitionDialog}>
+                {meet && (
+                    <CreateMeet onClose={() => setMeet(undefined)} meet={meet} setMeet={setMeet} />)}
             </Dialog>
             <Dialog onClose={() => setOpenOptions(false)} open={openOptions} fullScreen TransitionComponent={TransitionDialog}>
                 <Profile onClose={() => setOpenOptions(false)} />
