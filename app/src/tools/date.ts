@@ -1,5 +1,4 @@
 import {DateTimeFormatter, LocalDateTime} from "@js-joda/core";
-import dayjs from "dayjs";
 
 // Форматирование даты, используемое для отправки на бек
 export const serverDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

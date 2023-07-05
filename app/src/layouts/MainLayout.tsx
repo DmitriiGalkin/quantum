@@ -76,11 +76,20 @@ export default function MainLayout(): JSX.Element {
                 <div style={{ width: 250 }}>
                     <List>
                         <ListItem disablePadding>
-                            <ListItemButton onClick={() => setOpenOptions(true)}>
+                            <ListItemButton onClick={() => {
+                                setOpenOptions(true)
+                                setOpenDrawer(false)
+                            }}>
                                 <ListItemIcon>
-                                    <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M2 2H22" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                                        <path d="M7 10L22 10" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                                    <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clipPath="url(#clip0_2124_43695)">
+                                            <path d="M2.88867 21.7282H17.6192C19.5645 21.7282 20.4903 21.1423 20.4903 19.8532C20.4903 16.7829 16.6114 12.3415 10.2598 12.3415C3.89649 12.3415 0.0175781 16.7829 0.0175781 19.8532C0.0175781 21.1423 0.943359 21.7282 2.88867 21.7282ZM2.33789 19.9587C2.0332 19.9587 1.9043 19.8767 1.9043 19.6306C1.9043 17.697 4.88086 14.111 10.2598 14.111C15.627 14.111 18.6035 17.697 18.6035 19.6306C18.6035 19.8767 18.4864 19.9587 18.1817 19.9587H2.33789ZM10.2598 10.8767C13.0488 10.8767 15.3223 8.40406 15.3223 5.38062C15.3223 2.38062 13.0606 0.0251465 10.2598 0.0251465C7.48242 0.0251465 5.19727 2.42749 5.19727 5.40406C5.19727 8.41577 7.4707 10.8767 10.2598 10.8767ZM10.2598 9.10718C8.54883 9.10718 7.08399 7.47827 7.08399 5.40406C7.08399 3.36499 8.52539 1.79468 10.2598 1.79468C12.0059 1.79468 13.4356 3.32984 13.4356 5.38062C13.4356 7.45484 11.9824 9.10718 10.2598 9.10718Z" fill="black"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_2124_43695">
+                                                <rect width="20.4727" height="21.7148" fill="white" transform="translate(0.0175781 0.0251465)"/>
+                                            </clipPath>
+                                        </defs>
                                     </svg>
                                 </ListItemIcon>
                                 <ListItemText primary="Профиль" />
@@ -94,10 +103,7 @@ export default function MainLayout(): JSX.Element {
                     <CreateMeet onClose={() => setOpenMeet(false)} />)}
             </Dialog>
             <Dialog onClose={() => setOpenOptions(false)} open={openOptions} fullScreen TransitionComponent={TransitionDialog}>
-                <Options onClose={() => {
-                    setOpenOptions(false)
-                    setOpenDrawer(false)
-                }}/>
+                <Options onClose={() => setOpenOptions(false)} />
             </Dialog>
         </>
     )

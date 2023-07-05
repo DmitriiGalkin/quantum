@@ -2,7 +2,7 @@ import React, {createContext, useContext, useMemo, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import service, {ACCESS_TOKEN, useUserByLogin} from "./service";
 import Dialog from "@mui/material/Dialog";
-import {TransitionDialog} from "../components/TransitionDialog";
+import { TransitionDialog } from "../components";
 import Login from "../view/Login";
 
 export const AuthContext = createContext('auth' as any);
