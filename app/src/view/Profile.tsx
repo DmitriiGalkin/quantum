@@ -39,7 +39,7 @@ export default function Profile({ onClose }: UserViewProps) {
 
     return (
         <>
-            <DialogHeader title="Настройки" onClick={onClose}/>
+            <DialogHeader title="Профиль" onClick={onClose}/>
             <img alt={user?.title} src={user?.image} className={classes.image}/>
             <div className={classes.container}>
                 <Stack spacing={2}>

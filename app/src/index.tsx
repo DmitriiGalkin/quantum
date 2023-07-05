@@ -11,7 +11,7 @@ import {ThemeProvider} from '@mui/material/styles';
 import {GoogleOAuthProvider} from '@react-oauth/google';
 import 'dayjs/locale/ru';
 
-import {GOOGLE_O_AUTH_PROVIDER_CLIENT_ID} from "./tools/auth";
+import {GOOGLE_O_AUTH_PROVIDER_CLIENT_ID} from "./tools/googleAuth";
 import {router} from "./router";
 
 const queryClient = new QueryClient()

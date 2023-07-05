@@ -4,7 +4,6 @@ export const DEFAULT_COLOR = 'white'
 
 const theme = createTheme({
     typography: {
-        fontFamily: 'Avenir',
         h1: {
             fontSize: 30,
             fontWeight: 400,
@@ -26,7 +25,7 @@ const theme = createTheme({
             fontWeight: 700,
         },
         body1: {
-            fontSize: 18,
+            fontSize: 13,
             fontWeight: 400,
         },
         allVariants: {

@@ -33,18 +33,24 @@ User.islogin = function (email, password, result) {
     });
 };
 // Участник
-User.findById = (id) => function (result) {
+User.findById = function (id, result) {
     dbConn.query("Select * from user where id = ? ", id, function (err, res) {
         result(null, res?.length ? res[0] : undefined);
     });
 };
+// Участник
+User.findByEmail = function (email, result) {
+    dbConn.query("Select * from user where email = ? ", email, function (err, res) {
+        result(null, res?.length ? res[0] : undefined);
+    });
+};
+
 
 const parse = (res) => {
     return res
 }
 // Участник по token
 User.findByToken = function (token, result) {
-    console.log(token,'token')
     dbConn.query("Select * from user where token = ? ", token, function (err, res) {
         result(null, (res && res.length) ? parse(res)[0] : null);
     });

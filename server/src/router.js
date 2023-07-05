@@ -45,13 +45,13 @@ router.post('/image', imageController.upload);
 /**
  * Авториазция
  */
-router.post('/user/login', userController.islogin);
+router.post('/user/login', userController.login);
 router.post('/user/googleLogin', userController.googleLogin);
 
 /**
  * Участники
  */
-router.get('/user', useUser, userController.findById);
+router.get('/user', useUser, function(req, res) { res.send(req.user) });
 router.put('/user', useUser, userController.update);
 
 router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );

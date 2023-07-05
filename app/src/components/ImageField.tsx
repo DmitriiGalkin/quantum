@@ -26,7 +26,7 @@ export function ImageField({ label, onChange, value }: ImageFieldProps) {
 
     return (
         <div>
-            <div style={{ fontWeight: 900, fontSize: 13, color: '#070707', letterSpacing: '0.01em' }}>
+            <div style={{ fontWeight: 900, color: '#070707', letterSpacing: '0.01em' }}>
                 {label}
             </div>
             <div style={{ paddingTop: 8 }}>

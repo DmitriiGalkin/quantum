@@ -18,10 +18,9 @@ exports.update = function(req, res) {
  * надобно проверить есть ли такой пользователь у нас уже. Если нет то создать, если есть то просто прописать ему токен
  */
 exports.googleLogin = function(req, res) {
-    dbConn.query("Select * from user where email = ? ", req.body.email, function (err, users) {
-        if (users.length) {
-            const user = users[0]
-            dbConn.query("UPDATE user SET token=? WHERE id = ?", [req.body.access_token, user.id], function (err, updateObject) {
+    User.findByEmail(req.body.email, function(err, user) {
+        if (user) {
+            User.updateTokenById(req.body.access_token, user.id, function() {
                 res.send({ error: false, message: "Участник обновлен" });
             });
         } else {
@@ -39,15 +38,15 @@ exports.googleLogin = function(req, res) {
                 });
             }
         }
-    });
+    })
 };
 // Авторизация участника
-exports.islogin = function(req, res) {
-    User.islogin(req.body.email, req.body.password, function(err, users) {
+exports.login = function(req, res) {
+    User.findById(1, function(err, user) {
         // Если участник найден
-        if(users && users[0]) {
+        if(user) {
             var token = jwt.sign({ foo: 'bar' }, 'shhhhh');
-            User.update(users[0].id, {...users[0], token}, function() {
+            User.updateTokenById(token, user.id, function() {
                 res.send({ access_token: token });
             });
         }

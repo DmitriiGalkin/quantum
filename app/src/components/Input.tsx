@@ -10,7 +10,7 @@ interface InputFieldProps {
 export function Input({ label, value, name, onChange, placeholder }: InputFieldProps) {
     return (
         <div>
-            <div style={{ fontWeight: 900, fontSize: 13, color: '#070707', letterSpacing: '0.01em' }}>
+            <div style={{ fontWeight: 900, color: '#070707', letterSpacing: '0.01em' }}>
                 {label}
             </div>
             <div style={{ paddingTop: 8 }}>

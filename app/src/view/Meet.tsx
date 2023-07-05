@@ -72,12 +72,12 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
                     <div style={{ fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }}>
                         {meet.title}
                     </div>
-                    <div style={{ paddingTop: 24, color: '#070707', opacity: .6, fontSize: 13, lineHeight: '21px', letterSpacing: '0.025em'}}>
+                    <div style={{ paddingTop: 24, color: '#070707', opacity: .6, lineHeight: '21px', letterSpacing: '0.025em'}}>
                         {meet.description}
                     </div>
                     {Boolean(meet.users.length) && (
                         <div style={{ paddingTop: 36}}>
-                            <div style={{ color: '#070707', opacity: .4, fontSize: 13, lineHeight: '18px', letterSpacing: '0.05em' }}>
+                            <div style={{ color: '#070707', opacity: .4, lineHeight: '18px', letterSpacing: '0.05em' }}>
                                 Участники
                             </div>
                             <Box sx={{ display: 'flex' }} style={{ paddingTop: 10}}>
@@ -96,7 +96,7 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
                                     <Grid xs={6}>
                                         <Stack spacing={2} direction="row" alignItems="center">
                                             {icon}
-                                            <div style={{ fontSize: 13, fontWeight: 900, color: '#070707', letterSpacing: '0.025em' }}>
+                                            <div style={{ fontWeight: 900, color: '#070707', letterSpacing: '0.025em' }}>
                                                 {title}
                                             </div>
                                         </Stack>

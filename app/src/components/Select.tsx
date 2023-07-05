@@ -37,7 +37,7 @@ export function Select<T extends Prop>({ label, selectedId, items, onChange, onA
 
     return (
         <div>
-            <div style={{ fontWeight: 900, fontSize: 13, color: '#070707', letterSpacing: '0.01em' }}>
+            <div style={{ fontWeight: 900, color: '#070707', letterSpacing: '0.01em' }}>
                 {label}
             </div>
             <Grid container spacing={3} style={{ paddingTop: 8 }}>
@@ -54,7 +54,7 @@ export function Select<T extends Prop>({ label, selectedId, items, onChange, onA
                                     </div>
                                 </div>
                             </div>
-                            <div style={{ paddingTop: 11, fontSize: 13, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center' }}>{label}</div>
+                            <div style={{ paddingTop: 11, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center' }}>{label}</div>
                         </div>
                     </Grid>
                 )}
@@ -64,7 +64,7 @@ export function Select<T extends Prop>({ label, selectedId, items, onChange, onA
                             <div className={classes.blockInner}>
                                 <img src={item?.image} className={classes.image} style={{ outline: `3px solid ${selectedId === item?.id ? '#7139FF' : 'transparent' }`}}/>
                             </div>
-                            <div style={{ paddingTop: 11, fontSize: 13, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center' }}>{item.title}</div>
+                            <div style={{ paddingTop: 11, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center' }}>{item.title}</div>
                         </div>
                     </Grid>
                 ))}
