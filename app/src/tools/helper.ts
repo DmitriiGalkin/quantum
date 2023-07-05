@@ -1,5 +1,5 @@
 import {convertToMeetsGroupTime, getDayOfWeekTitle} from "./date";
-import {Meet} from "../modules/meet";
+import {Meet} from "./dto";
 import {LocalDate} from "@js-joda/core";
 
 // @ts-ignore

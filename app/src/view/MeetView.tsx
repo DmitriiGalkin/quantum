@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
-import MeetComponent from "../components/Meet";
+import MeetComponent from "./Meet";
 import {useParams} from "react-router-dom";
-import {Meet, NewMeet, useMeet} from "../modules/meet";
+import {useMeet} from "../tools/service";
+import {Meet, NewMeet} from "../tools/dto";
 import Dialog from "@mui/material/Dialog";
-import {TransitionDialog} from "../components/TransitionDialog";
-import CreateMeet from "../components/CreateMeet";
-import {useToggleMeetUser} from "../modules/user";
-import Back2 from "../components/Back2";
+import {TransitionDialog, Back2, Button} from "../components";
+import CreateMeet from "./CreateMeet";
+import {useToggleMeetUser} from "../tools/service";
 import {getOnShare} from "../tools/pwa";
-import Button from "../components/Button";
 import {useAuth} from "../tools/auth";
 
 export default function MeetPage() {

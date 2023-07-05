@@ -1,5 +1,7 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
-import {UseMutationResult} from "@tanstack/react-query";
+import {useMutation, UseMutationResult, useQuery, UseQueryResult} from "@tanstack/react-query";
+import {LoginData} from "./auth";
+import {Meet, NewMeet, Profile, User} from "./dto";
 
 // При разработки хост может быть разным
 const developmentServer = window.location.protocol + '//' + window.location.hostname + ':4000'
@@ -41,5 +43,53 @@ export type UseMutate<TVariables, TData = unknown, TError = AxiosError, TContext
     TVariables,
     TContext
     >
+
+/**
+ * Картинки
+ */
+export const useUploadImage = (): UseMutate<FormData, string> => {
+    return useMutation((formData) => service.post(`/image`, formData, { headers: { "Content-Type": "multipart/form-data" }}))
+}
+
+/**
+ * Встречи
+ */
+export const useMeets = (): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets`))
+export const useMeet = (id?: number): UseQueryResult<Meet> => {
+    return useQuery(['meet', id], () => service.get(`/meet/${id}`), {
+        enabled: Boolean(id),
+    })
+}
+export const useMeetUsers = (id: number): UseQueryResult<User[]> => {
+    return useQuery(['meetUsers', id], () => service.get(`/meet/${id}/users`),)
+}
+
+export const useAddMeet = (): UseMutate<NewMeet> => useMutation((meet) => service.post("/meet", meet))
+export const useEditMeet = (): UseMutate<NewMeet> => useMutation((meet) => service.put(`/meet/${meet.id}`, meet))
+
+/**
+ * Пользователь
+ */
+
+export const useProfileData = (): UseQueryResult<Profile> => {
+    return useQuery(['profile'], () => service.get(`/profile`))
+}
+
+export const useUser = (): UseQueryResult<User> => {
+    return useQuery(['user'], () => service.get(`/user`))
+}
+
+export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
+
+export const useUserByLogin = (): UseMutate<LoginData> => useMutation((data) => service.post("/user/login", data))
+
+interface UserMeet {
+    meetId: number
+}
+
+export const useToggleMeetUser = (): UseMutate<UserMeet> => useMutation(({ meetId }) => service.put("/userMeet/" + meetId))
+
+export const useDeleteMeet = (): UseMutate<Meet> => useMutation((meet) => service.delete(`/meet/${meet.id}`))
+
 
 export default service

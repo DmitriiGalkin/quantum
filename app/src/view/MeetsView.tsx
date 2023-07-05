@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import Meets from "../components/Meets";
-import {useMeets} from "../modules/user";
+import Meets from "./Meets";
+import {useMeets} from "../tools/service";
 import {getFilteredMeetsByDate, getMeetsGroup2, getWeek} from "../tools/helper";
 import {LocalDate} from "@js-joda/core";
 import {useLocation, useNavigate} from "react-router-dom";

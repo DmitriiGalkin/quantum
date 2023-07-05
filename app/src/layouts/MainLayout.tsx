@@ -1,13 +1,12 @@
 import {Outlet} from "react-router-dom";
 import {Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Theme,} from "@mui/material";
-import CreateMeet from "../components/CreateMeet";
-import Options from "../components/Options";
+import CreateMeet from "../view/CreateMeet";
+import Options from "../view/Options";
 import React, {useState} from "react";
 import {makeStyles} from "@mui/styles";
 import Dialog from "@mui/material/Dialog";
-import {TransitionDialog} from "../components/TransitionDialog";
+import {TransitionDialog} from "../components";
 import {useAuth} from "../tools/auth";
-import Login from "../pages/Login";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export const MainLayout = () => {
+export default function MainLayout(): JSX.Element {
     const { isAuth, openLogin } = useAuth();
     const classes = useStyles();
     const [openDrawer, setOpenDrawer] = useState(false)

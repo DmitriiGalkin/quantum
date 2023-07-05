@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {User, useUpdateUser, useUser} from "../modules/user";
+import {useUpdateUser, useUser} from "../tools/service";
+import {User} from "../tools/dto";
 import {Stack, Theme} from "@mui/material";
-import Back from "./Back";
 import {makeStyles} from "@mui/styles";
-import Input from "./fields/Input";
-import ImageField from "./fields/ImageField";
-import Button from "./Button";
+import {Input, Back, ImageField, Button} from "../components";
 import {useAuth} from "../tools/auth";
 
 export interface OptionsDialogProps {

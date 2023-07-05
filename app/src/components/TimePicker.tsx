@@ -34,5 +34,3 @@ export function TimePicker({ label, value, onChange }: TimeFieldProps) {
         </div>
     );
 }
-
-export default TimePicker;

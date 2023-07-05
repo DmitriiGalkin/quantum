@@ -33,5 +33,3 @@ export function Textarea({ label, value, name, onChange, placeholder }: Textarea
         </div>
     );
 }
-
-export default Textarea;

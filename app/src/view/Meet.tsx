@@ -1,7 +1,7 @@
 import React from 'react';
 import {makeStyles} from '@mui/styles';
 import {Avatar, AvatarGroup, Box, Stack, Theme} from "@mui/material";
-import {Meet} from "../modules/meet";
+import {Meet} from "../tools/dto";
 import {convertToMeetDateLong, convertToMeetTime} from "../tools/date";
 import Grid from "@mui/material/Unstable_Grid2";
 

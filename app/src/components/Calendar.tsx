@@ -7,8 +7,7 @@ interface CalendarProps {
     onChange?: (date: string) => void
 }
 
-export default function Calendar ({ week, onChange }: CalendarProps): JSX.Element {
-
+export function Calendar ({ week, onChange }: CalendarProps): JSX.Element {
     return (
         <Stack spacing={1} direction="row" justifyContent="space-between">
             {week.map(({id, dayOfWeekValue, day, active, meetsLength}, index) =>

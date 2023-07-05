@@ -23,5 +23,3 @@ export function Back({ title, onClick }: BackProps) {
         </Stack>
     );
 }
-
-export default React.memo(Back);

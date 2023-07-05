@@ -54,5 +54,3 @@ export function More({ menuItems }: MoreProps) {
         </>
     )
 }
-
-export default React.memo(More);

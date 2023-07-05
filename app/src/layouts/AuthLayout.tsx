@@ -1,7 +1,8 @@
+import React from 'react';
 import {useOutlet} from "react-router-dom";
 import {AuthProvider} from "../tools/auth";
 
-export const AuthLayout = () => {
+export default function AuthLayout(): JSX.Element {
     const outlet = useOutlet();
 
     return (

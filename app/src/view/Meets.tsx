@@ -1,9 +1,8 @@
 import React from 'react';
 import {Stack} from "@mui/material";
-import Calendar from "../components/Calendar";
-import MeetCard from "./MeetCard";
+import {Calendar, MeetCard} from "../components";
 import {CalendarDay} from "../tools/helper";
-import {Meet} from "../modules/meet";
+import {Meet} from "../tools/dto";
 
 interface MeetsProps {
     meets: Meet[]

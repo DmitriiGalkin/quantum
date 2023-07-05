@@ -1,13 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {NewMeet, useAddMeet, useEditMeet} from "../modules/meet";
-import Back from "./Back";
-import Input from "./fields/Input";
-import DatePicker from "./fields/DatePicker";
-import TimePicker from "./fields/TimePicker";
-import ImageField from "./fields/ImageField";
-import Textarea from "./fields/Textarea";
-import Button from "./Button";
+import {useAddMeet, useEditMeet} from "../tools/service";
+import {NewMeet} from "../tools/dto";
+import {Back, TimePicker, Input, DatePicker, ImageField, Textarea, Button} from "../components";
 import dayjs from "dayjs";
 import {useNavigate} from "react-router-dom";
 import {convertToMeetsGroupTime} from "../tools/date";
@@ -17,7 +12,7 @@ export interface CreateMeetDialogProps {
     refetch?: () => void
     onClose: () => void;
 }
-export default function CreateMeetDialog({ onClose, newMeet }: CreateMeetDialogProps) {
+export default function CreateMeet({ onClose, newMeet }: CreateMeetDialogProps) {
     const [meet, setMeet] = useState<NewMeet>({ x: '55.933093', y: '37.054661', datetime: dayjs().format('YYYY-MM-DD HH:mm:ss')} as NewMeet)
     const addMeet = useAddMeet()
     const editMeet = useEditMeet()

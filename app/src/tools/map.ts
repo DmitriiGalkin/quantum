@@ -1,4 +1,4 @@
-import {Meet} from "../modules/meet";
+import {Meet} from "./dto";
 
 // const 'ce32ffcd-d432-4c13-9035-407aa9f344a0'
 

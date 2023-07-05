@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react';
-import {compress} from "../../tools/image";
-import {useUploadImage} from "../../modules/image";
+import {compress} from "../tools/image";
+import {useUploadImage} from "../tools/service";
 
 interface ImageFieldProps {
     label: string

@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {Stack} from "@mui/material";
 import {uri, useAuth} from "../tools/auth";
-import Input from "../components/fields/Input";
-import Button from "../components/Button";
-import Back from "../components/Back";
+import {Input, Button, Back} from "../components";
 
 export interface LoginProps {
     onClose: () => void;

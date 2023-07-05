@@ -72,5 +72,3 @@ export function Select<T extends Prop>({ label, selectedId, items, onChange, onA
         </div>
     );
 }
-
-export default Select;

@@ -1,8 +1,8 @@
 import React from 'react';
-import {Meet} from "../modules/meet";
+import {Meet} from "../tools/dto";
 import {convertToMeetDate, convertToMeetTime} from "../tools/date";
 import {Avatar, AvatarGroup, Box, Stack, Typography} from "@mui/material";
-import {useToggleMeetUser} from "../modules/user";
+import {useToggleMeetUser} from "../tools/service";
 import {makeStyles} from '@mui/styles';
 import {DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
         borderRadius: 9.5,
     },
 }));
-export default function MeetCard({ meet, selected, refetch }: MeetCardProps) {
+export function MeetCard({ meet, selected, refetch }: MeetCardProps) {
     const { isAuth, openLogin } = useAuth();
     const toggleMeetUser = useToggleMeetUser()
     const classes = useStyles();
