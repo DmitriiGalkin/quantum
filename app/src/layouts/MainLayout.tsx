@@ -13,6 +13,26 @@ const useStyles = makeStyles((theme: Theme) => ({
         height: '100vh',
         backgroundColor: theme.palette.background.paper,
     },
+    header: {
+        position: 'fixed',
+        zIndex: 10,
+        left:0,
+        right:0,
+        top:0,
+        padding: '19px 15px 18px 15px',
+        background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)'
+    },
+    outlet: {
+        minHeight: '100vh',
+        height: '100%',
+        position: 'absolute',
+        left:0,
+        right:0,
+        top:0,
+        bottom:0,
+        backgroundColor: '#F5F5F5',
+        padding: '77px 15px 77px',
+    },
     bottomNavigation: {
         backgroundColor: 'white',
         padding: '8px 0 6px',
@@ -33,7 +53,7 @@ export default function MainLayout(): JSX.Element {
     return (
         <>
             <Box className={classes.root}>
-                <div style={{ position: 'fixed', zIndex: 10, left:0,right:0,top:0, padding: '19px 15px 18px 15px', background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)' }}>
+                <div className={classes.header}>
                     <Stack spacing={2} direction="row" justifyContent="space-between" style={{ width: '100%' }} alignItems="center">
                         <Stack spacing={4} direction="row" justifyContent="space-between" alignItems="center">
                             {isAuth && (
@@ -61,7 +81,7 @@ export default function MainLayout(): JSX.Element {
                                 </svg>
                             </div>
                         ) : (
-                            <div onClick={openLogin} style={{ color: 'white' }}>
+                            <div onClick={openLogin} style={{ display: 'flex' }}>
                                 <svg width="18" height="18" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.9375 7.47656C1.55859 7.47656 1.88672 7.125 1.88672 6.51562V3.75C1.88672 2.53125 2.53125 1.91016 3.70312 1.91016H6.53906C7.16016 1.91016 7.5 1.57031 7.5 0.960938C7.5 0.351562 7.16016 0.0234375 6.53906 0.0234375H3.67969C1.23047 0.0234375 0 1.23047 0 3.64453V6.51562C0 7.125 0.339844 7.47656 0.9375 7.47656ZM21.9961 7.47656C22.6172 7.47656 22.9453 7.125 22.9453 6.51562V3.64453C22.9453 1.23047 21.7148 0.0234375 19.2656 0.0234375H16.3945C15.7852 0.0234375 15.4453 0.351562 15.4453 0.960938C15.4453 1.57031 15.7852 1.91016 16.3945 1.91016H19.2305C20.3906 1.91016 21.0586 2.53125 21.0586 3.75V6.51562C21.0586 7.125 21.3984 7.47656 21.9961 7.47656ZM3.67969 22.957H6.53906C7.16016 22.957 7.5 22.6172 7.5 22.0195C7.5 21.4102 7.16016 21.0703 6.53906 21.0703H3.70312C2.53125 21.0703 1.88672 20.4492 1.88672 19.2305V16.4648C1.88672 15.8438 1.54688 15.5039 0.9375 15.5039C0.328125 15.5039 0 15.8438 0 16.4648V19.3242C0 21.75 1.23047 22.957 3.67969 22.957ZM16.3945 22.957H19.2656C21.7148 22.957 22.9453 21.7383 22.9453 19.3242V16.4648C22.9453 15.8438 22.6055 15.5039 21.9961 15.5039C21.3867 15.5039 21.0586 15.8438 21.0586 16.4648V19.2305C21.0586 20.4492 20.3906 21.0703 19.2305 21.0703H16.3945C15.7852 21.0703 15.4453 21.4102 15.4453 22.0195C15.4453 22.6172 15.7852 22.957 16.3945 22.957Z" fill="white"/>
                                     <path d="M11.4844 4.33594C9.31641 4.33594 7.59375 6.07031 7.59375 8.21484C7.59375 9.85547 8.56641 11.2734 10.0664 11.8594V17.8711C10.0781 18.0234 10.1367 18.1406 10.2539 18.2578L11.2617 19.2773C11.3906 19.3945 11.5547 19.4062 11.6836 19.2773L13.6172 17.3555C13.7578 17.2266 13.7578 17.0391 13.6172 16.9219L12.4219 15.7266L14.0742 14.0977C14.1914 13.9922 14.1797 13.8047 14.0508 13.6641L12.4219 12.0234C14.3086 11.2734 15.3516 9.89062 15.3516 8.21484C15.3516 6.08203 13.6172 4.33594 11.4844 4.33594ZM11.4727 6.16406C12.1289 6.16406 12.6562 6.70312 12.6562 7.35938C12.6562 8.03906 12.1289 8.57812 11.4727 8.57812C10.8164 8.57812 10.2656 8.03906 10.2656 7.35938C10.2656 6.70312 10.8047 6.16406 11.4727 6.16406Z" fill="white"/>
@@ -70,10 +90,8 @@ export default function MainLayout(): JSX.Element {
                         )}
                     </Stack>
                 </div>
-                <div style={{minHeight: '100vh', height: '100%', position: 'absolute', left:0,right:0,top:0,bottom:0, backgroundColor: '#F5F5F5'}}>
-                    <div style={{ padding: '77px 15px 77px', backgroundColor: '#F5F5F5' }}>
-                        <Outlet />
-                    </div>
+                <div className={classes.outlet}>
+                    <Outlet />
                 </div>
             </Box>
             <Dialog onClose={() => setOpenMeet(false)} open={openMeet} fullScreen TransitionComponent={TransitionDialog}>

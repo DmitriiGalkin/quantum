@@ -89,7 +89,7 @@ export function Calendar ({ week, onChange }: CalendarProps): JSX.Element {
                     <div className={clsx(classes.day, active && classes.dayActive)}>
                         <div className={classes.dayAbsolute}>
                             <div className={classes.daySquare}>
-                                <p className={classes.daySquare}>{day}</p>
+                                <p className={classes.dayP}>{day}</p>
                             </div>
                         </div>
                         {Boolean(meetsLength) && (
