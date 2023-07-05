@@ -60,7 +60,7 @@ export function MeetCard({ meet, selected, refetch }: MeetCardProps) {
                 )}
                 <div style={{ flexGrow: 1 }}>
                     <Box style={{ display: 'flex', height: '96%' }} flexDirection="column" justifyContent="space-between">
-                        <div style={{ textOverflow: 'ellipsis', width: '100%', whiteSpace: 'nowrap', fontSize: 15, overflow: 'hidden', color: '#3F3F3F', fontWeight: 500 }}>
+                        <div style={{ textOverflow: 'ellipsis', width: '100%', fontSize: 15, overflow: 'hidden', color: '#3F3F3F', fontWeight: 500 }}>
                             {title}
                         </div>
                         <div>
@@ -84,7 +84,7 @@ export function MeetCard({ meet, selected, refetch }: MeetCardProps) {
                             </Stack>
                             <div style={{ flex: '1 0 auto', display: 'flex', height: 30, paddingTop: 8 }}>
                                 <div style={{ flexGrow: 1 }}>
-                                    {Boolean(meet.users?.length) ? (
+                                    {Boolean(meet.users?.length) && (
                                         <Box sx={{ display: 'flex' }}>
                                             <AvatarGroup max={4}>
                                                 {meet.users?.map((user) => (
@@ -92,10 +92,6 @@ export function MeetCard({ meet, selected, refetch }: MeetCardProps) {
                                                 ))}
                                             </AvatarGroup>
                                         </Box>
-                                    ) : (
-                                        <Typography variant="body2" color="textSecondary">
-                                            Нет
-                                        </Typography>
                                     )}
                                 </div>
                                 <div>
