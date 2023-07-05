@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import MeetComponent from "./Meet";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteMeet, useMeet} from "../tools/service";
-import {Meet, NewMeet} from "../tools/dto";
+import {Meet} from "../tools/dto";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog, Back, Button} from "../components";
 import CreateMeet from "./CreateMeet";
@@ -60,7 +60,7 @@ export default function MeetPage() {
                 {!!editMeet && (<CreateMeet onClose={() => {
                     setEditMeet(undefined)
                     refetch()
-                }} newMeet={editMeet as NewMeet} />)}
+                }} newMeet={editMeet} />)}
             </Dialog>
         </>
     );

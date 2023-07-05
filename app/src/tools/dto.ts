@@ -1,26 +1,25 @@
 export interface Meet {
     id: number
-    title?: string
-    description?: string
+    title: string
     datetime: string
-    active?: boolean
-    editable?: boolean // Право на редактирование/удаление
-    users: User[]
-    image?: string
     x?: string
     y?: string
-}
-
-export interface NewMeet {
-    id?: number
-    activeStep?: number
-    title?: string
     description?: string
     image?: string
-    datetime?: string
-    x?: string
-    y?: string
+    active?: boolean // Участвует ли пользователь во встрече
+    editable?: boolean // Право на редактирование/удаление
+    users?: User[]
 }
+//
+// export interface NewMeet {
+//     id?: number
+//     title?: string
+//     description?: string
+//     image?: string
+//     datetime?: string
+//     x?: string
+//     y?: string
+// }
 
 export interface User {
     id: number

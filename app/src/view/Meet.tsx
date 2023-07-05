@@ -75,14 +75,14 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
                     <div style={{ paddingTop: 24, opacity: .6, lineHeight: '21px'}}>
                         {meet.description}
                     </div>
-                    {Boolean(meet.users.length) && (
+                    {Boolean(meet.users?.length) && (
                         <div style={{ paddingTop: 36}}>
                             <div style={{ color: '#070707', opacity: .4, lineHeight: '18px', letterSpacing: '0.05em' }}>
                                 Участники
                             </div>
                             <Box sx={{ display: 'flex' }} style={{ paddingTop: 10}}>
                                 <AvatarGroup max={4}>
-                                    {meet.users.map((user) => (
+                                    {meet.users?.map((user) => (
                                         <Avatar key={user.id} alt={user.title} src={user.image} />
                                     ))}
                                 </AvatarGroup>

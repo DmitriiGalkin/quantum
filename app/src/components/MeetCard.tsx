@@ -54,7 +54,7 @@ export function MeetCard({ meet, selected, refetch }: MeetCardProps) {
                 {meet.image && (
                     <div style={{ width: 90, minWidth: 90 }}>
                         <div className={classes.blockInner}>
-                            <img src={meet.image} className={classes.image}/>
+                            <img alt={meet.title} src={meet.image} className={classes.image}/>
                         </div>
                     </div>
                 )}
@@ -84,10 +84,10 @@ export function MeetCard({ meet, selected, refetch }: MeetCardProps) {
                             </Stack>
                             <div style={{ flex: '1 0 auto', display: 'flex', height: 30, paddingTop: 8 }}>
                                 <div style={{ flexGrow: 1 }}>
-                                    {Boolean(meet.users.length) ? (
+                                    {Boolean(meet.users?.length) ? (
                                         <Box sx={{ display: 'flex' }}>
                                             <AvatarGroup max={4}>
-                                                {meet.users.map((user) => (
+                                                {meet.users?.map((user) => (
                                                     <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 21, height: 21 }} />
                                                 ))}
                                             </AvatarGroup>
