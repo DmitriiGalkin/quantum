@@ -37,10 +37,8 @@ export function Select<T extends Prop>({ label, selectedId, items, onChange, onA
 
     return (
         <div>
-            <div style={{ fontWeight: 900, color: '#070707' }}>
-                {label}
-            </div>
-            <Grid container spacing={3} style={{ paddingTop: 8 }}>
+            <label htmlFor={label}>{label}</label>
+            <Grid container spacing={3}>
                 {onAdd && (
                     <Grid xs={3}>
                         <div onClick={onAdd}>

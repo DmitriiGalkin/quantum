@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteMeet, useMeet} from "../tools/service";
 import {Meet, NewMeet} from "../tools/dto";
 import Dialog from "@mui/material/Dialog";
-import {TransitionDialog, Back2, Button} from "../components";
+import {TransitionDialog, Back, Button} from "../components";
 import CreateMeet from "./CreateMeet";
 import {useToggleMeetUser} from "../tools/service";
 import {getOnShare} from "../tools/pwa";
@@ -38,7 +38,7 @@ export default function MeetPage() {
         })})
     }
 
-    const renderHeader = () => <Back2 title={meet.title} menuItems={menuItems} />
+    const renderHeader = () => <Back title={meet.title} menuItems={menuItems} />
     const renderFooter = () => meet.active ? (
             <Button onClick={onClick} variant="outlined">
                 Покинуть встречу

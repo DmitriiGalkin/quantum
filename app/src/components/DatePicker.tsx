@@ -27,14 +27,8 @@ export function DatePicker({ label, value, onChange }: DateFieldProps) {
 
     return (
         <Stack spacing={2} direction="column">
-            {label && (
-                <div style={{ fontWeight: 900, color: '#070707' }}>
-                    {label}
-                </div>
-            )}
-            <div>
-                <Calendar week={week} onChange={calendarPickerOnChange} />
-            </div>
+            {label && <label htmlFor="calendar">{label}</label>}
+            <Calendar week={week} onChange={calendarPickerOnChange} />
         </Stack>
     );
 }

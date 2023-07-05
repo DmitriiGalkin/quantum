@@ -12,7 +12,7 @@ interface BackProps {
     onClick?: () => void
     menuItems?: MenuItemProps[]
 }
-export function Back2({ title, onClick, menuItems }: BackProps) {
+export function Back({ title, onClick, menuItems }: BackProps) {
     const navigate = useNavigate();
     const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
 

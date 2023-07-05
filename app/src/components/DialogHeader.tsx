@@ -12,7 +12,7 @@ export function DialogHeader({ title, onClick }: DialogHeaderProps) {
 
     return (
         <Stack direction="row" alignItems="center" justifyContent="space-between" style={{ position: 'sticky', padding: '14px 18px 14px 18px', background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)' }}>
-            <div style={{ color: 'white', fontWeight: 'bold', fontSize: 20, letterSpacing: '-0.01em', lineHeight: '18px' }}>
+            <div style={{ color: 'white', fontWeight: 'bold', fontSize: 20, letterSpacing: '-0.01em', lineHeight: '22px' }}>
                 {title || <Skeleton variant="text" sx={{ fontSize: '1rem', width: '100%' }} />}
             </div>
             <div onClick={onBackClick}>

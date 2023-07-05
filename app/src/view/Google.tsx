@@ -63,5 +63,5 @@ export default function Google() {
     }, [googleToken])
 
 
-    return <div>2</div>;
+    return <div/>;
 }

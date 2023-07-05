@@ -41,7 +41,7 @@ export default function Login({ onClose }: LoginProps) {
                             </Button>
                         </Stack>
                     )}
-                    <div style={{ paddingTop: 24, color: '#070707', opacity: .6, lineHeight: '21px'}}>
+                    <div style={{ paddingTop: 24, opacity: .6, lineHeight: '21px'}}>
                         Пожалуйста, авторизуйтесь удобным для вас способом:
                     </div>
                     <Stack justifyContent="center" alignItems="center">

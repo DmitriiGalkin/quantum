@@ -19,18 +19,14 @@ export function TimePicker({ label, value, onChange }: TimeFieldProps) {
     const v = dayjs(value)
     return (
         <div>
-            <div style={{ fontWeight: 900, color: '#070707' }}>
-                {label}
-            </div>
-            <div style={{ paddingTop: 8 }}>
-                <TimePickerAnt
-                    value={v}
-                    format={format}
-                    locale={locale}
-                    getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
-                    onChange={timeOnChange}
-                />
-            </div>
+            <label htmlFor="file">{label}</label>
+            <TimePickerAnt
+                value={v}
+                format={format}
+                locale={locale}
+                getPopupContainer={(triggerNode) => triggerNode.parentNode as HTMLElement}
+                onChange={timeOnChange}
+            />
         </div>
     );
 }
