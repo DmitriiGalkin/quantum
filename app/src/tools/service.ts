@@ -71,25 +71,10 @@ export const useEditMeet = (): UseMutate<NewMeet> => useMutation((meet) => servi
  * Пользователь
  */
 
-export const useProfileData = (): UseQueryResult<Profile> => {
-    return useQuery(['profile'], () => service.get(`/profile`))
-}
-
-export const useUser = (): UseQueryResult<User> => {
-    return useQuery(['user'], () => service.get(`/user`))
-}
-
+export const useUser = (): UseQueryResult<User> => useQuery(['user'], () => service.get(`/user`))
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
-
 export const useUserByLogin = (): UseMutate<LoginData> => useMutation((data) => service.post("/user/login", data))
-
-interface UserMeet {
-    meetId: number
-}
-
-export const useToggleMeetUser = (): UseMutate<UserMeet> => useMutation(({ meetId }) => service.put("/userMeet/" + meetId))
-
-export const useDeleteMeet = (): UseMutate<Meet> => useMutation((meet) => service.delete(`/meet/${meet.id}`))
-
+export const useToggleMeetUser = (): UseMutate<number> => useMutation((meetId) => service.put("/userMeet/" + meetId))
+export const useDeleteMeet = (): UseMutate<number> => useMutation((meetId) => service.delete(`/meet/${meetId}`))
 
 export default service

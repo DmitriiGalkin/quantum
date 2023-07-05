@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import MeetComponent from "./Meet";
-import {useParams} from "react-router-dom";
-import {useMeet} from "../tools/service";
+import {useNavigate, useParams} from "react-router-dom";
+import {useDeleteMeet, useMeet} from "../tools/service";
 import {Meet, NewMeet} from "../tools/dto";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog, Back2, Button} from "../components";
@@ -9,22 +9,21 @@ import CreateMeet from "./CreateMeet";
 import {useToggleMeetUser} from "../tools/service";
 import {getOnShare} from "../tools/pwa";
 import {useAuth} from "../tools/auth";
+import {convertToMeetsGroupTime} from "../tools/date";
 
 export default function MeetPage() {
     const { isAuth } = useAuth();
+    const navigate = useNavigate();
 
     const { id: meetId } = useParams();
     const { data: meet, refetch } = useMeet(Number(meetId))
     const [editMeet, setEditMeet] = useState<Meet>()
     const toggleMeetUser = useToggleMeetUser()
+    const deleteMeet = useDeleteMeet()
 
     if (!meet) return null;
 
-    const onClick = () => {
-        toggleMeetUser.mutateAsync({ meetId: meet.id }).then(() => {
-            refetch()
-        })
-    }
+    const onClick = () => toggleMeetUser.mutateAsync(meet.id).then(() => refetch())
 
     const menuItems = [
         { title: 'Поделиться', onClick: getOnShare({
@@ -32,8 +31,11 @@ export default function MeetPage() {
                 url: `/meet/${meet?.id}`
         })},
     ]
-    if (isAuth) {
+    if (meet.editable) {
         menuItems.push({ title: 'Редактировать', onClick: async () => setEditMeet(meet)})
+        menuItems.push({ title: 'Удалить', onClick: () => deleteMeet.mutateAsync(meet.id).then(() => {
+            navigate(`/?date=${convertToMeetsGroupTime(meet.datetime)}`)
+        })})
     }
 
     const renderHeader = () => <Back2 title={meet.title} menuItems={menuItems} />
@@ -46,7 +48,6 @@ export default function MeetPage() {
                 Участвовать
             </Button>
         )
-
 
     return (
         <>

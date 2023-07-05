@@ -15,7 +15,6 @@ export const useNavigateAfterLogin = () => {
     const backUrl = localStorage.getItem('backUrl')
     if (backUrl) {
         return () => {
-            localStorage.removeItem("image")
             navigate(backUrl ? backUrl : "/", { replace: true });
         }
     }

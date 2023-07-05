@@ -5,7 +5,7 @@ import {getFilteredMeetsByDate, getMeetsGroup2, getWeek} from "../tools/helper";
 import {LocalDate} from "@js-joda/core";
 import {useLocation, useNavigate} from "react-router-dom";
 
-export default function MeetsPage() {
+export default function MeetsView() {
     const { data: meets = [], refetch } = useMeets()
     const location = useLocation();
     const date = new URLSearchParams(location.search).get('date')

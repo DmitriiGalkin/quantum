@@ -1,16 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useUpdateUser, useUser} from "../tools/service";
 import {User} from "../tools/dto";
-import {Stack, Theme} from "@mui/material";
+import {Stack} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import {Input, Back, ImageField, Button} from "../components";
+import {Input, DialogHeader, ImageField, Button} from "../components";
 import {useAuth} from "../tools/auth";
 
-export interface OptionsDialogProps {
-    onClose: () => void
-}
-
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
     container: {
         backgroundColor: 'white',
         padding: '25px 33px'
@@ -24,11 +20,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export default function OptionsDialog({ onClose }: OptionsDialogProps) {
-    const { data: profileUser } = useUser();
+export interface UserViewProps {
+    onClose: () => void
+}
+export default function Profile({ onClose }: UserViewProps) {
     const classes = useStyles();
-    const { logout } = useAuth();
 
+    const { data: defaultUser } = useUser();
+    const { logout } = useAuth();
     const [user, setUser] = useState<User>()
     const updateUser = useUpdateUser()
 
@@ -36,14 +35,12 @@ export default function OptionsDialog({ onClose }: OptionsDialogProps) {
         user && updateUser.mutate(user)
         onClose()
     }
-    useEffect(() => {
-        profileUser && setUser(profileUser)
-    }, [profileUser])
+    useEffect(() => defaultUser && setUser(defaultUser), [defaultUser])
 
     return (
         <>
-            <Back title="Настройки" onClick={onClose}/>
-            <img src={user?.image} className={classes.image}/>
+            <DialogHeader title="Настройки" onClick={onClose}/>
+            <img alt={user?.title} src={user?.image} className={classes.image}/>
             <div className={classes.container}>
                 <Stack spacing={2}>
                     <ImageField
@@ -71,7 +68,6 @@ export default function OptionsDialog({ onClose }: OptionsDialogProps) {
                     <Button onClick={onClickSave} variant="outlined">
                         Сохранить
                     </Button>
-
                     <Button onClick={() => {
                         logout()
                         onClose()

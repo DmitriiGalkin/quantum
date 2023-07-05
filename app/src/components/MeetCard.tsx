@@ -41,9 +41,7 @@ export function MeetCard({ meet, selected, refetch }: MeetCardProps) {
     const onClick = (e: React.MouseEvent) => {
         e.stopPropagation()
         if (isAuth) {
-            toggleMeetUser.mutateAsync({ meetId: meet.id }).then(() => {
-                refetch && refetch()
-            })
+            toggleMeetUser.mutateAsync(meet.id).then(refetch)
         } else {
             openLogin()
         }

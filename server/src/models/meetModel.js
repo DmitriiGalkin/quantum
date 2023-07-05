@@ -9,6 +9,7 @@ var Meet = function(data){
     this.description = data.description;
     this.image = data.image;
     this.datetime = data.datetime;
+    this.userId = data.userId; // Создатель встречи
 };
 // Создание встречи
 Meet.create = function (data, result) {

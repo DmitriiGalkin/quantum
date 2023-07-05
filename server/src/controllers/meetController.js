@@ -6,7 +6,7 @@ const UserMeet = require('../models/userMeetModel');
 
 // Создание встречи
 exports.create = function(req, res) {
-    const meet = new Meet(req.body);
+    const meet = new Meet({...req.body, userId: req.user?.id });
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
@@ -86,8 +86,8 @@ exports.findById = function(req, res) {
             res.status(400).send({ error:true, message: 'Встреча с таким номером не найдена' });
         } else {
             User.findByMeet(meet, function(err, users) {
-                const active = users.some((user) => user.userId === 1)
-                res.send({...meet, active, users});
+                const active = users.some((user) => user.userId === req.user?.id)
+                res.send({...meet, editable: req.user?.id === meet.userId, active, users});
             });
         }
     });

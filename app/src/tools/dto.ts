@@ -4,6 +4,7 @@ export interface Meet {
     description?: string
     datetime: string
     active?: boolean
+    editable?: boolean // Право на редактирование/удаление
     users: User[]
     image?: string
     x?: string

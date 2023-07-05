@@ -2,11 +2,11 @@ import React from 'react';
 import {Skeleton, Stack} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
-interface BackProps {
+interface DialogHeaderProps {
     title?: string
     onClick?: () => void
 }
-export function Back({ title, onClick }: BackProps) {
+export function DialogHeader({ title, onClick }: DialogHeaderProps) {
     const navigate = useNavigate();
     const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
 

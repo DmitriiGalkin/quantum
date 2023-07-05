@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
 import {useAddMeet, useEditMeet} from "../tools/service";
 import {NewMeet} from "../tools/dto";
-import {Back, TimePicker, Input, DatePicker, ImageField, Textarea, Button} from "../components";
+import {DialogHeader, TimePicker, Input, DatePicker, ImageField, Textarea, Button} from "../components";
 import dayjs from "dayjs";
 import {useNavigate} from "react-router-dom";
 import {convertToMeetsGroupTime} from "../tools/date";
@@ -39,7 +39,7 @@ export default function CreateMeet({ onClose, newMeet }: CreateMeetDialogProps) 
     const saveButtonTitle = meet.id ? 'Сохранить' : "Создать встречу"
     return (
         <div>
-            <Back title={title} onClick={onClose}/>
+            <DialogHeader title={title} onClick={onClose}/>
             <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={5}>
                     <DatePicker

@@ -1,4 +1,4 @@
-export { Back } from './Back'
+export { DialogHeader } from './DialogHeader'
 export { Back2 } from './Back2'
 export { Button } from './Button'
 export { Calendar } from './Calendar'
