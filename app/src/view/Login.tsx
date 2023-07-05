@@ -8,12 +8,11 @@ export interface LoginProps {
     onClose: () => void;
 }
 export default function Login({ onClose }: LoginProps) {
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
+    const [email, setEmail] = useState('')
     const { login } = useAuth();
 
     const onClickSave = () => {
-        login({email, password})
+        login(email)
         onClose()
     }
 //window.location.hostname === 'localhost'
@@ -29,12 +28,6 @@ export default function Login({ onClose }: LoginProps) {
                                 label="Почта"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <Input
-                                name='password'
-                                label="Пароль"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
                             />
                             <Button onClick={onClickSave}>
                                 Войти

@@ -52,11 +52,14 @@ export default function CreateMeet({ onClose, newMeet }: CreateMeetDialogProps) 
                                 placeholder="Введите название встречи"
                             />
                         </div>
-                        <TimePicker
-                            label="Время"
-                            value={meet.datetime}
-                            onChange={(datetime) => setMeet({...meet, datetime })}
-                        />
+                        <div style={{ width: 80 }}>
+                            <TimePicker
+                                name='time'
+                                label="Время"
+                                value={meet.datetime}
+                                onChange={(datetime) => setMeet({...meet, datetime })}
+                            />
+                        </div>
                     </Stack>
                     <DatePicker
                         value={meet.datetime}

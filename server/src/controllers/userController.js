@@ -46,7 +46,6 @@ exports.login = function(req, res) {
         // Если участник найден
         if(user) {
             var token = jwt.sign({ foo: 'bar' }, 'shhhhh');
-            console.log('3')
             User.updateTokenById(token, user.id, function() {
                 res.send({ access_token: token });
             });

@@ -25,6 +25,7 @@ const DAYS_OF_WEEK = new Map([
 ])
 export const getDayOfWeek = (day: string) => DAYS_OF_WEEK.get(day) as string
 const PATTERN = "yyyy-MM-dd HH:mm:ss"
+
 /**
  * Server datetime to 'HH:mm'
  */

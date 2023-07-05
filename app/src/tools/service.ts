@@ -1,7 +1,6 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, UseQueryResult} from "@tanstack/react-query";
-import {LoginData} from "./auth";
-import {Meet, NewMeet, Profile, User} from "./dto";
+import {Meet, NewMeet, User} from "./dto";
 
 // При разработки хост может быть разным
 const developmentServer = window.location.protocol + '//' + window.location.hostname + ':4000'
@@ -77,7 +76,7 @@ export const useGoogleLogin = (): UseMutate<User> => useMutation((data: any) => 
  */
 export const useUser = (): UseQueryResult<User> => useQuery(['user'], () => service.get(`/user`))
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
-export const useUserByLogin = (): UseMutate<LoginData> => useMutation((data) => service.post("/user/login", data))
+export const useUserByEmail = (): UseMutate<string> => useMutation((email) => service.post("/user/login", {email}))
 export const useToggleMeetUser = (): UseMutate<number> => useMutation((meetId) => service.put("/userMeet/" + meetId))
 export const useDeleteMeet = (): UseMutate<number> => useMutation((meetId) => service.delete(`/meet/${meetId}`))
 

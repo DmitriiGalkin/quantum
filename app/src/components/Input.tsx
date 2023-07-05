@@ -1,20 +1,17 @@
-import React from 'react';
+import React, {InputHTMLAttributes} from 'react';
 import {useInputStyles} from "./helper";
 
-interface InputFieldProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement>{
     label: string
-    value?: string
     name: string
-    onChange: (e: any) => void
-    placeholder?: string
 }
-export function Input({ label, value, name, onChange, placeholder }: InputFieldProps) {
+export function Input({ label, name, ...rest }: InputProps) {
     const classes = useInputStyles();
 
     return (
         <div>
             <label htmlFor={name}>{label}</label>
-            <input type="text" name={name} value={value || ''} onChange={onChange} placeholder={placeholder} className={classes.input} />
+            <input id={name} className={classes.input} {...rest} />
         </div>
     );
 }

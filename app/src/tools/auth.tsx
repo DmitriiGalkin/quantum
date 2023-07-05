@@ -1,13 +1,11 @@
 import React, {createContext, useContext, useMemo, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import service, {ACCESS_TOKEN, useUserByLogin} from "./service";
+import service, {ACCESS_TOKEN, useUserByEmail} from "./service";
 import Dialog from "@mui/material/Dialog";
 import { TransitionDialog } from "../components";
 import Login from "../view/Login";
 
 export const AuthContext = createContext('auth' as any);
-
-export interface LoginData { email: string, password: string }
 
 export const useNavigateAfterLogin = () => {
     const navigate = useNavigate();
@@ -25,7 +23,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const access_token = localStorage.getItem(ACCESS_TOKEN)
     const redirect = useNavigateAfterLogin()
     const navigate = useNavigate();
-    const userByLogin = useUserByLogin()
+    const userByEmail = useUserByEmail()
     const [searchParams] = useSearchParams();
     const backUrl = searchParams.get("backUrl")
     const [openLogin, setOpenLogin] = useState(false)
@@ -35,8 +33,8 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     }
 
     // Нативный логин
-    const login = async (data: LoginData) => {
-        userByLogin.mutateAsync(data).then((result: any) => {
+    const login = async (email: string) => {
+        userByEmail.mutateAsync(email).then((result: any) => {
             localStorage.setItem(ACCESS_TOKEN, result.access_token);
             service.interceptors.request.use(
                 config => {
