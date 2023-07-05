@@ -2,12 +2,10 @@
 var dbConn = require('../db');
 
 var User = function(user){
-    this.email = user.email;
-    this.password = user.password;
-    this.image = user.image;
     this.title = user.title;
+    this.email = user.email;
+    this.image = user.image;
     this.token = user.token;
-    this.points = user.points;
 };
 // Создание участника
 User.create = function (user, result) {
@@ -17,13 +15,13 @@ User.create = function (user, result) {
 };
 // Обновление участника
 User.update = function(userId, user, result){
-    dbConn.query("UPDATE user SET title=?,points=?,email=?,password=?,token=?,image=? WHERE id = ?", [user.title,user.points,user.email,user.password,user.token, user.image, userId], function (err, res) {
+    dbConn.query("UPDATE user SET title=?,image=? WHERE id = ?", [user.title, user.image, userId], function (err, res) {
         result(null, res);
     });
 };
 // Обновление токена
-User.logi = function(token, email, result){
-    dbConn.query("UPDATE user SET token=? WHERE email = ?", [token, email], function (err, res) {
+User.updateTokenById = function(token, id, result){
+    dbConn.query("UPDATE user SET token=? WHERE id = ?", [token, id], function (err, res) {
         result(null, res);
     });
 };
@@ -37,30 +35,17 @@ User.islogin = function (email, password, result) {
 // Участник
 User.findById = (id) => function (result) {
     dbConn.query("Select * from user where id = ? ", id, function (err, res) {
-        result(null, res.length ? res[0] : undefined);
+        result(null, res?.length ? res[0] : undefined);
     });
 };
-// function(callback) {
-//     setTimeout(function() {
-//         callback(null, 'one');
-//     }, 200);
-// }
-// Участник
-// User.findById = function (id) {
-//     return new Promise((resolve, reject) => {
-//         dbConn.query("Select * from user where id = ? ", id, function (err, res) {
-//             if (err) reject(err)
-//             else resolve(res);
-//         });
-//     })
-//
-// };
+
 const parse = (res) => {
-    return res //.map((r) => ({ ...r, avatar: JSON.parse(r.avatar)}))
+    return res
 }
 // Участник по token
-User.findByToken = function (id, result) {
-    dbConn.query("Select * from user where token = ? ", id, function (err, res) {
+User.findByToken = function (token, result) {
+    console.log(token,'token')
+    dbConn.query("Select * from user where token = ? ", token, function (err, res) {
         result(null, (res && res.length) ? parse(res)[0] : null);
     });
 };

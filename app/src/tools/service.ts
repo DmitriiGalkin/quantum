@@ -45,13 +45,6 @@ export type UseMutate<TVariables, TData = unknown, TError = AxiosError, TContext
     >
 
 /**
- * Картинки
- */
-export const useUploadImage = (): UseMutate<FormData, string> => {
-    return useMutation((formData) => service.post(`/image`, formData, { headers: { "Content-Type": "multipart/form-data" }}))
-}
-
-/**
  * Встречи
  */
 export const useMeets = (): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets`))
@@ -68,9 +61,20 @@ export const useAddMeet = (): UseMutate<NewMeet> => useMutation((meet) => servic
 export const useEditMeet = (): UseMutate<NewMeet> => useMutation((meet) => service.put(`/meet/${meet.id}`, meet))
 
 /**
+ * Картинки
+ */
+export const useUploadImage = (): UseMutate<FormData, string> => {
+    return useMutation((formData) => service.post(`/image`, formData, { headers: { "Content-Type": "multipart/form-data" }}))
+}
+
+/**
+ * Авторизации
+ */
+export const useGoogleLogin = (): UseMutate<User> => useMutation((data: any) => service.post(`/user/googleLogin`, data))
+
+/**
  * Пользователь
  */
-
 export const useUser = (): UseQueryResult<User> => useQuery(['user'], () => service.get(`/user`))
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
 export const useUserByLogin = (): UseMutate<LoginData> => useMutation((data) => service.post("/user/login", data))

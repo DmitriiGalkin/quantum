@@ -1,8 +1,7 @@
 'use strict';
+var dbConn = require('../db');
 const User = require('../models/userModel');
 var jwt = require('jsonwebtoken');
-const async = require("async");
-const Meet = require("../models/meetModel");
 
 // Обновление участника
 exports.update = function(req, res) {
@@ -14,25 +13,32 @@ exports.update = function(req, res) {
         });
     }
 };
-// Обновление токена
-exports.logi = function(req, res) {
-    User.logi(req.body.access_token, req.body.email, function(err, users) {
-        if (err) res.send(err);
-        if (!Boolean(users.length)){
-
-            // Начинаем создавать пользователя
-            const title = req.body.given_name + ' ' + req.body.family_name
-            const new_user = new User({...req.body, title, token: req.body.access_token });
+/**
+ * С бека пришла авторизационная информация с токеном по пользователю,
+ * надобно проверить есть ли такой пользователь у нас уже. Если нет то создать, если есть то просто прописать ему токен
+ */
+exports.googleLogin = function(req, res) {
+    dbConn.query("Select * from user where email = ? ", req.body.email, function (err, users) {
+        if (users.length) {
+            const user = users[0]
+            dbConn.query("UPDATE user SET token=? WHERE id = ?", [req.body.access_token, user.id], function (err, updateObject) {
+                res.send({ error: false, message: "Участник обновлен" });
+            });
+        } else {
+            const user = new User({
+                token: req.body.access_token,
+                title: req.body.name,
+                image: req.body.picture,
+                email: req.body.email
+            });
             if(req.body.constructor === Object && Object.keys(req.body).length === 0){
                 res.status(400).send({ error:true, message: 'Сбой конструктора участника при создании участника через гугл' });
             } else {
-                // console.log(new_user, 'Создание пользователя Гугла')
-                User.create(new_user, function(err, data) {
-                    res.send({ error: false, message: "Участник создан", data });
+                User.create(user, function(err, data) {
+                    res.send({ error: false, message: "Участник создан" });
                 });
             }
         }
-        res.send(users && users[0]);
     });
 };
 // Авторизация участника
@@ -49,18 +55,7 @@ exports.islogin = function(req, res) {
 };
 // Участник
 exports.findById = function(req, res) {
-    User.findById(req.params.id, function(err, users) {
+    User.findById(req.user.id, function(err, users) {
         res.send(users && users[0]);
-    });
-};
-
-// Профиль
-exports.findByUser = function(req, res) {
-    async.parallel([
-        User.findById(req.user.id),
-        Meet.findAllByUserId2(req.user.id),
-    ], function(err, results) {
-        const [user, user_meets] = results
-        res.send({ ...user, meetIds: user_meets.map((user_meet) => user_meet.meetId)});
     });
 };

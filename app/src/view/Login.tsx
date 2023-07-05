@@ -25,7 +25,7 @@ export default function Login({ onClose }: LoginProps) {
                         <Stack spacing={2}>
                             <Input
                                 name='email'
-                                label="Телефон или Почта"
+                                label="Почта"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />

@@ -43,27 +43,15 @@ export default function Profile({ onClose }: UserViewProps) {
             <img alt={user?.title} src={user?.image} className={classes.image}/>
             <div className={classes.container}>
                 <Stack spacing={2}>
-                    <ImageField
-                        label="Аватарка"
-                        onChange={(image) => user && setUser({...user, image})}
-                    />
-                    <Input
-                        name='email'
-                        label="Телефон/Почта"
-                        value={user?.email}
-                        onChange={(e) => user && setUser({ ...user, email: e.target.value})}
-                    />
-                    <Input
-                        name='password'
-                        label="Пароль"
-                        value={user?.password}
-                        onChange={(e) => user && setUser({ ...user, password: e.target.value})}
-                    />
                     <Input
                         name='title'
                         label="Имя и фамилия"
                         value={user?.title}
                         onChange={(e) => user && setUser({ ...user, title: e.target.value})}
+                    />
+                    <ImageField
+                        label="Аватарка"
+                        onChange={(image) => user && setUser({...user, image})}
                     />
                     <Button onClick={onClickSave} variant="outlined">
                         Сохранить

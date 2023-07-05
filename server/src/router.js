@@ -29,22 +29,6 @@ function useUser(req, res, next) {
 }
 
 /**
- * Картинки
- */
-router.post('/image', imageController.upload);
-
-/**
- * Участники
- */
-router.get('/user', useUser, userController.findByUser);
-router.post('/user/login', userController.islogin);
-router.post('/logi', userController.logi);
-router.get('/user/:id', userController.findById);
-router.put('/user', useUser, userController.update);
-
-router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );
-
-/**
  * Встречи
  */
 router.get('/meets', useUser, meetController.findAll);
@@ -52,5 +36,25 @@ router.get('/meet/:id', useUser, meetController.findById);
 router.post('/meet', useUser, meetController.create);
 router.put('/meet/:id', meetController.update);
 router.delete('/meet/:id', useUser, meetController.delete );
+
+/**
+ * Картинки
+ */
+router.post('/image', imageController.upload);
+
+/**
+ * Авториазция
+ */
+router.post('/user/login', userController.islogin);
+router.post('/user/googleLogin', userController.googleLogin);
+
+/**
+ * Участники
+ */
+router.get('/user', useUser, userController.findById);
+router.put('/user', useUser, userController.update);
+
+router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );
+
 
 module.exports = router

@@ -10,7 +10,8 @@ import {
     GOOGLE_USER_INFO_URI,
     useNavigateAfterLogin
 } from "../tools/auth";
-import service, {ACCESS_TOKEN, UseMutate} from "../tools/service";
+import service, {ACCESS_TOKEN, useGoogleLogin, UseMutate} from "../tools/service";
+import {User} from "../tools/dto";
 
 
 export const createService3 = (): AxiosInstance => {
@@ -35,9 +36,7 @@ export const useGoogleToken = (parameters: any): UseQueryResult<any> => {
     return useQuery(['GoogleToken'], () => googleService.post(``, parameters),)
 }
 
-export const useLogi = (): UseMutate<any> => {
-    return useMutation((data: any) => service.post(`logi`, data))
-}
+
 
 export const useGoogleInfoUser = (): UseMutate<any> => {
     return useMutation(() => googleInfoUserService.get(``))
@@ -73,19 +72,16 @@ export default function CallbackPage() {
         code,
     };
     const { data: googleToken } = useGoogleToken(parameters)
-
-    const logi = useLogi()
+    const googleLogin = useGoogleLogin()
     const googleInfoUser = useGoogleInfoUser()
 
     const login = async () => {
-        //console.log('login пошел')
         // Запрашиваем данные пользователя с Гугл
-        googleInfoUser.mutateAsync(1).then((user: any) => {
-            //console.log(user, 'user')
-            // Запрашиваем данные авторизации
-            logi.mutateAsync({ ...googleToken, ...user }).then((r) => {
+        googleInfoUser.mutateAsync('').then((user: any) => {
+            // Отправляем все, что накопали на бек, с целью получить нашего пользователя
+            const data = { ...googleToken, ...user }
+            googleLogin.mutateAsync(data).then(() => {
                 localStorage.setItem(ACCESS_TOKEN, googleToken.access_token);
-                //console.log(googleToken.access_token,'then access_token')
 
                 service.interceptors.request.use(
                     config => {
