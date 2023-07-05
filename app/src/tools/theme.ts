@@ -26,7 +26,10 @@ const theme = createTheme({
         },
         body1: {
             fontSize: 13,
+            lineHeight: '18px',
             fontWeight: 400,
+            letterSpacing: '0.02em',
+            color: '#070707',
         },
         allVariants: {
             color: "#1B3B6B"

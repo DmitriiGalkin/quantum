@@ -37,7 +37,7 @@ export function Select<T extends Prop>({ label, selectedId, items, onChange, onA
 
     return (
         <div>
-            <div style={{ fontWeight: 900, color: '#070707', letterSpacing: '0.01em' }}>
+            <div style={{ fontWeight: 900, color: '#070707' }}>
                 {label}
             </div>
             <Grid container spacing={3} style={{ paddingTop: 8 }}>

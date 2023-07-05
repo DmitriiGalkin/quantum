@@ -28,7 +28,7 @@ export function DatePicker({ label, value, onChange }: DateFieldProps) {
     return (
         <Stack spacing={2} direction="column">
             {label && (
-                <div style={{ fontWeight: 900, color: '#070707', letterSpacing: '0.01em' }}>
+                <div style={{ fontWeight: 900, color: '#070707' }}>
                     {label}
                 </div>
             )}

@@ -19,7 +19,7 @@ export function TimePicker({ label, value, onChange }: TimeFieldProps) {
     const v = dayjs(value)
     return (
         <div>
-            <div style={{ fontWeight: 900, color: '#070707', letterSpacing: '0.01em' }}>
+            <div style={{ fontWeight: 900, color: '#070707' }}>
                 {label}
             </div>
             <div style={{ paddingTop: 8 }}>

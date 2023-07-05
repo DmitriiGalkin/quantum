@@ -72,7 +72,7 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
                     <div style={{ fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }}>
                         {meet.title}
                     </div>
-                    <div style={{ paddingTop: 24, color: '#070707', opacity: .6, lineHeight: '21px', letterSpacing: '0.025em'}}>
+                    <div style={{ paddingTop: 24, color: '#070707', opacity: .6, lineHeight: '21px'}}>
                         {meet.description}
                     </div>
                     {Boolean(meet.users.length) && (
@@ -96,13 +96,13 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
                                     <Grid xs={6}>
                                         <Stack spacing={2} direction="row" alignItems="center">
                                             {icon}
-                                            <div style={{ fontWeight: 900, color: '#070707', letterSpacing: '0.025em' }}>
+                                            <div style={{ fontWeight: 900, color: '#070707' }}>
                                                 {title}
                                             </div>
                                         </Stack>
                                     </Grid>
                                     <Grid xs={6}>
-                                        <div style={{ fontSize: 13, color: '#070707', letterSpacing: '0.05em' }}>
+                                        <div style={{ color: '#070707', letterSpacing: '0.05em' }}>
                                             {value}
                                         </div>
                                     </Grid>
