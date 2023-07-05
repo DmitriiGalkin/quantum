@@ -42,12 +42,8 @@ export default function CreateMeet({ onClose, newMeet }: CreateMeetDialogProps) 
             <DialogHeader title={title} onClick={onClose}/>
             <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={5}>
-                    <DatePicker
-                        value={meet.datetime}
-                        onChange={(datetime) => setMeet({...meet, datetime })}
-                    />
-                    <Stack spacing={2} flexDirection="row">
-                        <div style={{ paddingRight: 8, flexGrow: 1 }}>
+                    <Stack spacing={1} direction="row">
+                        <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>
                             <Input
                                 name='title'
                                 label="Название"
@@ -62,6 +58,10 @@ export default function CreateMeet({ onClose, newMeet }: CreateMeetDialogProps) 
                             onChange={(datetime) => setMeet({...meet, datetime })}
                         />
                     </Stack>
+                    <DatePicker
+                        value={meet.datetime}
+                        onChange={(datetime) => setMeet({...meet, datetime })}
+                    />
                     <Textarea
                         name='title'
                         label="Описание"

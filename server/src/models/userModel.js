@@ -28,19 +28,20 @@ User.updateTokenById = function(token, id, result){
 
 // Авторизация участника
 User.islogin = function (email, password, result) {
-    dbConn.query("Select * from user where email = ? AND password = ?", [email, password], function (err, res) {
+    dbConn.query("SELECT * from user where email = ? AND password = ?", [email, password], function (err, res) {
         result(null, res);
     });
 };
 // Участник
 User.findById = function (id, result) {
-    dbConn.query("Select * from user where id = ? ", id, function (err, res) {
+
+    dbConn.query("SELECT * from user where id = ? ", id, function (err, res) {
         result(null, res?.length ? res[0] : undefined);
     });
 };
 // Участник
 User.findByEmail = function (email, result) {
-    dbConn.query("Select * from user where email = ? ", email, function (err, res) {
+    dbConn.query("SELECT * from user where email = ? ", email, function (err, res) {
         result(null, res?.length ? res[0] : undefined);
     });
 };
@@ -51,26 +52,26 @@ const parse = (res) => {
 }
 // Участник по token
 User.findByToken = function (token, result) {
-    dbConn.query("Select * from user where token = ? ", token, function (err, res) {
+    dbConn.query("SELECT * from user where token = ? ", token, function (err, res) {
         result(null, (res && res.length) ? parse(res)[0] : null);
     });
 };
 // Участники встречи
 User.findByMeet = function (meet, result) {
-    dbConn.query("Select * from user LEFT JOIN user_meet ON user.id = user_meet.userId where meetId = ?", meet.id, function (err, res) {
+    dbConn.query("SELECT * from user LEFT JOIN user_meet ON user.id = user_meet.userId where meetId = ?", meet.id, function (err, res) {
         result(null, parse(res));
     });
 };
 // Организатор
 User.findByProjectOne = function (project, result) {
-    dbConn.query("Select * from user where id = ?", project.userId, function (err, res) {
+    dbConn.query("SELECT * from user where id = ?", project.userId, function (err, res) {
         result(null, (res && res.length) ? parse(res)[0] : null);
     });
 };
 
 // Участники сообщества
 User.findByCommunity = function (community, result) {
-    dbConn.query("Select * from user LEFT JOIN user_community ON user.id = user_community.userId where communityId = ?", community.id, function (err, res) {
+    dbConn.query("SELECT * from user LEFT JOIN user_community ON user.id = user_community.userId where communityId = ?", community.id, function (err, res) {
         result(null, parse(res));
     });
 };

@@ -32,7 +32,7 @@ interface SelectProps<T> {
     onAdd?: () => void
 }
 
-export function Select<T extends Prop>({ label, selectedId, items, onChange, onAdd }: SelectProps<T>) {
+export function ImageSelect<T extends Prop>({ label, selectedId, items, onChange, onAdd }: SelectProps<T>) {
     const classes = useStyles();
 
     return (
