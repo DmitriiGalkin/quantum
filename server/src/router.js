@@ -1,41 +1,18 @@
 const express = require('express')
 const router = express.Router()
-const User = require('./models/userModel');
 
 const userController =   require('./controllers/userController');
 const meetController =   require('./controllers/meetController');
 const imageController =   require('./controllers/imageController');
 
 /**
- * Подхватываем токен и авторизуем пользователя
- */
-function useUser(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) {
-        req.user = null
-        next()
-    } else {
-        User.findByToken(token, function(err, user) {
-            if (user) {
-                req.user = user
-                next()
-            } else {
-                req.user = null
-                next()
-            }
-        });
-    }
-}
-
-/**
  * Встречи
  */
-router.get('/meets', useUser, meetController.findAll);
-router.get('/meet/:id', useUser, meetController.findById);
-router.post('/meet', useUser, meetController.create);
-router.put('/meet/:id', meetController.update);
-router.delete('/meet/:id', useUser, meetController.delete );
+router.get('/meets', userController.useUser, meetController.findAll);
+router.get('/meet/:id', userController.useUser, meetController.findById);
+router.post('/meet', userController.useUser, meetController.create);
+router.put('/meet/:id', userController.useUser, meetController.update);
+router.delete('/meet/:id', userController.useUser, meetController.delete );
 
 /**
  * Картинки
@@ -43,7 +20,7 @@ router.delete('/meet/:id', useUser, meetController.delete );
 router.post('/image', imageController.upload);
 
 /**
- * Авториазция
+ * Авторизация
  */
 router.post('/user/login', userController.login);
 router.post('/user/googleLogin', userController.googleLogin);
@@ -51,10 +28,10 @@ router.post('/user/googleLogin', userController.googleLogin);
 /**
  * Участники
  */
-router.get('/user', useUser, function(req, res) { res.send(req.user) });
-router.put('/user', useUser, userController.update);
+router.get('/user', userController.useUser, function(req, res) { res.send(req.user) });
+router.put('/user', userController.useUser, userController.update);
 
-router.put('/userMeet/:meetId', useUser, meetController.toggleUserMeet );
+router.put('/userMeet/:meetId', userController.useUser, meetController.toggleUserMeet );
 
 
 module.exports = router

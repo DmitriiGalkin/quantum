@@ -58,3 +58,26 @@ exports.findById = function(req, res) {
         res.send(users && users[0]);
     });
 };
+
+
+/**
+ * Подхватываем токен и авторизуем пользователя
+ */
+exports.useUser = function(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) {
+        req.user = null
+        next()
+    } else {
+        User.findByToken(token, function(err, user) {
+            if (user) {
+                req.user = user
+                next()
+            } else {
+                req.user = null
+                next()
+            }
+        });
+    }
+}
