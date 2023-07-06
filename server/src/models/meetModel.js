@@ -37,7 +37,7 @@ Meet.delete = function(id, result){
 };
 // Встречи //
 Meet.findAll = () => function (result) {
-    dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet where DATE(datetime) >= CURDATE()", function (err, res) {
+    dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet where DATE(datetime) >= CURDATE() ORDER BY datetime", function (err, res) {
         result(null, res || []);
     });
 };
@@ -55,7 +55,7 @@ Meet.findAllByUserId2 = (id) => function (result) {
 };
 // Встречи участника
 Meet.findAllByUserId = (id) => function (result) {
-    dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet where DATE(datetime) >= CURDATE()", function (err, res) {
+    dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet where DATE(datetime) >= CURDATE() ORDER BY datetime", function (err, res) {
         //console.log(err,'err')
         result(null, res || []);
     });

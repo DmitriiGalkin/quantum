@@ -66,8 +66,8 @@ exports.findById = function(req, res) {
 exports.useUser = function(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) {
-        req.user = null
+
+    if (!token) {
         next()
     } else {
         User.findByToken(token, function(err, user) {
@@ -75,8 +75,8 @@ exports.useUser = function(req, res, next) {
                 req.user = user
                 next()
             } else {
-                req.user = null
-                next()
+                // Надо бы его разлогинить
+                res.status(401).send({ error:true, message: 'Токен протух' });
             }
         });
     }

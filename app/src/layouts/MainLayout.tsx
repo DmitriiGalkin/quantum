@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function MainLayout(): JSX.Element {
     const { isAuth, openLogin } = useAuth();
     const classes = useStyles();
-    const [openMeet, setOpenMeet] = useState(false)
     const [openOptions, setOpenOptions] = useState(false)
     const [meet, setMeet] = useState<Meet>()
 

@@ -35,19 +35,13 @@ export const getPWADisplayMode = () => {
 /**
  * Хук срабатывающий при возможности добавить сайт как приложение
  */
-export const useBeforeinstallprompt = () => {
-    const [userText, setUserText] = useState("");
-
+export const usePWA = () => {
     const handleUserKeyPress = useCallback((event: { preventDefault: () => void; }) => {
-        setUserText('Ура!');
         // Запрет показа информационной мини-панели на мобильных устройствах.
         event.preventDefault();
-        console.log('👍', 'beforeinstallprompt', event);
         // Убираем событие, чтобы его можно было активировать позже.
         // @ts-ignore
         window.deferredPrompt = event;
-        // Убираем класс «hidden» из контейнера кнопки установки.
-        // divInstall.classList.toggle('hidden', false);
     }, []);
 
     useEffect(() => {
@@ -57,5 +51,6 @@ export const useBeforeinstallprompt = () => {
         };
     }, [handleUserKeyPress]);
 
-    return userText
+    // @ts-ignore
+    return { onInstall: () => window.deferredPrompt.prompt(), mode: getPWADisplayMode() }
 }

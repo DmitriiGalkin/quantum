@@ -15,7 +15,10 @@ export const createService = (): AxiosInstance => {
         ...config,
     }))
     service.interceptors.request.use((config: AxiosRequestConfig) => {
-        config.headers.Authorization = "Bearer " + localStorage.getItem(ACCESS_TOKEN);
+        const token = localStorage.getItem(ACCESS_TOKEN)
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
     })
     service.interceptors.response.use(response => {
@@ -23,6 +26,7 @@ export const createService = (): AxiosInstance => {
     }, error => {
         if (error.response.status === 401) {
             localStorage.removeItem(ACCESS_TOKEN);
+            window.location.reload();
         }
         return error;
     });

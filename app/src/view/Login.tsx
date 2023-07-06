@@ -15,13 +15,13 @@ export default function Login({ onClose }: LoginProps) {
         login(email)
         onClose()
     }
-//window.location.hostname === 'localhost'
+
     return (
         <div>
             <DialogHeader title="Вход" onClick={onClose}/>
             <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={4}>
-                    {true && (
+                    {window.location.hostname !== 'selfproject.ru' && (
                         <Stack spacing={2}>
                             <Input
                                 name='email'
