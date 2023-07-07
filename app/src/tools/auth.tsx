@@ -1,17 +1,18 @@
 import React, {createContext, useContext, useMemo, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import service, {ACCESS_TOKEN} from "./service";
+import service from "./service";
 import Dialog from "@mui/material/Dialog";
 import { TransitionDialog } from "../components";
 import Login from "../view/Login";
 
+export const ACCESS_TOKEN = 'access_token'
 export const AuthContext = createContext('auth' as any);
 
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const access_token = localStorage.getItem(ACCESS_TOKEN)
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const token = searchParams.get("token")
+    const token = searchParams.get("access_token")
     const [openLogin, setOpenLogin] = useState(false)
 
     if (token) {

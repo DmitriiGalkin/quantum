@@ -1,12 +1,12 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, UseQueryResult} from "@tanstack/react-query";
 import {Meet, User} from "./dto";
+import {ACCESS_TOKEN} from "./auth";
 
 // При разработки хост может быть разным
 const developmentServer = window.location.protocol + '//' + window.location.hostname + ':4000'
 
 const BASE_URL = process.env.NODE_ENV === 'development' ? developmentServer : 'https://selfproject.ru/api'
-export const ACCESS_TOKEN = 'access_token'
 
 export const createService = (): AxiosInstance => {
     const service = axios.create()

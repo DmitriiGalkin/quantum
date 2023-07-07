@@ -1,5 +1,4 @@
 'use strict';
-var dbConn = require('../db');
 const User = require('../models/userModel');
 var jwt = require('jsonwebtoken');
 

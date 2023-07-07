@@ -8,10 +8,8 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import theme from "./tools/theme";
 import CssBaseline from '@mui/material/CssBaseline';
 import {ThemeProvider} from '@mui/material/styles';
-import {GoogleOAuthProvider} from '@react-oauth/google';
 import 'dayjs/locale/ru';
 
-import {GOOGLE_O_AUTH_PROVIDER_CLIENT_ID} from "./tools/googleAuth";
 import {router} from "./router";
 
 const queryClient = new QueryClient()
@@ -20,19 +18,16 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <GoogleOAuthProvider clientId={GOOGLE_O_AUTH_PROVIDER_CLIENT_ID}>
-      <React.StrictMode>
-          <ThemeProvider theme={theme}>
-              <QueryClientProvider client={queryClient}>
-                  <CssBaseline />
-                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
-                      <RouterProvider router={router} />
-                  </LocalizationProvider>
-              </QueryClientProvider>
-          </ThemeProvider>
-      </React.StrictMode>
-    </GoogleOAuthProvider>,
-
+  <React.StrictMode>
+      <ThemeProvider theme={theme}>
+          <QueryClientProvider client={queryClient}>
+              <CssBaseline />
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
+                  <RouterProvider router={router} />
+              </LocalizationProvider>
+          </QueryClientProvider>
+      </ThemeProvider>
+  </React.StrictMode>
 );
 
 reportWebVitals();
