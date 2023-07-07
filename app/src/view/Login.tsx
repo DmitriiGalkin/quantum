@@ -49,6 +49,7 @@ export default function Login({ onClose }: LoginProps) {
                                 </svg>
                             </a>
                         </div>
+                        <a className="button google" href="http://localhost:4000/login/federated/google">Sign in with Google</a>
                     </Stack>
                 </Stack>
             </div>
