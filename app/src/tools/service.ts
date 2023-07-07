@@ -80,7 +80,6 @@ export const useGoogleLogin = (): UseMutate<User> => useMutation((data: any) => 
  */
 export const useUser = (): UseQueryResult<User> => useQuery(['user'], () => service.get(`/user`))
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
-export const useUserByEmail = (): UseMutate<string> => useMutation((email) => service.post("/user/login", {email}))
 export const useToggleMeetUser = (): UseMutate<number> => useMutation((meetId) => service.put("/userMeet/" + meetId))
 export const useDeleteMeet = (): UseMutate<number> => useMutation((meetId) => service.delete(`/meet/${meetId}`))
 

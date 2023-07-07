@@ -40,7 +40,7 @@ passport.deserializeUser(function(user, cb) {
 router.get('/login/federated/google', passport.authenticate('google'));
 router.get('/oauth2/redirect/google', (req, res) => passport.authenticate('google', function(err, user) {
     if (!user) { return res.redirect('/login'); }
-    res.redirect('http://localhost:3000/google?token=' + user.username);
+    res.redirect('http://localhost:3000/?token=' + user.username);
 })(req, res));
 
 /**

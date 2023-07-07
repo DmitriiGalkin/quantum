@@ -1,50 +1,23 @@
 import React, {createContext, useContext, useMemo, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import service, {ACCESS_TOKEN, useUserByEmail} from "./service";
+import service, {ACCESS_TOKEN} from "./service";
 import Dialog from "@mui/material/Dialog";
 import { TransitionDialog } from "../components";
 import Login from "../view/Login";
 
 export const AuthContext = createContext('auth' as any);
 
-export const useNavigateAfterLogin = () => {
-    const navigate = useNavigate();
-
-    const backUrl = localStorage.getItem('backUrl')
-    if (backUrl) {
-        return () => {
-            navigate(backUrl ? backUrl : "/", { replace: true });
-        }
-    }
-    return () => navigate("/", { replace: true });
-}
-
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const access_token = localStorage.getItem(ACCESS_TOKEN)
-    const redirect = useNavigateAfterLogin()
     const navigate = useNavigate();
-    const userByEmail = useUserByEmail()
     const [searchParams] = useSearchParams();
-    const backUrl = searchParams.get("backUrl")
+    const token = searchParams.get("token")
     const [openLogin, setOpenLogin] = useState(false)
 
-    if (backUrl) {
-        localStorage.setItem('backUrl', backUrl);
+    if (token) {
+        localStorage.setItem(ACCESS_TOKEN, token);
+        navigate("/", { replace: true });
     }
-
-    // Нативный логин
-    const login = async (email: string) => {
-        userByEmail.mutateAsync(email).then((result: any) => {
-            localStorage.setItem(ACCESS_TOKEN, result.access_token);
-            service.interceptors.request.use(
-                config => {
-                    config.headers['Authorization'] = `Bearer ${result.access_token}`;
-                    return config;
-                },
-            );
-            redirect()
-        })
-    };
 
     const logout = () => {
         localStorage.removeItem(ACCESS_TOKEN);
@@ -62,7 +35,6 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
             isAuth: !!access_token,
             openLogin: () => setOpenLogin(true),
             access_token,
-            login,
             logout
         }),
         [access_token]
