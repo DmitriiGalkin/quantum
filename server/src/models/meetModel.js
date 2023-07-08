@@ -35,9 +35,13 @@ Meet.delete = function(id, result){
         result(null, res);
     });
 };
-// Встречи //
-Meet.findAll = () => function (result) {
-    dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet where DATE(datetime) >= CURDATE() ORDER BY datetime", function (err, res) {
+// Встречи
+const RADIUS = 100000 // Количество метров между мной и местом встречи TODO: сократить радиус с ростом аудитории
+Meet.findAll = (x, y) => function (result) {
+    dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet " +
+        "WHERE DATE(datetime) >= CURDATE() " +
+        "AND ST_Distance_Sphere(point(" + x + ", " + y + "), point(x, y)) < " + RADIUS + " " +
+        "ORDER BY datetime", function (err, res) {
         result(null, res || []);
     });
 };

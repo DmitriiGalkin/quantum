@@ -59,25 +59,15 @@ exports.toggleUserMeet = function(req, res) {
 
 // Встречи
 exports.findAll = function(req, res) {
-    if (!req.user) {
-        Meet.findAll()(function(err, meets) {
-            async.map(meets, User.findByMeet, function(err, meetsUsers) {
-                res.send(meets.map((p, index) => {
-                    const active = meetsUsers[index]?.some((user) => user.userId === req.user?.id)
-                    return ({ ...p, users: meetsUsers[index], active })
-                }));
-            });
+    console.log(req.query, 'req.query')
+    Meet.findAll(req.query.latitude, req.query.longitude)(function(err, meets) {
+        async.map(meets, User.findByMeet, function(err, meetsUsers) {
+            res.send(meets.map((p, index) => {
+                const active = meetsUsers[index]?.some((user) => user.userId === req.user?.id)
+                return ({ ...p, users: meetsUsers[index], active })
+            }));
         });
-    } else {
-        Meet.findAllByUserId(req.user.id)(function(err, meets) {
-            async.map(meets, User.findByMeet, function(err, meetsUsers) {
-                res.send(meets.map((p, index) => {
-                    const active = meetsUsers[index]?.some((user) => user.userId === req.user?.id)
-                    return ({ ...p, users: meetsUsers[index], active })
-                }));
-            });
-        });
-    }
+    });
 };
 // Встреча
 exports.findById = function(req, res) {
