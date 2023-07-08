@@ -47,10 +47,17 @@ export type UseMutate<TVariables, TData = unknown, TError = AxiosError, TContext
     TContext
     >
 
+interface GetMeets {
+    latitude?: string
+    longitude?: string
+}
+
 /**
  * Встречи
  */
-export const useMeets = (): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets`))
+export const useMeets = (params: GetMeets): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets`, {
+    params,
+}))
 export const useMeet = (id?: number): UseQueryResult<Meet> => {
     return useQuery(['meet', id], () => service.get(`/meet/${id}`), {
         enabled: Boolean(id),

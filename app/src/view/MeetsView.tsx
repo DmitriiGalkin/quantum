@@ -4,9 +4,11 @@ import {useMeets} from "../tools/service";
 import {getFilteredMeetsByDate, getMeetsGroup2, getWeek} from "../tools/helper";
 import {LocalDate} from "@js-joda/core";
 import {useLocation, useNavigate} from "react-router-dom";
+import {useGeolocation} from "../tools/geolocation";
 
 export default function MeetsView() {
-    const { data: meets = [], refetch } = useMeets()
+    const { latitude, longitude } = useGeolocation()
+    const { data: meets = [], refetch } = useMeets({ latitude, longitude })
     const location = useLocation();
     const date = new URLSearchParams(location.search).get('date')
     const history = useNavigate();
