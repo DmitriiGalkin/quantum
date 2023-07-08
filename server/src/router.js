@@ -8,6 +8,7 @@ const imageController =   require('./controllers/imageController');
 const strategys =   require('./strategys');
 
 passport.use(strategys.google);
+passport.use(strategys.mailru);
 
 /**
  * Встречи
@@ -30,6 +31,11 @@ router.post('/user/login', userController.login);
 router.post('/user/googleLogin', userController.googleLogin);
 router.get('/login/federated/google', passport.authenticate('google'));
 router.get('/oauth2/redirect/google', (req, res) => passport.authenticate('google', function(err, user) {
+    if (!user) { return res.redirect('/login'); }
+    res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
+})(req, res));
+router.get('/login/federated/mailru', passport.authenticate('mailru'));
+router.get('/oauth2/redirect/mailru', (req, res) => passport.authenticate('mailru', function(err, user) {
     if (!user) { return res.redirect('/login'); }
     res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
 })(req, res));

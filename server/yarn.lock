@@ -2781,6 +2781,13 @@ passport-google-oauth20@^2.0.0:
   dependencies:
     passport-oauth2 "1.x.x"
 
+passport-mail@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/passport-mail/-/passport-mail-1.0.1.tgz#7c589b179c8018a90d0268a1dfd30ceff2808311"
+  integrity sha512-DzuZ5mcMbsQAcfMdSrlg43/XjaegjSwhF+cPngMVTZLbpk0D1dXlaQFwT6avxskWvKYKABskyrOmcNsS5lFDpA==
+  dependencies:
+    passport-oauth2 "1.x.x"
+
 passport-oauth2@1.x.x:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/passport-oauth2/-/passport-oauth2-1.7.0.tgz#5c4766c8531ac45ffe9ec2c09de9809e2c841fc4"
