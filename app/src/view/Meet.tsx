@@ -35,7 +35,6 @@ interface MeetComponentProps {
     renderFooter?: () => JSX.Element
 }
 export default function MeetComponent({meet, renderHeader, renderFooter}: MeetComponentProps) {
-
     const classes = useStyles();
 
     if (!meet) { return null }
@@ -63,7 +62,7 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
 
     return (
         <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)'}}>
-            <img src={meet.image} className={classes.image}/>
+            <img alt={meet.title} src={meet.image} className={classes.image}/>
             <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
                 {renderHeader && renderHeader()}
             </div>
@@ -91,7 +90,7 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
                     )}
                     <div id="parameters" style={{ paddingTop: 48}}>
                         <Stack spacing={3} direction="column">
-                            {parameters.map(({ icon, title, value }, index) => (
+                            {parameters.map(({ icon, title, value }) => (
                                 <Grid container key={title}>
                                     <Grid xs={6}>
                                         <Stack spacing={2} direction="row" alignItems="center">

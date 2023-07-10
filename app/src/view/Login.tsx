@@ -1,38 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Stack} from "@mui/material";
-import {useAuth} from "../tools/auth";
-import {Input, Button, DialogHeader} from "../components";
+import {DialogHeader} from "../components";
 
 export interface LoginProps {
     onClose: () => void;
 }
 export default function Login({ onClose }: LoginProps) {
-    const [email, setEmail] = useState('')
-    const { login } = useAuth();
-
-    const onClickSave = () => {
-        login(email)
-        onClose()
-    }
-
     return (
         <div>
             <DialogHeader title="Вход" onClick={onClose}/>
             <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={4}>
-                    {window.location.hostname !== 'selfproject.ru' && (
-                        <Stack spacing={2}>
-                            <Input
-                                name='email'
-                                label="Почта"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <Button onClick={onClickSave}>
-                                Войти
-                            </Button>
-                        </Stack>
-                    )}
                     <div style={{ paddingTop: 24, opacity: .6, lineHeight: '21px'}}>
                         Пожалуйста, авторизуйтесь удобным для вас способом:
                     </div>
