@@ -18,14 +18,14 @@ export default function MeetsView() {
     const meetsGroup = getMeetsGroup2(meets)
     const week = getWeek(selectedDate, meetsGroup)
 
-    if (geolocationError) {
-        return (
-            <div>
-                Ошибка определения геолокации:
-                {geolocationError}
-            </div>
-        )
-    }
+    // if (geolocationError) {
+    //     return (
+    //         <div>
+    //             Ошибка определения геолокации:
+    //             {geolocationError}
+    //         </div>
+    //     )
+    // }
 
     return (
         <Meets meetsGroup={meetsGroup} refetch={refetch} week={week} onChangeDay={(date) => {
