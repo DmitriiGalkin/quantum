@@ -12,7 +12,7 @@ export default function Login({ onClose }: LoginProps) {
             <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={4}>
                     <div style={{ paddingTop: 24, opacity: .6, lineHeight: '21px'}}>
-                        Пожалуйста, авторизуйтесь удобным для вас способом:
+                        Только авторизованные пользователи могут создавать встречи и присоединяться к встрече. Пожалуйста, авторизуйтесь одним нажатием удобным для вас способом:
                     </div>
                     <Stack justifyContent="center" alignItems="center" direction="row" spacing={2}>
                         <div style={{ width: 30}}>

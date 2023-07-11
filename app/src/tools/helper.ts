@@ -36,6 +36,7 @@ export interface CalendarDay {
     day: number
     active: boolean
     meetsLength: number
+    activeMeetsLength: number
 }
 /**
  * Подготавливаем неделю
@@ -50,7 +51,8 @@ export const getWeek = (selectedDate?: string, meetsGroup?: { id: string, meets:
         dayOfWeekValue: getDayOfWeekTitle(targetDay.dayOfWeek().value() - 1),
         day: targetDay.dayOfMonth(),
         active: selectedDate === re,
-        meetsLength: meetsGroup ? meetsGroup.find(({id}) => id === re)?.meets.filter((meet) => meet.active).length || 0 : 0,
+        meetsLength: meetsGroup ? meetsGroup.find(({id}) => id === re)?.meets.length || 0 : 0,
+        activeMeetsLength: meetsGroup ? meetsGroup.find(({id}) => id === re)?.meets.filter((meet) => meet.active).length || 0 : 0,
     }
 })
 

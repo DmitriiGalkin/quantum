@@ -28,6 +28,9 @@ const useStyles = makeStyles(() => ({
         backgroundColor: '#394F63',
         color: '#ffffff',
     },
+    dayFilled: {
+        opacity: .6
+    },
     dayAbsolute: {
         position: 'absolute',
         top: 0,
@@ -81,27 +84,30 @@ export function Calendar ({ week, onChange }: CalendarProps): JSX.Element {
 
     return (
         <Stack spacing={1} direction="row" justifyContent="space-between">
-            {week.map(({id, dayOfWeekValue, day, active, meetsLength}, index) =>
-                <Stack key={day} spacing={3} direction="column" alignItems="center" onClick={() => { onChange && onChange(id)}} style={{ width: '100%'}}>
-                    <div className={clsx(classes.dayOfWeek, active && classes.dayOfWeekActive)}>
-                        {dayOfWeekValue}
-                    </div>
-                    <div className={clsx(classes.day, active && classes.dayActive)}>
-                        <div className={classes.dayAbsolute}>
-                            <div className={classes.daySquare}>
-                                <p className={classes.dayP}>{day}</p>
-                            </div>
+            {week.map(({id, dayOfWeekValue, day, active, meetsLength, activeMeetsLength}, index) => {
+                const onClick = () => onChange ? onChange(id) : undefined
+                return (
+                    <Stack key={day} spacing={3} direction="column" alignItems="center" onClick={onClick} style={{ width: '100%'}}>
+                        <div className={clsx(classes.dayOfWeek, active && classes.dayOfWeekActive)}>
+                            {dayOfWeekValue}
                         </div>
-                        {Boolean(meetsLength) && (
-                            <div className={classes.length}>
-                                <div className={classes.lengthSquare}>
-                                    <p className={classes.lengthP}>{meetsLength}</p>
+                        <div className={clsx(classes.day, active && classes.dayActive, !meetsLength && classes.dayFilled)}>
+                            <div className={classes.dayAbsolute}>
+                                <div className={classes.daySquare}>
+                                    <p className={classes.dayP}>{day}</p>
                                 </div>
                             </div>
-                        )}
-                    </div>
-                </Stack>
-            )}
+                            {Boolean(activeMeetsLength) && (
+                                <div className={classes.length}>
+                                    <div className={classes.lengthSquare}>
+                                        <p className={classes.lengthP}>{activeMeetsLength}</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </Stack>
+                )
+            })}
         </Stack>
     )
 }

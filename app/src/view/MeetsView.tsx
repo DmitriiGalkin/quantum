@@ -8,7 +8,7 @@ import {useGeolocation} from "../tools/geolocation";
 
 export default function MeetsView() {
     const { latitude, longitude, error: geolocationError } = useGeolocation()
-    const { data: meets = [], refetch } = useMeets({ latitude, longitude })
+    const { data: meets = [], refetch } = useMeets()
     const location = useLocation();
     const date = new URLSearchParams(location.search).get('date')
     const history = useNavigate();
@@ -26,7 +26,6 @@ export default function MeetsView() {
     //         </div>
     //     )
     // }
-
     return (
         <Meets meetsGroup={meetsGroup} refetch={refetch} week={week} onChangeDay={(date) => {
             setSelectedDate(date)

@@ -40,7 +40,7 @@ const RADIUS = 100000 // Количество метров между мной �
 Meet.findAll = (x, y) => function (result) {
     dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet " +
         "WHERE DATE(datetime) >= CURDATE() " +
-        "AND ST_Distance_Sphere(point(" + x + ", " + y + "), point(x, y)) < " + RADIUS + " " +
+        //"AND ST_Distance_Sphere(point(" + x + ", " + y + "), point(x, y)) < " + RADIUS + " " +
         "ORDER BY datetime", function (err, res) {
         result(null, res || []);
     });

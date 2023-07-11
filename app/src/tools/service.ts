@@ -55,11 +55,13 @@ interface GetMeets {
 /**
  * Встречи
  */
-export const useMeets = (params: GetMeets): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets`, {
+export const useMeets = (params?: GetMeets): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets`, {
     params,
-}),{
-    enabled: Boolean(params.latitude) || Boolean(params.longitude),
-})
+}))
+
+//     ,{
+//     enabled: Boolean(params?.latitude) || Boolean(params?.longitude),
+// }
 export const useMeet = (id?: number): UseQueryResult<Meet> => {
     return useQuery(['meet', id], () => service.get(`/meet/${id}`), {
         enabled: Boolean(id),
