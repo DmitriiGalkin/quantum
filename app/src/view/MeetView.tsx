@@ -24,13 +24,7 @@ export default function MeetPage() {
 
     if (!meet) return null;
 
-    const onClick = () => {
-        if (isAuth) {
-            toggleMeetUser.mutateAsync(meet.id).then(() => refetch())
-        } else {
-            openLogin()
-        }
-    }
+    const onClick = () => isAuth ? toggleMeetUser.mutateAsync(meet.id).then(() => refetch()) : openLogin()
     const onEdit = async () => setEditMeet(meet)
     const onDelete =  () => deleteMeet.mutateAsync(meet.id).then(() => navigate(`/`))
 
@@ -43,10 +37,7 @@ export default function MeetPage() {
                 onDelete={onDelete}
             />
             <Dialog onClose={() => setEditMeet(undefined)} open={!!editMeet} fullScreen TransitionComponent={TransitionDialog}>
-                {!!editMeet && (<CreateMeet onClose={() => {
-                    setEditMeet(undefined)
-                    refetch()
-                }} meet={editMeet} setMeet={setEditMeet} />)}
+                {!!editMeet && (<CreateMeet onClose={() => setEditMeet(undefined)} meet={editMeet} setMeet={setEditMeet} />)}
             </Dialog>
         </>
     );

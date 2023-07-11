@@ -33,9 +33,9 @@ export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogP
             }
         }
     };
-
     const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
     const saveButtonTitle = meet.id ? 'Сохранить' : "Создать встречу"
+
     return (
         <div>
             <DialogHeader title={title} onClick={onClose}/>
