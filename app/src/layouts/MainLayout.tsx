@@ -1,5 +1,5 @@
 import {Outlet} from "react-router-dom";
-import {Box, Stack, Theme,} from "@mui/material";
+import {Box, Stack} from "@mui/material";
 import CreateMeet from "../view/CreateMeet";
 import Profile from "../view/Profile";
 import React, {useState} from "react";
@@ -9,8 +9,10 @@ import {TransitionDialog} from "../components";
 import {useAuth} from "../tools/auth";
 import dayjs from "dayjs";
 import {Meet} from "../tools/dto";
+import {useLocalStorage} from "usehooks-ts";
+import {LocalDate} from "@js-joda/core";
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         backgroundColor: '#F5F5F5',
         display: 'flex',
@@ -46,7 +48,8 @@ export default function MainLayout(): JSX.Element {
     const classes = useStyles();
     const [openOptions, setOpenOptions] = useState(false)
     const [meet, setMeet] = useState<Meet>()
-    const onAdd = () => isAuth ? setMeet({ id: 0, title: '', description:'', x: '55.933093', y: '37.054661', datetime: dayjs().format('YYYY-MM-DD HH:mm:ss')}) : openLogin()
+    const [selectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
+    const onAdd = () => isAuth ? setMeet({ id: 0, title: '', description:'', x: '55.933093', y: '37.054661', datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')}) : openLogin()
 
     return (
         <>

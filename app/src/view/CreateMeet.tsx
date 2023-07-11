@@ -3,8 +3,9 @@ import {Stack} from "@mui/material";
 import {useAddMeet, useEditMeet} from "../tools/service";
 import {Meet} from "../tools/dto";
 import {DialogHeader, TimePicker, Input, DatePicker, ImageField, Textarea, Button} from "../components";
-import {useNavigate} from "react-router-dom";
 import {convertToMeetsGroupTime} from "../tools/date";
+import {useLocalStorage} from "usehooks-ts";
+import {LocalDate} from "@js-joda/core";
 
 export interface CreateMeetDialogProps {
     meet: Meet
@@ -15,7 +16,7 @@ export interface CreateMeetDialogProps {
 export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogProps) {
     const addMeet = useAddMeet()
     const editMeet = useEditMeet()
-    const navigate = useNavigate();
+    const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
 
     const onClickSave = () => {
         if (meet) {
@@ -26,8 +27,8 @@ export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogP
                 })
             } else {
                 addMeet.mutateAsync(meetWithTimezone).then(() => {
+                    setSelectedDate(convertToMeetsGroupTime(meet.datetime))
                     onClose()
-                    navigate(`/?date=${convertToMeetsGroupTime(meet.datetime)}`)
                 })
             }
         }

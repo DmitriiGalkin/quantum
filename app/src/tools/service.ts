@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
-import {useMutation, UseMutationResult, useQuery, UseQueryResult} from "@tanstack/react-query";
+import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import {Meet, User} from "./dto";
 import {ACCESS_TOKEN} from "./auth";
 
@@ -71,7 +71,14 @@ export const useMeetUsers = (id: number): UseQueryResult<User[]> => {
     return useQuery(['meetUsers', id], () => service.get(`/meet/${id}/users`),)
 }
 
-export const useAddMeet = (): UseMutate<Meet> => useMutation((meet) => service.post("/meet", meet))
+export const useAddMeet = (): UseMutate<Meet> => {
+    const queryClient = useQueryClient()
+    return useMutation((meet) => service.post("/meet", meet), {
+        onSuccess() {
+            queryClient.invalidateQueries({ queryKey: ['meets'] })
+        },
+    })
+}
 export const useEditMeet = (): UseMutate<Meet> => useMutation((meet) => service.put(`/meet/${meet.id}`, meet))
 
 /**
@@ -80,11 +87,6 @@ export const useEditMeet = (): UseMutate<Meet> => useMutation((meet) => service.
 export const useUploadImage = (): UseMutate<FormData, string> => {
     return useMutation((formData) => service.post(`/image`, formData, { headers: { "Content-Type": "multipart/form-data" }}))
 }
-
-/**
- * Авторизации
- */
-export const useGoogleLogin = (): UseMutate<User> => useMutation((data: any) => service.post(`/user/googleLogin`, data))
 
 /**
  * Пользователь

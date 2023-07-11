@@ -10,9 +10,10 @@ interface MeetsProps {
     refetch?: () => void
     onChangeDay: (date: string) => void
     selectedMeet?: Meet
+    selectedDate?: string
 }
-export default function Meets({week, refetch, onChangeDay, selectedMeet}: MeetsProps) {
-    const [value, setValue] = React.useState(0);
+export default function Meets({week, refetch, onChangeDay, selectedMeet, selectedDate}: MeetsProps) {
+    const [value, setValue] = React.useState(week.findIndex(({ id }) => id === selectedDate));
 
     const handleChangeIndex = (index: number) => {
         const date = week[index]?.id
@@ -24,6 +25,10 @@ export default function Meets({week, refetch, onChangeDay, selectedMeet}: MeetsP
         onChangeDay(date)
         setValue(week.findIndex(({ id }) => id === date));
     };
+
+    console.log(value,'value')
+    console.log(week,'week')
+
     return (
         <div style={{
                 display: 'flex',
