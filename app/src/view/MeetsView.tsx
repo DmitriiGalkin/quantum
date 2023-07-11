@@ -15,8 +15,7 @@ export default function MeetsView() {
 
     const localDate = LocalDate.now()
     const [selectedDate, setSelectedDate] = useState<string>(date ? date : localDate.toString())
-    const meetsGroup = getMeetsGroup2(meets)
-    const week = getWeek(selectedDate, meetsGroup)
+    const week = getWeek(selectedDate, meets)
 
     // if (geolocationError) {
     //     return (
@@ -27,7 +26,7 @@ export default function MeetsView() {
     //     )
     // }
     return (
-        <Meets meetsGroup={meetsGroup} refetch={refetch} week={week} onChangeDay={(date) => {
+        <Meets refetch={refetch} week={week} onChangeDay={(date) => {
             setSelectedDate(date)
             history(`/?date=${date}`)
         }} />

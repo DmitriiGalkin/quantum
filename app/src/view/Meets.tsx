@@ -6,24 +6,23 @@ import {Meet} from "../tools/dto";
 import SwipeableViews from 'react-swipeable-views';
 
 interface MeetsProps {
-    meetsGroup: { id:string, meets: Meet[] }[]
     week: CalendarDay[]
     refetch?: () => void
     onChangeDay: (date: string) => void
     selectedMeet?: Meet
 }
-export default function Meets({meetsGroup, refetch, onChangeDay, week, selectedMeet}: MeetsProps) {
+export default function Meets({week, refetch, onChangeDay, selectedMeet}: MeetsProps) {
     const [value, setValue] = React.useState(0);
 
     const handleChangeIndex = (index: number) => {
-        const date = meetsGroup[index]?.id
+        const date = week[index]?.id
         onChangeDay(date)
         setValue(index);
     };
 
     const onChangeCalendarDay = (date: string) => {
         onChangeDay(date)
-        setValue(meetsGroup.findIndex(({ id }) => id === date));
+        setValue(week.findIndex(({ id }) => id === date));
     };
     return (
         <div style={{
@@ -37,7 +36,7 @@ export default function Meets({meetsGroup, refetch, onChangeDay, week, selectedM
                     onChangeIndex={handleChangeIndex}
                     containerStyle={{ height: 400 }}
                 >
-                    {meetsGroup.map(({id, meets}) => (
+                    {week.map(({id, meets}) => (
                         <div key={id} style={{ padding: '0 15px'}}>
                             <Stack spacing={2}>
                                 {meets.map((meet) =>

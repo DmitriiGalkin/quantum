@@ -37,22 +37,27 @@ export interface CalendarDay {
     active: boolean
     meetsLength: number
     activeMeetsLength: number
+    meets: Meet[]
 }
 /**
  * Подготавливаем неделю
  */
-export const getWeek = (selectedDate?: string, meetsGroup?: { id: string, meets: Meet[] }[]): CalendarDay[] => Array.from(Array(DAYS_COUNT).keys()).map((day) => {
+export const getWeek = (selectedDate?: string, meets?: Meet[]): CalendarDay[] => Array.from(Array(DAYS_COUNT).keys()).map((day) => {
+    const meetsGroup = getMeetsGroup2(meets)
+
     const localDate = LocalDate.now()
     const targetDay = localDate.plusDays(day)
     const re = targetDay.toString()
+    const meets3 = meetsGroup ? meetsGroup.find(({id}) => id === re)?.meets : []
 
     return {
         id: re,
         dayOfWeekValue: getDayOfWeekTitle(targetDay.dayOfWeek().value() - 1),
         day: targetDay.dayOfMonth(),
         active: selectedDate === re,
-        meetsLength: meetsGroup ? meetsGroup.find(({id}) => id === re)?.meets.length || 0 : 0,
-        activeMeetsLength: meetsGroup ? meetsGroup.find(({id}) => id === re)?.meets.filter((meet) => meet.active).length || 0 : 0,
+        meetsLength: meets3?.length || 0,
+        activeMeetsLength: meets3?.filter((meet) => meet.active).length || 0,
+        meets: meets3 || [],
     }
 })
 
