@@ -31,6 +31,7 @@ export const getFilteredMeetsByDate = (meets: Meet[], date: string, selectedMeet
 export const DAYS_COUNT = 7
 
 export interface CalendarDay {
+    index: number
     id: string
     dayOfWeekValue: string
     day: number
@@ -42,7 +43,7 @@ export interface CalendarDay {
 /**
  * Подготавливаем неделю
  */
-export const getWeek = (selectedDate?: string, meets?: Meet[]): CalendarDay[] => Array.from(Array(DAYS_COUNT).keys()).map((day) => {
+export const getWeek = (selectedDate?: string, meets?: Meet[]): CalendarDay[] => Array.from(Array(DAYS_COUNT).keys()).map((day, index) => {
     const meetsGroup = getMeetsGroup2(meets)
 
     const localDate = LocalDate.now()
@@ -51,6 +52,7 @@ export const getWeek = (selectedDate?: string, meets?: Meet[]): CalendarDay[] =>
     const meets3 = meetsGroup ? meetsGroup.find(({id}) => id === re)?.meets : []
 
     return {
+        index,
         id: re,
         dayOfWeekValue: getDayOfWeekTitle(targetDay.dayOfWeek().value() - 1),
         day: targetDay.dayOfMonth(),

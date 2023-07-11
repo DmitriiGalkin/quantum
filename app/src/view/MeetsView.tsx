@@ -7,10 +7,11 @@ import { useLocalStorage } from 'usehooks-ts'
 
 export default function MeetsView() {
     const { data: meets = [], refetch } = useMeets()
-    const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
-    const week = getWeek(selectedDate, meets)
+    const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
+    const week = getWeek(date, meets)
+    const day = week.find(({ id }) => id === date);
 
     return (
-        <Meets refetch={refetch} week={week} selectedDate={selectedDate} onChangeDay={setSelectedDate} />
+        <Meets week={week} day={day} setDate={setDate} refetch={refetch} />
     );
 }

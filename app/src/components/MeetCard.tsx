@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
         borderRadius: 9.5,
     },
 }));
-export function MeetCard({ meet, selected, refetch }: MeetCardProps) {
+export function MeetCard({ meet, refetch }: MeetCardProps) {
     const { isAuth, openLogin } = useAuth();
     const toggleMeetUser = useToggleMeetUser()
     const classes = useStyles();
@@ -49,7 +49,7 @@ export function MeetCard({ meet, selected, refetch }: MeetCardProps) {
     const title = meet.title
 
     return (
-        <div style={{ padding: 11, backgroundColor: DEFAULT_COLOR, borderRadius: 16, border: `2px solid ${selected ? 'orange' : 'transparent'}` }} onClick={() => navigate(`/meet/${meet.id}`)}>
+        <div style={{ padding: 11, backgroundColor: DEFAULT_COLOR, borderRadius: 16 }} onClick={() => navigate(`/meet/${meet.id}`)}>
             <Stack spacing={2} direction="row">
                 {meet.image && (
                     <div style={{ width: 90, minWidth: 90 }}>
