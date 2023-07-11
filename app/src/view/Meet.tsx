@@ -4,6 +4,8 @@ import {Avatar, AvatarGroup, Box, Stack, Theme} from "@mui/material";
 import {Meet} from "../tools/dto";
 import {convertToMeetDateLong, convertToMeetTime} from "../tools/date";
 import Grid from "@mui/material/Unstable_Grid2";
+import {Back, Button} from "../components";
+import {getOnShare} from "../tools/pwa";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -31,10 +33,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 interface MeetComponentProps {
     meet: Meet
-    renderHeader?: () => JSX.Element
-    renderFooter?: () => JSX.Element
+    onEdit: () => Promise<void>
+    onDelete: () => Promise<void>
+    onClick?: () => void
 }
-export default function MeetComponent({meet, renderHeader, renderFooter}: MeetComponentProps) {
+export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetComponentProps) {
     const classes = useStyles();
 
     if (!meet) { return null }
@@ -59,6 +62,16 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
             value: convertToMeetTime(meet.datetime),
         },
     ]
+    const menuItems = [
+        { title: 'Поделиться', onClick: getOnShare({
+                title: 'Приглашаю на встречу: ' + meet?.title,
+                url: `/meet/${meet?.id}`
+            })},
+    ]
+    if (meet.editable) {
+        menuItems.push({ title: 'Редактировать', onClick: onEdit})
+        menuItems.push({ title: 'Удалить', onClick: onDelete})
+    }
 
     return (
         <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)'}}>
@@ -66,7 +79,7 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
                 {meet.image && <img alt={meet.title} src={meet.image} className={classes.image}/>}
             </div>
             <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
-                {renderHeader && renderHeader()}
+                <Back title={meet.title} menuItems={menuItems} />
             </div>
             <div style={{ position: "relative"}}>
                 <div className={classes.container}>
@@ -112,7 +125,15 @@ export default function MeetComponent({meet, renderHeader, renderFooter}: MeetCo
                         </Stack>
                     </div>
                     <div style={{ paddingTop: 20, marginLeft: -8, marginRight: -8 }}>
-                        {renderFooter && renderFooter()}
+                        {meet.active ? (
+                            <Button onClick={onClick} variant="outlined">
+                                Покинуть встречу
+                            </Button>
+                        ) : (
+                            <Button onClick={onClick}>
+                                Участвовать
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>
