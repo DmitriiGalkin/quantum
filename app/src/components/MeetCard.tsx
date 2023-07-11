@@ -1,7 +1,7 @@
 import React from 'react';
 import {Meet} from "../tools/dto";
 import {convertToMeetDate, convertToMeetTime} from "../tools/date";
-import {Avatar, AvatarGroup, Box, Stack, Typography} from "@mui/material";
+import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
 import {useToggleMeetUser} from "../tools/service";
 import {makeStyles} from '@mui/styles';
 import {DEFAULT_COLOR} from "../tools/theme";

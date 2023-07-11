@@ -2,7 +2,7 @@ import React, {createContext, useContext, useMemo, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import service from "./service";
 import Dialog from "@mui/material/Dialog";
-import { TransitionDialog } from "../components";
+import {TransitionDialog} from "../components";
 import Login from "../view/Login";
 
 export const ACCESS_TOKEN = 'access_token'

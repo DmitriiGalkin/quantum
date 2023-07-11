@@ -1,6 +1,6 @@
 import React from "react";
 import {createBrowserRouter, createRoutesFromElements} from "react-router-dom";
-import { Route } from "react-router";
+import {Route} from "react-router";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
 import MeetsView from "./view/MeetsView";

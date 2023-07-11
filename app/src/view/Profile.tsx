@@ -3,7 +3,7 @@ import {useUpdateUser, useUser} from "../tools/service";
 import {User} from "../tools/dto";
 import {Stack} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import {Input, DialogHeader, ImageField, Button} from "../components";
+import {Button, DialogHeader, ImageField, Input} from "../components";
 import {useAuth} from "../tools/auth";
 
 const useStyles = makeStyles(() => ({
