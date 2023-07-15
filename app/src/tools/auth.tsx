@@ -1,22 +1,23 @@
-import React, {createContext, useContext, useMemo, useState} from "react";
+import React, {createContext, useContext, useMemo} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import service from "./service";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components";
 import Login from "../view/Login";
+import {useToggle} from "usehooks-ts";
 
 export const ACCESS_TOKEN = 'access_token'
 export const AuthContext = createContext('auth' as any);
 
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
-    const access_token = localStorage.getItem(ACCESS_TOKEN)
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const token = searchParams.get("access_token")
-    const [openLogin, setOpenLogin] = useState(false)
-
-    if (token) {
-        localStorage.setItem(ACCESS_TOKEN, token);
+    const tokenSearchParam = searchParams.get("access_token")
+    const access_token = localStorage.getItem(ACCESS_TOKEN) || tokenSearchParam
+    const navigate = useNavigate();
+    const [openLogin, toggleOpenLogin] = useToggle()
+    const isAuth =  !!access_token
+    if (tokenSearchParam) {
+        localStorage.setItem(ACCESS_TOKEN, tokenSearchParam);
         navigate("/", { replace: true });
     }
 
@@ -31,20 +32,26 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
         navigate("/", { replace: true });
     };
 
+    /**
+     * Функция триггер. Если пользователь авторизован, то функция вызовется,
+     * если же нет, то запускается механизм авторизации
+     */
+    const authFn = (fn: () => void) => isAuth ? fn : toggleOpenLogin
+
     const value = useMemo(
         () => ({
-            isAuth: !!access_token,
-            openLogin: () => setOpenLogin(true),
+            isAuth,
+            openLogin: toggleOpenLogin,
             access_token,
-            logout
+            logout,
+            authFn
         }),
         [access_token]
     );
     return <AuthContext.Provider value={value}>
         {children}
-        <Dialog onClose={() => setOpenLogin(false)} open={openLogin} fullScreen TransitionComponent={TransitionDialog}>
-            {openLogin && (
-                <Login onClose={() => setOpenLogin(false)} />)}
+        <Dialog onClose={toggleOpenLogin} open={openLogin} fullScreen TransitionComponent={TransitionDialog}>
+            {openLogin && <Login onClose={toggleOpenLogin} />}
         </Dialog>
     </AuthContext.Provider>;
 };

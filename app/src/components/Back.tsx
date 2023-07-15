@@ -8,11 +8,10 @@ interface MenuItemProps {
     onClick: () => void
 }
 interface BackProps {
-    title?: string
     onClick?: () => void
     menuItems?: MenuItemProps[]
 }
-export function Back({ title, onClick, menuItems }: BackProps) {
+export function Back({ onClick, menuItems }: BackProps) {
     const navigate = useNavigate();
     const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
 

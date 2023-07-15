@@ -1,6 +1,24 @@
 import React, {ChangeEvent} from 'react';
 import {compress} from "../tools/image";
 import {useUploadImage} from "../tools/service";
+import {makeStyles} from "@mui/styles";
+
+const useStyles = makeStyles(() => ({
+    blockImage: {
+        width: '100%',
+        paddingTop: '100%',
+        position: 'relative',
+    },
+    image: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        borderRadius: 100
+    },
+}));
 
 interface ImageFieldProps {
     label: string
@@ -9,6 +27,7 @@ interface ImageFieldProps {
 }
 export function ImageField({ label, onChange, value }: ImageFieldProps) {
     const uploadImage = useUploadImage()
+    const classes = useStyles();
 
     const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -25,19 +44,25 @@ export function ImageField({ label, onChange, value }: ImageFieldProps) {
     };
 
     return (
-        <div>
+        <div style={{  }}>
             <label htmlFor="file">{label}</label>
             <div style={{
                 display: 'block',
                 width: '100%',
-                padding: '14px 15px',
-                fontSize: '16px',
+                padding: 10,
+                fontSize: '13px',
                 lineHeight: 1.5,
                 color: '#212529',
                 backgroundColor: '#F5F5F5',
                 backgroundClip: 'padding-box',
-                borderRadius: 10
+                borderRadius: 10,
+                position: 'relative'
             }}>
+                <div style={{ position: 'absolute', right: 8, top: 8, width: 40 }}>
+                    <div className={classes.blockImage}>
+                        <img alt="file" src={value} className={classes.image}/>
+                    </div>
+                </div>
                 <input
                     type="file"
                     id="file"

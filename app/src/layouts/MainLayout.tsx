@@ -1,16 +1,17 @@
 import {Outlet} from "react-router-dom";
-import {Box, Stack} from "@mui/material";
+import {Box, Drawer, Stack, SwipeableDrawer} from "@mui/material";
 import CreateMeet from "../view/CreateMeet";
 import Profile from "../view/Profile";
 import React, {useState} from "react";
 import {makeStyles} from "@mui/styles";
 import Dialog from "@mui/material/Dialog";
-import {TransitionDialog} from "../components";
+import {AppBanner, DialogHeader, TransitionDialog} from "../components";
 import {useAuth} from "../tools/auth";
 import dayjs from "dayjs";
 import {Meet} from "../tools/dto";
-import {useLocalStorage} from "usehooks-ts";
+import {useLocalStorage, useToggle} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
+import {useUser} from "../tools/service";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -41,15 +42,33 @@ const useStyles = makeStyles(() => ({
         right: 0,
         zIndex: 10
     },
+    blockImage: {
+        width: '100%',
+        paddingTop: '100%',
+        position: 'relative',
+    },
+    image: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        borderRadius: 100
+    },
 }));
 
 export default function MainLayout(): JSX.Element {
-    const { isAuth, openLogin } = useAuth();
+    const { isAuth, authFn } = useAuth();
+    const { data: user } = useUser();
+
     const classes = useStyles();
-    const [openOptions, setOpenOptions] = useState(false)
+    const [profile, toggleProfile] = useToggle()
+    const [menu, toggleMenu] = useToggle()
     const [meet, setMeet] = useState<Meet>()
     const [selectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
-    const onAdd = () => isAuth ? setMeet({ id: 0, title: '', description:'', x: '55.933093', y: '37.054661', datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')}) : openLogin()
+
+    const onAdd = authFn(() => setMeet({ id: 0, title: '', description:'', x: '55.933093', y: '37.054661', datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')}))
 
     return (
         <>
@@ -58,16 +77,10 @@ export default function MainLayout(): JSX.Element {
                     <Stack spacing={2} direction="row" justifyContent="space-between" style={{ width: '100%' }} alignItems="center">
                         <Stack spacing={4} direction="row" justifyContent="space-between" alignItems="center">
                             {isAuth && (
-                                <div onClick={() => setOpenOptions(true)} style={{ display: 'flex' }}>
-                                    <svg width="18" height="18" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g clipPath="url(#clip0_2124_43695)">
-                                            <path d="M2.88867 21.7282H17.6192C19.5645 21.7282 20.4903 21.1423 20.4903 19.8532C20.4903 16.7829 16.6114 12.3415 10.2598 12.3415C3.89649 12.3415 0.0175781 16.7829 0.0175781 19.8532C0.0175781 21.1423 0.943359 21.7282 2.88867 21.7282ZM2.33789 19.9587C2.0332 19.9587 1.9043 19.8767 1.9043 19.6306C1.9043 17.697 4.88086 14.111 10.2598 14.111C15.627 14.111 18.6035 17.697 18.6035 19.6306C18.6035 19.8767 18.4864 19.9587 18.1817 19.9587H2.33789ZM10.2598 10.8767C13.0488 10.8767 15.3223 8.40406 15.3223 5.38062C15.3223 2.38062 13.0606 0.0251465 10.2598 0.0251465C7.48242 0.0251465 5.19727 2.42749 5.19727 5.40406C5.19727 8.41577 7.4707 10.8767 10.2598 10.8767ZM10.2598 9.10718C8.54883 9.10718 7.08399 7.47827 7.08399 5.40406C7.08399 3.36499 8.52539 1.79468 10.2598 1.79468C12.0059 1.79468 13.4356 3.32984 13.4356 5.38062C13.4356 7.45484 11.9824 9.10718 10.2598 9.10718Z" fill="white"/>
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_2124_43695">
-                                                <rect width="20.4727" height="21.7148" fill="white" transform="translate(0.0175781 0.0251465)"/>
-                                            </clipPath>
-                                        </defs>
+                                <div onClick={toggleMenu} style={{ display: 'flex' }}>
+                                    <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2 2H22" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                                        <path d="M7 10L22 10" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
                                     </svg>
                                 </div>
                             )}
@@ -87,11 +100,48 @@ export default function MainLayout(): JSX.Element {
                 </div>
             </Box>
             <Dialog onClose={() => setMeet(undefined)} open={Boolean(meet)} fullScreen TransitionComponent={TransitionDialog}>
-                {meet && (
-                    <CreateMeet onClose={() => setMeet(undefined)} meet={meet} setMeet={setMeet} />)}
+                {meet && <CreateMeet onClose={() => setMeet(undefined)} meet={meet} setMeet={setMeet} />}
             </Dialog>
-            <Dialog onClose={() => setOpenOptions(false)} open={openOptions} fullScreen TransitionComponent={TransitionDialog}>
-                <Profile onClose={() => setOpenOptions(false)} />
+            {isAuth && (
+                <SwipeableDrawer
+                    anchor="left"
+                    open={menu}
+                    onClose={toggleMenu}
+                    onOpen={toggleMenu}
+                >
+                    <div style={{ padding: 15, color: 'black', height: '100%', width: 275 }}>
+                        <Stack spacing={3} direction="column"  justifyContent="space-between" style={{ height: '100%' }}>
+                            <Stack spacing={3} direction="column" onClick={toggleProfile}>
+                                <div style={{ padding: 14 }}>
+                                    <Stack spacing={3} direction="row"  justifyContent="space-between" alignItems="center">
+                                        <Stack spacing={2} direction="row">
+                                            <div style={{ width: 72 }}>
+                                                <div className={classes.blockImage}>
+                                                    <img alt={user?.title} src={user?.image} className={classes.image}/>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: '0.18px' }}>Профиль</div>
+                                                <div style={{ fontSize: 19, fontWeight: 600, lineHeight: '30px', letterSpacing: '0.193px' }}>{user?.title}</div>
+                                            </div>
+                                        </Stack>
+                                        <div>
+                                            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M1 1L7 7" stroke="black" strokeWidth="2" strokeLinecap="round"/>
+                                                <path d="M7 7L1 13" stroke="black" strokeWidth="2" strokeLinecap="round"/>
+                                            </svg>
+                                        </div>
+                                    </Stack>
+                                </div>
+                                <div/>
+                            </Stack>
+                            <AppBanner title="Установите наше приложение, пожалуйста"/>
+                        </Stack>
+                    </div>
+                </SwipeableDrawer>
+            )}
+            <Dialog onClose={toggleProfile} open={profile} fullScreen TransitionComponent={TransitionDialog}>
+                <Profile onClose={toggleProfile} onLogout={toggleMenu} />
             </Dialog>
         </>
     )

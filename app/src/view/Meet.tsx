@@ -39,6 +39,8 @@ interface MeetComponentProps {
 }
 export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetComponentProps) {
     const classes = useStyles();
+    const date = convertToMeetDateLong(meet.datetime)
+    const time = convertToMeetTime(meet.datetime)
 
     if (!meet) { return null }
 
@@ -50,7 +52,7 @@ export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetCom
                 </svg>
             ),
             title: 'Дата',
-            value: convertToMeetDateLong(meet.datetime),
+            value: date,
         },
         {
             icon: (
@@ -59,12 +61,12 @@ export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetCom
                 </svg>
             ),
             title: 'Начало',
-            value: convertToMeetTime(meet.datetime),
+            value: time,
         },
     ]
     const menuItems = [
         { title: 'Поделиться', onClick: getOnShare({
-                title: 'Приглашаю на встречу: ' + meet?.title,
+                title: `Приглашаю ${date} в ${time} на встречу: ${meet?.title}`,
                 url: `/meet/${meet?.id}`
             })},
     ]
@@ -79,7 +81,7 @@ export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetCom
                 {meet.image && <img alt={meet.title} src={meet.image} className={classes.image}/>}
             </div>
             <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
-                <Back title={meet.title} menuItems={menuItems} />
+                <Back menuItems={menuItems} />
             </div>
             <div style={{ position: "relative"}}>
                 <div className={classes.container}>
