@@ -1,0 +1,24 @@
+'use strict';
+var dbConn = require('../db');
+
+var Place = function(data){
+    this.id = data.id;
+    this.title = data.title;
+    this.image = data.image;
+    this.latitude = data.latitude;
+    this.longitude = data.longitude;
+};
+
+Place.findAll = () => function (result) {
+    dbConn.query("SELECT * FROM place", function (err, res) {
+        result(null, res || []);
+    });
+};
+Place.findByMeet = function (meet, result) {
+    console.log(meet,'meet')
+    dbConn.query("SELECT * FROM place WHERE latitude = ? AND longitude = ?", [meet.latitude, meet.longitude], function (err, res) {
+        result(null, res.length ? res[0] : undefined);
+    });
+};
+
+module.exports = Place;

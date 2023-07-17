@@ -3,6 +3,7 @@ const async = require("async");
 const Meet = require('../models/meetModel');
 const User = require('../models/userModel');
 const UserMeet = require('../models/userMeetModel');
+const Place = require('../models/placeModel');
 
 // Создание встречи
 exports.create = function(req, res) {
@@ -59,13 +60,17 @@ exports.toggleUserMeet = function(req, res) {
 
 // Встречи
 exports.findAll = function(req, res) {
-    console.log(req.query, 'req.query')
     Meet.findAll(req.query.latitude, req.query.longitude)(function(err, meets) {
-        async.map(meets, User.findByMeet, function(err, meetsUsers) {
-            res.send(meets.map((p, index) => {
-                const active = meetsUsers[index]?.some((user) => user.userId === req.user?.id)
-                return ({ ...p, users: meetsUsers[index], active })
-            }));
+        async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
+            async.map(meets, User.findByMeet, function(err, meetsUsers) {
+                res.send(meets.map((p, index) => {
+                    const active = meetsUsers[index]?.some((user) => user.userId === req.user?.id)
+                    const users = meetsUsers[index]
+                    const place = meetsPlaces[index]
+
+                    return ({ ...p, users, active, place })
+                }));
+            });
         });
     });
 };
@@ -75,10 +80,15 @@ exports.findById = function(req, res) {
         if (!meet) {
             res.status(400).send({ error:true, message: 'Встреча с таким номером не найдена' });
         } else {
-            User.findByMeet(meet, function(err, users) {
-                const active = users.some((user) => user.userId === req.user?.id)
-                res.send({...meet, editable: req.user?.id === meet.userId, active, users});
-            });
+            Place.findByMeet(meet, function(err, place) {
+                console.log(err,'err')
+                console.log(place,'place')
+
+                User.findByMeet(meet, function (err, users) {
+                    const active = users.some((user) => user.userId === req.user?.id)
+                    res.send({...meet, editable: req.user?.id === meet.userId, active, users, place });
+                });
+            })
         }
     });
 };

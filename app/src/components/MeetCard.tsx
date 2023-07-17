@@ -65,19 +65,15 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
                         </div>
                         <div>
                             <Stack spacing={0} direction="row" justifyContent="space-between" alignContent="center">
-                                <div>
-                                    {false && (
-                                        <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
-                                            <svg width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M11 5.53211C11 2.47706 8.53731 0 5.5 0C2.46269 0 0 2.47706 0 5.53211C0 7.15596 0.693201 8.61468 1.80141 9.62385C1.80141 9.62844 1.80597 9.63303 1.80597 9.63303L4.92081 12.7661C5.23093 13.078 5.73715 13.078 6.05182 12.7661C6.05182 12.7661 9.39013 9.44495 9.55431 9.26606C10.4527 8.2844 11 6.97248 11 5.53211Z" fill="#7139FF"/>
-                                                <path d="M8 5.5C8 6.88333 6.88333 8 5.5 8C4.11667 8 3 6.87778 3 5.5C3 4.12222 4.11667 3 5.5 3C6.87778 3 8 4.12222 8 5.5Z" fill="white"/>
-                                            </svg>
-                                            <div style={{ color: 'black', opacity: 0.7 }}>
-                                                10 м.
-                                            </div>
-                                        </Stack>
-                                    )}
-                                </div>
+                                <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
+                                    <svg width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11 5.53211C11 2.47706 8.53731 0 5.5 0C2.46269 0 0 2.47706 0 5.53211C0 7.15596 0.693201 8.61468 1.80141 9.62385C1.80141 9.62844 1.80597 9.63303 1.80597 9.63303L4.92081 12.7661C5.23093 13.078 5.73715 13.078 6.05182 12.7661C6.05182 12.7661 9.39013 9.44495 9.55431 9.26606C10.4527 8.2844 11 6.97248 11 5.53211Z" fill="#7139FF"/>
+                                        <path d="M8 5.5C8 6.88333 6.88333 8 5.5 8C4.11667 8 3 6.87778 3 5.5C3 4.12222 4.11667 3 5.5 3C6.87778 3 8 4.12222 8 5.5Z" fill="white"/>
+                                    </svg>
+                                    <div style={{ color: 'black', opacity: 0.7 }}>
+                                        {meet.place?.title}
+                                    </div>
+                                </Stack>
                                 <span style={{ color: '#7139FF', fontWeight: 900, letterSpacing: -0.369231, textTransform: 'lowercase' }}>
                                     {date} {time}
                                 </span>

@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import {Meet, User} from "./dto";
+import {Meet, Place, User} from "./dto";
 import {ACCESS_TOKEN} from "./auth";
 
 // При разработки хост может быть разным
@@ -102,5 +102,12 @@ export const useUser = (): UseQueryResult<User> => useQuery(['user'], () => serv
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
 export const useToggleMeetUser = (): UseMutate<number> => useMutation((meetId) => service.put("/userMeet/" + meetId))
 export const useDeleteMeet = (): UseMutate<number> => useMutation((meetId) => service.delete(`/meet/${meetId}`))
+
+/**
+ * Место
+ */
+export const usePlaces = (): UseQueryResult<Place[]> => {
+    return useQuery(['places'], () => service.get(`/places`),)
+}
 
 export default service

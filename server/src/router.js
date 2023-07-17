@@ -5,6 +5,7 @@ var passport = require('passport');
 const userController =   require('./controllers/userController');
 const meetController =   require('./controllers/meetController');
 const imageController =   require('./controllers/imageController');
+const placeController =   require('./controllers/placeController');
 const strategys =   require('./strategys');
 
 passport.use(strategys.google);
@@ -48,5 +49,9 @@ router.put('/user', userController.useUser, userController.update);
 
 router.put('/userMeet/:meetId', userController.useUser, meetController.toggleUserMeet );
 
+/**
+ * Места
+ */
+router.get('/places', userController.useUser, placeController.findAll);
 
 module.exports = router

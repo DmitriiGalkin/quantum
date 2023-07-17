@@ -2,24 +2,15 @@ export interface Meet {
     id: number
     title: string
     datetime: string
-    x?: string
-    y?: string
     description?: string
     image?: string
+    latitude?: string
+    longitude?: string
     active?: boolean // Участвует ли пользователь во встрече
     editable?: boolean // Право на редактирование/удаление
     users?: User[]
+    place?: Place
 }
-//
-// export interface NewMeet {
-//     id?: number
-//     title?: string
-//     description?: string
-//     image?: string
-//     datetime?: string
-//     x?: string
-//     y?: string
-// }
 
 export interface User {
     id: number
@@ -30,8 +21,10 @@ export interface User {
     password?: string
 }
 
-export interface Profile {
-    user: User
-    projectIds?: number[]
-    meetIds?: number[]
+export interface Place {
+    id: number
+    title: string
+    image: string
+    latitude: string
+    longitude: string
 }

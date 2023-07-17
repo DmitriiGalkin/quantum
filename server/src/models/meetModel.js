@@ -3,13 +3,13 @@ var dbConn = require('../db');
 
 var Meet = function(data){
     this.id = data.id;
-    this.x = data.x;
-    this.y = data.y;
     this.title = data.title;
     this.description = data.description;
     this.image = data.image;
     this.datetime = data.datetime;
     this.userId = data.userId; // Создатель встречи
+    this.latitude = data.latitude;
+    this.longitude = data.longitude;
 };
 // Создание встречи
 Meet.create = function (data, result) {
@@ -22,7 +22,7 @@ Meet.create = function (data, result) {
 // Обновление встречи
 Meet.update = function(id, meet, result){
     console.log(meet,'meet update')
-    dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, id], function (err, res) {
+    dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=?, latitude=?, longitude=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, meet.latitude, meet.longitude, id], function (err, res) {
         console.log(res,'res')
         console.log(err,'err')
 
@@ -37,7 +37,7 @@ Meet.delete = function(id, result){
 };
 // Встречи
 const RADIUS = 100000 // Количество метров между мной и местом встречи TODO: сократить радиус с ростом аудитории
-Meet.findAll = (x, y) => function (result) {
+Meet.findAll = () => function (result) {
     dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet " +
         "WHERE DATE(datetime) >= CURDATE() " +
         //"AND ST_Distance_Sphere(point(" + x + ", " + y + "), point(x, y)) < " + RADIUS + " " +
@@ -58,7 +58,7 @@ Meet.findAllByUserId2 = (id) => function (result) {
     });
 };
 // Встречи участника
-Meet.findAllByUserId = (id) => function (result) {
+Meet.findAllByUserId = () => function (result) {
     dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet where DATE(datetime) >= CURDATE() ORDER BY datetime", function (err, res) {
         //console.log(err,'err')
         result(null, res || []);

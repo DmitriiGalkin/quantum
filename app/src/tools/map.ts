@@ -6,8 +6,8 @@ import {Meet} from "./dto";
  * Высчитываем центр
  */
 export const getCenter = (meet: Meet[]) => {
-    const xs = meet.map((m) => Number(m.x))
-    const ys = meet.map((m) => Number(m.y))
+    const xs = meet.map((m) => Number(m.latitude))
+    const ys = meet.map((m) => Number(m.longitude))
 
     const maxX = getMaxOfArray(xs)
     const minX = getMinOfArray(xs)

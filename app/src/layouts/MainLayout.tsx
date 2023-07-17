@@ -1,11 +1,11 @@
 import {Outlet} from "react-router-dom";
-import {Box, Drawer, Stack, SwipeableDrawer} from "@mui/material";
+import {Box, Stack, SwipeableDrawer} from "@mui/material";
 import CreateMeet from "../view/CreateMeet";
 import Profile from "../view/Profile";
 import React, {useState} from "react";
 import {makeStyles} from "@mui/styles";
 import Dialog from "@mui/material/Dialog";
-import {AppBanner, DialogHeader, TransitionDialog} from "../components";
+import {AppBanner, TransitionDialog} from "../components";
 import {useAuth} from "../tools/auth";
 import dayjs from "dayjs";
 import {Meet} from "../tools/dto";
@@ -68,7 +68,7 @@ export default function MainLayout(): JSX.Element {
     const [meet, setMeet] = useState<Meet>()
     const [selectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
 
-    const onAdd = authFn(() => setMeet({ id: 0, title: '', description:'', x: '55.933093', y: '37.054661', datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')}))
+    const onAdd = authFn(() => setMeet({ id: 0, title: '', description:'', latitude: '55.933093', longitude: '37.054661', datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')}))
 
     return (
         <>

@@ -26,13 +26,13 @@ interface Prop {
 }
 interface SelectProps<T> {
     label: string
-    selectedId?: number
+    selected?: T
     items: T[]
     onChange: (item: T) => void
     onAdd?: () => void
 }
 
-export function ImageSelect<T extends Prop>({ label, selectedId, items, onChange, onAdd }: SelectProps<T>) {
+export function ImageSelect<T extends Prop>({ label, selected, items, onChange, onAdd }: SelectProps<T>) {
     const classes = useStyles();
 
     return (
@@ -60,7 +60,7 @@ export function ImageSelect<T extends Prop>({ label, selectedId, items, onChange
                     <Grid xs={3} key={item?.id}>
                         <div onClick={() => {onChange(item)}}>
                             <div className={classes.blockInner}>
-                                <img src={item?.image} className={classes.image} style={{ outline: `3px solid ${selectedId === item?.id ? '#7139FF' : 'transparent' }`}}/>
+                                <img alt="Выбранная картинка" src={item?.image} className={classes.image} style={{ outline: `3px solid ${selected?.id === item?.id ? '#7139FF' : 'transparent' }`}}/>
                             </div>
                             <div style={{ paddingTop: 11, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center' }}>{item.title}</div>
                         </div>
