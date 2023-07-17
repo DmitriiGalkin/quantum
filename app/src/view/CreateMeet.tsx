@@ -15,7 +15,7 @@ export interface CreateMeetDialogProps {
 }
 export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogProps) {
     const addMeet = useAddMeet()
-    const editMeet = useEditMeet()
+    const editMeet = useEditMeet(meet.id)
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
 
     const onClickSave = () => {
@@ -73,6 +73,7 @@ export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogP
                     />
                     <ImageField
                         label="Загрузите обложку"
+                        value={meet.image}
                         onChange={(image) => setMeet({...meet, image})}
                     />
                 </Stack>

@@ -58,11 +58,13 @@ export function ImageField({ label, onChange, value }: ImageFieldProps) {
                 borderRadius: 10,
                 position: 'relative'
             }}>
-                <div style={{ position: 'absolute', right: 8, top: 8, width: 40 }}>
-                    <div className={classes.blockImage}>
-                        <img alt="file" src={value} className={classes.image}/>
+                {value && (
+                    <div style={{ position: 'absolute', right: 8, top: 8, width: 40 }}>
+                        <div className={classes.blockImage}>
+                            <img alt="file" src={value} className={classes.image}/>
+                        </div>
                     </div>
-                </div>
+                )}
                 <input
                     type="file"
                     id="file"

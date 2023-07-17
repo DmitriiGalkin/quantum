@@ -79,7 +79,14 @@ export const useAddMeet = (): UseMutate<Meet> => {
         },
     })
 }
-export const useEditMeet = (): UseMutate<Meet> => useMutation((meet) => service.put(`/meet/${meet.id}`, meet))
+export const useEditMeet = (id: number): UseMutate<Meet> => {
+    const queryClient = useQueryClient()
+    return useMutation((meet) => service.put(`/meet/${id}`, meet), {
+        onSuccess() {
+            queryClient.invalidateQueries({ queryKey: ['meet', id] })
+        },
+    })
+}
 
 /**
  * Картинки
