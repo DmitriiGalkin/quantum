@@ -2,11 +2,22 @@ import React from 'react';
 import {Stack} from "@mui/material";
 import {useAddMeet, useEditMeet, usePlaces} from "../tools/service";
 import {Meet, Place} from "../tools/dto";
-import {Button, DatePicker, DialogHeader, ImageField, Input, Textarea, TimePicker} from "../components";
+import {
+    Button,
+    DatePicker,
+    DialogHeader,
+    ImageField,
+    Input,
+    Textarea,
+    TimePicker,
+    TransitionDialog
+} from "../components";
 import {convertToMeetsGroupTime} from "../tools/date";
-import {useLocalStorage} from "usehooks-ts";
+import {useLocalStorage, useToggle} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
 import {ImageSelect} from "../components";
+import Dialog from "@mui/material/Dialog";
+import Places from "./Places";
 
 export interface CreateMeetDialogProps {
     meet: Meet
@@ -37,6 +48,7 @@ export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogP
     };
     const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
     const saveButtonTitle = meet.id ? 'Сохранить' : "Создать встречу"
+    const [findPlace, toggleFindPlace] = useToggle()
 
     return (
         <div>
@@ -83,8 +95,14 @@ export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogP
                         selected={places.find(p => p.latitude === meet.latitude && p.longitude === meet.longitude)}
                         items={places}
                         onChange={(place) => setMeet({ ...meet, latitude: place.latitude, longitude: place.longitude})}
-                        // onAdd={()=>setNewProject(true)}
+                        onAdd={toggleFindPlace}
                     />
+                    <Dialog onClose={toggleFindPlace} open={findPlace} fullScreen TransitionComponent={TransitionDialog}>
+                        <Places onSuccess={(place) => {
+                            setMeet({ ...meet, latitude: place.latitude, longitude: place.longitude})
+                            toggleFindPlace()
+                        }} onClose={toggleFindPlace}  />
+                    </Dialog>
                 </Stack>
                 <div style={{ paddingTop: 22 }}>
                     <Button onClick={onClickSave}>

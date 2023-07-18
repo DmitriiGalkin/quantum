@@ -1,11 +1,14 @@
 import {Meet} from "./dto";
 
 // const 'ce32ffcd-d432-4c13-9035-407aa9f344a0'
-
+interface Prop {
+    latitude: number
+    longitude: number
+}
 /**
  * Высчитываем центр
  */
-export const getCenter = (meet: Meet[]) => {
+export function getCenter<T extends Prop>(meet: T[]) {
     const xs = meet.map((m) => Number(m.latitude))
     const ys = meet.map((m) => Number(m.longitude))
 
