@@ -69,7 +69,7 @@ export default function MeetsView(): JSX.Element {
     const [meet, setMeet] = useState<Meet>()
     const [selectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
     const [isMapView, toggleIsMapView] = useToggle();
-    const onAdd = authFn(() => setMeet({ id: 0, title: '', description:'', latitude: '55.933093', longitude: '37.054661', datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')}))
+    const onAdd = authFn(() => setMeet({ id: 0, title: '', description:'', latitude: 55.933093, longitude: 37.054661, datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')}))
 
     const { data: meets = [], refetch } = useMeets()
     const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())

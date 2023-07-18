@@ -4,8 +4,8 @@ export interface Meet {
     datetime: string
     description?: string
     image?: string
-    latitude?: string
-    longitude?: string
+    latitude: number
+    longitude: number
     active?: boolean // Участвует ли пользователь во встрече
     editable?: boolean // Право на редактирование/удаление
     users?: User[]
@@ -25,6 +25,6 @@ export interface Place {
     id: number
     title: string
     image: string
-    latitude: string
-    longitude: string
+    latitude: number
+    longitude: number
 }

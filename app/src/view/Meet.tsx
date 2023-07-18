@@ -6,6 +6,7 @@ import {convertToMeetDateLong, convertToMeetTime} from "../tools/date";
 import Grid from "@mui/material/Unstable_Grid2";
 import {Back, Button} from "../components";
 import {getOnShare} from "../tools/pwa";
+import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -139,6 +140,21 @@ export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetCom
                                 </Grid>
                             ))}
                         </Stack>
+                    </div>
+                    <div style={{ width: '100%', height: '200px', marginTop: 25, borderRadius: 15, overflow: 'hidden' }}>
+                        <YMaps>
+                            <Map defaultState={{ center: [meet.latitude, meet.longitude], zoom: 16 }} width="100%" height="100%">
+                                <Placemark
+                                    key={meet.id}
+                                    modules={["geoObject.addon.balloon"]}
+                                    defaultGeometry={[meet.latitude, meet.longitude]}
+                                    options={{
+                                        preset: 'islands#icon',
+                                        iconColor: '#FFA427',
+                                    }}
+                                />
+                            </Map>
+                        </YMaps>
                     </div>
                     <div style={{ paddingTop: 20, marginLeft: -8, marginRight: -8 }}>
                         {meet.active ? (
