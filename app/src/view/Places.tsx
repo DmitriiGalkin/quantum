@@ -5,7 +5,7 @@ import {usePlaces} from "../tools/service";
 import {Place} from "../tools/dto";
 import {DialogHeader, TransitionDialog} from "../components";
 import Dialog from "@mui/material/Dialog";
-import {Stack} from "@mui/material";
+import CreatePlace from "./CreatePlace";
 import {useToggle} from "usehooks-ts";
 
 interface PlacesProps {
@@ -38,7 +38,7 @@ export default function Places({onSuccess, onClose}: PlacesProps) {
                     </Map>
                 </YMaps>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', position: "absolute", right: 18, bottom: 18 }} onClick={() => onOpenCreatePlace(true)}>
+            <div style={{ display: 'flex', alignItems: 'center', position: "absolute", right: 18, bottom: 18 }} onClick={toggleOpenCreatePlace}>
                 <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.39px', paddingRight: 15, color: 'black' }}>Добавить Место</div>
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 54 54" fill="none">
@@ -49,10 +49,7 @@ export default function Places({onSuccess, onClose}: PlacesProps) {
                 </div>
             </div>
             <Dialog onClose={toggleOpenCreatePlace} open={openCreatePlace} fullScreen TransitionComponent={TransitionDialog}>
-                <CreatePlace onSuccess={(place) => {
-                    setMeet({ ...meet, latitude: place.latitude, longitude: place.longitude})
-                    toggleFindPlace()
-                }} onClose={toggleOpenCreatePlace}  />
+                <CreatePlace onSuccess={onSuccess} onClose={toggleOpenCreatePlace}  />
             </Dialog>
         </>
     );

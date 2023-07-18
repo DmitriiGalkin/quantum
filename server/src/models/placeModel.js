@@ -20,5 +20,11 @@ Place.findByMeet = function (meet, result) {
         result(null, res.length ? res[0] : undefined);
     });
 };
+// Создание места
+Place.create = function (data, result) {
+    dbConn.query("INSERT INTO place SET ?", data, function (err, res) {
+        result(err, res.insertId);
+    });
+};
 
 module.exports = Place;

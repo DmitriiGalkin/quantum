@@ -53,5 +53,6 @@ router.put('/userMeet/:meetId', userController.useUser, meetController.toggleUse
  * Места
  */
 router.get('/places', userController.useUser, placeController.findAll);
+router.post('/place', userController.useUser, placeController.create);
 
 module.exports = router
