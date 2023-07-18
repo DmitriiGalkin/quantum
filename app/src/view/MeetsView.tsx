@@ -1,4 +1,3 @@
-import {Outlet} from "react-router-dom";
 import {Box, Stack, SwipeableDrawer} from "@mui/material";
 import CreateMeet from "../view/CreateMeet";
 import Profile from "../view/Profile";

@@ -11,6 +11,7 @@ import {ThemeProvider} from '@mui/material/styles';
 import 'dayjs/locale/ru';
 
 import {router} from "./router";
+import {YMaps} from "@pbe/react-yandex-maps";
 
 const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(
@@ -23,7 +24,9 @@ root.render(
           <QueryClientProvider client={queryClient}>
               <CssBaseline />
               <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
-                  <RouterProvider router={router} />
+                  <YMaps>
+                    <RouterProvider router={router} />
+                  </YMaps>
               </LocalizationProvider>
           </QueryClientProvider>
       </ThemeProvider>

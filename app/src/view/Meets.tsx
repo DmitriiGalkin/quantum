@@ -5,7 +5,6 @@ import {CalendarDay} from "../tools/helper";
 import SwipeableViews from 'react-swipeable-views';
 import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
-import {Meet} from "../tools/dto";
 
 interface MeetsProps {
     week: CalendarDay[]
@@ -18,7 +17,9 @@ interface MeetsProps {
 export default function Meets({week, refetch, day, setDate, isMapView}: MeetsProps) {
     const selectedMeets = week.find(({id}) => id === day?.id)?.meets || []
     const [x,y] = getCenter(selectedMeets)
-    const [preview, setPreview] = useState<Meet>()
+    const [selectedMeetId, setSelectedMeetId] = useState<number>()
+    const selectedMeet = selectedMeets.find(({id})=>id===selectedMeetId)
+
     return (
         <div style={{
                 display: 'flex',
@@ -60,17 +61,16 @@ export default function Meets({week, refetch, day, setDate, isMapView}: MeetsPro
                                                 preset: 'islands#icon',
                                                 iconColor: '#FFA427',
                                             }}
-                                            onClick={() => setPreview(meet)}
+                                            onClick={() => setSelectedMeetId(meet.id)}
                                         />
                                     ))}
                                 </Map>
                             </YMaps>
                         </div>
-                        {preview && (
-                            <ClickAwayListener onClickAway={() => setPreview(undefined)}>
-                            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-
-                                    <MeetCard meet={preview} refetch={refetch} />
+                        {selectedMeetId && selectedMeet && (
+                            <ClickAwayListener onClickAway={() => setSelectedMeetId(undefined)}>
+                            <div style={{ position: 'absolute', bottom: 15, left: 15, right: 15 }}>
+                                    <MeetCard meet={selectedMeet} refetch={refetch} />
                             </div>
                             </ClickAwayListener>
 
