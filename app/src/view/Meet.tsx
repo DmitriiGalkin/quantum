@@ -1,6 +1,6 @@
 import React from 'react';
 import {makeStyles} from '@mui/styles';
-import {Avatar, AvatarGroup, Box, Stack, Theme} from "@mui/material";
+import {Avatar, AvatarGroup, Box, Stack, Theme, Tooltip} from "@mui/material";
 import {Meet} from "../tools/dto";
 import {convertToMeetDateLong, convertToMeetTime} from "../tools/date";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -111,7 +111,9 @@ export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetCom
                             <Box sx={{ display: 'flex' }} style={{ paddingTop: 10}}>
                                 <AvatarGroup max={4}>
                                     {meet.users?.map((user) => (
-                                        <Avatar key={user.id} alt={user.title} src={user.image} />
+                                        <Tooltip title={user.title} enterTouchDelay={0}>
+                                            <Avatar key={user.id} alt={user.title} src={user.image} />
+                                        </Tooltip>
                                     ))}
                                 </AvatarGroup>
                             </Box>
