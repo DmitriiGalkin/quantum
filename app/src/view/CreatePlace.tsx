@@ -54,14 +54,10 @@ export default function CreatePlace({onSuccess, onClose}: CreatePlaceProps) {
             })
         }
     }
-    console.log(place, 'place')
 
     return (
         <>
             <DialogHeader title="Добавление Места" onClick={onClose}/>
-            <div style={{ height: 30 }}>
-                <Button onClick={toggleDrawer}>Open</Button>
-            </div>
             <div style={{ position: 'absolute', top: 55, bottom: 0, left: 0, right: 0 }}>
                 <YMaps>
                     <Map defaultState={{ center: [latitude, longitude], zoom: 16 }} width="100%" height="100%">

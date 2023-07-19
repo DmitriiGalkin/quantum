@@ -1,6 +1,7 @@
 import {createTheme} from '@mui/material/styles';
 
 export const DEFAULT_COLOR = 'white'
+export const COLOR = "#FFA028"
 
 const theme = createTheme({
     typography: {

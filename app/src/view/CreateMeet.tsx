@@ -50,6 +50,10 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
             <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Создание встречи'} onClick={onClose}/>
             <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={5}>
+                    <DatePicker
+                        value={meet.datetime}
+                        onChange={(datetime) => setMeet({...meet, datetime })}
+                    />
                     <Stack spacing={1} direction="row">
                         <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>
                             <Input
@@ -69,10 +73,6 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
                             />
                         </div>
                     </Stack>
-                    <DatePicker
-                        value={meet.datetime}
-                        onChange={(datetime) => setMeet({...meet, datetime })}
-                    />
                     <Textarea
                         name='title'
                         label="Описание"
