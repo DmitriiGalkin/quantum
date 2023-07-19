@@ -45,12 +45,9 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
         }
     };
 
-    const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
-    const saveButtonTitle = meet.id ? 'Сохранить' : "Создать встречу"
-
     return (
         <div>
-            <DialogHeader title={title} onClick={onClose}/>
+            <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Создание встречи'} onClick={onClose}/>
             <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={5}>
                     <Stack spacing={1} direction="row">
@@ -89,14 +86,14 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
                         onChange={(image) => setMeet({...meet, image})}
                     />
                     <PlaceSelect
-                        onChange={(place) => setMeet({ ...meet, latitude: place.latitude, longitude: place.longitude})}
+                        onChange={(place) => setMeet({ ...meet, ...place})}
                         latitude={meet.latitude}
                         longitude={meet.longitude}
                     />
                 </Stack>
                 <div style={{ paddingTop: 22 }}>
                     <Button onClick={onClickSave}>
-                        {saveButtonTitle}
+                        {meet.id ? 'Сохранить' : "Создать встречу"}
                     </Button>
                 </div>
             </div>

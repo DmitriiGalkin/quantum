@@ -75,16 +75,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface CalendarProps {
-    week: CalendarDay[]
+    days: CalendarDay[]
     onChange?: (date: string) => void
 }
 
-export function Calendar ({ week, onChange }: CalendarProps): JSX.Element {
+export function Calendar ({ days, onChange }: CalendarProps): JSX.Element {
     const classes = useStyles();
 
     return (
         <Stack spacing={1} direction="row" justifyContent="space-between">
-            {week.map(({id, dayOfWeekValue, day, active, meetsLength, activeMeetsLength}, index) => {
+            {days.map(({id, dayOfWeekValue, day, active, meetsLength, activeMeetsLength}) => {
                 const onClick = () => onChange ? onChange(id) : undefined
                 return (
                     <Stack key={day} spacing={3} direction="column" alignItems="center" onClick={onClick} style={{ width: '100%'}}>

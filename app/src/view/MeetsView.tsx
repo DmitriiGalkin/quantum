@@ -62,11 +62,11 @@ export default function MeetsView(): JSX.Element {
     const [selectedMeetId, setSelectedMeetId] = useState<number>()
     const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
 
-    const week = getWeek(date, meets)
-    const day = week.find(({ id }) => id === date);
-    const selectedMeets = week.find(({id}) => id === day?.id)?.meets || []
-    const [x,y] = getCenter(selectedMeets)
-    const selectedMeet = selectedMeets.find(({id})=>id===selectedMeetId)
+    const days = getWeek(date, meets)
+    const selectedDay = days.find(({ id }) => id === date);
+    const filteredMeets = selectedDay?.meets || []
+    const selectedMeet = meets.find(({id})=>id === selectedMeetId)
+    const [latitude, longitude] = getCenter(filteredMeets)
 
     const onAdd = authFn(toggleMeet)
 
@@ -118,17 +118,17 @@ export default function MeetsView(): JSX.Element {
                 </div>
                 <div className={classes.outlet}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ display: 'block', padding: 15 }}><Calendar week={week} onChange={setDate} /></div>
+                        <div style={{ display: 'block', padding: 15 }}><Calendar days={days} onChange={setDate} /></div>
                         <div style={{ overflow: 'auto', flexGrow: 1 }}>
                             {!map ? (
                                 <SwipeableViews
-                                    index={day?.index}
-                                    onChangeIndex={(index) => setDate(week[index].id)}
+                                    index={selectedDay?.index}
+                                    onChangeIndex={(index) => setDate(days[index].id)}
                                     containerStyle={{ height: 400 }}
                                     springConfig={{duration: '0.2s', delay: '0s', easeFunction: 'cubic-bezier(0.0, 0.0, 0.58, 1.0)'}}
                                     threshold={4}
                                 >
-                                    {week.map(({id, meets}) => (
+                                    {days.map(({id, meets}) => (
                                         <div key={id} style={{ padding: '0 15px'}}>
                                             <Stack spacing={2}>
                                                 {meets.map((meet) =>
@@ -144,8 +144,8 @@ export default function MeetsView(): JSX.Element {
                                 <>
                                     <div style={{ position: 'absolute', top: 170, bottom: 0, left: 0, right: 0 }}>
                                         <YMaps>
-                                            <Map defaultState={{ center: [x, y], zoom: 16 }} width="100%" height="100%">
-                                                {selectedMeets.map((meet) => (
+                                            <Map defaultState={{ center: [latitude, longitude], zoom: 16 }} width="100%" height="100%">
+                                                {filteredMeets.map((meet) => (
                                                     <Placemark
                                                         key={meet.id}
                                                         modules={["geoObject.addon.balloon"]}
