@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useMemo} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import service from "./service";
+import service, {useUser} from "./service";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components";
 import Login from "../view/Login";
@@ -10,6 +10,8 @@ export const ACCESS_TOKEN = 'access_token'
 export const AuthContext = createContext('auth' as any);
 
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
+    const { data: user } = useUser();
+
     const [searchParams] = useSearchParams();
     const tokenSearchParam = searchParams.get("access_token")
     const access_token = localStorage.getItem(ACCESS_TOKEN) || tokenSearchParam
@@ -40,6 +42,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
 
     const value = useMemo(
         () => ({
+            user,
             isAuth,
             openLogin: toggleOpenLogin,
             access_token,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Stack} from "@mui/material";
 import {useAddMeet, useEditMeet, usePlaces} from "../tools/service";
 import {Meet, Place} from "../tools/dto";
@@ -18,18 +18,18 @@ import {LocalDate} from "@js-joda/core";
 import {ImageSelect} from "../components";
 import Dialog from "@mui/material/Dialog";
 import Places from "./Places";
+import dayjs from "dayjs";
 
 export interface CreateMeetDialogProps {
-    meet: Meet
-    refetch?: () => void
     onClose: () => void
-    setMeet: (meet: Meet) => void
 }
-export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogProps) {
+export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
     const { data: places = [] } = usePlaces()
+
+    const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
+    const [meet, setMeet] = useState<Meet>({ id: 0, title: '', description:'', latitude: 55.933093, longitude: 37.054661, datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')})
     const addMeet = useAddMeet()
     const editMeet = useEditMeet(meet.id)
-    const [, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
 
     const onClickSave = () => {
         if (meet) {
@@ -49,7 +49,7 @@ export default function CreateMeet({ onClose, meet, setMeet }: CreateMeetDialogP
     const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
     const saveButtonTitle = meet.id ? 'Сохранить' : "Создать встречу"
     const [findPlace, toggleFindPlace] = useToggle()
-    console.log(meet,'meet')
+
     return (
         <div>
             <DialogHeader title={title} onClick={onClose}/>
