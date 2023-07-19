@@ -96,6 +96,13 @@ export const useDeleteMeet = (): UseMutate<number> => useMutation((meetId) => se
  * Место
  */
 export const usePlaces = (): UseQueryResult<Place[]> => useQuery(['places'], () => service.get(`/places`))
-export const useAddPlace = (): UseMutate<Place> => useMutation((place) => service.post("/place", place))
+export const useAddPlace = (): UseMutate<Place> => {
+    const queryClient = useQueryClient()
+    return useMutation((place) => service.post("/place", place), {
+        onSuccess() {
+            queryClient.invalidateQueries({ queryKey: ['places'] })
+        },
+    })
+}
 
 export default service

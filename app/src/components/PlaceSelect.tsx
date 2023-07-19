@@ -11,20 +11,21 @@ import {useToggle} from "usehooks-ts";
 import {usePlaces} from "../tools/service";
 
 interface PlaceSelectProps {
-    onChange: (place: { latitude: number, longitude: number }) => void
-    latitude: number
-    longitude: number
+    onChange: (place: { latitude: string, longitude: string }) => void
+    latitude: string
+    longitude: string
 }
 
 export function PlaceSelect({ onChange, latitude, longitude }: PlaceSelectProps) {
     const [findPlace, toggleFindPlace] = useToggle()
     const { data: places = [] } = usePlaces()
+    const selected = places.find(p => p.latitude === String(latitude) && p.longitude === String(longitude))
 
     return (
         <>
             <ImageSelect<Place>
                 label="Место"
-                selected={places.find(p => p.latitude === latitude && p.longitude === longitude)}
+                selected={selected}
                 items={places}
                 onChange={(place) => onChange({ latitude: place.latitude, longitude: place.longitude })}
                 onAdd={toggleFindPlace}

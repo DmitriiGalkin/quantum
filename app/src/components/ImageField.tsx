@@ -21,11 +21,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface ImageFieldProps {
+    name?: string
     label: string
     value?: string
     onChange: (image: string) => void
 }
-export function ImageField({ label, onChange, value }: ImageFieldProps) {
+export function ImageField({ name, label, onChange, value }: ImageFieldProps) {
     const uploadImage = useUploadImage()
     const classes = useStyles();
 
@@ -45,7 +46,7 @@ export function ImageField({ label, onChange, value }: ImageFieldProps) {
 
     return (
         <div style={{  }}>
-            <label htmlFor="file">{label}</label>
+            <label htmlFor={name}>{label}</label>
             <div style={{
                 display: 'block',
                 width: '100%',
@@ -67,13 +68,13 @@ export function ImageField({ label, onChange, value }: ImageFieldProps) {
                 )}
                 <input
                     type="file"
-                    id="file"
+                    id={name}
                     name="customFile"
                     accept="image/*"
                     onChange={onChangeFile}
                     style={{display:'none'}}
                 />
-                <label htmlFor="file" style={{ padding: '8px 12px', borderRadius: '6.998px', border: '0.778px solid #E1E1E1', background: '#FFFFFF', fontWeight: 400, opacity:0.7 }}>{value ? 'Картинка выбрана' : 'Выбрать файл'}</label>
+                <label htmlFor={name} style={{ padding: '8px 12px', borderRadius: '6.998px', border: '0.778px solid #E1E1E1', background: '#FFFFFF', fontWeight: 400, opacity:0.7 }}>{value ? 'Картинка выбрана' : 'Выбрать файл'}</label>
             </div>
         </div>
     );

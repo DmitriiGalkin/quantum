@@ -6,7 +6,8 @@ import {Place} from "../tools/dto";
 import {DialogHeader, TransitionDialog} from "../components";
 import Dialog from "@mui/material/Dialog";
 import CreatePlace from "./CreatePlace";
-import {useToggle} from "usehooks-ts";
+import {useLocalStorage, useToggle} from "usehooks-ts";
+import {LocalDate} from "@js-joda/core";
 
 interface PlacesProps {
     onClose: () => void
@@ -16,13 +17,18 @@ export default function Places({onSuccess, onClose}: PlacesProps) {
     const { data: places = [] } = usePlaces()
     const [latitude, longitude] = getCenter(places)
     const [openCreatePlace, toggleOpenCreatePlace] = useToggle()
+    const [state, setState] = useState({ center: [latitude, longitude], zoom: 16 } )
 
     return (
         <>
             <DialogHeader title="Карта мест" onClick={onClose}/>
-            <div style={{ position: 'absolute', top: 55, bottom: 0, left: 0, right: 0 }}>
+            <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
                 <YMaps>
-                    <Map defaultState={{ center: [latitude, longitude], zoom: 16 }} width="100%" height="100%">
+                    <Map defaultState={state} width="100%" height="100%"
+                         onBoundsChange={(xx: any)=>{
+                             setState({...state, center: xx.originalEvent.newCenter })
+                         }}
+                    >
                         {places.map((place) => (
                             <Placemark
                                 key={place.id}
@@ -49,7 +55,7 @@ export default function Places({onSuccess, onClose}: PlacesProps) {
                 </div>
             </div>
             <Dialog onClose={toggleOpenCreatePlace} open={openCreatePlace} fullScreen TransitionComponent={TransitionDialog}>
-                <CreatePlace onSuccess={onSuccess} onClose={toggleOpenCreatePlace}  />
+                <CreatePlace state={state} onSuccess={onSuccess} onClose={toggleOpenCreatePlace}  />
             </Dialog>
         </>
     );

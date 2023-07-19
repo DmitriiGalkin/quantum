@@ -11,7 +11,7 @@ export function DialogHeader({ title, onClick }: DialogHeaderProps) {
     const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
 
     return (
-        <Stack direction="row" alignItems="center" justifyContent="space-between" style={{ position: 'sticky', padding: '14px 18px 14px 18px', background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)' }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" style={{ position: 'sticky', padding: '14px 18px 14px 18px', background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)', height: 54 }}>
             <div style={{ color: 'white', fontWeight: 'bold', fontSize: 20, letterSpacing: '-0.01em', lineHeight: '22px' }}>
                 {title || <Skeleton variant="text" sx={{ fontSize: '1rem', width: '100%' }} />}
             </div>

@@ -26,7 +26,7 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
 
     const { data: defaultMeet } = useMeet(Number(meetId))
-    const [meet, setMeet] = useState<Meet>({ id: 0, title: '', description:'', latitude: 55.933093, longitude: 37.054661, datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')})
+    const [meet, setMeet] = useState<Meet>({ id: 0, title: '', description:'', latitude: '55.933093', longitude: '37.054661', datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')})
     const addMeet = useAddMeet()
     const editMeet = useEditMeet(meet.id)
 

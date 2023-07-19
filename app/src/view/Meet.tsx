@@ -143,7 +143,7 @@ export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetCom
                     </div>
                     <div style={{ width: '100%', height: '200px', marginTop: 25, borderRadius: 15, overflow: 'hidden' }}>
                         <YMaps>
-                            <Map defaultState={{ center: [meet.latitude, meet.longitude], zoom: 16 }} width="100%" height="100%">
+                            <Map defaultState={{ center: [Number(meet.latitude), Number(meet.longitude)], zoom: 16 }} width="100%" height="100%">
                                 <Placemark
                                     key={meet.id}
                                     modules={["geoObject.addon.balloon"]}

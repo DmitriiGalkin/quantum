@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
 import {useAddMeet, useAddPlace, usePlaces} from "../tools/service";
@@ -33,19 +33,19 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface CreatePlaceProps {
+    state: { center: number[], zoom: number }
     onClose: () => void
     onSuccess: (place: Place) => void
 }
 const drawerBleeding = 25;
-export default function CreatePlace({onSuccess, onClose}: CreatePlaceProps) {
+export default function CreatePlace({ state, onSuccess, onClose }: CreatePlaceProps) {
     const classes = useStyles();
+    const map = useRef();
     const addPlace = useAddPlace()
 
-    const { data: places = [] } = usePlaces()
-    const [latitude, longitude] = getCenter(places)
-    const [drawer, toggleDrawer] = useToggle()
+    const [drawer, toggleDrawer] = useToggle(true)
     const container = window !== undefined ? () => window.document.body : undefined;
-    const [place, setPlace] = useState<Place>({ id: 0, title: '', latitude: 1, longitude: 2, image: '' })
+    const [place, setPlace] = useState<Place>({ id: 0, title: '', latitude: '1', longitude: '2', image: '' })
     const onSave = () => {
         if(place){
             addPlace.mutateAsync(place).then(() => {
@@ -58,22 +58,25 @@ export default function CreatePlace({onSuccess, onClose}: CreatePlaceProps) {
     return (
         <>
             <DialogHeader title="Добавление Места" onClick={onClose}/>
-            <div style={{ position: 'absolute', top: 55, bottom: 0, left: 0, right: 0 }}>
+            <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
+                <div style={{ position: 'absolute', top: 'calc(33.33% - 46px)', left: 'calc(50% - 13px)', zIndex:5000 }}>
+                    <svg width="26" height="46" viewBox="0 0 26 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="13" cy="13" r="12" fill="#FFA028" stroke="#394F63" strokeWidth="2"/>
+                        <path d="M13 25L13 45" stroke="#394F63" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                </div>
                 <YMaps>
-                    <Map defaultState={{ center: [latitude, longitude], zoom: 16 }} width="100%" height="100%">
-                        {places.map((place) => (
-                            <Placemark
-                                key={place.id}
-                                modules={["geoObject.addon.balloon"]}
-                                defaultGeometry={[place.latitude, place.longitude]}
-                                options={{
-                                    preset: 'islands#icon',
-                                    iconColor: '#FFA427',
-                                }}
-                                onClick={() => onSuccess(place)}
-                            />
-                        ))}
-                    </Map>
+                    <Map
+                        instanceRef={map}
+                        onBoundsChange={(xx: any)=>{
+                            const [[x1,y1], [x2,y2]] = xx.originalEvent.newBounds
+                            const latitude = x1 + (x2 - x1)/3*2
+                            const longitude = y1 + (y2 - y1)/2
+                            setPlace({...place, latitude, longitude})
+                        }}
+                        defaultState={state}
+                        width="100%" height="100%"
+                    />
                 </YMaps>
             </div>
             <SwipeableDrawer
@@ -111,12 +114,10 @@ export default function CreatePlace({onSuccess, onClose}: CreatePlaceProps) {
                                 placeholder="Введите название встречи"
                             />
                             <ImageField
+                                name="placeImage"
                                 label="Загрузите обложку"
                                 value={place?.image}
-                                onChange={(image) => {
-                                    console.log(image,'image')
-                                    setPlace({...place, image} as Place)
-                                }}
+                                onChange={(image) => setPlace({...place, image} as Place)}
                             />
                         </Stack>
                         <Button onClick={onSave}>Добавить</Button>
