@@ -33,8 +33,6 @@ export const createService = (): AxiosInstance => {
 
     service.interceptors.response.use(( axiosResponse) => axiosResponse.data)
 
-
-
     return service
 }
 
@@ -55,22 +53,13 @@ interface GetMeets {
 /**
  * Встречи
  */
-export const useMeets = (params?: GetMeets): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets`, {
-    params,
-}))
-
-//     ,{
-//     enabled: Boolean(params?.latitude) || Boolean(params?.longitude),
-// }
+export const useMeets = (params?: GetMeets): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets`, { params }))
 export const useMeet = (id?: number): UseQueryResult<Meet> => {
     return useQuery(['meet', id], () => service.get(`/meet/${id}`), {
         enabled: Boolean(id),
     })
 }
-export const useMeetUsers = (id: number): UseQueryResult<User[]> => {
-    return useQuery(['meetUsers', id], () => service.get(`/meet/${id}/users`),)
-}
-
+export const useMeetUsers = (id: number): UseQueryResult<User[]> => useQuery(['meetUsers', id], () => service.get(`/meet/${id}/users`))
 export const useAddMeet = (): UseMutate<Meet> => {
     const queryClient = useQueryClient()
     return useMutation((meet) => service.post("/meet", meet), {
@@ -106,16 +95,7 @@ export const useDeleteMeet = (): UseMutate<number> => useMutation((meetId) => se
 /**
  * Место
  */
-export const usePlaces = (): UseQueryResult<Place[]> => {
-    return useQuery(['places'], () => service.get(`/places`),)
-}
-export const useAddPlace = (): UseMutate<Place> => {
-    const queryClient = useQueryClient()
-    return useMutation((place) => service.post("/place", place), {
-        onSuccess() {
-            queryClient.invalidateQueries({ queryKey: ['meets'] })
-        },
-    })
-}
+export const usePlaces = (): UseQueryResult<Place[]> => useQuery(['places'], () => service.get(`/places`))
+export const useAddPlace = (): UseMutate<Place> => useMutation((place) => service.post("/place", place))
 
 export default service
