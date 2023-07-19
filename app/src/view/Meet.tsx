@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 interface MeetComponentProps {
     meet: Meet
-    onEdit: () => Promise<void>
-    onDelete: () => Promise<void>
+    onEdit: () => void
+    onDelete: () => void
     onClick?: () => void
 }
 export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetComponentProps) {

@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {useAddMeet, useEditMeet, usePlaces} from "../tools/service";
+import {useAddMeet, useEditMeet, useMeet, usePlaces} from "../tools/service";
 import {Meet, Place} from "../tools/dto";
 import {
     Button,
@@ -10,45 +10,43 @@ import {
     Input,
     Textarea,
     TimePicker,
-    TransitionDialog
 } from "../components";
 import {convertToMeetsGroupTime} from "../tools/date";
-import {useLocalStorage, useToggle} from "usehooks-ts";
+import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
-import {ImageSelect} from "../components";
-import Dialog from "@mui/material/Dialog";
-import Places from "./Places";
 import dayjs from "dayjs";
+import {useParams} from "react-router-dom";
+import {PlaceSelect} from "../components/PlaceSelect";
 
 export interface CreateMeetDialogProps {
     onClose: () => void
 }
 export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
-    const { data: places = [] } = usePlaces()
-
+    const { id: meetId } = useParams();
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
+
+    const { data: defaultMeet } = useMeet(Number(meetId))
     const [meet, setMeet] = useState<Meet>({ id: 0, title: '', description:'', latitude: 55.933093, longitude: 37.054661, datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')})
     const addMeet = useAddMeet()
     const editMeet = useEditMeet(meet.id)
 
+    useEffect(() => defaultMeet && setMeet(defaultMeet), [defaultMeet])
+
+    if (!meet) return null;
+
     const onClickSave = () => {
-        if (meet) {
-            const meetWithTimezone = {...meet }
-            if (meet.id) {
-                editMeet.mutateAsync(meetWithTimezone).then(() => {
-                    onClose()
-                })
-            } else {
-                addMeet.mutateAsync(meetWithTimezone).then(() => {
-                    setSelectedDate(convertToMeetsGroupTime(meet.datetime))
-                    onClose()
-                })
-            }
+        if (meet.id) {
+            editMeet.mutateAsync(meet).then(onClose)
+        } else {
+            addMeet.mutateAsync(meet).then(() => {
+                setSelectedDate(convertToMeetsGroupTime(meet.datetime))
+                onClose()
+            })
         }
     };
+
     const title = meet.id ? 'Редактировать встречу' : 'Создание встречи'
     const saveButtonTitle = meet.id ? 'Сохранить' : "Создать встречу"
-    const [findPlace, toggleFindPlace] = useToggle()
 
     return (
         <div>
@@ -60,7 +58,7 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
                             <Input
                                 name='title'
                                 label="Название"
-                                value={meet?.title}
+                                value={meet.title}
                                 onChange={(e) => setMeet({ ...meet, title: e.target.value})}
                                 placeholder="Введите название встречи"
                             />
@@ -90,19 +88,11 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
                         value={meet.image}
                         onChange={(image) => setMeet({...meet, image})}
                     />
-                    <ImageSelect<Place>
-                        label="Место"
-                        selected={places.find(p => p.latitude === meet.latitude && p.longitude === meet.longitude)}
-                        items={places}
+                    <PlaceSelect
                         onChange={(place) => setMeet({ ...meet, latitude: place.latitude, longitude: place.longitude})}
-                        onAdd={toggleFindPlace}
+                        latitude={meet.latitude}
+                        longitude={meet.longitude}
                     />
-                    <Dialog onClose={toggleFindPlace} open={findPlace} fullScreen TransitionComponent={TransitionDialog}>
-                        <Places onSuccess={(place) => {
-                            setMeet({ ...meet, latitude: place.latitude, longitude: place.longitude})
-                            toggleFindPlace()
-                        }} onClose={toggleFindPlace}  />
-                    </Dialog>
                 </Stack>
                 <div style={{ paddingTop: 22 }}>
                     <Button onClick={onClickSave}>

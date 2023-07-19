@@ -1,30 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import MeetComponent from "./Meet";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteMeet, useMeet, useToggleMeetUser} from "../tools/service";
-import {Meet} from "../tools/dto";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components";
 import CreateMeet from "./CreateMeet";
 import {useAuth} from "../tools/auth";
+import {useToggle} from "usehooks-ts";
 
 export default function MeetPage() {
     const navigate = useNavigate();
-    const [meet, setMeet] = useState<Meet>()
     const { isAuth, openLogin } = useAuth();
 
     const { id: meetId } = useParams();
-    const { data: defaultMeet, refetch } = useMeet(Number(meetId))
-    const [editMeet, setEditMeet] = useState<Meet>()
+    const { data: meet, refetch } = useMeet(Number(meetId))
+    const [create, toggleCreate] = useToggle()
     const toggleMeetUser = useToggleMeetUser()
     const deleteMeet = useDeleteMeet()
-
-    useEffect(() => defaultMeet && setMeet(defaultMeet), [defaultMeet])
 
     if (!meet) return null;
 
     const onClick = () => isAuth ? toggleMeetUser.mutateAsync(meet.id).then(() => refetch()) : openLogin()
-    const onEdit = async () => setEditMeet(meet)
     const onDelete =  () => deleteMeet.mutateAsync(meet.id).then(() => navigate(`/`))
 
     return (
@@ -32,11 +28,11 @@ export default function MeetPage() {
             <MeetComponent
                 meet={meet}
                 onClick={onClick}
-                onEdit={onEdit}
+                onEdit={toggleCreate}
                 onDelete={onDelete}
             />
-            <Dialog onClose={() => setEditMeet(undefined)} open={!!editMeet} fullScreen TransitionComponent={TransitionDialog}>
-                {!!editMeet && (<CreateMeet onClose={() => setEditMeet(undefined)} meet={editMeet} setMeet={setEditMeet} />)}
+            <Dialog onClose={toggleCreate} open={create} fullScreen TransitionComponent={TransitionDialog}>
+                {create && (<CreateMeet onClose={toggleCreate} />)}
             </Dialog>
         </>
     );

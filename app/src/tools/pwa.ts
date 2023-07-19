@@ -5,13 +5,13 @@ interface ShareProps {
     text?: string
     url?: string
 }
-export const getOnShare = ({ title, text, url }: ShareProps) => async () => {
+export const getOnShare = ({ title, text, url }: ShareProps) => () => {
     try {
-        await navigator.share({
+        navigator.share({
             title,
             text,
             url: `https://selfproject.ru` + url
-        });
+        }).then();
     }
     catch(e) {
         console.log('Ошибка функции "Поделиться"', e);

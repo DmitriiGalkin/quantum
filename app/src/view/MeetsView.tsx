@@ -212,7 +212,7 @@ export default function MeetsView(): JSX.Element {
                 <Profile onClose={toggleProfile} onLogout={toggleMenu} />
             </Dialog>
             <Dialog onClose={toggleMeet} open={meet} fullScreen TransitionComponent={TransitionDialog}>
-                {meet && <CreateMeet onClose={toggleMeet} />}
+                <CreateMeet onClose={toggleMeet} />
             </Dialog>
         </>
     )
