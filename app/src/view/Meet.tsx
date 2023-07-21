@@ -8,7 +8,7 @@ import {Back, Button} from "../components";
 import {getOnShare} from "../tools/pwa";
 import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
     container: {
         position: 'absolute',
         top: -33,
@@ -16,15 +16,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         width: '100%',
         borderRadius: `28px 28px 0 0`,
         padding: '24px 26px'
-    },
-    block: {
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: 12,
-        padding: 12,
-    },
-    large: {
-        width: theme.spacing(5),
-        height: theme.spacing(5),
     },
     image: {
         width: '100%',

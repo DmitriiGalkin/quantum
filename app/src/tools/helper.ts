@@ -23,6 +23,26 @@ export const getMeetsGroup = (meets?: Meet[]) => [...Array.from(groupBy(meets ||
 
 export const getMeetsGroup2 = (meets?: Meet[]) => [...Array.from(groupBy(meets || [], (meet) => convertToMeetsGroupTime(meet.datetime)))].map(([a,b])=> ({ id: a, meets: b}));
 
+export const getCalendarMeetsGroup = (days: Day[], meets: Meet[]) => {
+    const groups = getMeetsGroup2(meets)
+    return days.map(day => ({ id: day.id, meets: groups.find(group => group.id === day.id)?.meets || [] }))
+}
+
+/**
+ * Подготовка данных для отображения встреч списком и на карте
+ */
+export const getOm = (meets: Meet[], date: string) => {
+    const days = getWeek(date, meets)
+    const meetsGroup = getCalendarMeetsGroup(days, meets)
+
+    return {
+        days,
+        meetsGroup,
+        filteredMeets: meetsGroup.find(({ id }) => id === date)?.meets || [],
+        index: days.find(({ id }) => id === date)?.index || 0
+    }
+}
+
 export const getFilteredMeetsByDate = (meets: Meet[], date: string, selectedMeet?: Meet): Meet[] => {
     const groups = getMeetsGroup2(meets)
     return groups.find((group) => group.id === date)?.meets || []
@@ -30,20 +50,19 @@ export const getFilteredMeetsByDate = (meets: Meet[], date: string, selectedMeet
 
 export const DAYS_COUNT = 7
 
-export interface CalendarDay {
+export interface Day {
     index: number
     id: string
     dayOfWeekValue: string
     day: number
     active: boolean
-    meetsLength: number
     activeMeetsLength: number
-    meets: Meet[]
+    meets?: Meet[]
 }
 /**
  * Подготавливаем неделю
  */
-export const getWeek = (selectedDate?: string, meets?: Meet[]): CalendarDay[] => Array.from(Array(DAYS_COUNT).keys()).map((day, index) => {
+export const getWeek = (selectedDate?: string, meets?: Meet[]): Day[] => Array.from(Array(DAYS_COUNT).keys()).map((day, index) => {
     const meetsGroup = getMeetsGroup2(meets)
 
     const localDate = LocalDate.now()
@@ -57,7 +76,6 @@ export const getWeek = (selectedDate?: string, meets?: Meet[]): CalendarDay[] =>
         dayOfWeekValue: getDayOfWeekTitle(targetDay.dayOfWeek().value() - 1),
         day: targetDay.dayOfMonth(),
         active: selectedDate === re,
-        meetsLength: meets3?.length || 0,
         activeMeetsLength: meets3?.filter((meet) => meet.active).length || 0,
         meets: meets3 || [],
     }

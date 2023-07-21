@@ -61,13 +61,15 @@ export const usePWA = () => {
 export const usePosition = () => {
     const [position, setPosition] = useState<GeolocationPosition | undefined>()
 
-    if ( navigator.geolocation ) {
-        navigator.geolocation.getCurrentPosition(setPosition, () => console.log('Что то не так с определением позиции'), {
-            enableHighAccuracy: false,
-            timeout: 15000,
-            maximumAge: 0
-        } );
-    }
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(setPosition, () => console.log('Что то не так с определением позиции'), {
+                enableHighAccuracy: false,
+                timeout: 15000,
+                maximumAge: 0
+            } );
+        }
+    }, [position?.coords.latitude, position?.coords.longitude]);
 
     return {
         latitude: position?.coords.latitude,
