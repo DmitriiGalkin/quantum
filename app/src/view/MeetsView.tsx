@@ -1,6 +1,7 @@
 import {Box, ClickAwayListener, Stack, SwipeableDrawer} from "@mui/material";
 import CreateMeet from "../view/CreateMeet";
 import Profile from "./Profile";
+import { Map2 } from "../components/Map";
 import UserMeets from "./UserMeets";
 import React, {useState} from "react";
 import {makeStyles} from "@mui/styles";
@@ -125,8 +126,9 @@ export default function MeetsView(): JSX.Element {
                 </div>
                 <div className={classes.outlet}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        {map && <div style={{ position: 'absolute', top: 54, left: 0, right: 0, height: 100, zIndex: 1, backgroundColor: '#223445', opacity: .8 }} />}
-                        <div style={{ display: 'block', padding: 15, zIndex: 2 }}><Calendar days={days} onChange={setDate} map={map} /></div>
+                        <div style={{ backgroundColor: map ? 'rgba(34, 52, 69, .8)' : undefined, zIndex: 2 }}>
+                            <div style={{ display: 'block', padding: 15 }}><Calendar days={days} onChange={setDate} map={map} /></div>
+                        </div>
                         <div style={{ overflow: 'auto', flexGrow: 1 }}>
                             {!map ? (
                                 <SwipeableViews
@@ -152,6 +154,7 @@ export default function MeetsView(): JSX.Element {
                                 <>
                                     {latitude && longitude && (
                                         <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
+                                            {/*<Map2 state={{ center: [latitude, longitude], zoom: 13 }} meets={filteredMeets} />*/}
                                             <YMaps>
                                                 <Map defaultState={{ center: [latitude, longitude], zoom: 16 }} width="100%" height="100%">
                                                     {filteredMeets.map((meet) => (
@@ -159,6 +162,7 @@ export default function MeetsView(): JSX.Element {
                                                             key={meet.id}
                                                             modules={["geoObject.addon.balloon"]}
                                                             defaultGeometry={[meet.latitude, meet.longitude]}
+                                                            iconContent='12'
                                                             options={{ preset: 'islands#icon', iconColor: '#FFA427' }}
                                                             onClick={() => setSelectedMeetId(meet.id)}
                                                         />

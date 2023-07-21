@@ -12163,6 +12163,11 @@ yaml@^1.10.0, yaml@^1.10.2, yaml@^1.7.2:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
+yandex-map-react@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/yandex-map-react/-/yandex-map-react-1.1.1.tgz#f26ac2f0108c83522e3acc0b0d6ec2794991ad1c"
+  integrity sha512-tl6MI4US+ti9vaGRqJTU1L98mLtjpub1DgIUWDDH9326yBwarxwZ/CU0Jt0p/ElVmF1iGPsQRusijOR3t3Je6Q==
+
 yargs-parser@^20.2.2:
   version "20.2.9"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
