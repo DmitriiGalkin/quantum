@@ -57,8 +57,24 @@ exports.toggleUserMeet = function(req, res) {
         }
     })
 };
+// Встречи для пользователя
+exports.findUserMeets = function(req, res) {
+    Meet.findUserMeet(req.user.id, function(err, meets) {
+        async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
+            async.map(meets, User.findByMeet, function(err, meetsUsers) {
+                res.send(meets.map((p, index) => {
+                    const active = meetsUsers[index]?.some((user) => user.userId === req.user?.id)
+                    const users = meetsUsers[index]
+                    const place = meetsPlaces[index]
 
-// Встречи
+                    return ({ ...p, users, active, place })
+                }));
+            });
+        });
+    });
+};
+
+// Встречи для пользователя
 exports.findAll = function(req, res) {
     Meet.findAll(req.query.latitude, req.query.longitude)(function(err, meets) {
         async.map(meets, Place.findByMeet, function(err, meetsPlaces) {

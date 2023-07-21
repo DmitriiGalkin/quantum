@@ -14,6 +14,9 @@ const useStyles = makeStyles(() => ({
     dayOfWeekActive: {
         opacity: 0.8
     },
+    dayOfWeekMap: {
+        color: 'white'
+    },
     day: {
         position: 'relative',
         paddingTop: '100%',
@@ -24,12 +27,12 @@ const useStyles = makeStyles(() => ({
         border: '1px solid rgba(57, 79, 99, 0.1)',
         boxShadow: '0px 2.769230604171753px 12.923076629638672px 0px rgba(0, 0, 0, 0.05)'
     },
-    dayActive: {
-        backgroundColor: '#394F63',
-        color: '#ffffff',
+    dayMap: {
+        backgroundColor: '#909CA6'
     },
-    dayFilled: {
-        opacity: .6
+    dayActive: {
+        backgroundColor: '#1D2B38',
+        color: '#ffffff',
     },
     dayAbsolute: {
         position: 'absolute',
@@ -57,7 +60,7 @@ const useStyles = makeStyles(() => ({
         width: 17,
         height: 17,
         borderRadius: 100,
-        backgroundColor: 'orange',
+        backgroundColor: '#FFA028',
         color: 'white'
     },
     lengthSquare: {
@@ -77,9 +80,10 @@ const useStyles = makeStyles(() => ({
 interface CalendarProps {
     days: CalendarDay[]
     onChange?: (date: string) => void
+    map?: boolean
 }
 
-export function Calendar ({ days, onChange }: CalendarProps): JSX.Element {
+export function Calendar ({ days, onChange, map }: CalendarProps): JSX.Element {
     const classes = useStyles();
 
     return (
@@ -87,11 +91,11 @@ export function Calendar ({ days, onChange }: CalendarProps): JSX.Element {
             {days.map(({id, dayOfWeekValue, day, active, meetsLength, activeMeetsLength}) => {
                 const onClick = () => onChange ? onChange(id) : undefined
                 return (
-                    <Stack key={day} spacing={3} direction="column" alignItems="center" onClick={onClick} style={{ width: '100%'}}>
-                        <div className={clsx(classes.dayOfWeek, active && classes.dayOfWeekActive)}>
+                    <Stack key={day} spacing={1} direction="column" alignItems="center" onClick={onClick} style={{ width: '100%'}}>
+                        <div className={clsx(classes.dayOfWeek, active && classes.dayOfWeekActive, map && classes.dayOfWeekMap)}>
                             {dayOfWeekValue}
                         </div>
-                        <div className={clsx(classes.day, active && classes.dayActive, !meetsLength && classes.dayFilled)}>
+                        <div className={clsx(classes.day, active && classes.dayActive, map && classes.dayMap)}>
                             <div className={classes.dayAbsolute}>
                                 <div className={classes.daySquare}>
                                     <p className={classes.dayP}>{day}</p>

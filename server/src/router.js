@@ -46,7 +46,7 @@ router.get('/oauth2/redirect/mailru', (req, res) => passport.authenticate('mailr
  */
 router.get('/user', userController.useUser, function(req, res) { res.send(req.user) });
 router.put('/user', userController.useUser, userController.update);
-
+router.get('/userMeets', userController.useUser, meetController.findUserMeets);
 router.put('/userMeet/:meetId', userController.useUser, meetController.toggleUserMeet );
 
 /**

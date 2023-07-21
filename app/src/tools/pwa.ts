@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 interface ShareProps {
     title?: string
@@ -53,4 +53,24 @@ export const usePWA = () => {
 
     // @ts-ignore
     return { onInstall: () => window.deferredPrompt.prompt(), mode: getPWADisplayMode() }
+}
+
+/**
+ * Возвращает позицию посетителя
+ */
+export const usePosition = () => {
+    const [position, setPosition] = useState<GeolocationPosition | undefined>()
+
+    if ( navigator.geolocation ) {
+        navigator.geolocation.getCurrentPosition(setPosition, () => console.log('Что то не так с определением позиции'), {
+            enableHighAccuracy: false,
+            timeout: 15000,
+            maximumAge: 0
+        } );
+    }
+
+    return {
+        latitude: position?.coords.latitude,
+        longitude: position?.coords.longitude
+    }
 }

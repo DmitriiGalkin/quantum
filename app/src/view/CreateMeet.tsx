@@ -47,7 +47,7 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
 
     return (
         <div>
-            <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Создание встречи'} onClick={onClose}/>
+            <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Создание встречи'} onClick={onClose} isClose />
             <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={5}>
                     <DatePicker
@@ -81,6 +81,7 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
                         placeholder="Кратко опишите встречу"
                     />
                     <ImageField
+                        name="meetImage"
                         label="Загрузите обложку"
                         value={meet.image}
                         onChange={(image) => setMeet({...meet, image})}

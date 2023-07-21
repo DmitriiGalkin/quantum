@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@2gis/mapgl@^1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@2gis/mapgl/-/mapgl-1.38.0.tgz#f58a8714860909a0d3ab5dc80c3adc8b1058a553"
+  integrity sha512-nzQrCUeRmoGnVbLHqn3w1F6oxUeXLaa1CY+jmCN8Mgndb4N/0TzNRSePRdQSEWn20dPkomZ1q9eTxA4Xfoe9hA==
+  dependencies:
+    "@types/geojson" "^7946.0.7"
+
 "@adobe/css-tools@^4.0.1":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@adobe/css-tools/-/css-tools-4.2.0.tgz#e1a84fca468f4b337816fcb7f0964beb620ba855"
@@ -3399,6 +3406,11 @@
     "@types/express-serve-static-core" "^4.17.33"
     "@types/qs" "*"
     "@types/serve-static" "*"
+
+"@types/geojson@^7946.0.7":
+  version "7946.0.10"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.10.tgz#6dfbf5ea17142f7f9a043809f1cd4c448cb68249"
+  integrity sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==
 
 "@types/graceful-fs@^4.1.2":
   version "4.1.6"

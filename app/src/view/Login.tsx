@@ -34,7 +34,7 @@ export default function Login({ onClose }: LoginProps) {
 
     return (
         <>
-            <DialogHeader title="Вход" onClick={onClose}/>
+            <DialogHeader title="Вход" onClick={onClose} isClose />
             <div style={{ padding: '16px 18px', height: '100%'}}>
                 <Stack spacing={3} direction="column"  justifyContent="space-between" style={{ height: '100%' }}>
                     <Stack spacing={6} alignItems="center">

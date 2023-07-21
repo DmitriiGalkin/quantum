@@ -1,7 +1,6 @@
 import React from 'react';
-import {Stack} from "@mui/material";
+import {Menu, MenuItem, Stack} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import {More} from "./More";
 
 interface MenuItemProps {
     title: string,
@@ -14,6 +13,15 @@ interface BackProps {
 export function Back({ onClick, menuItems }: BackProps) {
     const navigate = useNavigate();
     const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const handleProjectMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const isMenuOpen = Boolean(anchorEl);
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+    if (!(Boolean(menuItems?.length) && menuItems)) { return null }
 
     return (
         <Stack spacing={2} direction="row" justifyContent="space-between" style={{ width: '100%' }}>
@@ -23,7 +31,37 @@ export function Back({ onClick, menuItems }: BackProps) {
                 </svg>
             </div>
             <div>
-                <More menuItems={menuItems}/>
+                <div onClick={handleProjectMenuOpen}>
+                    <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect opacity="0.7" width="42" height="42" rx="18" fill="black"/>
+                        <circle cx="15.5" cy="20.5" r="1.5" fill="white"/>
+                        <circle cx="21.5" cy="20.5" r="1.5" fill="white"/>
+                        <circle cx="27.5" cy="20.5" r="1.5" fill="white"/>
+                    </svg>
+                </div>
+                <Menu
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    id={'primary-search-account-menu'}
+                    keepMounted
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    open={isMenuOpen}
+                    onClose={handleMenuClose}
+                >
+                    {menuItems.map(({ title, onClick }) => {
+                        const onClickWithClose = () => {
+                            onClick()
+                            handleMenuClose()
+                        }
+                        return <MenuItem key={title} onClick={onClickWithClose}>{title}</MenuItem>
+                    })}
+                </Menu>
             </div>
         </Stack>
 

@@ -21,7 +21,7 @@ export default function Places({onSuccess, onClose}: PlacesProps) {
 
     return (
         <>
-            <DialogHeader title="Карта мест" onClick={onClose}/>
+            <DialogHeader title="Карта мест" onClick={onClose} isClose />
             <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
                 <YMaps>
                     <Map defaultState={state} width="100%" height="100%"

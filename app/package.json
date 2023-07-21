@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@2gis/mapgl": "^1.38.0",
     "@aws-sdk/client-s3": "^3.312.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",

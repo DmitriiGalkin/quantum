@@ -59,7 +59,7 @@ export const useMeet = (id?: number): UseQueryResult<Meet> => {
         enabled: Boolean(id),
     })
 }
-export const useMeetUsers = (id: number): UseQueryResult<User[]> => useQuery(['meetUsers', id], () => service.get(`/meet/${id}/users`))
+//export const useMeetUsers = (id: number): UseQueryResult<User[]> => useQuery(['meetUsers', id], () => service.get(`/meet/${id}/users`))
 export const useAddMeet = (): UseMutate<Meet> => {
     const queryClient = useQueryClient()
     return useMutation((meet) => service.post("/meet", meet), {
@@ -76,6 +76,7 @@ export const useEditMeet = (id: number): UseMutate<Meet> => {
         },
     })
 }
+export const useDeleteMeet = (): UseMutate<number> => useMutation((meetId) => service.delete(`/meet/${meetId}`))
 
 /**
  * Картинки
@@ -90,7 +91,7 @@ export const useUploadImage = (): UseMutate<FormData, string> => {
 export const useUser = (): UseQueryResult<User> => useQuery(['user'], () => service.get(`/user`))
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
 export const useToggleMeetUser = (): UseMutate<number> => useMutation((meetId) => service.put("/userMeet/" + meetId))
-export const useDeleteMeet = (): UseMutate<number> => useMutation((meetId) => service.delete(`/meet/${meetId}`))
+export const useUserMeets = (): UseQueryResult<Meet[]> => useQuery(['userMeets'], () => service.get(`/userMeets`))
 
 /**
  * Место

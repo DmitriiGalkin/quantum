@@ -11,7 +11,6 @@ export const AuthContext = createContext('auth' as any);
 
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const { data: user } = useUser();
-
     const [searchParams] = useSearchParams();
     const tokenSearchParam = searchParams.get("access_token")
     const access_token = localStorage.getItem(ACCESS_TOKEN) || tokenSearchParam
@@ -49,7 +48,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
             logout,
             authFn
         }),
-        [access_token]
+        [access_token, user]
     );
     return <AuthContext.Provider value={value}>
         {children}

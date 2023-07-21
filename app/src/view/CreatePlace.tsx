@@ -57,7 +57,7 @@ export default function CreatePlace({ state, onSuccess, onClose }: CreatePlacePr
 
     return (
         <>
-            <DialogHeader title="Добавление Места" onClick={onClose}/>
+            <DialogHeader title="Добавление Места" onClick={onClose} isClose />
             <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
                 <div style={{ position: 'absolute', top: 'calc(33.33% - 46px)', left: 'calc(50% - 13px)', zIndex:5000 }}>
                     <svg width="26" height="46" viewBox="0 0 26 46" fill="none" xmlns="http://www.w3.org/2000/svg">
