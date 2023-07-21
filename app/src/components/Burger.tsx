@@ -38,7 +38,7 @@ export function Burger() {
     if (!user) return null
 
     return (
-        <>
+        <div>
             <div onClick={toggleMenu} style={{ display: 'flex', zIndex: 1200 }}>
                 <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22 2H2" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
@@ -108,6 +108,6 @@ export function Burger() {
             <Dialog onClose={toggleUserMeets} open={userMeets} fullScreen TransitionComponent={TransitionDialog}>
                 <UserMeets onClose={toggleUserMeets} />
             </Dialog>
-        </>
+        </div>
     )
 }

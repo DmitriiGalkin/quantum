@@ -17,7 +17,7 @@ export function Meets({ display }: MeetsProps) {
     const { data: meets = [], refetch } = useMeets(coords)
     const [selectedMeetId, setSelectedMeetId] = useState<number>()
     const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
-    console.log(date,'date')
+
     const selectedMeet = meets.find(({id}) => id === selectedMeetId)
     const { index, days, meetsGroup, filteredMeets } = getOm(meets, date)
 
