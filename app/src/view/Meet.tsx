@@ -68,16 +68,15 @@ export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetCom
             value: meet?.place?.title,
         }
     ]
-    const menuItems = [
-        { title: 'Поделиться', onClick: getOnShare({
-                title: `Приглашаю ${date} в ${time} на встречу: ${meet?.title}`,
-                url: `/meet/${meet?.id}`
-            })},
-    ]
-    if (meet.editable) {
-        menuItems.push({ title: 'Редактировать', onClick: onEdit})
-        menuItems.push({ title: 'Удалить', onClick: onDelete})
-    }
+
+    const menuItems = meet.editable ? [
+        { title: 'Редактировать', onClick: onEdit},
+        { title: 'Удалить', onClick: onDelete}
+    ] : undefined
+    const onShare = getOnShare({
+        title: `Приглашаю ${date} в ${time} на встречу: ${meet?.title}`,
+        url: `/meet/${meet?.id}`
+    })
 
     return (
         <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)'}}>
@@ -93,7 +92,7 @@ export default function MeetComponent({meet, onEdit, onDelete, onClick}: MeetCom
                         <div style={{ fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }}>
                             {meet.title}
                         </div>
-                        <div>
+                        <div onClick={onShare}>
                             <svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="12" cy="3" r="2.25" stroke="black" strokeWidth="1.5"/>
                                 <circle cx="12" cy="16" r="2.25" stroke="black" strokeWidth="1.5"/>
