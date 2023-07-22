@@ -9,6 +9,7 @@ import Places from "../view/Places";
 import {Stack} from "@mui/material";
 import {useToggle} from "usehooks-ts";
 import {usePlaces} from "../tools/service";
+import {DialogHeaderDefault} from "./DialogHeader";
 
 interface PlaceSelectProps {
     onChange: (place: { latitude: string, longitude: string }) => void
@@ -16,7 +17,7 @@ interface PlaceSelectProps {
     longitude: string
 }
 
-export function PlaceSelect({ onChange, latitude, longitude }: PlaceSelectProps) {
+export function PlaceSelectDefault({ onChange, latitude, longitude }: PlaceSelectProps) {
     const [findPlace, toggleFindPlace] = useToggle()
     const { data: places = [] } = usePlaces()
     const selected = places.find(p => p.latitude === String(latitude) && p.longitude === String(longitude))
@@ -42,3 +43,6 @@ export function PlaceSelect({ onChange, latitude, longitude }: PlaceSelectProps)
         </>
     );
 }
+
+export const PlaceSelect = React.memo(PlaceSelectDefault);
+

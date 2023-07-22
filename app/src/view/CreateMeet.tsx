@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Stack} from "@mui/material";
 import {useAddMeet, useEditMeet, useMeet, usePlaces} from "../tools/service";
 import {Meet, Place} from "../tools/dto";
@@ -26,20 +26,22 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
 
     const { data: defaultMeet } = useMeet(Number(meetId))
+    const [datetime, setDatetime] = useState<string>(dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'))
     const [meet, setMeet] = useState<Meet>({ id: 0, title: '', description:'', latitude: '55.933093', longitude: '37.054661', datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')})
     const addMeet = useAddMeet()
     const editMeet = useEditMeet(meet.id)
 
     useEffect(() => defaultMeet && setMeet(defaultMeet), [defaultMeet])
+    const onChangePlace = useCallback((place: { latitude: string, longitude: string }) => setMeet({ ...meet, ...place}), [setMeet])
 
     if (!meet) return null;
 
     const onClickSave = () => {
         if (meet.id) {
-            editMeet.mutateAsync(meet).then(onClose)
+            editMeet.mutateAsync({...meet, datetime}).then(onClose)
         } else {
-            addMeet.mutateAsync(meet).then(() => {
-                setSelectedDate(convertToMeetsGroupTime(meet.datetime))
+            addMeet.mutateAsync({...meet, datetime}).then(() => {
+                setSelectedDate(convertToMeetsGroupTime(datetime))
                 onClose()
             })
         }
@@ -51,8 +53,8 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
             <div style={{ padding: '16px 18px'}}>
                 <Stack spacing={5}>
                     <DatePicker
-                        value={meet.datetime}
-                        onChange={(datetime) => setMeet({...meet, datetime })}
+                        value={datetime}
+                        onChange={setDatetime}
                     />
                     <Stack spacing={1} direction="row">
                         <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>
@@ -68,8 +70,8 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
                             <TimePicker
                                 name='time'
                                 label="Время"
-                                value={meet.datetime}
-                                onChange={(datetime) => setMeet({...meet, datetime })}
+                                value={datetime}
+                                onChange={setDatetime}
                             />
                         </div>
                     </Stack>
@@ -87,7 +89,7 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
                         onChange={(image) => setMeet({...meet, image})}
                     />
                     <PlaceSelect
-                        onChange={(place) => setMeet({ ...meet, ...place})}
+                        onChange={onChangePlace}
                         latitude={meet.latitude}
                         longitude={meet.longitude}
                     />

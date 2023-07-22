@@ -1,13 +1,14 @@
 import React from 'react';
 import {Skeleton, Stack} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {CalendarDay} from "./CalendarDay";
 
 interface DialogHeaderProps {
     title?: string
     onClick?: () => void
     isClose?: boolean
 }
-export function DialogHeader({ title, onClick, isClose }: DialogHeaderProps) {
+export function DialogHeaderDefault({ title, onClick, isClose }: DialogHeaderProps) {
     const navigate = useNavigate();
     const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
 
@@ -39,3 +40,5 @@ export function DialogHeader({ title, onClick, isClose }: DialogHeaderProps) {
         </Stack>
     );
 }
+
+export const DialogHeader = React.memo(DialogHeaderDefault);

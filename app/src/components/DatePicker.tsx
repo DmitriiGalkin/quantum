@@ -3,13 +3,14 @@ import {Stack} from "@mui/material";
 import {getWeek} from "../tools/helper";
 import {Calendar} from "./";
 import dayjs from "dayjs";
+import {PlaceSelectDefault} from "./PlaceSelect";
 
 interface DateFieldProps {
     label?: string
     value?: string
     onChange: (date: string) => void
 }
-export function DatePicker({ label, value, onChange }: DateFieldProps) {
+export function DatePickerDefault({ label, value, onChange }: DateFieldProps) {
     const data = dayjs(value)
     const selectedDate2 = data.format('YYYY-MM-DD')
     const week = getWeek(selectedDate2)
@@ -33,4 +34,4 @@ export function DatePicker({ label, value, onChange }: DateFieldProps) {
     );
 }
 
-export default DatePicker;
+export const DatePicker = React.memo(DatePickerDefault);
