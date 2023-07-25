@@ -69,7 +69,7 @@ exports.useUser = function(req, res, next) {
     if (!token) {
         next()
     } else {
-        User.findByToken(token, function(err, user) {
+        User.findByAccessToken(token, function(err, user) {
             if (user) {
                 req.user = user
                 next()

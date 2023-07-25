@@ -11,7 +11,7 @@ const strategys =   require('./strategys');
 passport.use(strategys.google);
 passport.use(strategys.mailru);
 passport.use(strategys.yandex);
-
+passport.use(strategys.vkontakte);
 
 /**
  * Встречи
@@ -45,6 +45,12 @@ router.get('/oauth2/redirect/mailru', (req, res) => passport.authenticate('mailr
 router.get('/login/federated/yandex', passport.authenticate('yandex'));
 router.get('/oauth2/redirect/yandex', (req, res) => passport.authenticate('yandex', function(err, user) {
     if (!user) { return res.redirect('/login'); }
+    res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
+})(req, res));
+router.get('/login/federated/vkontakte', passport.authenticate('vkontakte'));
+router.get('/oauth2/redirect/vkontakte', (req, res) => passport.authenticate('vkontakte', function(err, user) {
+    if (!user) { return res.redirect('/login'); }
+    console.log(user,'user')
     res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
 })(req, res));
 

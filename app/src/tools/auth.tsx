@@ -17,9 +17,11 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const navigate = useNavigate();
     const [openLogin, toggleOpenLogin] = useToggle()
     const isAuth =  !!access_token
+
     if (tokenSearchParam) {
+        console.log('navigate')
         localStorage.setItem(ACCESS_TOKEN, tokenSearchParam);
-        navigate("/", { replace: true });
+        navigate("/");
     }
 
     const logout = () => {

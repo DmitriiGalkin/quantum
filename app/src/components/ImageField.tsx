@@ -38,7 +38,7 @@ export function ImageField({ name, label, onChange, value }: ImageFieldProps) {
                 formData.append("image", file);
                 return uploadImage.mutateAsync(formData).then((image) => {
                     onChange(image)
-                }).catch((e) => console.log(e,'e'))
+                }).catch((e) => console.log(e,'Ошибка загрузки картинки на сервер'))
             })
 
         }

@@ -5,7 +5,7 @@ var User = function(user){
     this.title = user.title;
     this.email = user.email;
     this.image = user.image;
-    this.token = user.token;
+    this.accessToken = user.accessToken;
 };
 // Создание участника
 User.create = function (user, result) {
@@ -21,7 +21,7 @@ User.update = function(userId, user, result){
 };
 // Обновление токена
 User.updateTokenById = function(token, id, result){
-    dbConn.query("UPDATE user SET token=? WHERE id = ?", [token, id], function (err, res) {
+    dbConn.query("UPDATE user SET accessToken=? WHERE id = ?", [token, id], function (err, res) {
         result(null, res);
     });
 };
@@ -50,9 +50,9 @@ User.findByEmail = function (email, result) {
 const parse = (res) => {
     return res
 }
-// Участник по token
-User.findByToken = function (token, result) {
-    dbConn.query("SELECT * from user where token = ? ", token, function (err, res) {
+// Участник по accessToken
+User.findByAccessToken = function (accessToken, result) {
+    dbConn.query("SELECT * from user where accessToken = ? ", accessToken, function (err, res) {
         result(null, (res && res.length) ? parse(res)[0] : null);
     });
 };

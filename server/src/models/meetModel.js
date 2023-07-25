@@ -13,19 +13,13 @@ var Meet = function(data){
 };
 // Создание встречи
 Meet.create = function (data, result) {
-    //console.log(data,'data')
     dbConn.query("INSERT INTO meet set ?", data, function (err, res) {
-        //console.log(err,'err')
         result(err, res.insertId);
     });
 };
 // Обновление встречи
 Meet.update = function(id, meet, result){
-    console.log(meet,'meet update')
     dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=?, latitude=?, longitude=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, meet.latitude, meet.longitude, id], function (err, res) {
-        console.log(res,'res')
-        console.log(err,'err')
-
         result(null, res);
     });
 };

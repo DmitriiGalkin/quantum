@@ -15,7 +15,6 @@ Place.findAll = () => function (result) {
     });
 };
 Place.findByMeet = function (meet, result) {
-    console.log(meet,'meet')
     dbConn.query("SELECT * FROM place WHERE latitude = ? AND longitude = ?", [meet.latitude, meet.longitude], function (err, res) {
         result(null, res.length ? res[0] : undefined);
     });

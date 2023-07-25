@@ -2,23 +2,26 @@
 const GoogleStrategy = require('passport-google-oauth20');
 const MailStrategy = require('passport-mail');
 const YandexStrategy = require('passport-yandex').Strategy;
+const VKStrategy = require('passport-vkontakte').Strategy;
 
 const User = require('./models/userModel');
 
 function findOrCreate(accessToken, refreshToken, profile, cb) {
-    User.findByEmail(profile.emails[0].value, function(err, user) {
+    // Не все системы авторизации даруют мне почту
+    const email = profile.emails && profile.emails.length ? profile.emails[0].value : profile.profileUrl
+    const image = profile?.photos?.length ? profile.photos[0].value : '22'
+
+    User.findByEmail(email, function(err, user) {
         if (user) {
             User.updateTokenById(accessToken, user.id, function() {
                 return cb(null, { username: accessToken });
             });
         } else {
-            console.log(profile,'profile')
-            const image = profile?.photos?.length ? profile.photos[0].value : '22'
             const user = new User({
-                token: accessToken,
+                accessToken,
                 title: profile.displayName,
                 image,
-                email: profile.emails[0].value
+                email
             });
             User.create(user, function(err, data) {
                 return cb(null, { username: accessToken });
@@ -49,4 +52,10 @@ exports.yandex = new YandexStrategy({
         callbackURL: process.env.BACKEND_SERVER + '/oauth2/redirect/yandex',
     }, findOrCreate
 )
-//https://selfproject.ru/api/oauth2/redirect/google
+
+exports.vkontakte = new VKStrategy({
+        clientID: '51712994',
+        clientSecret: 'xLDAI7gCTym68ovDY5dV',
+        callbackURL: process.env.BACKEND_SERVER + '/oauth2/redirect/vkontakte',
+    }, findOrCreate
+)

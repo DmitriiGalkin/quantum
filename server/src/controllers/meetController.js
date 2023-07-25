@@ -97,9 +97,6 @@ exports.findById = function(req, res) {
             res.status(400).send({ error:true, message: 'Встреча с таким номером не найдена' });
         } else {
             Place.findByMeet(meet, function(err, place) {
-                console.log(err,'err')
-                console.log(place,'place')
-
                 User.findByMeet(meet, function (err, users) {
                     const active = users.some((user) => user.userId === req.user?.id)
                     res.send({...meet, editable: req.user?.id === meet.userId, active, users, place });

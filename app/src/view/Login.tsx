@@ -31,6 +31,16 @@ export default function Login({ onClose }: LoginProps) {
             )
         },
         {
+            title: 'Vkontakte',
+            href: '/api/login/federated/vkontakte',
+            icon: (
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 21.12C0 11.1639 0 6.1859 3.09295 3.09295C6.1859 0 11.1639 0 21.12 0L22.88 0C32.8361 0 37.8141 0 40.907 3.09295C44 6.1859 44 11.1639 44 21.12V22.88C44 32.8361 44 37.8141 40.907 40.907C37.8141 44 32.8361 44 22.88 44H21.12C11.1639 44 6.1859 44 3.09295 40.907C0 37.8141 0 32.8361 0 22.88L0 21.12Z" fill="#0077FF"/>
+                    <path d="M23.4117 31.6983C13.3833 31.6983 7.66338 24.8233 7.42505 13.3833H12.4484C12.6134 21.78 16.3166 25.3366 19.25 26.0699V13.3833H23.9801V20.6249C26.8768 20.3133 29.9197 17.0133 30.9464 13.3833H35.6766C34.8882 17.8566 31.5882 21.1566 29.2415 22.5133C31.5882 23.6133 35.3467 26.4916 36.7767 31.6983H31.5699C30.4516 28.215 27.6651 25.5199 23.9801 25.1533L23.9801 31.6983H23.4117Z" fill="white"/>
+                </svg>
+            )
+        },
+        {
             title: 'Яндекс',
             href: '/api/login/federated/yandex',
             icon: (
@@ -55,9 +65,9 @@ export default function Login({ onClose }: LoginProps) {
                             <span>Пожалуйста, авторизуйтесь</span>
                             <span>удобным для вас способом:</span>
                         </div>
-                        <Stack justifyContent="center" alignItems="center" direction="row" spacing={5}>
+                        <Stack justifyContent="center" alignItems="center" direction="row" spacing={4}>
                             {STRATEGIES.map((strategie)=>(
-                                <a href={strategie.href} style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none' }}>
+                                <a href={strategie.href} style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none', alignItems: 'center' }}>
                                     <span>{strategie.icon}</span>
                                     <span style={{ paddingTop: 8, lineHeight: '17.7px', color: 'black', opacity: .5 }}>{strategie.title}</span>
                                 </a>
