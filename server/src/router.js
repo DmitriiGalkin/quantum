@@ -10,6 +10,8 @@ const strategys =   require('./strategys');
 
 passport.use(strategys.google);
 passport.use(strategys.mailru);
+passport.use(strategys.yandex);
+
 
 /**
  * Встречи
@@ -37,6 +39,11 @@ router.get('/oauth2/redirect/google', (req, res) => passport.authenticate('googl
 })(req, res));
 router.get('/login/federated/mailru', passport.authenticate('mailru'));
 router.get('/oauth2/redirect/mailru', (req, res) => passport.authenticate('mailru', function(err, user) {
+    if (!user) { return res.redirect('/login'); }
+    res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
+})(req, res));
+router.get('/login/federated/yandex', passport.authenticate('yandex'));
+router.get('/oauth2/redirect/yandex', (req, res) => passport.authenticate('yandex', function(err, user) {
     if (!user) { return res.redirect('/login'); }
     res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
 })(req, res));

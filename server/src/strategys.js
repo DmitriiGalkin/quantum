@@ -1,6 +1,7 @@
 'use strict';
 const GoogleStrategy = require('passport-google-oauth20');
 const MailStrategy = require('passport-mail');
+const YandexStrategy = require('passport-yandex').Strategy;
 
 const User = require('./models/userModel');
 
@@ -41,3 +42,11 @@ exports.mailru = new MailStrategy({
         callbackURL: process.env.BACKEND_SERVER + '/oauth2/redirect/mailru',
     }, findOrCreate
 )
+
+exports.yandex = new YandexStrategy({
+        clientID: '0c3cdb9c0030423ea5349301e231cba8',
+        clientSecret: '655c57dcdbbf4e498a52f5b66e49bfd6',
+        callbackURL: process.env.BACKEND_SERVER + '/oauth2/redirect/yandex',
+    }, findOrCreate
+)
+//https://selfproject.ru/api/oauth2/redirect/google
