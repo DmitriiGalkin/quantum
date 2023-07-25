@@ -32,7 +32,7 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
     const editMeet = useEditMeet(meet.id)
 
     useEffect(() => defaultMeet && setMeet(defaultMeet), [defaultMeet])
-    const onChangePlace = useCallback((place: { latitude: string, longitude: string }) => setMeet({ ...meet, ...place}), [setMeet])
+    const onChangePlace = useCallback((place: { latitude: string, longitude: string }) => setMeet({ ...meet, ...place}), [meet, setMeet])
 
     if (!meet) return null;
 

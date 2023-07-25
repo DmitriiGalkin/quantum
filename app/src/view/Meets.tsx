@@ -51,21 +51,21 @@ export function Meets({ display }: MeetsProps) {
                     <>
                         {coords.latitude && coords.longitude && (
                             <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
-                                <Map2 state={{ center: [coords.latitude, coords.longitude], zoom: 13 }} meets={filteredMeets} setSelectedMeetId={setSelectedMeetId} />
-                                {/*<YMaps>*/}
-                                {/*    <Map defaultState={{ center: [coords.latitude, coords.longitude], zoom: 16 }} width="100%" height="100%">*/}
-                                {/*        {filteredMeets.map((meet) => (*/}
-                                {/*            <Placemark*/}
-                                {/*                key={meet.id}*/}
-                                {/*                modules={["geoObject.addon.balloon"]}*/}
-                                {/*                defaultGeometry={[meet.latitude, meet.longitude]}*/}
-                                {/*                iconContent='12'*/}
-                                {/*                options={{ preset: 'islands#icon', iconColor: '#FFA427' }}*/}
-                                {/*                onClick={() => setSelectedMeetId(meet.id)}*/}
-                                {/*            />*/}
-                                {/*        ))}*/}
-                                {/*    </Map>*/}
-                                {/*</YMaps>*/}
+                                {/*<Map2 state={{ center: [coords.latitude, coords.longitude], zoom: 13 }} meets={filteredMeets} setSelectedMeetId={setSelectedMeetId} />*/}
+                                <YMaps>
+                                    <Map defaultState={{ center: [coords.latitude, coords.longitude], zoom: 16 }} width="100%" height="100%">
+                                        {filteredMeets.map((meet) => (
+                                            <Placemark
+                                                key={meet.id}
+                                                modules={["geoObject.addon.balloon"]}
+                                                defaultGeometry={[meet.latitude, meet.longitude]}
+                                                iconContent='12'
+                                                options={{ preset: 'islands#icon', iconColor: '#FFA427' }}
+                                                onClick={() => setSelectedMeetId(meet.id)}
+                                            />
+                                        ))}
+                                    </Map>
+                                </YMaps>
                             </div>
                         )}
                         {selectedMeetId && selectedMeet && (

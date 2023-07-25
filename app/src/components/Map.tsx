@@ -10,7 +10,7 @@ interface Props {
 export const Map2 = ({ state, meets, setSelectedMeetId }: Props) => {
     useEffect(() => {
         let map: any
-        // console.log(state,'state', 55.93246,37.05511)
+
         load().then((mapglAPI) => {
             map = new mapglAPI.Map('map-container', {
                 center: [37.05511, 55.93246],
@@ -20,12 +20,11 @@ export const Map2 = ({ state, meets, setSelectedMeetId }: Props) => {
             });
 
             meets.forEach((meet) => {
-                console.log(meet, 'meet')
                 const marker = new mapglAPI.Marker(map, {
-                    coordinates: [37.05511, 55.93246],
-                    icon: 'http://localhost:3000/blank-place.png', //'https://selfproject.ru/place.png',
-                    size: [62, 70],
-                    anchor: [31, 70],
+                    coordinates: [Number(meet.longitude), Number(meet.latitude)],
+                    icon: 'http://localhost:3000/blank-place.png',
+                    size: [121, 130],
+                    anchor: [46, 78],
                     label: {
                         text: meet.title ? meet.title : 'meet.title',
                         color: '#ffffff',
@@ -35,29 +34,23 @@ export const Map2 = ({ state, meets, setSelectedMeetId }: Props) => {
                         image: {
                             url: 'titlesvg.svg',
                             size: [82, 18],
-                            // Области изображения, которые будут растягиваться горизонтально (синие)
-                            stretchX: [
-                                [6, 76],
-                            ],
-                            // Области изображения, которые будут растягиваться вертикально (красные)
-                            stretchY: [
-                                [6, 12],
-                            ],
+                            stretchX: [[6, 76]],
+                            stretchY: [[6, 12]],
                             padding: [4, 9, 4, 9],
                         },
                     },
                 });
+                marker.on('click', function(e) {
+                    setSelectedMeetId(meet.id);
+                })
+                new mapglAPI.HtmlMarker(map, {
+                    coordinates: [37.05511, 55.93246],
+                    html: '<img src="http://localhost:3000/image-place.png" style="width: 49px; height: 49px; object-fit: cover; border-radius: 6px"/>',
+                    interactive: false,
+                    anchor: [31, 70]
+                })
 
-                // const marker2 = new mapglAPI.HtmlMarker(map, {
-                //     coordinates: [37.05511, 55.93246],
-                //     html: '<div style="border: 1px solid gray; border-radius: 6px;"><img src="https://selfproject.ru/place.png"/></div>',
-                //     interactive: true,
-                //     anchor: [31, 70]
-                // })
 
-                // marker.on('click', function(e) {
-                //     setSelectedMeetId(meet.id);
-                // })
             })
         });
 
