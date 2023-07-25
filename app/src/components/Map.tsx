@@ -5,8 +5,9 @@ import {Meet} from "../tools/dto";
 interface Props {
     state: { center: number[], zoom: number }
     meets: Meet[]
+    setSelectedMeetId: (meetId: number) => void
 }
-export const Map2 = ({ state, meets }: Props) => {
+export const Map2 = ({ state, meets, setSelectedMeetId }: Props) => {
     useEffect(() => {
         let map: any
         // console.log(state,'state', 55.93246,37.05511)
@@ -22,25 +23,40 @@ export const Map2 = ({ state, meets }: Props) => {
                 console.log(meet, 'meet')
                 const marker = new mapglAPI.Marker(map, {
                     coordinates: [37.05511, 55.93246],
+                    icon: 'http://localhost:3000/blank-place.png', //'https://selfproject.ru/place.png',
+                    size: [62, 70],
+                    anchor: [31, 70],
                     label: {
-                        text: meet.title,
-                        offset: [20, 0],
-                        relativeAnchor: [0, 1.5],
+                        text: meet.title ? meet.title : 'meet.title',
+                        color: '#ffffff',
+                        offset: [50, -38],
+                        relativeAnchor: [0, .5],
+                        fontSize: 11,
                         image: {
-                            url: meet.image ? meet.image : 'tooltip-top.svg',
-                            size: [100, 50],
+                            url: 'titlesvg.svg',
+                            size: [82, 18],
+                            // Области изображения, которые будут растягиваться горизонтально (синие)
                             stretchX: [
-                                [10, 40],
-                                [60, 90],
+                                [6, 76],
                             ],
-                            stretchY: [[20, 40]],
-                            padding: [20, 10, 10, 10],
+                            // Области изображения, которые будут растягиваться вертикально (красные)
+                            stretchY: [
+                                [6, 12],
+                            ],
+                            padding: [4, 9, 4, 9],
                         },
                     },
                 });
-                //
+
+                // const marker2 = new mapglAPI.HtmlMarker(map, {
+                //     coordinates: [37.05511, 55.93246],
+                //     html: '<div style="border: 1px solid gray; border-radius: 6px;"><img src="https://selfproject.ru/place.png"/></div>',
+                //     interactive: true,
+                //     anchor: [31, 70]
+                // })
+
                 // marker.on('click', function(e) {
-                //     console.log(e,'e');
+                //     setSelectedMeetId(meet.id);
                 // })
             })
         });

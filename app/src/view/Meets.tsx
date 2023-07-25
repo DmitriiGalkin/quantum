@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import SwipeableViews from "react-swipeable-views";
 import {ClickAwayListener, Stack} from "@mui/material";
-import {Calendar, MeetCard} from "../components";
+import {Calendar, MeetCard, Map2} from "../components";
 import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 import {getOm} from "../tools/helper";
 import {useMeets} from "../tools/service";
@@ -51,21 +51,21 @@ export function Meets({ display }: MeetsProps) {
                     <>
                         {coords.latitude && coords.longitude && (
                             <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
-                                {/*<Map2 state={{ center: [latitude, longitude], zoom: 13 }} meets={filteredMeets} />*/}
-                                <YMaps>
-                                    <Map defaultState={{ center: [coords.latitude, coords.longitude], zoom: 16 }} width="100%" height="100%">
-                                        {filteredMeets.map((meet) => (
-                                            <Placemark
-                                                key={meet.id}
-                                                modules={["geoObject.addon.balloon"]}
-                                                defaultGeometry={[meet.latitude, meet.longitude]}
-                                                iconContent='12'
-                                                options={{ preset: 'islands#icon', iconColor: '#FFA427' }}
-                                                onClick={() => setSelectedMeetId(meet.id)}
-                                            />
-                                        ))}
-                                    </Map>
-                                </YMaps>
+                                <Map2 state={{ center: [coords.latitude, coords.longitude], zoom: 13 }} meets={filteredMeets} setSelectedMeetId={setSelectedMeetId} />
+                                {/*<YMaps>*/}
+                                {/*    <Map defaultState={{ center: [coords.latitude, coords.longitude], zoom: 16 }} width="100%" height="100%">*/}
+                                {/*        {filteredMeets.map((meet) => (*/}
+                                {/*            <Placemark*/}
+                                {/*                key={meet.id}*/}
+                                {/*                modules={["geoObject.addon.balloon"]}*/}
+                                {/*                defaultGeometry={[meet.latitude, meet.longitude]}*/}
+                                {/*                iconContent='12'*/}
+                                {/*                options={{ preset: 'islands#icon', iconColor: '#FFA427' }}*/}
+                                {/*                onClick={() => setSelectedMeetId(meet.id)}*/}
+                                {/*            />*/}
+                                {/*        ))}*/}
+                                {/*    </Map>*/}
+                                {/*</YMaps>*/}
                             </div>
                         )}
                         {selectedMeetId && selectedMeet && (

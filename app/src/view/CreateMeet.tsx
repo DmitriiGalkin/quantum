@@ -64,6 +64,7 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
                                 value={meet.title}
                                 onChange={(e) => setMeet({ ...meet, title: e.target.value})}
                                 placeholder="Введите название встречи"
+                                autoFocus
                             />
                         </div>
                         <div style={{ width: 80 }}>

@@ -67,7 +67,7 @@ Meet.findAllByUserId = () => function (result) {
 // Встречи на которые пользователь принимает участие
 Meet.findUserMeet = function(userId, result){
     dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet LEFT JOIN user_meet ON user_meet.meetId = meet.id WHERE user_meet.userId = ? ORDER BY datetime DESC", [userId], function (err, res) {
-        result(null, res.length ? res : undefined);
+        result(null, res.length ? res : []);
     });
 };
 
