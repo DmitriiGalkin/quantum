@@ -14,6 +14,7 @@ var Meet = function(data){
 // Создание встречи
 Meet.create = function (data, result) {
     dbConn.query("INSERT INTO meet set ?", data, function (err, res) {
+        console.log(err, "err");
         result(err, res.insertId);
     });
 };
