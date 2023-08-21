@@ -42,7 +42,7 @@ export default function CreateProject({ onClose }: CreateProjectProps) {
             })
         }
     };
-    console.log(project,'project')
+
     return (
         <div>
             <DialogHeader title={project.id ? 'Редактировать проект' : 'Создание проекта'} onClick={onClose} isClose />

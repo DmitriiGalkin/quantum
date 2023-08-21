@@ -48,6 +48,9 @@ export function ProjectCard({ project, refetch }: ProjectCardProps) {
                         <div style={{ textOverflow: 'ellipsis', width: '100%', fontSize: 15, overflow: 'hidden', color: '#3F3F3F', fontWeight: 500 }}>
                             {project.title}
                         </div>
+                        <div style={{ textOverflow: 'ellipsis', width: '100%', fontSize: 12, overflow: 'hidden', color: '#3F3F3F', fontWeight: 500 }}>
+                            {project.description}
+                        </div>
                     </Box>
                 </div>
             </Stack>

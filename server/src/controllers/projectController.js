@@ -1,4 +1,5 @@
 'use strict';
+const async = require("async");
 const Project = require('../models/projectModel');
 
 // Создание проекта
@@ -20,6 +21,10 @@ exports.update = function(req, res) {
     }else{
         const obj = new Project(req.body)
         Project.update(req.params.id, obj, function() {
+            // async.map(obj.timing, Timing.update(obj.id), function(err, meetsUsers) {
+            //     res.json({ error:false, message: 'Проект обновлен' });
+            //
+            // });
             res.json({ error:false, message: 'Проект обновлен' });
         });
     }

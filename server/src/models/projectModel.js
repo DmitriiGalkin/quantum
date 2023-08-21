@@ -7,6 +7,7 @@ var Project = function(data){
     this.description = data.description;
     this.image = data.image;
     this.userId = data.userId; // Создатель проекта
+    this.timing = data.timing; // Расписание проекта
 };
 // Создание проекта
 Project.create = function (data, result) {

@@ -35,6 +35,7 @@ export interface Timing {
     time: string
     checked?: boolean
 }
+
 export interface Project {
     id: number
     title: string
@@ -42,4 +43,6 @@ export interface Project {
     image?: string
     timing?: Timing[]
     editable?: boolean // Право на редактирование/удаление
+    ageFrom?: number
+    ageTo?: number
 }
