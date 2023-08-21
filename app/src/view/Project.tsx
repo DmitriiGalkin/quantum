@@ -25,8 +25,10 @@ const useStyles = makeStyles(() => ({
 }));
 interface ProjectComponentProps {
     project: Project
+    onEdit: () => void
+    onDelete: () => void
 }
-export default function ProjectComponent({project}: ProjectComponentProps) {
+export default function ProjectComponent({project, onEdit, onDelete}: ProjectComponentProps) {
     const classes = useStyles();
 
     if (!project) { return null }
@@ -64,10 +66,10 @@ export default function ProjectComponent({project}: ProjectComponentProps) {
     //     }
     // ]
 
-    // const menuItems = meet.editable ? [
-    //     { title: 'Редактировать', onClick: onEdit},
-    //     { title: 'Удалить', onClick: onDelete}
-    // ] : undefined
+    const menuItems = project.editable ? [
+        { title: 'Редактировать', onClick: onEdit},
+        { title: 'Удалить', onClick: onDelete}
+    ] : undefined
     const onShare = getOnShare({
         title: `Приглашаю в проект: ${project?.title}`,
         url: `/project/${project?.id}`
@@ -78,9 +80,9 @@ export default function ProjectComponent({project}: ProjectComponentProps) {
             <div style={{ height: 230 }}>
                 {project.image && <img alt={project.title} src={project.image} className={classes.image}/>}
             </div>
-            {/*<div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>*/}
-            {/*    <Back menuItems={menuItems} />*/}
-            {/*</div>*/}
+            <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
+                <Back menuItems={menuItems} />
+            </div>
             <div style={{ position: "relative"}}>
                 <div className={classes.container}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

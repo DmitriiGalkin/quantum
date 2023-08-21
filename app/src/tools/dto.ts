@@ -29,9 +29,17 @@ export interface Place {
     longitude: string
 }
 
+export interface Timing {
+    id: number
+    dayOfWeek: number
+    time: string
+    checked?: boolean
+}
 export interface Project {
     id: number
     title: string
     description: string
     image?: string
+    timing?: Timing[]
+    editable?: boolean // Право на редактирование/удаление
 }

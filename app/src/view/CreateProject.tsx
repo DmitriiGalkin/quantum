@@ -17,6 +17,7 @@ import {LocalDate} from "@js-joda/core";
 import dayjs from "dayjs";
 import {useParams} from "react-router-dom";
 import {PlaceSelect} from "../components/PlaceSelect";
+import {TimingField} from "../components/TimingField";
 
 export interface CreateProjectProps {
     onClose: () => void
@@ -41,7 +42,7 @@ export default function CreateProject({ onClose }: CreateProjectProps) {
             })
         }
     };
-
+    console.log(project,'project')
     return (
         <div>
             <DialogHeader title={project.id ? 'Редактировать проект' : 'Создание проекта'} onClick={onClose} isClose />
@@ -71,6 +72,10 @@ export default function CreateProject({ onClose }: CreateProjectProps) {
                         label="Загрузите обложку"
                         value={project.image}
                         onChange={(image) => setProject({ ...project, image })}
+                    />
+                    <TimingField
+                        values={project.timing || []}
+                        onChange={(values) => setProject({ ...project, timing: values })}
                     />
                 </Stack>
                 <div style={{ paddingTop: 22 }}>
