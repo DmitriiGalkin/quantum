@@ -5,6 +5,7 @@ import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "./TransitionDialog";
 import Profile from "../view/Profile";
 import UserMeets from "../view/UserMeets";
+import Projects from "../view/Projects";
 import {useToggle} from "usehooks-ts";
 import {makeStyles} from "@mui/styles";
 import {useAuth} from "../tools/auth";
@@ -34,6 +35,7 @@ export function Burger() {
     const [profile, toggleProfile] = useToggle()
     const [menu, toggleMenu] = useToggle()
     const [userMeets, toggleUserMeets] = useToggle()
+    const [projects, toggleProjects] = useToggle()
 
     if (!user) return null
 
@@ -79,7 +81,8 @@ export function Burger() {
                             </Stack>
                             <div>
                                 {[
-                                    { title: 'Посещения', onClick: toggleUserMeets }
+                                    { title: 'Посещения', onClick: toggleUserMeets },
+                                    { title: 'Проекты', onClick: toggleProjects }
                                 ].map(({ title, onClick }) => (
                                     <Stack key={title} spacing={3} direction="row" style={{ backgroundColor: '#D9D9D9', padding: '13px 15px', borderRadius: 20 }} onClick={onClick} alignItems="center">
                                         <div>
@@ -107,6 +110,9 @@ export function Burger() {
             </Dialog>
             <Dialog onClose={toggleUserMeets} open={userMeets} fullScreen TransitionComponent={TransitionDialog}>
                 <UserMeets onClose={toggleUserMeets} />
+            </Dialog>
+            <Dialog onClose={toggleProjects} open={projects} fullScreen TransitionComponent={TransitionDialog}>
+                <Projects onClose={toggleProjects} />
             </Dialog>
         </div>
     )

@@ -6,8 +6,12 @@ const userController =   require('./controllers/userController');
 const meetController =   require('./controllers/meetController');
 const imageController =   require('./controllers/imageController');
 const placeController =   require('./controllers/placeController');
+const projectController =   require('./controllers/projectController');
 const strategys =   require('./strategys');
 
+/**
+ * Стратегии авторизации
+ */
 passport.use(strategys.google);
 passport.use(strategys.mailru);
 passport.use(strategys.yandex);
@@ -67,5 +71,13 @@ router.put('/userMeet/:meetId', userController.useUser, meetController.toggleUse
  */
 router.get('/places', userController.useUser, placeController.findAll);
 router.post('/place', userController.useUser, placeController.create);
+
+/**
+ * Проекты
+ */
+router.get('/projects', userController.useUser, projectController.findAll);
+router.get('/project/:id', userController.useUser, projectController.findById);
+router.post('/project', userController.useUser, projectController.create);
+router.put('/project/:id', userController.useUser, projectController.update);
 
 module.exports = router

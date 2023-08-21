@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import {Meet, Place, User} from "./dto";
+import {Meet, Place, Project, User} from "./dto";
 import {ACCESS_TOKEN} from "./auth";
 
 // При разработки хост может быть разным
@@ -104,5 +104,15 @@ export const useAddPlace = (): UseMutate<Place> => {
         },
     })
 }
+
+/**
+ * Проект
+ */
+export const useProjects = (): UseQueryResult<Project[]> => useQuery(['projects'], () => service.get(`/projects`))
+export const useProject = (id?: number): UseQueryResult<Project> => useQuery(['project', id], () => service.get(`/project/${id}`), {
+    enabled: Boolean(id),
+})
+export const useAddProject = (): UseMutate<Project> => useMutation((project) => service.post("/project", project))
+export const useEditProject = (id: number): UseMutate<Project> => useMutation((project) => service.put(`/project/${id}`, project))
 
 export default service

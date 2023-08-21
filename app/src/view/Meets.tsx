@@ -18,6 +18,9 @@ interface MeetsProps {
 const useStyles = makeStyles(() => ({
     container: {
         position: 'relative',
+        width:100,
+        height:100,
+        border: '1px solid red'
     },
     blank: {
         position: 'absolute',
@@ -63,23 +66,50 @@ export function Meets({ display }: MeetsProps) {
     const [selectedMeetId, setSelectedMeetId] = useState<number>()
     const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
     // const ymaps = useYMaps(['Map'])
-    const getLayout = (meet: Meet) => {
-        if (ymaps) {
-            var s = ymaps.templateLayoutFactory.createClass(
-                `<div class="pin ${classes.container}"><div class="${classes.blank}"></div><div class="${classes.image}"></div><div class="${classes.label}">${meet.title}</div></div>`,
-                // {
-                //     build: function() {
-                //         this.constructor.superclass.build.call(this);
-                //         const pinContainer = this.getParentElement().getElementsByClassName(
-                //             'pin',
-                //         )[0];
-                //         console.log(pinContainer,'pinContainer')
-                //     }
-                }
-            )
-            return s
-        }
-    }
+    // if (ymaps) {
+    //     let myBalloonContentBodyLayout2 = ymaps.templateLayoutFactory.createClass(
+    //         `<div class="pin ${classes.container}"><div class="${classes.blank}"></div><div class="${classes.image}"></div><div class="${classes.label}">22</div></div>`,
+    //         {
+    //             build: function () {
+    //                 // this.constructor.superclass.build.call(this);
+    //                 // const pinContainer = this.getParentElement().getElementsByClassName(
+    //                 //     'pin',
+    //                 // )[0];
+    //                 // @ts-ignore
+    //                 myBalloonContentBodyLayout2.superclass.build.call(this);
+    //                 console.log('pinContainer')
+    //             }
+    //         }
+    //     )
+    // }
+    // const getLayout = (meet: Meet) => {
+    //     if (ymaps) {
+    //         let myBalloonContentBodyLayout = ymaps.templateLayoutFactory.createClass(
+    //             `<div id="meet-${meet.id}" class="pin ${classes.container}"><div class="${classes.blank}"></div><div class="${classes.image}"></div><div class="${classes.label}">${meet.title}</div></div>`,
+    //             {
+    //                 build: function() {
+    //                     // this.constructor.superclass.build.call(this);
+    //                     // const pinContainer = this.getParentElement().getElementsByClassName(
+    //                     //     'pin',
+    //                     // )[0];
+    //                     // @ts-ignore
+    //                     myBalloonContentBodyLayout.superclass.build.call(this);
+    //                     // @ts-ignore
+    //                     //this.getData().geoObject.events.add('click', ()=>console.log('click'), this);
+    //                     //document.getElementById(`meet-${meet.id}`).onclick = () => console.log('click2')
+    //                     const elem = document.getElementById('anchorID')
+    //                     if (elem) {
+    //                         elem.onclick = () => console.log('click2')
+    //                     }
+    //
+    //                     // @ts-ignore
+    //                     console.log(this.getData().geoObject, '444')
+    //                 }
+    //             }
+    //         )
+    //         return myBalloonContentBodyLayout
+    //     }
+    // }
 
     const selectedMeet = meets.find(({id}) => id === selectedMeetId)
     const { index, days, meetsGroup, filteredMeets } = getOm(meets, date)
@@ -146,11 +176,11 @@ export function Meets({ display }: MeetsProps) {
                                                 key={meet.id}
                                                 defaultGeometry={[meet.latitude, meet.longitude]}
                                                 iconContent='12'
-                                                // options={{ preset: 'islands#icon', iconColor: '#FFA427' }}
                                                 onClick={() => setSelectedMeetId(meet.id)}
-                                                options={{
-                                                    iconLayout: getLayout(meet),
-                                                }}
+                                                // options={{
+                                                //     iconLayout: getLayout(meet),
+                                                // }}
+                                                options={{ preset: 'islands#icon', iconColor: '#FFA427' }}
                                             />
                                         ))}
                                     </Map>

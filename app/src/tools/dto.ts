@@ -28,3 +28,10 @@ export interface Place {
     latitude: string
     longitude: string
 }
+
+export interface Project {
+    id: number
+    title: string
+    description: string
+    image?: string
+}

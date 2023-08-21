@@ -3,6 +3,7 @@ import {createBrowserRouter, createRoutesFromElements} from "react-router-dom";
 import {Route} from "react-router";
 import MainView from "./view/MainView";
 import MeetView from "./view/MeetView";
+import ProjectView from "./view/ProjectView";
 import {useOutlet} from "react-router-dom";
 import {AuthProvider} from "./tools/auth";
 
@@ -18,6 +19,7 @@ export const router = createBrowserRouter(
         <Route element={<AuthLayout />}>
             <Route index element={<MainView />}/>
             <Route path="/meet/:id" element={<MeetView />}/>
+            <Route path="/project/:id" element={<ProjectView />}/>
         </Route>
     )
 );
