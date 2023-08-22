@@ -2,14 +2,17 @@ import React, {useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
 import {useAddProject, useEditProject, useProject} from "../tools/service";
 import {Project} from "../tools/dto";
-import {Button, DialogHeader, ImageField, Input, Textarea,} from "../components";
+import {Button, DialogHeader, ImageField, Input, Textarea, TransitionDialog,} from "../components";
 import {useParams} from "react-router-dom";
 import {TimingField} from "../components/TimingField";
+import Dialog from "@mui/material/Dialog";
+import {DialogContent} from "../components/DialogContent";
 
 export interface CreateProjectProps {
+    open: boolean
     onClose: () => void
 }
-export default function CreateProject({ onClose }: CreateProjectProps) {
+export default function CreateProject({ open, onClose }: CreateProjectProps) {
     const { id: projectId } = useParams();
     const { data: defaultProject } = useProject(Number(projectId))
     const [project, setProject] = useState<Project>({ id: 0, title: '', description:''})
@@ -18,7 +21,7 @@ export default function CreateProject({ onClose }: CreateProjectProps) {
 
     useEffect(() => defaultProject && setProject(defaultProject), [defaultProject])
 
-    if (!project) return null;
+    // if (!project) return null;
 
     const onClickSave = () => {
         if (project.id) {
@@ -31,9 +34,9 @@ export default function CreateProject({ onClose }: CreateProjectProps) {
     };
 
     return (
-        <div>
+        <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
             <DialogHeader title={project.id ? 'Редактировать проект' : 'Создание проекта'} onClick={onClose} isClose />
-            <div style={{ padding: '16px 18px'}}>
+            <DialogContent>
                 <Stack spacing={5}>
                     <Stack spacing={1} direction="row">
                         <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>
@@ -65,12 +68,12 @@ export default function CreateProject({ onClose }: CreateProjectProps) {
                         onChange={(values) => setProject({ ...project, timing: values })}
                     />
                 </Stack>
-                <div style={{ paddingTop: 22 }}>
-                    <Button onClick={onClickSave}>
-                        { project.id ? 'Сохранить' : "Создать проект" }
-                    </Button>
-                </div>
+            </DialogContent>
+            <div style={{ padding: 15 }}>
+                <Button onClick={onClickSave}>
+                    { project.id ? 'Сохранить' : "Создать проект" }
+                </Button>
             </div>
-        </div>
+        </Dialog>
     );
 }

@@ -1,9 +1,9 @@
 import React from "react";
 import {createBrowserRouter, createRoutesFromElements, useOutlet} from "react-router-dom";
 import {Route} from "react-router";
-import MainView from "./view/MainView";
-import MeetView from "./view/MeetView";
-import ProjectView from "./view/ProjectView";
+import MainView from "./views/MainView";
+import MeetView from "./views/MeetView";
+import ProjectView from "./views/ProjectView";
 import {AuthProvider} from "./tools/auth";
 
 export default function AuthLayout(): JSX.Element {

@@ -144,9 +144,7 @@ export default function MainView(): JSX.Element {
                     </div>
                 </div>
             </Box>
-            <Dialog onClose={toggleMeet} open={meet} fullScreen TransitionComponent={TransitionDialog}>
-                <CreateMeet onClose={toggleMeet} />
-            </Dialog>
+            <CreateMeet open={meet} onClose={toggleMeet} />
         </>
     )
 };

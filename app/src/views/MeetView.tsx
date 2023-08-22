@@ -184,9 +184,7 @@ export default function MeetPage() {
                     </div>
                 </div>
             </div>
-            <Dialog onClose={toggleCreate} open={create} fullScreen TransitionComponent={TransitionDialog}>
-                {create && (<CreateMeet onClose={toggleCreate} />)}
-            </Dialog>
+            <CreateMeet open={create} onClose={toggleCreate} />
         </>
     );
 }

@@ -53,9 +53,7 @@ export default function Places({onSuccess, onClose}: PlacesProps) {
                     </svg>
                 </div>
             </div>
-            <Dialog onClose={toggleOpenCreatePlace} open={openCreatePlace} fullScreen TransitionComponent={TransitionDialog}>
-                <CreatePlace state={state} onSuccess={onSuccess} onClose={toggleOpenCreatePlace}  />
-            </Dialog>
+            <CreatePlace state={state} onSuccess={onSuccess} open={openCreatePlace} onClose={toggleOpenCreatePlace}  />
         </>
     );
 }

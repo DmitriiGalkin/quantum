@@ -6,7 +6,23 @@ import {Back, TransitionDialog} from "../components";
 import {useToggle} from "usehooks-ts";
 import CreateProject from "../dialogs/CreateProject";
 import {getOnShare} from "../tools/pwa";
+import {makeStyles} from "@mui/styles";
 
+const useStyles = makeStyles(() => ({
+    container: {
+        position: 'absolute',
+        top: -33,
+        backgroundColor: 'white',
+        width: '100%',
+        borderRadius: `28px 28px 0 0`,
+        padding: '24px 26px'
+    },
+    image: {
+        width: '100%',
+        height: 230,
+        objectFit: 'cover',
+    },
+}));
 export default function ProjectPage() {
     const navigate = useNavigate();
     const classes = useStyles();
@@ -20,7 +36,7 @@ export default function ProjectPage() {
 
     const onDelete =  () => deleteMeet.mutateAsync(project.id).then(() => navigate(`/`))
     const menuItems = project.editable ? [
-        { title: 'Редактировать', onClick: onEdit},
+        { title: 'Редактировать', onClick: toggleCreate},
         { title: 'Удалить', onClick: onDelete}
     ] : undefined
     const onShare = getOnShare({
@@ -59,9 +75,7 @@ export default function ProjectPage() {
                     </div>
                 </div>
             </div>
-            <Dialog onClose={toggleCreate} open={create} fullScreen TransitionComponent={TransitionDialog}>
-                <CreateProject onClose={toggleCreate} />
-            </Dialog>
+            <CreateProject open={create} onClose={toggleCreate} />
         </>
     );
 }

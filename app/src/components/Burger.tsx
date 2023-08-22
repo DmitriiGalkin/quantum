@@ -131,18 +131,10 @@ export function Burger() {
                     </Stack>
                 </div>
             </SwipeableDrawer>
-            <Dialog onClose={toggleProfile} open={profile} fullScreen TransitionComponent={TransitionDialog}>
-                <Profile onClose={toggleProfile} onLogout={toggleMenu} />
-            </Dialog>
-            <Dialog onClose={toggleUserMeets} open={userMeets} fullScreen TransitionComponent={TransitionDialog}>
-                <UserMeets onClose={toggleUserMeets} />
-            </Dialog>
-            <Dialog onClose={toggleProjects} open={projects} fullScreen TransitionComponent={TransitionDialog}>
-                <Projects onClose={toggleProjects} />
-            </Dialog>
-            <Dialog onClose={toggleProject} open={project} fullScreen TransitionComponent={TransitionDialog}>
-                <CreateProject onClose={toggleProject} />
-            </Dialog>
+            <Profile open={profile} onClose={toggleProfile} onLogout={toggleMenu} />
+            <UserMeets open={userMeets} onClose={toggleUserMeets} />
+            <Projects open={projects} onClose={toggleProjects} />
+            <CreateProject open={project} onClose={toggleProject} />
         </div>
     )
 }

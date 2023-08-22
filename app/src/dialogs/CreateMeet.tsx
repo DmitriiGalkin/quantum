@@ -1,19 +1,31 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Stack} from "@mui/material";
+import {DialogActions, Stack} from "@mui/material";
 import {useAddMeet, useEditMeet, useMeet} from "../tools/service";
 import {Meet} from "../tools/dto";
-import {Button, DatePicker, DialogHeader, ImageField, Input, Textarea, TimePicker,} from "../components";
+import {
+    Button,
+    DatePicker,
+    DialogHeader,
+    ImageField,
+    Input,
+    Textarea,
+    TimePicker,
+    TransitionDialog,
+} from "../components";
 import {convertToMeetsGroupTime} from "../tools/date";
 import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
 import dayjs from "dayjs";
 import {useParams} from "react-router-dom";
 import {PlaceSelect} from "../components/PlaceSelect";
+import Dialog from "@mui/material/Dialog";
+import {DialogContent} from "../components/DialogContent";
 
 export interface CreateMeetDialogProps {
+    open: boolean
     onClose: () => void
 }
-export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
+export default function CreateMeet({ open, onClose }: CreateMeetDialogProps) {
     const { id: meetId } = useParams();
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
 
@@ -40,9 +52,9 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
     };
 
     return (
-        <div>
+        <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
             <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Создание встречи'} onClick={onClose} isClose />
-            <div style={{ padding: '16px 18px'}}>
+            <DialogContent>
                 <Stack spacing={5}>
                     <DatePicker
                         value={datetime}
@@ -87,12 +99,12 @@ export default function CreateMeet({ onClose }: CreateMeetDialogProps) {
                         longitude={meet.longitude}
                     />
                 </Stack>
-                <div style={{ paddingTop: 22 }}>
-                    <Button onClick={onClickSave}>
-                        {meet.id ? 'Сохранить' : "Создать встречу"}
-                    </Button>
-                </div>
+            </DialogContent>
+            <div style={{ padding: 15 }}>
+                <Button onClick={onClickSave}>
+                    {meet.id ? 'Сохранить' : "Создать встречу"}
+                </Button>
             </div>
-        </div>
+        </Dialog>
     );
 }

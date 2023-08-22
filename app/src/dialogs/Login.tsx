@@ -1,11 +1,14 @@
 import React from 'react';
 import {Stack} from "@mui/material";
-import {AppBanner, DialogHeader} from "../components";
+import {AppBanner, DialogHeader, TransitionDialog} from "../components";
+import Dialog from "@mui/material/Dialog";
+import {DialogContent} from "../components/DialogContent";
 
 export interface LoginProps {
+    open: boolean
     onClose: () => void
 }
-export default function Login({ onClose }: LoginProps) {
+export default function Login({ open, onClose }: LoginProps) {
     const STRATEGIES = [
         {
             title: 'Google',
@@ -53,9 +56,9 @@ export default function Login({ onClose }: LoginProps) {
     ]
 
     return (
-        <>
+        <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
             <DialogHeader title="Вход" onClick={onClose} isClose />
-            <div style={{ padding: '16px 18px', height: '100%'}}>
+            <DialogContent>
                 <Stack spacing={3} direction="column"  justifyContent="space-between" style={{ height: '100%' }}>
                     <Stack spacing={6} alignItems="center">
                         <div style={{ paddingTop: 24, lineHeight: '30px', fontWeight: 600, fontSize: 17, letterSpacing: '0.17px', color: 'black', display: 'flex',
@@ -76,7 +79,7 @@ export default function Login({ onClose }: LoginProps) {
                     </Stack>
                     <AppBanner title="Установите наше приложение, пожалуйста"/>
                 </Stack>
-            </div>
-        </>
+            </DialogContent>
+        </Dialog>
     )
 }

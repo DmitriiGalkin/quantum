@@ -54,9 +54,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     );
     return <AuthContext.Provider value={value}>
         {children}
-        <Dialog onClose={toggleOpenLogin} open={openLogin} fullScreen TransitionComponent={TransitionDialog}>
-            {openLogin && <Login onClose={toggleOpenLogin} />}
-        </Dialog>
+        <Login open={openLogin} onClose={toggleOpenLogin} />
     </AuthContext.Provider>;
 };
 

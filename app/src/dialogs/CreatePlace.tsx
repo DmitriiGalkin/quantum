@@ -2,11 +2,12 @@ import React, {useRef, useState} from 'react';
 import {Map, YMaps} from '@pbe/react-yandex-maps';
 import {useAddPlace} from "../tools/service";
 import {Place} from "../tools/dto";
-import {Button, DialogHeader, ImageField, Input} from "../components";
+import {Button, DialogHeader, ImageField, Input, TransitionDialog} from "../components";
 import {Box, Stack, SwipeableDrawer} from "@mui/material";
 import {useToggle} from "usehooks-ts";
 import {styled} from '@mui/material/styles';
 import {makeStyles} from "@mui/styles";
+import Dialog from "@mui/material/Dialog";
 
 const Puller = styled(Box)(() => ({
     width: 41,
@@ -29,12 +30,13 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface CreatePlaceProps {
+    open: boolean
     state: { center: number[], zoom: number }
     onClose: () => void
     onSuccess: (place: Place) => void
 }
 const drawerBleeding = 25;
-export default function CreatePlace({ state, onSuccess, onClose }: CreatePlaceProps) {
+export default function CreatePlace({ open, state, onSuccess, onClose }: CreatePlaceProps) {
     const classes = useStyles();
     const map = useRef();
     const addPlace = useAddPlace()
@@ -52,7 +54,7 @@ export default function CreatePlace({ state, onSuccess, onClose }: CreatePlacePr
     }
 
     return (
-        <>
+        <Dialog open={open} onClose={onClose} fullScreen TransitionComponent={TransitionDialog}>
             <DialogHeader title="Добавление Места" onClick={onClose} isClose />
             <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
                 <div style={{ position: 'absolute', top: 'calc(33.33% - 46px)', left: 'calc(50% - 13px)', zIndex:5000 }}>
@@ -89,15 +91,15 @@ export default function CreatePlace({ state, onSuccess, onClose }: CreatePlacePr
                 BackdropProps={{ invisible: true }}
             >
                 <div style={{
-                        position: 'absolute',
-                        top: -drawerBleeding,
-                        borderTopLeftRadius: 28,
-                        borderTopRightRadius: 28,
-                        visibility: 'visible',
-                        right: 0,
-                        left: 0,
-                        backgroundColor: 'white',
-                    }}
+                    position: 'absolute',
+                    top: -drawerBleeding,
+                    borderTopLeftRadius: 28,
+                    borderTopRightRadius: 28,
+                    visibility: 'visible',
+                    right: 0,
+                    left: 0,
+                    backgroundColor: 'white',
+                }}
                 >
                     <Puller />
                     <Stack spacing={2} style={{padding: '25px 18px 18px'}}>
@@ -120,6 +122,6 @@ export default function CreatePlace({ state, onSuccess, onClose }: CreatePlacePr
                     </Stack>
                 </div>
             </SwipeableDrawer>
-        </>
+        </Dialog>
     );
 }

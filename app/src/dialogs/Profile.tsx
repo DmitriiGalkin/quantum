@@ -3,8 +3,10 @@ import {useUpdateUser, useUser} from "../tools/service";
 import {User} from "../tools/dto";
 import {Stack} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import {Button, DialogHeader, ImageField, Input} from "../components";
+import {Button, DialogHeader, ImageField, Input, TransitionDialog} from "../components";
 import {useAuth} from "../tools/auth";
+import Dialog from "@mui/material/Dialog";
+import {DialogContent} from "../components/DialogContent";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -14,10 +16,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 export interface UserViewProps {
+    open: boolean
     onLogout: () => void
     onClose: () => void
 }
-export default function Profile({ onLogout, onClose }: UserViewProps) {
+export default function Profile({ open, onLogout, onClose }: UserViewProps) {
     const classes = useStyles();
 
     const { data: defaultUser } = useUser();
@@ -32,9 +35,9 @@ export default function Profile({ onLogout, onClose }: UserViewProps) {
     useEffect(() => defaultUser && setUser(defaultUser), [defaultUser])
 
     return (
-        <>
+        <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
             <DialogHeader title="Профиль" onClick={onClose}/>
-            <div style={{ position: 'relative'}}>
+            <DialogContent>
                 <div className={classes.container}>
                     <Stack spacing={5}>
                         <Input
@@ -72,7 +75,7 @@ export default function Profile({ onLogout, onClose }: UserViewProps) {
                         </Stack>
                     </Stack>
                 </div>
-            </div>
-        </>
+            </DialogContent>
+        </Dialog>
     );
 }
