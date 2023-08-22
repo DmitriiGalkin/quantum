@@ -3,13 +3,13 @@ import {Stack, SwipeableDrawer} from "@mui/material";
 import {AppBanner} from "./AppBanner";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "./TransitionDialog";
-import Profile from "../view/Profile";
-import UserMeets from "../view/UserMeets";
-import Projects from "../view/Projects";
+import Profile from "../dialogs/Profile";
+import UserMeets from "../dialogs/UserMeets";
+import Projects from "../dialogs/Projects";
 import {useToggle} from "usehooks-ts";
 import {makeStyles} from "@mui/styles";
 import {useAuth} from "../tools/auth";
-import CreateProject from "../view/CreateProject";
+import CreateProject from "../dialogs/CreateProject";
 
 const useStyles = makeStyles(() => ({
     blockImage: {

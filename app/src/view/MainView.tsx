@@ -1,24 +1,20 @@
-import {Box, ClickAwayListener, Stack, SwipeableDrawer} from "@mui/material";
-import CreateMeet from "../view/CreateMeet";
-import Profile from "./Profile";
-import { Map2 } from "../components/Map";
-import UserMeets from "./UserMeets";
+import {Box, ClickAwayListener, Stack} from "@mui/material";
+import CreateMeet from "../dialogs/CreateMeet";
 import React, {useState} from "react";
 import {makeStyles} from "@mui/styles";
 import Dialog from "@mui/material/Dialog";
-import {AppBanner, Calendar, MeetCard, TransitionDialog} from "../components";
+import {Calendar, MeetCard, TransitionDialog} from "../components";
 import {useAuth} from "../tools/auth";
 import {useLocalStorage, useToggle} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
 import {useMeets} from "../tools/service";
-import {getWeek} from "../tools/helper";
+import {getOm} from "../tools/helper";
 import SwipeableViews from "react-swipeable-views";
 import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
-import {COLOR} from "../tools/theme";
 import {usePosition} from "../tools/pwa";
 import {DisplaySwitch} from "../components/DisplaySwitch";
 import {Burger} from "../components/Burger";
-import {Meets} from "./Meets";
+import {YMapsApi} from "@pbe/react-yandex-maps/typings/util/typing";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -50,6 +46,14 @@ export default function MainView(): JSX.Element {
     const [meet, toggleMeet] = useToggle()
 
     const onAdd = authFn(toggleMeet)
+    const coords = usePosition()
+    const [ymaps, setYmaps] = useState<YMapsApi>();
+
+    const { data: meets = [], refetch } = useMeets(coords)
+    const [selectedMeetId, setSelectedMeetId] = useState<number>()
+    const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
+    const selectedMeet = meets.find(({id}) => id === selectedMeetId)
+    const { index, days, meetsGroup, filteredMeets } = getOm(meets, date)
 
     return (
         <>
@@ -77,7 +81,67 @@ export default function MainView(): JSX.Element {
                     </Stack>
                 </div>
                 <div className={classes.outlet}>
-                    <Meets display={display} />
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ backgroundColor: display ? 'rgba(34, 52, 69, .8)' : undefined, zIndex: 2 }}>
+                            <div style={{ display: 'block', padding: 15 }}><Calendar days={days} onChange={setDate} map={display} /></div>
+                        </div>
+                        <div style={{ overflow: 'auto', flexGrow: 1 }}>
+                            {!display ? (
+                                <SwipeableViews
+                                    index={index}
+                                    onChangeIndex={(index) => setDate(days[index].id)}
+                                    containerStyle={{ height: 400 }}
+                                    springConfig={{duration: '0.2s', delay: '0s', easeFunction: 'cubic-bezier(0.0, 0.0, 0.58, 1.0)'}}
+                                    threshold={4}
+                                >
+                                    {meetsGroup.map(({id, meets}) => (
+                                        <div key={id} style={{ padding: '5px 15px'}}>
+                                            <Stack spacing={2}>
+                                                {meets.map((meet) =>
+                                                    <div key={meet.id}>
+                                                        <MeetCard meet={meet} refetch={refetch} />
+                                                    </div>
+                                                )}
+                                            </Stack>
+                                        </div>
+                                    ))}
+                                </SwipeableViews>
+                            ) : (
+                                <>
+                                    {coords.latitude && coords.longitude && (
+                                        <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
+                                            <YMaps>
+                                                <Map defaultState={{ center: [coords.latitude, coords.longitude], zoom: 16 }} width="100%" height="100%"
+                                                     onLoad={ymaps => setYmaps(ymaps)}
+                                                     modules={['templateLayoutFactory',"geoObject.addon.balloon"]}
+                                                >
+                                                    {filteredMeets.map((meet) => (
+                                                        <Placemark
+                                                            key={meet.id}
+                                                            defaultGeometry={[meet.latitude, meet.longitude]}
+                                                            iconContent='12'
+                                                            onClick={() => setSelectedMeetId(meet.id)}
+                                                            // options={{
+                                                            //     iconLayout: getLayout(meet),
+                                                            // }}
+                                                            options={{ preset: 'islands#icon', iconColor: '#FFA427' }}
+                                                        />
+                                                    ))}
+                                                </Map>
+                                            </YMaps>
+                                        </div>
+                                    )}
+                                    {selectedMeetId && selectedMeet && (
+                                        <ClickAwayListener onClickAway={() => setSelectedMeetId(undefined)}>
+                                            <div style={{ position: 'absolute', bottom: 15, left: 15, right: 15 }}>
+                                                <MeetCard meet={selectedMeet} refetch={refetch} />
+                                            </div>
+                                        </ClickAwayListener>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </Box>
             <Dialog onClose={toggleMeet} open={meet} fullScreen TransitionComponent={TransitionDialog}>

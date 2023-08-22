@@ -5,7 +5,7 @@ import {ImageSelect} from "./ImageSelect";
 import {Place} from "../tools/dto";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "./TransitionDialog";
-import Places from "../view/Places";
+import Places from "../dialogs/Places";
 import {Stack} from "@mui/material";
 import {useToggle} from "usehooks-ts";
 import {usePlaces} from "../tools/service";

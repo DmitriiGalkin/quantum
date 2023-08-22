@@ -3,7 +3,7 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import service, {useUser} from "./service";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "../components";
-import Login from "../view/Login";
+import Login from "../dialogs/Login";
 import {useToggle} from "usehooks-ts";
 
 export const ACCESS_TOKEN = 'access_token'

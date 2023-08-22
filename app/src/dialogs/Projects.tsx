@@ -1,13 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {useProjects, useUpdateUser, useUser, useUserMeets} from "../tools/service";
-import {User} from "../tools/dto";
+import React from 'react';
+import {useProjects} from "../tools/service";
 import {Stack} from "@mui/material";
-import {makeStyles} from "@mui/styles";
-import {Button, DialogHeader, ProjectCard, TransitionDialog} from "../components";
-import {useAuth} from "../tools/auth";
-import Dialog from "@mui/material/Dialog";
-import CreateProject from "./CreateProject";
-import {useToggle} from "usehooks-ts";
+import {DialogHeader, ProjectCard} from "../components";
 
 export interface ProjectsProps {
     onClose: () => void

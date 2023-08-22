@@ -1,10 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {useUpdateUser, useUser, useUserMeets} from "../tools/service";
-import {User} from "../tools/dto";
+import React from 'react';
+import {useUserMeets} from "../tools/service";
 import {Stack} from "@mui/material";
-import {makeStyles} from "@mui/styles";
-import {Button, DialogHeader, ImageField, Input, MeetCard} from "../components";
-import {useAuth} from "../tools/auth";
+import {DialogHeader, MeetCard} from "../components";
 
 export interface UserMeetsProps {
     onClose: () => void
