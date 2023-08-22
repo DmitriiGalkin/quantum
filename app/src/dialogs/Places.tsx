@@ -6,8 +6,7 @@ import {Place} from "../tools/dto";
 import {DialogHeader, TransitionDialog} from "../components";
 import Dialog from "@mui/material/Dialog";
 import CreatePlace from "./CreatePlace";
-import {useLocalStorage, useToggle} from "usehooks-ts";
-import {LocalDate} from "@js-joda/core";
+import {useToggle} from "usehooks-ts";
 
 interface PlacesProps {
     onClose: () => void

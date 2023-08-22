@@ -1,15 +1,11 @@
 import React from 'react';
-import Grid from "@mui/material/Unstable_Grid2";
-import {makeStyles} from "@mui/styles";
 import {ImageSelect} from "./ImageSelect";
 import {Place} from "../tools/dto";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "./TransitionDialog";
 import Places from "../dialogs/Places";
-import {Stack} from "@mui/material";
 import {useToggle} from "usehooks-ts";
 import {usePlaces} from "../tools/service";
-import {DialogHeaderDefault} from "./DialogHeader";
 
 interface PlaceSelectProps {
     onChange: (place: { latitude: string, longitude: string }) => void

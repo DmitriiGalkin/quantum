@@ -1,16 +1,12 @@
 import React, {useRef, useState} from 'react';
-import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
-import {getCenter} from "../tools/map";
-import {useAddMeet, useAddPlace, usePlaces} from "../tools/service";
-import {Meet, Place} from "../tools/dto";
-import {Button, DialogHeader, ImageField, Input, TransitionDialog} from "../components";
-import Dialog from "@mui/material/Dialog";
+import {Map, YMaps} from '@pbe/react-yandex-maps';
+import {useAddPlace} from "../tools/service";
+import {Place} from "../tools/dto";
+import {Button, DialogHeader, ImageField, Input} from "../components";
 import {Box, Stack, SwipeableDrawer} from "@mui/material";
 import {useToggle} from "usehooks-ts";
-import { styled } from '@mui/material/styles';
-import dayjs from "dayjs";
+import {styled} from '@mui/material/styles';
 import {makeStyles} from "@mui/styles";
-import {convertToMeetsGroupTime} from "../tools/date";
 
 const Puller = styled(Box)(() => ({
     width: 41,

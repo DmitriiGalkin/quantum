@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { load } from '@2gis/mapgl';
+import {load} from '@2gis/mapgl';
 import {Meet} from "../tools/dto";
 
 interface Props {

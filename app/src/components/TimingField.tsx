@@ -1,12 +1,12 @@
-import React, {ChangeEvent, useState} from 'react';
+import React from 'react';
 import {Stack} from "@mui/material";
-import {TemporalAdjusters} from "@js-joda/core";
-import {convertToMeetTime, getDayOfWeekTitle, getDayOfWeekTitleLong} from "../tools/date";
+import {getDayOfWeekTitleLong} from "../tools/date";
 import {Timing} from "../tools/dto";
 import Checkbox from "./Checkbox";
 import Switch from "./Switch";
 import {useToggle} from "usehooks-ts";
 import {useInputStyles} from "./helper";
+
 const {TimePicker: ReactIosTimePicker} = require('react-ios-time-picker');
 
 interface TimingFieldProps {

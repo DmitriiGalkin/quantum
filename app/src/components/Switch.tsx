@@ -1,12 +1,5 @@
-import React, {ChangeEvent} from 'react';
-import {compress} from "../tools/image";
-import {useUploadImage} from "../tools/service";
-import {makeStyles} from "@mui/styles";
-import {Stack} from "@mui/material";
+import React from 'react';
 import {TemporalAdjusters} from "@js-joda/core";
-import dayOfWeekInMonth = TemporalAdjusters.dayOfWeekInMonth;
-import {getDayOfWeekTitle} from "../tools/date";
-import {Timing} from "../tools/dto";
 
 interface SwitchProps {
     checked?: boolean

@@ -82,7 +82,7 @@ export default function MeetPage() {
     ]
 
     const menuItems = meet.editable ? [
-        { title: 'Редактировать', onClick: onEdit},
+        { title: 'Редактировать', onClick: toggleCreate},
         { title: 'Удалить', onClick: onDelete}
     ] : undefined
     const onShare = getOnShare({

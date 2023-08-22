@@ -1,7 +1,7 @@
 import React from 'react';
 import {Stack} from "@mui/material";
 import {Day} from "../tools/helper";
-import { MemoizedCalendarDay } from './CalendarDay';
+import {MemoizedCalendarDay} from './CalendarDay';
 
 interface CalendarProps {
     days: Day[]

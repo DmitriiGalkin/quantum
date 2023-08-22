@@ -1,22 +1,9 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {useAddMeet, useAddProject, useEditMeet, useEditProject, useMeet, usePlaces, useProject} from "../tools/service";
-import {Meet, Place, Project} from "../tools/dto";
-import {
-    Button,
-    DatePicker,
-    DialogHeader,
-    ImageField,
-    Input,
-    Textarea,
-    TimePicker,
-} from "../components";
-import {convertToMeetsGroupTime} from "../tools/date";
-import {useLocalStorage} from "usehooks-ts";
-import {LocalDate} from "@js-joda/core";
-import dayjs from "dayjs";
+import {useAddProject, useEditProject, useProject} from "../tools/service";
+import {Project} from "../tools/dto";
+import {Button, DialogHeader, ImageField, Input, Textarea,} from "../components";
 import {useParams} from "react-router-dom";
-import {PlaceSelect} from "../components/PlaceSelect";
 import {TimingField} from "../components/TimingField";
 
 export interface CreateProjectProps {

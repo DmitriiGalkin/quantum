@@ -3,7 +3,6 @@ import {Stack} from "@mui/material";
 import {getWeek} from "../tools/helper";
 import {Calendar} from "./";
 import dayjs from "dayjs";
-import {PlaceSelectDefault} from "./PlaceSelect";
 
 interface DateFieldProps {
     label?: string

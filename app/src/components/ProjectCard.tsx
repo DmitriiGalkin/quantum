@@ -1,12 +1,9 @@
 import React from 'react';
-import {Meet, Project} from "../tools/dto";
-import {convertToMeetDate, convertToMeetTime} from "../tools/date";
-import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
-import {useToggleMeetUser} from "../tools/service";
+import {Project} from "../tools/dto";
+import {Box, Stack} from "@mui/material";
 import {makeStyles} from '@mui/styles';
 import {DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "../tools/auth";
 
 interface ProjectCardProps {
     project: Project

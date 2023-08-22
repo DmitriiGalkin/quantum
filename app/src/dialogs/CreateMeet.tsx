@@ -1,16 +1,8 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {useAddMeet, useEditMeet, useMeet, usePlaces} from "../tools/service";
-import {Meet, Place} from "../tools/dto";
-import {
-    Button,
-    DatePicker,
-    DialogHeader,
-    ImageField,
-    Input,
-    Textarea,
-    TimePicker,
-} from "../components";
+import {useAddMeet, useEditMeet, useMeet} from "../tools/service";
+import {Meet} from "../tools/dto";
+import {Button, DatePicker, DialogHeader, ImageField, Input, Textarea, TimePicker,} from "../components";
 import {convertToMeetsGroupTime} from "../tools/date";
 import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";

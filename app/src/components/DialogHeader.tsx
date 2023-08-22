@@ -1,7 +1,6 @@
 import React from 'react';
-import {Skeleton, Stack} from "@mui/material";
+import {Stack} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import {CalendarDay} from "./CalendarDay";
 
 interface DialogHeaderProps {
     title?: string

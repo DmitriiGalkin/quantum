@@ -1,7 +1,6 @@
 import React from 'react';
-import MeetComponent from "./Meet";
 import {useNavigate, useParams} from "react-router-dom";
-import {useDeleteMeet, useMeet, useProject, useToggleMeetUser} from "../tools/service";
+import {useDeleteMeet, useProject} from "../tools/service";
 import Dialog from "@mui/material/Dialog";
 import {Back, TransitionDialog} from "../components";
 import {useToggle} from "usehooks-ts";
