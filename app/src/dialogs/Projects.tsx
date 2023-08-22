@@ -16,7 +16,7 @@ export default function Projects({ open, onClose }: ProjectsProps) {
         <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
             <DialogHeader title="Проекты" onClick={onClose}/>
             <DialogContent>
-                <Stack spacing={2} style={{ backgroundColor: '#F5F5F5', padding: '15px' }}>
+                <Stack spacing={2}>
                     {projects?.map((project) =>
                         <div key={project.id}>
                             <ProjectCard project={project} refetch={refetch} />

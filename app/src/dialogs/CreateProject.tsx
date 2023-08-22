@@ -21,7 +21,6 @@ export default function CreateProject({ open, onClose }: CreateProjectProps) {
 
     useEffect(() => defaultProject && setProject(defaultProject), [defaultProject])
 
-    // if (!project) return null;
 
     const onClickSave = () => {
         if (project.id) {
@@ -35,8 +34,8 @@ export default function CreateProject({ open, onClose }: CreateProjectProps) {
 
     return (
         <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
-            <DialogHeader title={project.id ? 'Редактировать проект' : 'Создание проекта'} onClick={onClose} isClose />
-            <DialogContent>
+            <DialogHeader title={project.id ? 'Редактировать проект' : 'Новый проект'} onClick={onClose} isClose />
+            <DialogContent backgroundColor={'white'}>
                 <Stack spacing={5}>
                     <Stack spacing={1} direction="row">
                         <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>

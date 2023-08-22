@@ -16,7 +16,7 @@ export default function UserMeets({ open, onClose }: UserMeetsProps) {
         <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
             <DialogHeader title="Посещения" onClick={onClose}/>
             <DialogContent>
-                <Stack spacing={2} style={{ backgroundColor: '#F5F5F5', padding: '15px' }}>
+                <Stack spacing={2}>
                     {userMeets?.map((meet) =>
                         <div key={meet.id}>
                             <MeetCard meet={meet} refetch={refetch} />

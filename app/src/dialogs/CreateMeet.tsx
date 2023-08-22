@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {DialogActions, Stack} from "@mui/material";
+import {Stack} from "@mui/material";
 import {useAddMeet, useEditMeet, useMeet} from "../tools/service";
 import {Meet} from "../tools/dto";
 import {
@@ -53,8 +53,8 @@ export default function CreateMeet({ open, onClose }: CreateMeetDialogProps) {
 
     return (
         <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
-            <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Создание встречи'} onClick={onClose} isClose />
-            <DialogContent>
+            <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Новая встреча'} onClick={onClose} isClose />
+            <DialogContent backgroundColor={'white'}>
                 <Stack spacing={5}>
                     <DatePicker
                         value={datetime}
