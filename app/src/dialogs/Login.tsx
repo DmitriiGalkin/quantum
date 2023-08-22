@@ -1,14 +1,13 @@
 import React from 'react';
 import {Stack} from "@mui/material";
-import {AppBanner, DialogHeader, TransitionDialog} from "../components";
-import Dialog from "@mui/material/Dialog";
+import {AppBanner, DialogHeader} from "../components";
 import {DialogContent} from "../components/DialogContent";
+import {withDialog} from "../components/helper";
 
 export interface LoginProps {
-    open: boolean
     onClose: () => void
 }
-export default function Login({ open, onClose }: LoginProps) {
+function Login({ onClose }: LoginProps) {
     const STRATEGIES = [
         {
             title: 'Google',
@@ -56,7 +55,7 @@ export default function Login({ open, onClose }: LoginProps) {
     ]
 
     return (
-        <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
+        <>
             <DialogHeader title="Вход" onClick={onClose} isClose />
             <DialogContent>
                 <Stack spacing={3} direction="column"  justifyContent="space-between" style={{ height: '100%' }}>
@@ -80,6 +79,8 @@ export default function Login({ open, onClose }: LoginProps) {
                     <AppBanner title="Установите наше приложение, пожалуйста"/>
                 </Stack>
             </DialogContent>
-        </Dialog>
+        </>
     )
 }
+
+export default withDialog(Login)

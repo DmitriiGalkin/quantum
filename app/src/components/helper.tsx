@@ -1,4 +1,7 @@
 import {makeStyles} from "@mui/styles";
+import Dialog from "@mui/material/Dialog";
+import {TransitionDialog} from "./TransitionDialog";
+import React from "react";
 
 export const useInputStyles = makeStyles(() => ({
     input: {
@@ -23,3 +26,9 @@ export const useInputStyles = makeStyles(() => ({
         borderRadius: 8,
     }
 }));
+
+export const withDialog = (WrappedComponent: any) => (props: any) => (
+    <Dialog onClose={props.onClose} open={props.open} fullScreen TransitionComponent={TransitionDialog}>
+        <WrappedComponent {...props} />
+    </Dialog>
+)

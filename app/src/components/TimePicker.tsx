@@ -29,9 +29,10 @@ export function TimePickerDefault({ label, name, value, onChange }: TimeFieldPro
             <ReactIosTimePicker
                 id={name}
                 onChange={onChangeReactIosTimePicker}
-                value={convertToMeetTime(value)}
+                value={value ? convertToMeetTime(value) : undefined}
                 controllers={false}
                 inputClassName={classes.input}
+                placeHolder=''
             />
         </div>
     );

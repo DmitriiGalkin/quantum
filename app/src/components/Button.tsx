@@ -6,11 +6,24 @@ interface Props {
     onClick?: () => void
     href?: string
     color?: string
+    disabled?: boolean
 }
-export function Button({ children, variant, onClick, href, color }: Props) {
+export function Button({ children, variant, onClick, href, color, disabled }: Props) {
     if (variant === 'outlined'){
         return (
-            <a href={href} style={{ display: 'block', height:'100%', fontSize: 19, fontWeight: 500, padding: 15.5, color: '#7139FF', border: `1px solid ${color ? color : '#7139FF'}`, borderRadius: 16, textAlign: 'center', lineHeight: '22px' }} onClick={() => onClick && onClick()}>
+            <a href={href} style={{
+                display: 'block',
+                height:'100%',
+                fontSize: 19,
+                fontWeight: 500,
+                padding: 15.5,
+                color: '#7139FF',
+                border: `1px solid ${color ? color : '#7139FF'}`,
+                borderRadius: 16,
+                textAlign: 'center',
+                lineHeight: '22px',
+                opacity: disabled ? 0.5 : 1
+            }} onClick={() => onClick && !disabled && onClick()}>
                 {children}
             </a>
         )
@@ -30,8 +43,9 @@ export function Button({ children, variant, onClick, href, color }: Props) {
             textAlign: 'center',
             lineHeight: '22px',
             boxShadow: color === 'black' ? '15px 0px 30px 0px rgba(211, 212, 226, 0.25)' : undefined,
+            opacity: disabled ? 0.5 : 1,
 
-        }} onClick={() => onClick && onClick()}>
+        }} onClick={() => onClick && !disabled && onClick()}>
             {children}
         </a>
     )

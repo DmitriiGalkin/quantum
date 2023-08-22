@@ -1,19 +1,18 @@
 import React from 'react';
 import {useUserMeets} from "../tools/service";
 import {Stack} from "@mui/material";
-import {DialogHeader, MeetCard, TransitionDialog} from "../components";
-import Dialog from "@mui/material/Dialog";
+import {DialogHeader, MeetCard} from "../components";
 import {DialogContent} from "../components/DialogContent";
+import {withDialog} from "../components/helper";
 
 export interface UserMeetsProps {
-    open: boolean
     onClose: () => void
 }
-export default function UserMeets({ open, onClose }: UserMeetsProps) {
+function UserMeets({ onClose }: UserMeetsProps) {
     const { data: userMeets, refetch } = useUserMeets();
 
     return (
-        <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
+        <>
             <DialogHeader title="Посещения" onClick={onClose}/>
             <DialogContent>
                 <Stack spacing={2}>
@@ -24,6 +23,7 @@ export default function UserMeets({ open, onClose }: UserMeetsProps) {
                     )}
                 </Stack>
             </DialogContent>
-        </Dialog>
+        </>
     );
 }
+export default withDialog(UserMeets)

@@ -2,36 +2,26 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
 import {useAddMeet, useEditMeet, useMeet} from "../tools/service";
 import {Meet} from "../tools/dto";
-import {
-    Button,
-    DatePicker,
-    DialogHeader,
-    ImageField,
-    Input,
-    Textarea,
-    TimePicker,
-    TransitionDialog,
-} from "../components";
+import {Button, DatePicker, DialogHeader, ImageField, Input, Textarea, TimePicker,} from "../components";
 import {convertToMeetsGroupTime} from "../tools/date";
 import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
 import dayjs from "dayjs";
 import {useParams} from "react-router-dom";
 import {PlaceSelect} from "../components/PlaceSelect";
-import Dialog from "@mui/material/Dialog";
 import {DialogContent} from "../components/DialogContent";
+import {withDialog} from "../components/helper";
 
 export interface CreateMeetDialogProps {
-    open: boolean
     onClose: () => void
 }
-export default function CreateMeet({ open, onClose }: CreateMeetDialogProps) {
+function CreateMeet({ onClose }: CreateMeetDialogProps) {
     const { id: meetId } = useParams();
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
+    const [isSetTime, setIsSetTime] = useState(false)
+    const [meet, setMeet] = useState<Partial<Meet>>({ datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss') })
 
     const { data: defaultMeet } = useMeet(Number(meetId))
-    const [datetime, setDatetime] = useState<string>(dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'))
-    const [meet, setMeet] = useState<Meet>({ id: 0, title: '', description:'', latitude: '55.933093', longitude: '37.054661', datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss')})
     const addMeet = useAddMeet()
     const editMeet = useEditMeet(meet.id)
 
@@ -42,23 +32,23 @@ export default function CreateMeet({ open, onClose }: CreateMeetDialogProps) {
 
     const onClickSave = () => {
         if (meet.id) {
-            editMeet.mutateAsync({...meet, datetime}).then(onClose)
+            editMeet.mutateAsync(meet).then(onClose)
         } else {
-            addMeet.mutateAsync({...meet, datetime}).then(() => {
-                setSelectedDate(convertToMeetsGroupTime(datetime))
+            addMeet.mutateAsync(meet).then(() => {
+                setSelectedDate(convertToMeetsGroupTime(meet.datetime))
                 onClose()
             })
         }
     };
 
     return (
-        <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
+        <>
             <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Новая встреча'} onClick={onClose} isClose />
             <DialogContent backgroundColor={'white'}>
                 <Stack spacing={5}>
                     <DatePicker
-                        value={datetime}
-                        onChange={setDatetime}
+                        value={meet.datetime}
+                        onChange={(datetime) => setMeet({ ...meet, datetime })}
                     />
                     <Stack spacing={1} direction="row">
                         <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>
@@ -75,8 +65,11 @@ export default function CreateMeet({ open, onClose }: CreateMeetDialogProps) {
                             <TimePicker
                                 name='time'
                                 label="Время"
-                                value={datetime}
-                                onChange={setDatetime}
+                                value={isSetTime ? meet.datetime : undefined}
+                                onChange={(datetime) => {
+                                    setMeet({ ...meet, datetime })
+                                    setIsSetTime(true)
+                                }}
                             />
                         </div>
                     </Stack>
@@ -87,24 +80,27 @@ export default function CreateMeet({ open, onClose }: CreateMeetDialogProps) {
                         onChange={(e) => setMeet({ ...meet, description: e.target.value})}
                         placeholder="Кратко опишите встречу"
                     />
+                    <PlaceSelect
+                        onChange={onChangePlace}
+                        latitude={meet.latitude}
+                        longitude={meet.longitude}
+                    />
                     <ImageField
                         name="meetImage"
                         label="Загрузите обложку"
                         value={meet.image}
                         onChange={(image) => setMeet({...meet, image})}
                     />
-                    <PlaceSelect
-                        onChange={onChangePlace}
-                        latitude={meet.latitude}
-                        longitude={meet.longitude}
-                    />
                 </Stack>
             </DialogContent>
             <div style={{ padding: 15 }}>
-                <Button onClick={onClickSave}>
+                <Button onClick={onClickSave} disabled={!(meet.latitude && meet.longitude && meet.title)}>
                     {meet.id ? 'Сохранить' : "Создать встречу"}
                 </Button>
             </div>
-        </Dialog>
+        </>
     );
 }
+
+export default withDialog(CreateMeet)
+

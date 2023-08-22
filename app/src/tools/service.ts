@@ -59,7 +59,7 @@ export const useMeets = (params?: GetMeets): UseQueryResult<Meet[]> => useQuery(
 export const useMeet = (id?: number): UseQueryResult<Meet> => useQuery(['meet', id], () => service.get(`/meet/${id}`), {
     enabled: Boolean(id),
 })
-export const useAddMeet = (): UseMutate<Meet> => {
+export const useAddMeet = (): UseMutate<Partial<Meet>> => {
     const queryClient = useQueryClient()
     return useMutation((meet) => service.post("/meet", meet), {
         onSuccess() {
@@ -67,7 +67,7 @@ export const useAddMeet = (): UseMutate<Meet> => {
         },
     })
 }
-export const useEditMeet = (id: number): UseMutate<Meet> => {
+export const useEditMeet = (id?: number): UseMutate<Partial<Meet>> => {
     const queryClient = useQueryClient()
     return useMutation((meet) => service.put(`/meet/${id}`, meet), {
         onSuccess() {

@@ -7,12 +7,12 @@ import {useParams} from "react-router-dom";
 import {TimingField} from "../components/TimingField";
 import Dialog from "@mui/material/Dialog";
 import {DialogContent} from "../components/DialogContent";
+import {withDialog} from "../components/helper";
 
 export interface CreateProjectProps {
-    open: boolean
     onClose: () => void
 }
-export default function CreateProject({ open, onClose }: CreateProjectProps) {
+function CreateProject({ onClose }: CreateProjectProps) {
     const { id: projectId } = useParams();
     const { data: defaultProject } = useProject(Number(projectId))
     const [project, setProject] = useState<Project>({ id: 0, title: '', description:''})
@@ -33,7 +33,7 @@ export default function CreateProject({ open, onClose }: CreateProjectProps) {
     };
 
     return (
-        <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
+        <>
             <DialogHeader title={project.id ? 'Редактировать проект' : 'Новый проект'} onClick={onClose} isClose />
             <DialogContent backgroundColor={'white'}>
                 <Stack spacing={5}>
@@ -73,6 +73,7 @@ export default function CreateProject({ open, onClose }: CreateProjectProps) {
                     { project.id ? 'Сохранить' : "Создать проект" }
                 </Button>
             </div>
-        </Dialog>
+        </>
     );
 }
+export default withDialog(CreateProject)

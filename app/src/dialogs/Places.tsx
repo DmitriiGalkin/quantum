@@ -3,16 +3,16 @@ import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
 import {getCenter} from "../tools/map";
 import {usePlaces} from "../tools/service";
 import {Place} from "../tools/dto";
-import {DialogHeader, TransitionDialog} from "../components";
-import Dialog from "@mui/material/Dialog";
+import {DialogHeader} from "../components";
 import CreatePlace from "./CreatePlace";
 import {useToggle} from "usehooks-ts";
+import {withDialog} from "../components/helper";
 
 interface PlacesProps {
     onClose: () => void
     onSuccess: (place: Place) => void
 }
-export default function Places({onSuccess, onClose}: PlacesProps) {
+function Places({onSuccess, onClose}: PlacesProps) {
     const { data: places = [] } = usePlaces()
     const [latitude, longitude] = getCenter(places)
     const [openCreatePlace, toggleOpenCreatePlace] = useToggle()
@@ -57,3 +57,5 @@ export default function Places({onSuccess, onClose}: PlacesProps) {
         </>
     );
 }
+
+export default withDialog(Places)

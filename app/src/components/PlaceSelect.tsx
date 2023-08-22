@@ -9,8 +9,8 @@ import {usePlaces} from "../tools/service";
 
 interface PlaceSelectProps {
     onChange: (place: { latitude: string, longitude: string }) => void
-    latitude: string
-    longitude: string
+    latitude?: string
+    longitude?: string
 }
 
 export function PlaceSelectDefault({ onChange, latitude, longitude }: PlaceSelectProps) {
@@ -27,15 +27,14 @@ export function PlaceSelectDefault({ onChange, latitude, longitude }: PlaceSelec
                 onChange={(place) => onChange({ latitude: place.latitude, longitude: place.longitude })}
                 onAdd={toggleFindPlace}
             />
-            <Dialog onClose={toggleFindPlace} open={findPlace} fullScreen TransitionComponent={TransitionDialog}>
-                <Places
-                    onSuccess={(place) => {
-                        onChange({ latitude: place.latitude, longitude: place.longitude})
-                        toggleFindPlace()
-                    }}
-                    onClose={toggleFindPlace}
-                />
-            </Dialog>
+            <Places
+                open={findPlace}
+                onSuccess={(place: Place) => {
+                    onChange({ latitude: place.latitude, longitude: place.longitude})
+                    toggleFindPlace()
+                }}
+                onClose={toggleFindPlace}
+            />
         </>
     );
 }

@@ -2,19 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {useUpdateUser, useUser} from "../tools/service";
 import {User} from "../tools/dto";
 import {Stack} from "@mui/material";
-import {makeStyles} from "@mui/styles";
-import {Button, DialogHeader, ImageField, Input, TransitionDialog} from "../components";
+import {Button, DialogHeader, ImageField, Input} from "../components";
 import {useAuth} from "../tools/auth";
-import Dialog from "@mui/material/Dialog";
 import {DialogContent} from "../components/DialogContent";
+import {withDialog} from "../components/helper";
 
 export interface UserViewProps {
-    open: boolean
     onLogout: () => void
     onClose: () => void
 }
-export default function Profile({ open, onLogout, onClose }: UserViewProps) {
-
+function Profile({ onLogout, onClose }: UserViewProps) {
     const { data: defaultUser } = useUser();
     const { logout } = useAuth();
     const [user, setUser] = useState<User>()
@@ -27,7 +24,7 @@ export default function Profile({ open, onLogout, onClose }: UserViewProps) {
     useEffect(() => defaultUser && setUser(defaultUser), [defaultUser])
 
     return (
-        <Dialog onClose={onClose} open={open} fullScreen TransitionComponent={TransitionDialog}>
+        <>
             <DialogHeader title="Профиль" onClick={onClose}/>
             <DialogContent backgroundColor={'white'}>
                 <Stack spacing={5}>
@@ -66,6 +63,7 @@ export default function Profile({ open, onLogout, onClose }: UserViewProps) {
                     </Stack>
                 </Stack>
             </DialogContent>
-        </Dialog>
+        </>
     );
 }
+export default withDialog(Profile)
