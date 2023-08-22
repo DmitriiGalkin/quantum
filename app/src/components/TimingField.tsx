@@ -1,15 +1,12 @@
 import React, {ChangeEvent, useState} from 'react';
-import {compress} from "../tools/image";
-import {useUploadImage} from "../tools/service";
-import {makeStyles} from "@mui/styles";
 import {Stack} from "@mui/material";
 import {TemporalAdjusters} from "@js-joda/core";
-import dayOfWeekInMonth = TemporalAdjusters.dayOfWeekInMonth;
-import {convertToMeetTime, getDayOfWeekTitle} from "../tools/date";
+import {convertToMeetTime, getDayOfWeekTitle, getDayOfWeekTitleLong} from "../tools/date";
 import {Timing} from "../tools/dto";
 import Checkbox from "./Checkbox";
 import Switch from "./Switch";
 import {useToggle} from "usehooks-ts";
+import {useInputStyles} from "./helper";
 const {TimePicker: ReactIosTimePicker} = require('react-ios-time-picker');
 
 interface TimingFieldProps {
@@ -38,6 +35,7 @@ const getTimes = (values: Timing[]) => [0,1,2,3,4,5,6].map(((defaultDayOfWeek) =
 
 export function TimingField({ values, onChange }: TimingFieldProps) {
     const [view, toggleView] = useToggle(Boolean(values.length))
+    const classes = useInputStyles();
 
     const times = getTimes(values);
 
@@ -52,24 +50,24 @@ export function TimingField({ values, onChange }: TimingFieldProps) {
 
     return (
         <div>
-            <Stack spacing={3} direction="row" alignItems="center">
+            <Stack spacing={3} direction="row" alignItems="center" justifyContent="space-between">
                 <div>Расписание</div>
                 <Switch checked={view} onChange={toggleView}/>
             </Stack>
             {view && (
-                <Stack spacing={1}>
+                <Stack spacing={1} className={classes.input} >
                     {times.map((time, index ) => {
                         return (
                             <div key={index}>
-                                <Stack spacing={3} direction="row" alignItems="center">
-                                    <div>{getDayOfWeekTitle(time.dayOfWeek)}</div>
-                                    <div>
+                                <Stack spacing={1} direction="row" alignItems="center">
+                                    <div style={{ flexGrow: 1 }}>{getDayOfWeekTitleLong(time.dayOfWeek)}</div>
+                                    <div style={{ width: 50 }}>
                                         <ReactIosTimePicker
                                             id={`time-${index}`}
                                             onChange={(f: string) => getTimeValues(index, f)}
                                             value={time.time}
                                             controllers={false}
-                                            //inputClassName={classes.input}
+                                            inputClassName={classes.timePicker}
                                         />
                                     </div>
                                     <Checkbox checked={time.checked} onChange={() => getCheckedValues(index)}/>

@@ -13,6 +13,7 @@ export const getMonthShortTitle = (index: number) => MONTH_SHORT_TITLES[index - 
 export const getMonthLongTitle = (index: number) => MONTH_LONG_TITLES[index - 1]
 
 export const getDayOfWeekTitle = (dayValue: number): string => ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'][dayValue]
+export const getDayOfWeekTitleLong = (dayValue: number): string => ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'][dayValue]
 
 const DAYS_OF_WEEK = new Map([
     ['Su', 'Вс'],

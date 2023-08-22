@@ -12,4 +12,14 @@ export const useInputStyles = makeStyles(() => ({
         border: 0,
         borderRadius: 8,
     },
+    timePicker: {
+        display: 'block',
+        width: '100%',
+        padding: '4px 6px 4px',
+        fontFamily: 'inherit',
+        color: '#212529',
+        backgroundColor: '#F5F5F5',
+        backgroundClip: 'padding-box',
+        borderRadius: 8,
+    }
 }));

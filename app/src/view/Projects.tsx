@@ -14,18 +14,10 @@ export interface ProjectsProps {
 }
 export default function Projects({ onClose }: ProjectsProps) {
     const { data: projects, refetch } = useProjects();
-    const [project, toggleProject] = useToggle()
 
     return (
         <>
             <DialogHeader title="Проекты" onClick={onClose}/>
-            <div onClick={toggleProject} style={{ display: 'flex' }}>
-                Создать новый проект
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 11H2" stroke="white" strokeWidth="2.25" strokeLinecap="round"/>
-                    <path d="M11 2L11 20" stroke="white" strokeWidth="2.25" strokeLinecap="round"/>
-                </svg>
-            </div>
             <Stack spacing={2} style={{ backgroundColor: '#F5F5F5', padding: '15px' }}>
                 {projects?.map((project) =>
                     <div key={project.id}>
@@ -33,9 +25,6 @@ export default function Projects({ onClose }: ProjectsProps) {
                     </div>
                 )}
             </Stack>
-            <Dialog onClose={toggleProject} open={project} fullScreen TransitionComponent={TransitionDialog}>
-                <CreateProject onClose={toggleProject} />
-            </Dialog>
         </>
     );
 }
