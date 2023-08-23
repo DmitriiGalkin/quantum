@@ -1,8 +1,6 @@
 import React from 'react';
 import {Stack, SwipeableDrawer} from "@mui/material";
 import {AppBanner} from "./AppBanner";
-import Dialog from "@mui/material/Dialog";
-import {TransitionDialog} from "./TransitionDialog";
 import Profile from "../dialogs/Profile";
 import UserMeets from "../dialogs/UserMeets";
 import Projects from "../dialogs/Projects";
