@@ -2,12 +2,13 @@ const express = require('express')
 const router = express.Router()
 var passport = require('passport');
 
-const userController =   require('./controllers/userController');
-const meetController =   require('./controllers/meetController');
-const imageController =   require('./controllers/imageController');
-const placeController =   require('./controllers/placeController');
-const projectController =   require('./controllers/projectController');
+const user =   require('./controllers/user');
+const meet =   require('./controllers/meet');
+const image =   require('./controllers/image');
+const place =   require('./controllers/place');
+const project =   require('./controllers/project');
 const strategys =   require('./strategys');
+const helper =   require('./helper');
 
 /**
  * Стратегии авторизации
@@ -20,22 +21,22 @@ passport.use(strategys.vkontakte);
 /**
  * Встречи
  */
-router.get('/meets', userController.useUser, meetController.findAll);
-router.get('/meet/:id', userController.useUser, meetController.findById);
-router.post('/meet', userController.useUser, meetController.create);
-router.put('/meet/:id', userController.useUser, meetController.update);
-router.delete('/meet/:id', userController.useUser, meetController.delete );
+router.get('/meets', user.useUser, meet.findAll);
+router.get('/meet/:id', user.useUser, meet.findById);
+router.post('/meet', user.useUser, helper.checkConstructor, meet.create);
+router.put('/meet/:id', user.useUser, helper.checkConstructor, meet.update);
+router.delete('/meet/:id', user.useUser, meet.delete );
 
 /**
  * Картинки
  */
-router.post('/image', imageController.upload);
+router.post('/image', image.upload);
 
 /**
  * Авторизация
  */
-router.post('/user/login', userController.login);
-router.post('/user/googleLogin', userController.googleLogin);
+router.post('/user/login', user.login);
+router.post('/user/googleLogin', user.googleLogin);
 router.get('/login/federated/google', passport.authenticate('google'));
 router.get('/oauth2/redirect/google', (req, res) => passport.authenticate('google', function(err, user) {
     if (!user) { return res.redirect('/login'); }
@@ -61,23 +62,24 @@ router.get('/oauth2/redirect/vkontakte', (req, res) => passport.authenticate('vk
 /**
  * Участники
  */
-router.get('/user', userController.useUser, function(req, res) { res.send(req.user) });
-router.put('/user', userController.useUser, userController.update);
-router.get('/userMeets', userController.useUser, meetController.findUserMeets);
-router.put('/userMeet/:meetId', userController.useUser, meetController.toggleUserMeet );
+router.get('/user', user.useUser, function(req, res) { res.send(req.user) });
+router.put('/user', user.useUser, user.update);
+router.get('/userMeets', user.useUser, meet.findUserMeets);
+router.put('/userMeet/:meetId', user.useUser, meet.toggleUserMeet );
 
 /**
  * Места
  */
-router.get('/places', userController.useUser, placeController.findAll);
-router.post('/place', userController.useUser, placeController.create);
+router.get('/places', user.useUser, place.findAll);
+router.post('/place', user.useUser, place.create);
 
 /**
  * Проекты
  */
-router.get('/projects', userController.useUser, projectController.findAll);
-router.get('/project/:id', userController.useUser, projectController.findById);
-router.post('/project', userController.useUser, projectController.create);
-router.put('/project/:id', userController.useUser, projectController.update);
+router.get('/projects', user.useUser, project.findAll);
+router.get('/timing', project.timing);
+router.get('/project/:id', user.useUser, project.findById);
+router.post('/project', user.useUser, helper.checkConstructor, project.create);
+router.put('/project/:id', user.useUser, helper.checkConstructor, project.update);
 
 module.exports = router

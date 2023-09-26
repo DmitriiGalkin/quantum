@@ -1,37 +1,27 @@
 'use strict';
 const async = require("async");
-const Meet = require('../models/meetModel');
-const User = require('../models/userModel');
-const UserMeet = require('../models/userMeetModel');
-const Place = require('../models/placeModel');
+const Meet = require('../models/meet');
+const User = require('../models/user');
+const UserMeet = require('../models/userMeet');
+const Place = require('../models/place');
 
-// Создание встречи
 exports.create = function(req, res) {
     const meet = new Meet({...req.body, userId: req.user?.id });
-    if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-        res.status(400).send({ error:true, message: 'Please provide all required field' });
-    }else{
-        Meet.create(meet, function(err, meetId) {
-            const userMeet = new UserMeet({meetId, userId: req.user.id});
-            UserMeet.create(userMeet, function() {
-                res.json(meetId);
-            });
+    Meet.create(meet, function(err, meetId) {
+        const userMeet = new UserMeet({meetId, userId: req.user.id});
+        UserMeet.create(userMeet, function() {
+            res.json(meetId);
         });
-    }
+    });
 };
 
-// Обновление встречи
 exports.update = function(req, res) {
-    if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-        res.status(400).send({ error:true, message: 'Please provide all required field' });
-    }else{
-        const obj = new Meet(req.body)
-        Meet.update(req.params.id, obj, function() {
-            res.json({ error:false, message: 'Встреча обновлен' });
-        });
-    }
+    const obj = new Meet(req.body)
+    Meet.update(req.params.id, obj, function() {
+        res.json({ error:false, message: 'Встреча обновлен' });
+    });
 };
-// Удаление встречи
+
 exports.delete = function(req, res) {
     Meet.delete(req.params.id, function() {
         res.json({ error:false, message: 'Удаление встречи' });
@@ -47,17 +37,13 @@ exports.toggleUserMeet = function(req, res) {
             });
         } else {
             const userMeet = new UserMeet({...req.params, userId: req.user.id});
-            if(req.body.constructor === Object && Object.keys(req.params).length === 0){
-                res.status(400).send({ error:true, message: 'Ошибка конструктора создания регистрации на встречу' });
-            }else{
-                UserMeet.create(userMeet, function() {
-                    res.json({error:false,message:"Добавление участника на встречу"});
-                });
-            }
+            UserMeet.create(userMeet, function() {
+                res.json({error:false,message:"Добавление участника на встречу"});
+            });
         }
     })
 };
-// Встречи для пользователя
+
 exports.findUserMeets = function(req, res) {
     Meet.findUserMeet(req.user.id, function(err, meets) {
         async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
@@ -74,7 +60,6 @@ exports.findUserMeets = function(req, res) {
     });
 };
 
-// Встречи для пользователя
 exports.findAll = function(req, res) {
     Meet.findAll(req.query.latitude, req.query.longitude)(function(err, meets) {
         async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
@@ -90,7 +75,7 @@ exports.findAll = function(req, res) {
         });
     });
 };
-// Встреча
+
 exports.findById = function(req, res) {
     Meet.findById(req.params.id, function(err, meet) {
         if (!meet) {

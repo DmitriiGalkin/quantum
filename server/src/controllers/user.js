@@ -1,5 +1,5 @@
 'use strict';
-const User = require('../models/userModel');
+const User = require('../models/user');
 var jwt = require('jsonwebtoken');
 
 // Обновление участника

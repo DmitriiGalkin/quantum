@@ -1,5 +1,5 @@
 'use strict';
-const Place = require('../models/placeModel');
+const Place = require('../models/place');
 
 // Места
 exports.findAll = function(req, res) {

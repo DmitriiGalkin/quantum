@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
 import {useAddProject, useEditProject, useProject} from "../tools/service";
 import {Project} from "../tools/dto";
@@ -8,6 +8,7 @@ import {TimingField} from "../components/TimingField";
 import Dialog from "@mui/material/Dialog";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
+import {PlaceSelect} from "../components/PlaceSelect";
 
 export interface CreateProjectProps {
     onClose: () => void
@@ -20,6 +21,7 @@ function CreateProject({ onClose }: CreateProjectProps) {
     const editProject = useEditProject(project.id)
 
     useEffect(() => defaultProject && setProject(defaultProject), [defaultProject])
+    const onChangePlace = useCallback((place: { latitude: string, longitude: string }) => setProject({ ...project, ...place}), [project, setProject])
 
 
     const onClickSave = () => {
@@ -61,6 +63,11 @@ function CreateProject({ onClose }: CreateProjectProps) {
                         label="Загрузите обложку"
                         value={project.image}
                         onChange={(image) => setProject({ ...project, image })}
+                    />
+                    <PlaceSelect
+                        onChange={onChangePlace}
+                        latitude={project.latitude}
+                        longitude={project.longitude}
                     />
                     <TimingField
                         values={project.timing || []}

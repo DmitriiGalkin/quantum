@@ -14,14 +14,18 @@ interface TimingFieldProps {
     onChange: (values: Timing[]) => void
 }
 
+interface ExtendedTiming extends Timing {
+    checked: boolean
+}
+
 /**
- * Подготавливает потенциальное расписание
+ * Подготавливает вывод расписания
  */
 const getTimes = (values: Timing[]) => [0,1,2,3,4,5,6].map(((defaultDayOfWeek) => {
     const lines = values.filter(({ dayOfWeek }) => dayOfWeek === defaultDayOfWeek)
 
     if (lines.length) {
-        return lines.map(line => ({ ...line, checked: true })) as Timing[]
+        return lines.map(line => ({ ...line, checked: true })) as ExtendedTiming[]
     } else {
         return [
             {
@@ -29,23 +33,37 @@ const getTimes = (values: Timing[]) => [0,1,2,3,4,5,6].map(((defaultDayOfWeek) =
                 time: '09:00',
                 checked: false
             }
-        ] as Timing[]
+        ] as ExtendedTiming[]
     }
 })).flat()
 
+/**
+ * Адаптер вывода расписания в данные на бек
+ */
+const getTiming = (times: ExtendedTiming[]): Timing[] => {
+    return times.filter((g)=>g.checked)
+        .map((data) => ({
+            id: data.id,
+            dayOfWeek: data.dayOfWeek,
+            time: data.time,
+        }))
+}
+
 export function TimingField({ values, onChange }: TimingFieldProps) {
-    const [view, toggleView] = useToggle(Boolean(values.length))
+    const [view, toggleView] = useToggle()
     const classes = useInputStyles();
 
     const times = getTimes(values);
 
-    const getCheckedValues = (index: number) => {
-        const z = times.map((time, findex)=> index === findex ? ({ ...time, checked: !time.checked }) : time).filter((g)=>g.checked)
-        onChange(z)
+    const getCheckedValues = (checkedIndex: number) => {
+        const z = times
+            .map((time, index)=> checkedIndex === index ? ({ ...time, checked: !time.checked }) : time)
+        onChange(getTiming(z))
     }
     const getTimeValues = (index: number, time3: string) => {
-        const z = times.map((time, findex)=> index === findex ? ({ ...time, time: time3 }) : time).filter((g)=>g.checked)
-        onChange(z)
+        const z = times
+            .map((time, findex)=> index === findex ? ({ ...time, time: time3 }) : time)
+        onChange(getTiming(z))
     }
 
     return (

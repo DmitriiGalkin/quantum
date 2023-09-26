@@ -11,6 +11,7 @@ import {useParams} from "react-router-dom";
 import {PlaceSelect} from "../components/PlaceSelect";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
+import {ProjectSelect} from "../components/ProjectSelect";
 
 export interface CreateMeetDialogProps {
     onClose: () => void
@@ -84,6 +85,10 @@ function CreateMeet({ onClose }: CreateMeetDialogProps) {
                         onChange={onChangePlace}
                         latitude={meet.latitude}
                         longitude={meet.longitude}
+                    />
+                    <ProjectSelect
+                        onChange={(project) => setMeet({ ...meet, project })}
+                        projectId={meet.project?.id}
                     />
                     <ImageField
                         name="meetImage"

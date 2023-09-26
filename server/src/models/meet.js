@@ -1,5 +1,12 @@
 'use strict';
 var dbConn = require('../db');
+const Project = require('./project');
+var LocalDateTime = require('@js-joda/core').LocalDateTime;
+var ChronoUnit = require('@js-joda/core').ChronoUnit;
+
+// console.log(LocalDate.LocalDate, 'LocalDate')
+//import {LocalDate} from "js-joda/core";
+
 
 var Meet = function(data){
     this.id = data.id;
@@ -7,7 +14,8 @@ var Meet = function(data){
     this.description = data.description;
     this.image = data.image;
     this.datetime = data.datetime;
-    this.userId = data.userId; // Создатель встречи
+    this.userId = data.userId; // Идентификатор создателя
+    this.projectId = data.project.id; // Идентификатор проекта
     this.latitude = data.latitude;
     this.longitude = data.longitude;
 };
@@ -20,7 +28,7 @@ Meet.create = function (data, result) {
 };
 // Обновление встречи
 Meet.update = function(id, meet, result){
-    dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=?, latitude=?, longitude=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, meet.latitude, meet.longitude, id], function (err, res) {
+    dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=?, latitude=?, longitude=?, projectId=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, meet.latitude, meet.longitude, meet.projectId, id], function (err, res) {
         result(null, res);
     });
 };
@@ -65,6 +73,72 @@ Meet.findUserMeet = function(userId, result){
         result(null, res.length ? res : []);
     });
 };
+
+//(1 = Sunday, 2 = Monday, …, 7 = Saturday)
+function toODBC (l) {
+    switch (l) {
+        case 0: {
+            return 2
+        }
+        case 1: {
+            return 3
+        }
+        case 2: {
+            return 4
+        }
+        case 3: {
+            return 5
+        }
+        case 4: {
+            return 6
+        }
+        case 5: {
+            return 7
+        }
+        case 6: {
+            return 1
+        }
+    }
+}
+
+Meet.check = function (timer, result) {
+    const day = toODBC(timer.dayOfWeek)
+    dbConn.query("SELECT *, DAYOFWEEK(datetime) as pm FROM meet WHERE DATE(datetime) >= CURDATE() AND DAYOFWEEK(datetime) = ? AND projectId = ?", [day, timer.projectId], function (err, res) {
+        if (!res.length) {
+            result(null, timer);
+        } else {
+            result(null);
+        }
+    });
+};
+
+// Встреча по номеру
+Meet.createByTimer = function (timer, result) {
+    Project.findById(timer.projectId, function(err, project) {
+        const correctDayOfWeek = timer.dayOfWeek + 1
+        const sevenDays = [0,1,2,3,4,5,6].map(number => {
+            return LocalDateTime.now().plusDays(number).withHour(timer.time)
+        })
+
+        const data = {
+            title: project.title,
+            description: project.description,
+            image: project.image,
+            datetime: sevenDays.find(d=>d.dayOfWeek().value()===correctDayOfWeek).truncatedTo(ChronoUnit.HOURS).toString(),
+            userId: project.userId,
+            projectId: project.id,
+            latitude: project.latitude,
+            longitude: project.longitude,
+        }
+        dbConn.query("INSERT INTO meet set ?", data, function (err, res) {
+            console.log(err, "err");
+            result(err, res.insertId);
+        });
+    })
+};
+
+
+
 
 
 module.exports = Meet;

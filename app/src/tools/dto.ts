@@ -10,6 +10,7 @@ export interface Meet {
     editable?: boolean // Право на редактирование/удаление
     users?: User[]
     place?: Place
+    project?: Project
 }
 
 export interface User {
@@ -33,7 +34,6 @@ export interface Timing {
     id: number
     dayOfWeek: number
     time: string
-    checked?: boolean
 }
 
 export interface Project {
@@ -43,6 +43,8 @@ export interface Project {
     image?: string
     timing?: Timing[]
     editable?: boolean // Право на редактирование/удаление
+    latitude?: string
+    longitude?: string
     ageFrom?: number
     ageTo?: number
 }

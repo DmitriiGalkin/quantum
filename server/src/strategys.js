@@ -4,7 +4,7 @@ const MailStrategy = require('passport-mail');
 const YandexStrategy = require('passport-yandex').Strategy;
 const VKStrategy = require('passport-vkontakte').Strategy;
 
-const User = require('./models/userModel');
+const User = require('./models/user');
 
 function findOrCreate(accessToken, refreshToken, profile, cb) {
     // Не все системы авторизации даруют мне почту
