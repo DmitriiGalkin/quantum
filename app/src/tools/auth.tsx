@@ -1,10 +1,9 @@
 import React, {createContext, useContext, useMemo} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import service, {useUser} from "./service";
-import Dialog from "@mui/material/Dialog";
-import {TransitionDialog} from "../components";
 import Login from "../dialogs/Login";
 import {useToggle} from "usehooks-ts";
+import {User} from "./dto";
 
 export const ACCESS_TOKEN = 'access_token'
 export const AuthContext = createContext('auth' as any);
@@ -58,6 +57,14 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     </AuthContext.Provider>;
 };
 
-export const useAuth = () => {
+export interface Auth {
+    user: User,
+    isAuth: boolean
+    openLogin: () => void
+    logout: () => void
+    authFn: (fn: () => void) => () => void
+}
+
+export const useAuth = (): Auth => {
     return useContext(AuthContext);
 };

@@ -4,6 +4,7 @@ const Meet = require('../models/meet');
 const User = require('../models/user');
 const UserMeet = require('../models/userMeet');
 const Place = require('../models/place');
+const Project = require('../models/project');
 
 exports.create = function(req, res) {
     const meet = new Meet({...req.body, userId: req.user?.id });
@@ -47,14 +48,12 @@ exports.toggleUserMeet = function(req, res) {
 exports.findUserMeets = function(req, res) {
     Meet.findUserMeet(req.user.id, function(err, meets) {
         async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
-            async.map(meets, User.findByMeet, function(err, meetsUsers) {
-                res.send(meets.map((p, index) => {
-                    const active = meetsUsers[index]?.some((user) => user.userId === req.user?.id)
-                    const users = meetsUsers[index]
-                    const place = meetsPlaces[index]
-
-                    return ({ ...p, users, active, place })
-                }));
+            async.map(meets, User.findByMeet, function(err, userMeets) {
+                res.send(meets.map((p, index) => ({
+                    ...p,
+                    userMeets: userMeets[index],
+                    active: userMeets[index]?.some((user) => user.userId === req.user?.id),
+                    place: meetsPlaces[index] })));
             });
         });
     });
@@ -64,13 +63,12 @@ exports.findAll = function(req, res) {
     Meet.findAll(req.query.latitude, req.query.longitude)(function(err, meets) {
         async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
             async.map(meets, User.findByMeet, function(err, meetsUsers) {
-                res.send(meets.map((p, index) => {
-                    const active = meetsUsers[index]?.some((user) => user.userId === req.user?.id)
-                    const users = meetsUsers[index]
-                    const place = meetsPlaces[index]
-
-                    return ({ ...p, users, active, place })
-                }));
+                res.send(meets.map((p, index) => ({
+                    ...p,
+                    userMeets: meetsUsers[index],
+                    userMeet: meetsUsers[index]?.find((user) => user.userId === req.user?.id),
+                    place: meetsPlaces[index]
+                })));
             });
         });
     });
@@ -82,9 +80,24 @@ exports.findById = function(req, res) {
             res.status(400).send({ error:true, message: 'Встреча с таким номером не найдена' });
         } else {
             Place.findByMeet(meet, function(err, place) {
-                User.findByMeet(meet, function (err, users) {
-                    const active = users.some((user) => user.userId === req.user?.id)
-                    res.send({...meet, editable: req.user?.id === meet.userId, active, users, place });
+                User.findById(meet.userId, function (err, user) {
+                    User.findByMeet(meet, function (err, userMeets) {
+                        const exMeet = {
+                            ...meet,
+                            user,
+                            editable: req.user?.id === meet.userId,
+                            userMeet: userMeets.find((user) => user.userId === req.user?.id),
+                            userMeets: userMeets,
+                            place
+                        }
+                        if (meet.projectId) {
+                            Project.findById(meet.projectId, function (err, project) {
+                                res.send({...exMeet, project });
+                            });
+                        } else {
+                            res.send(exMeet);
+                        }
+                    });
                 });
             })
         }

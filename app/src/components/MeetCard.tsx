@@ -1,8 +1,8 @@
 import React from 'react';
-import {Meet} from "../tools/dto";
+import {Meet, UserMeet} from "../tools/dto";
 import {convertToMeetDate, convertToMeetTime} from "../tools/date";
 import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
-import {useToggleMeetUser} from "../tools/service";
+import {useCreateMeetUser, useDeleteMeetUser} from "../tools/service";
 import {makeStyles} from '@mui/styles';
 import {DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
@@ -30,21 +30,24 @@ const useStyles = makeStyles(() => ({
     },
 }));
 export function MeetCard({ meet, refetch }: MeetCardProps) {
-    const { isAuth, openLogin } = useAuth();
-    const toggleMeetUser = useToggleMeetUser()
+    const { isAuth, user, openLogin } = useAuth();
+    const createMeetUser = useCreateMeetUser()
+    const deleteMeetUser = useDeleteMeetUser()
     const classes = useStyles();
     const navigate = useNavigate();
 
     const time = convertToMeetTime(meet.datetime)
     const date = convertToMeetDate(meet.datetime)
 
-    const onClick = (e: React.MouseEvent) => {
-        e.stopPropagation()
-        if (isAuth) {
-            toggleMeetUser.mutateAsync(meet.id).then(refetch)
+    const onCreateUserMeet = () => {
+        if (isAuth && user) {
+            createMeetUser.mutateAsync({ userId: user.id, meetId: meet.id, ...user }).then(refetch)
         } else {
             openLogin()
         }
+    }
+    const onDeleteUserMeet = (userMeet: UserMeet) => {
+        deleteMeetUser.mutateAsync(userMeet).then(refetch)
     }
     const title = meet.title
 
@@ -80,10 +83,10 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
                             </Stack>
                             <div style={{ flex: '1 0 auto', display: 'flex', height: 30, paddingTop: 8 }}>
                                 <div style={{ flexGrow: 1 }}>
-                                    {Boolean(meet.users?.length) && (
+                                    {Boolean(meet.userMeets?.length) && (
                                         <Box sx={{ display: 'flex' }}>
                                             <AvatarGroup max={4}>
-                                                {meet.users?.map((user) => (
+                                                {meet.userMeets?.map((user) => (
                                                     <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 21, height: 21 }} />
                                                 ))}
                                             </AvatarGroup>
@@ -91,8 +94,14 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
                                     )}
                                 </div>
                                 <div>
-                                    {meet.active ? (
-                                        <div style={{ backgroundColor: '#7139FF', fontSize: 11, fontWeight: 500, padding: '3px 9px', color: 'white', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }} onClick={onClick}>
+                                    {meet.userMeet ? (
+                                        <div
+                                            style={{ backgroundColor: '#7139FF', fontSize: 11, fontWeight: 500, padding: '3px 9px', color: 'white', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                meet.userMeet && onDeleteUserMeet(meet.userMeet)
+                                            }}
+                                        >
                                             <Stack spacing={1} direction="row" justifyContent="space-between" alignItems="center">
                                                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M3.8512 10C4.21225 10 4.5186 9.82301 4.72648 9.48009L9.73742 1.52655C9.85777 1.30531 10 1.06195 10 0.818584C10 0.320796 9.56236 0 9.10284 0C8.81838 0 8.54486 0.176991 8.34792 0.497788L3.80744 7.86504L1.64114 5.04425C1.3895 4.69027 1.13786 4.60177 0.842451 4.60177C0.36105 4.60177 0 4.98894 0 5.47566C0 5.71903 0.0875274 5.95133 0.251641 6.1615L2.91028 9.48009C3.19475 9.84513 3.47921 10 3.8512 10Z" fill="white"/>
@@ -101,7 +110,13 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
                                             </Stack>
                                         </div>
                                     ) : (
-                                        <div style={{ fontSize: 11, fontWeight: 500, padding: '3px 9px', color: '#7139FF', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }} onClick={onClick}>
+                                        <div
+                                            style={{ fontSize: 11, fontWeight: 500, padding: '3px 9px', color: '#7139FF', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                onCreateUserMeet()
+                                            }}
+                                        >
                                             Участвовать
                                         </div>
                                     )}

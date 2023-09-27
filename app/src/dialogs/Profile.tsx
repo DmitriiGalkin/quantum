@@ -35,6 +35,7 @@ function Profile({ onLogout, onClose }: UserViewProps) {
                         onChange={(e) => user && setUser({ ...user, title: e.target.value})}
                     />
                     <ImageField
+                        name="user"
                         label="Аватарка"
                         value={user?.image}
                         onChange={(image) => user && setUser({...user, image})}

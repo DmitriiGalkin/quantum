@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import {Meet, Place, Project, User} from "./dto";
+import {Meet, Place, Project, User, UserMeet} from "./dto";
 import {ACCESS_TOKEN} from "./auth";
 
 // При разработки хост может быть разным
@@ -89,8 +89,13 @@ export const useUploadImage = (): UseMutate<FormData, string> => {
  */
 export const useUser = (): UseQueryResult<User> => useQuery(['user'], () => service.get(`/user`))
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
-export const useToggleMeetUser = (): UseMutate<number> => useMutation((meetId) => service.put("/userMeet/" + meetId))
 export const useUserMeets = (): UseQueryResult<Meet[]> => useQuery(['userMeets'], () => service.get(`/userMeets`))
+
+export const useCreateMeetUser = (): UseMutate<UserMeet> => useMutation((userMeet) => service.post("/userMeet/" + userMeet.userId + "/" + userMeet.meetId))
+export const useStartedUserMeet = (): UseMutate<UserMeet> => useMutation((userMeet) => service.post("/userMeet/" + userMeet.userId + "/" + userMeet.meetId + "/started"))
+export const useStoppedUserMeet = (): UseMutate<UserMeet> => useMutation((userMeet) => service.post("/userMeet/" + userMeet.userId + "/" + userMeet.meetId + "/stopped"))
+export const usePaidedUserMeet = (): UseMutate<UserMeet> => useMutation((userMeet) => service.post("/userMeet/" + userMeet.userId + "/" + userMeet.meetId + "/paided"))
+export const useDeleteMeetUser = (): UseMutate<UserMeet> => useMutation((userMeet) => service.delete("/userMeet/" + userMeet.userId + "/" + userMeet.meetId))
 
 /**
  * Место

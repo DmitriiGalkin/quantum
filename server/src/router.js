@@ -4,6 +4,7 @@ var passport = require('passport');
 
 const user =   require('./controllers/user');
 const meet =   require('./controllers/meet');
+const userMeet =   require('./controllers/userMeet');
 const image =   require('./controllers/image');
 const place =   require('./controllers/place');
 const project =   require('./controllers/project');
@@ -65,7 +66,11 @@ router.get('/oauth2/redirect/vkontakte', (req, res) => passport.authenticate('vk
 router.get('/user', user.useUser, function(req, res) { res.send(req.user) });
 router.put('/user', user.useUser, user.update);
 router.get('/userMeets', user.useUser, meet.findUserMeets);
-router.put('/userMeet/:meetId', user.useUser, meet.toggleUserMeet );
+router.post('/userMeet/:userId/:meetId', user.useUser, userMeet.createUserMeet );
+router.post('/userMeet/:userId/:meetId/started', user.useUser, userMeet.startedUserMeet );
+router.post('/userMeet/:userId/:meetId/stopped', user.useUser, userMeet.stoppedUserMeet );
+router.post('/userMeet/:userId/:meetId/paided', user.useUser, userMeet.paidedUserMeet );
+router.delete('/userMeet/:userId/:meetId', user.useUser, userMeet.deleteUserMeet );
 
 /**
  * Места

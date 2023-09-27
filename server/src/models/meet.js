@@ -4,10 +4,6 @@ const Project = require('./project');
 var LocalDateTime = require('@js-joda/core').LocalDateTime;
 var ChronoUnit = require('@js-joda/core').ChronoUnit;
 
-// console.log(LocalDate.LocalDate, 'LocalDate')
-//import {LocalDate} from "js-joda/core";
-
-
 var Meet = function(data){
     this.id = data.id;
     this.title = data.title;
@@ -16,23 +12,24 @@ var Meet = function(data){
     this.datetime = data.datetime;
     this.userId = data.userId; // Идентификатор создателя
     this.projectId = data.project.id; // Идентификатор проекта
+    this.price = data.price; // Идентификатор проекта
     this.latitude = data.latitude;
     this.longitude = data.longitude;
 };
-// Создание встречи
+
 Meet.create = function (data, result) {
     dbConn.query("INSERT INTO meet set ?", data, function (err, res) {
         console.log(err, "err");
         result(err, res.insertId);
     });
 };
-// Обновление встречи
+
 Meet.update = function(id, meet, result){
-    dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=?, latitude=?, longitude=?, projectId=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, meet.latitude, meet.longitude, meet.projectId, id], function (err, res) {
+    dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=?, latitude=?, longitude=?, projectId=?, price=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, meet.latitude, meet.longitude, meet.projectId, meet.price, id], function (err, res) {
         result(null, res);
     });
 };
-// Удаление встречи
+
 Meet.delete = function(id, result){
     dbConn.query(`DELETE FROM meet WHERE id = ?`, id, function (err, res) {
         result(null, res);
@@ -48,7 +45,7 @@ Meet.findAll = () => function (result) {
         result(null, res || []);
     });
 };
-// Встреча по номеру
+
 Meet.findById = function (id, result) {
     dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet WHERE id = ?", id, function (err, res) {
         result(null, res[0]);

@@ -12,6 +12,7 @@ import {PlaceSelect} from "../components/PlaceSelect";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {ProjectSelect} from "../components/ProjectSelect";
+import {PriceField} from "../components/PriceField";
 
 export interface CreateMeetDialogProps {
     onClose: () => void
@@ -95,6 +96,10 @@ function CreateMeet({ onClose }: CreateMeetDialogProps) {
                         label="Загрузите обложку"
                         value={meet.image}
                         onChange={(image) => setMeet({...meet, image})}
+                    />
+                    <PriceField
+                        value={meet.price}
+                        onChange={(price) => setMeet({...meet, price})}
                     />
                 </Stack>
             </DialogContent>

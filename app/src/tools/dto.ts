@@ -6,11 +6,22 @@ export interface Meet {
     image?: string
     latitude: string
     longitude: string
-    active?: boolean // Участвует ли пользователь во встрече
     editable?: boolean // Право на редактирование/удаление
-    users?: User[]
+    price?: number // Стоимость
+    userMeet?: UserMeet // Участие пользователя
+    userMeets?: UserMeet[] // Все участники встречи
+    user?: User // Организатор встречи
     place?: Place
     project?: Project
+}
+
+export interface UserMeet extends User {
+    userId: number // Идентификатор участника
+    meetId: number // Идентификатор встречи
+    created?: string // Время вступления во встречу
+    started?: string // Время начала участия во встрече
+    stopped?: string // Время завершения участия во встрече
+    paided?: string // Время оплаты участия во встрече
 }
 
 export interface User {

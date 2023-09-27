@@ -68,7 +68,7 @@ export const getWeek = (selectedDate?: string, meets?: Meet[]): Day[] => Array.f
     const localDate = LocalDate.now()
     const targetDay = localDate.plusDays(day)
     const re = targetDay.toString()
-    const meets3 = meetsGroup ? meetsGroup.find(({id}) => id === re)?.meets : []
+    const meets3 = (meetsGroup ? meetsGroup.find(({id}) => id === re)?.meets : []) as Meet[]
 
     return {
         index,
@@ -76,7 +76,7 @@ export const getWeek = (selectedDate?: string, meets?: Meet[]): Day[] => Array.f
         dayOfWeekValue: getDayOfWeekTitle(targetDay.dayOfWeek().value() - 1),
         day: targetDay.dayOfMonth(),
         active: selectedDate === re,
-        activeMeetsLength: meets3?.filter((meet) => meet.active).length || 0,
+        activeMeetsLength: meets3?.filter((meet) => meet.userMeet).length || 0,
         meets: meets3 || [],
     }
 })
