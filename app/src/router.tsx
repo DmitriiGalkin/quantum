@@ -4,6 +4,7 @@ import {Route} from "react-router";
 import MainView from "./views/MainView";
 import MeetView from "./views/MeetView";
 import ProjectView from "./views/ProjectView";
+import ControlView from "./views/ControlView";
 import {AuthProvider} from "./tools/auth";
 
 export default function AuthLayout(): JSX.Element {
@@ -19,6 +20,7 @@ export const router = createBrowserRouter(
             <Route index element={<MainView />}/>
             <Route path="/meet/:id" element={<MeetView />}/>
             <Route path="/project/:id" element={<ProjectView />}/>
+            <Route path="/timing" element={<ControlView />}/>
         </Route>
     )
 );

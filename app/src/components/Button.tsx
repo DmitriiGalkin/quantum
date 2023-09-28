@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props {
-    variant?: 'outlined'
+    variant?: 'outlined' | 'small'
     children: string | JSX.Element | JSX.Element[]
     onClick?: () => void
     href?: string
@@ -9,6 +9,17 @@ interface Props {
     disabled?: boolean
 }
 export function Button({ children, variant, onClick, href, color, disabled }: Props) {
+    if (variant === 'small') {
+        return (
+            <div
+                style={{ fontSize: 11, fontWeight: 500, padding: '3px 9px', color: '#7139FF', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
+                onClick={() => onClick && !disabled && onClick()}
+            >
+                {children}
+            </div>
+        )
+    }
+
     if (variant === 'outlined'){
         return (
             <a href={href} style={{

@@ -120,4 +120,6 @@ export const useProject = (id?: number): UseQueryResult<Project> => useQuery(['p
 export const useAddProject = (): UseMutate<Project> => useMutation((project) => service.post("/project", project))
 export const useEditProject = (id: number): UseMutate<Project> => useMutation((project) => service.put(`/project/${id}`, project))
 
+export const useTiming = (): UseQueryResult<User> => useQuery(['timing'], () => service.get(`/timing`))
+
 export default service
