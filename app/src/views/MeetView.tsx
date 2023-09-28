@@ -60,7 +60,7 @@ export default function MeetPage() {
 
     const date = convertToMeetDateLong(meet.datetime)
     const time = convertToMeetTime(meet.datetime)
-    const isOrganizer = meet.user?.id === user.id
+    const isOrganizer = user && (meet.user?.id === user.id)
 
     const onCreateUserMeet = () => isAuth ? createMeetUser.mutateAsync({ userId: user.id, meetId: meet.id, ...user }).then(() => refetch()) : openLogin()
     const onDeleteUserMeet = () => meet?.userMeet && deleteMeetUser.mutateAsync(meet.userMeet).then(() => refetch())
@@ -84,7 +84,7 @@ export default function MeetPage() {
             value: (
                 <span>
                     {meet.user?.title}
-                    {meet.user?.id === user.id && '(Вы)'}
+                    {meet.user?.id === user?.id && '(Вы)'}
                 </span>
             ),
         }
@@ -135,7 +135,7 @@ export default function MeetPage() {
     return (
         <>
             <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)'}}>
-                <div style={{ height: 230 }}>
+                <div style={{ height: 230, top: 0, left: 0, right: 0 }}>
                     {meet.image && <img alt={meet.title} src={meet.image} className={classes.image}/>}
                 </div>
                 <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
