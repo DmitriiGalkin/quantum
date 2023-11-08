@@ -13,6 +13,7 @@ import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {ProjectSelect} from "../components/ProjectSelect";
 import {PriceField} from "../components/PriceField";
+import {AgeField} from "../components/AgeField";
 
 export interface CreateMeetDialogProps {
     onClose: () => void
@@ -100,6 +101,11 @@ function CreateMeet({ onClose }: CreateMeetDialogProps) {
                     <PriceField
                         value={meet.price}
                         onChange={(price) => setMeet({...meet, price})}
+                    />
+                    <AgeField
+                        ageFrom={meet.ageFrom}
+                        ageTo={meet.ageTo}
+                        onChange={({ ageFrom, ageTo }) => setMeet({...meet, ageFrom, ageTo})}
                     />
                 </Stack>
             </DialogContent>

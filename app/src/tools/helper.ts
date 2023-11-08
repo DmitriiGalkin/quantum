@@ -81,4 +81,20 @@ export const getWeek = (selectedDate?: string, meets?: Meet[]): Day[] => Array.f
     }
 })
 
+
+/**
+ * Формируем строку отображающую возрастное ограничение
+ */
+export const getAgeTitle = (ageFrom?: number, ageTo?: number) => {
+    return (ageFrom || ageTo) ? ((ageFrom ? ` с ${ageFrom}` : '') + (ageTo ? ` до ${ageTo}` : '') + ' лет') : 'любой'
+}
+
+/**
+ * Формируем строку отображающую возрастное ограничение КОРОТКОЕ
+ */
+export const getAgeTitle2 = (ageFrom?: number, ageTo?: number) => {
+    return (ageFrom || ageTo) ? ('(' + (ageFrom ? `${ageFrom}` : '0') + (ageTo ? ` - ${ageTo}` : '') + ' лет)') : ''
+
+}
+
 export const DASHBOARD_TICK_TIME = 10000

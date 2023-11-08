@@ -7,6 +7,9 @@ import {useToggle} from "usehooks-ts";
 import CreateProject from "../dialogs/CreateProject";
 import {getOnShare} from "../tools/pwa";
 import {makeStyles} from "@mui/styles";
+import {Parameter, Parameters} from "../components/Parameters";
+import {getAgeTitle} from "../tools/helper";
+import {useAuth} from "../tools/auth";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -23,8 +26,10 @@ const useStyles = makeStyles(() => ({
         objectFit: 'cover',
     },
 }));
+
 export default function ProjectPage() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const classes = useStyles();
 
     const { id: projectId } = useParams();
@@ -33,6 +38,21 @@ export default function ProjectPage() {
     const deleteMeet = useDeleteMeet()
 
     if (!project) return null;
+
+    const parameters = [
+        { name: "place", title: 'Место проведения', value: project?.place?.title },
+        { name: "place", title: 'Возраст', value: getAgeTitle(project?.ageFrom, project?.ageTo) },
+        {
+            name: "date",
+            title: 'Организатор',
+            value: (
+                <span>
+                    {project.user?.title}
+                    {project.user?.id === user?.id && '(Вы)'}
+                </span>
+            ),
+        }
+    ] as Parameter[]
 
     const onDelete =  () => deleteMeet.mutateAsync(project.id).then(() => navigate(`/`))
     const menuItems = project.editable ? [
@@ -72,6 +92,7 @@ export default function ProjectPage() {
                         <div style={{ paddingTop: 24, opacity: .6, lineHeight: '21px'}}>
                             {project.description}
                         </div>
+                        <Parameters items={parameters}/>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,10 @@
 'use strict';
 const async = require("async");
 const Project = require('../models/project');
+const User = require('../models/user');
 const Meet = require('../models/meet');
 const ProjectTime = require('../models/projectTime');
+const Place = require('../models/place');
 
 exports.create = function(req, res) {
     const project = new Project({...req.body, userId: req.user?.id });
@@ -36,8 +38,12 @@ exports.findById = function(req, res) {
         if (!project) {
             res.status(400).send({ error:true, message: 'Проект с таким номером не найден' });
         } else {
-            ProjectTime.findAll(req.params.id, function(timing) {
-                res.send({...project, editable: req.user?.id === project.userId, timing });
+            Place.findByMeet(project, function(err, place) {
+                User.findById(project.userId, function (err, user) {
+                    ProjectTime.findAll(req.params.id, function(timing) {
+                        res.send({...project, editable: req.user?.id === project.userId, timing, user, place });
+                    })
+                })
             })
         }
     });

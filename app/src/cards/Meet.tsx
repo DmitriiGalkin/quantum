@@ -7,6 +7,7 @@ import {makeStyles} from '@mui/styles';
 import {DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../tools/auth";
+import {getAgeTitle2} from "../tools/helper";
 
 interface MeetCardProps {
     meet: Meet
@@ -64,7 +65,7 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
                 <div style={{ flexGrow: 1 }}>
                     <Box style={{ display: 'flex', height: '96%' }} flexDirection="column" justifyContent="space-between">
                         <div style={{ textOverflow: 'ellipsis', width: '100%', fontSize: 15, overflow: 'hidden', color: '#3F3F3F', fontWeight: 500 }}>
-                            {title}
+                            {title} {getAgeTitle2(meet.ageFrom, meet.ageTo)}
                         </div>
                         <div>
                             <Stack spacing={0} direction="row" justifyContent="space-between" alignContent="center">

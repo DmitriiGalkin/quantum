@@ -9,6 +9,8 @@ var Project = function(data){
     this.latitude = data.latitude;
     this.longitude = data.longitude;
     this.userId = data.userId; // Создатель проекта
+    this.ageFrom = data.ageFrom;
+    this.ageTo = data.ageTo;
 };
 
 Project.create = function (data, result) {
@@ -17,8 +19,8 @@ Project.create = function (data, result) {
     });
 };
 
-Project.update = function(id, meet, result){
-    dbConn.query("UPDATE project SET title=?, description=?, image=?, latitude=?, longitude=? WHERE id = ?", [meet.title, meet.description, meet.image, meet.latitude, meet.longitude, id], function (err, res) {
+Project.update = function(id, obj, result){
+    dbConn.query("UPDATE project SET title=?, description=?, image=?, latitude=?, longitude=?, ageFrom=?, ageTo=? WHERE id = ?", [obj.title, obj.description, obj.image, obj.latitude, obj.longitude, obj.ageFrom, obj.ageTo, id], function (err, res) {
         result(null, res);
     });
 };

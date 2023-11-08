@@ -13,6 +13,8 @@ var Meet = function(data){
     this.userId = data.userId; // Идентификатор создателя
     this.projectId = data.project?.id; // Идентификатор проекта
     this.price = data.price; // Идентификатор проекта
+    this.ageFrom = data.ageFrom;
+    this.ageTo = data.ageTo;
     this.latitude = data.latitude;
     this.longitude = data.longitude;
 };
@@ -25,7 +27,7 @@ Meet.create = function (data, result) {
 };
 
 Meet.update = function(id, meet, result){
-    dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=?, latitude=?, longitude=?, projectId=?, price=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, meet.latitude, meet.longitude, meet.projectId, meet.price, id], function (err, res) {
+    dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=?, latitude=?, longitude=?, projectId=?, price=?, ageFrom=?, ageTo=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, meet.latitude, meet.longitude, meet.projectId, meet.price, meet.ageFrom, meet.ageTo, id], function (err, res) {
         result(null, res);
     });
 };
@@ -126,6 +128,8 @@ Meet.createByTimer = function (timer, result) {
             projectId: project.id,
             latitude: project.latitude,
             longitude: project.longitude,
+            ageFrom: project.ageFrom,
+            ageTo: project.ageTo,
         }
         dbConn.query("INSERT INTO meet set ?", data, function (err, res) {
             console.log(err, "err");

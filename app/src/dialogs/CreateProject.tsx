@@ -8,6 +8,7 @@ import {TimingField} from "../components/TimingField";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {PlaceSelect} from "../components/PlaceSelect";
+import {AgeField} from "../components/AgeField";
 
 export interface CreateProjectProps {
     onClose: () => void
@@ -71,6 +72,11 @@ function CreateProject({ onClose }: CreateProjectProps) {
                     <TimingField
                         values={project.timing || []}
                         onChange={(values) => setProject({ ...project, timing: values })}
+                    />
+                    <AgeField
+                        ageFrom={project.ageFrom}
+                        ageTo={project.ageTo}
+                        onChange={({ ageFrom, ageTo }) => setProject({...project, ageFrom, ageTo})}
                     />
                 </Stack>
             </DialogContent>

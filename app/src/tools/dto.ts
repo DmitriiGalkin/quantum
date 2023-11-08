@@ -8,6 +8,8 @@ export interface Meet {
     longitude: string
     editable?: boolean // Право на редактирование/удаление
     price?: number // Стоимость
+    ageFrom?: number // Минимальный возраст
+    ageTo?: number // Максимальный возраст
     userMeet?: UserMeet // Участие пользователя
     userMeets?: UserMeet[] // Все участники встречи
     user?: User // Организатор встречи
@@ -54,8 +56,11 @@ export interface Project {
     image?: string
     timing?: Timing[]
     editable?: boolean // Право на редактирование/удаление
+    userId?: number // Организатор
     latitude?: string
     longitude?: string
-    ageFrom?: number
-    ageTo?: number
+    ageFrom?: number // Минимальный возраст
+    ageTo?: number // Максимальный возраст
+    user?: User // Организатор проекта
+    place?: Place // Место проведения
 }

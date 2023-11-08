@@ -15,7 +15,6 @@ import {usePosition} from "../tools/pwa";
 import {DisplaySwitch} from "../components/DisplaySwitch";
 import {Burger} from "../components/Burger";
 import {YMapsApi} from "@pbe/react-yandex-maps/typings/util/typing";
-import {DialogContent} from "../components/DialogContent";
 
 const useStyles = makeStyles(() => ({
     root: {

@@ -11,19 +11,13 @@ import CreateMeet from "../dialogs/CreateMeet";
 import {useAuth} from "../tools/auth";
 import {useToggle} from "usehooks-ts";
 import {Avatar, AvatarGroup, Box, Stack, Tooltip} from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
 import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 import {getOnShare} from "../tools/pwa";
 import {convertToMeetDateLong, convertToMeetTime} from "../tools/date";
 import {makeStyles} from "@mui/styles";
 import {UserMeet} from "../tools/dto";
-import {IconName} from "../components/Icon";
-
-interface Parameter {
-    name: IconName,
-    title: string,
-    value?: JSX.Element,
-}
+import {Parameters, Parameter} from "../components/Parameters";
+import {getAgeTitle} from "../tools/helper";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -78,6 +72,7 @@ export default function MeetPage() {
             title: 'Проект',
             value: <span onClick={() => navigate('/project/' + meet?.project?.id)}>{meet?.project?.title}</span>,
         },
+        { name: "place", title: 'Возраст', value: getAgeTitle(meet?.ageFrom, meet?.ageTo) },
         {
             name: "date",
             title: 'Организатор',
@@ -135,11 +130,10 @@ export default function MeetPage() {
     return (
         <>
             <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)'}}>
-                <div style={{ height: 230, top: 0, left: 0, right: 0 }}>
-                    {meet.image && <img alt={meet.title} src={meet.image} className={classes.image}/>}
-                </div>
-                <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
-                    <Back menuItems={menuItems} />
+                <div style={{ height: 230, backgroundImage: `url(${meet.image})`, backgroundSize: 'cover' }} >
+                    <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
+                        <Back menuItems={menuItems} />
+                    </div>
                 </div>
                 <div style={{ position: "relative"}}>
                     <div className={classes.container}>
@@ -196,27 +190,7 @@ export default function MeetPage() {
                                 </Box>
                             </div>
                         )}
-                        <div id="parameters" style={{ paddingTop: 48}}>
-                            <Stack spacing={3} direction="column">
-                                {parameters.map(({ name, title, value }) => (
-                                    <Grid container key={title}>
-                                        <Grid xs={6}>
-                                            <Stack spacing={2} direction="row" alignItems="center">
-                                                <Icon name={name}/>
-                                                <div style={{ fontWeight: 900 }}>
-                                                    {title}
-                                                </div>
-                                            </Stack>
-                                        </Grid>
-                                        <Grid xs={6}>
-                                            <div style={{ color: '#070707', letterSpacing: '0.05em' }}>
-                                                {value}
-                                            </div>
-                                        </Grid>
-                                    </Grid>
-                                ))}
-                            </Stack>
-                        </div>
+                        <Parameters items={parameters}/>
                         <div style={{ width: '100%', height: '200px', marginTop: 25, borderRadius: 15, overflow: 'hidden' }}>
                             <YMaps>
                                 <Map defaultState={{ center: [Number(meet.latitude), Number(meet.longitude)], zoom: 16 }} width="100%" height="100%">

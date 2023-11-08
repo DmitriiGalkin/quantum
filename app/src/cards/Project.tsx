@@ -4,6 +4,7 @@ import {Box, Stack} from "@mui/material";
 import {makeStyles} from '@mui/styles';
 import {DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
+import {getAgeTitle2} from "../tools/helper";
 
 interface ProjectCardProps {
     project: Project
@@ -43,7 +44,7 @@ export function ProjectCard({ project, refetch }: ProjectCardProps) {
                 <div style={{ flexGrow: 1 }}>
                     <Box style={{ display: 'flex', height: '96%' }} flexDirection="column" justifyContent="space-between">
                         <div style={{ textOverflow: 'ellipsis', width: '100%', fontSize: 15, overflow: 'hidden', color: '#3F3F3F', fontWeight: 500 }}>
-                            {project.title}
+                            {project.title} {getAgeTitle2(project.ageFrom, project.ageTo)}
                         </div>
                         <div style={{ textOverflow: 'ellipsis', width: '100%', fontSize: 12, overflow: 'hidden', color: '#3F3F3F', fontWeight: 500 }}>
                             {project.description}
