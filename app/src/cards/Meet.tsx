@@ -1,13 +1,13 @@
 import React from 'react';
 import {Meet, UserMeet} from "../tools/dto";
 import {convertToMeetDate, convertToMeetTime} from "../tools/date";
-import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
+import {Avatar, AvatarGroup, Box, Chip, Stack} from "@mui/material";
 import {useCreateMeetUser, useDeleteMeetUser} from "../tools/service";
 import {makeStyles} from '@mui/styles';
-import {DEFAULT_COLOR} from "../tools/theme";
+import {BOX_SHADOW, DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../tools/auth";
-import {getAgeTitle2} from "../tools/helper";
+import {getAgeLabel} from "../tools/helper";
 
 interface MeetCardProps {
     meet: Meet
@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
         width: '100%',
         height: '100%',
         objectFit: 'cover',
-        borderRadius: 9.5,
+        borderRadius: '9.5px 0 0 9.5px',
     },
 }));
 export function MeetCard({ meet, refetch }: MeetCardProps) {
@@ -50,22 +50,22 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
     const onDeleteUserMeet = (userMeet: UserMeet) => {
         deleteMeetUser.mutateAsync(userMeet).then(refetch)
     }
-    const title = meet.title
+    const title = meet.project?.title
 
     return (
-        <div style={{ padding: 11, backgroundColor: DEFAULT_COLOR, borderRadius: 16 }} onClick={() => navigate(`/meet/${meet.id}`)}>
-            <Stack spacing={2} direction="row">
-                {meet.image && (
-                    <div style={{ width: 90, minWidth: 90 }}>
-                        <div className={classes.blockInner}>
-                            <img alt={meet.title} src={meet.image} className={classes.image}/>
+        <div style={{ display: 'flex', backgroundColor: DEFAULT_COLOR, borderRadius: 16, boxShadow: BOX_SHADOW }} onClick={() => navigate(`/meet/${meet.id}`)}>
+                {meet.project?.image && (
+                    <div style={{ width: 100, minWidth: 100, position: "relative" }}>
+                        <div className={classes.blockInner} style={{}}>
+                            <img alt={title} src={meet.project?.image} className={classes.image}/>
                         </div>
+                        <Chip label={getAgeLabel(meet)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
                     </div>
                 )}
-                <div style={{ flexGrow: 1 }}>
+                <div style={{ flexGrow: 1, padding: 11 }}>
                     <Box style={{ display: 'flex', height: '96%' }} flexDirection="column" justifyContent="space-between">
                         <div style={{ textOverflow: 'ellipsis', width: '100%', fontSize: 15, overflow: 'hidden', color: '#3F3F3F', fontWeight: 500 }}>
-                            {title} {getAgeTitle2(meet.ageFrom, meet.ageTo)}
+                            {title || 'Заголовок проекта'}
                         </div>
                         <div>
                             <Stack spacing={0} direction="row" justifyContent="space-between" alignContent="center">
@@ -126,7 +126,6 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
                         </div>
                     </Box>
                 </div>
-            </Stack>
         </div>
     );
 }

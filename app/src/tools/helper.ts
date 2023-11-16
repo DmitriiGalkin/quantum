@@ -97,4 +97,12 @@ export const getAgeTitle2 = (ageFrom?: number, ageTo?: number) => {
 
 }
 
+/**
+ * Формируем строку отображающую возрастное ограничение СВЕРХКОРОТКОЕ
+ */
+export const getAgeLabel = (meet: Meet) => {
+    return `${meet.project?.ageFrom || 0}+`
+
+}
+
 export const DASHBOARD_TICK_TIME = 10000

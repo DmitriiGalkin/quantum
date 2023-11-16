@@ -54,16 +54,16 @@ function CreateMeet({ onClose }: CreateMeetDialogProps) {
                         onChange={(datetime) => setMeet({ ...meet, datetime })}
                     />
                     <Stack spacing={1} direction="row">
-                        <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>
-                            <Input
-                                name='title'
-                                label="Название"
-                                value={meet.title}
-                                onChange={(e) => setMeet({ ...meet, title: e.target.value})}
-                                placeholder="Введите название встречи"
-                                autoFocus
-                            />
-                        </div>
+                        {/*<div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>*/}
+                        {/*    <Input*/}
+                        {/*        name='title'*/}
+                        {/*        label="Название"*/}
+                        {/*        value={meet.title}*/}
+                        {/*        onChange={(e) => setMeet({ ...meet, title: e.target.value})}*/}
+                        {/*        placeholder="Введите название встречи"*/}
+                        {/*        autoFocus*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                         <div style={{ width: 80 }}>
                             <TimePicker
                                 name='time'
@@ -76,13 +76,13 @@ function CreateMeet({ onClose }: CreateMeetDialogProps) {
                             />
                         </div>
                     </Stack>
-                    <Textarea
-                        name='title'
-                        label="Описание"
-                        value={meet.description}
-                        onChange={(e) => setMeet({ ...meet, description: e.target.value})}
-                        placeholder="Кратко опишите встречу"
-                    />
+                    {/*<Textarea*/}
+                    {/*    name='title'*/}
+                    {/*    label="Описание"*/}
+                    {/*    value={meet.description}*/}
+                    {/*    onChange={(e) => setMeet({ ...meet, description: e.target.value})}*/}
+                    {/*    placeholder="Кратко опишите встречу"*/}
+                    {/*/>*/}
                     <PlaceSelect
                         onChange={onChangePlace}
                         latitude={meet.latitude}
@@ -92,25 +92,25 @@ function CreateMeet({ onClose }: CreateMeetDialogProps) {
                         onChange={(project) => setMeet({ ...meet, project })}
                         projectId={meet.project?.id}
                     />
-                    <ImageField
-                        name="meetImage"
-                        label="Загрузите обложку"
-                        value={meet.image}
-                        onChange={(image) => setMeet({...meet, image})}
-                    />
+                    {/*<ImageField*/}
+                    {/*    name="meetImage"*/}
+                    {/*    label="Загрузите обложку"*/}
+                    {/*    value={meet.image}*/}
+                    {/*    onChange={(image) => setMeet({...meet, image})}*/}
+                    {/*/>*/}
                     <PriceField
                         value={meet.price}
                         onChange={(price) => setMeet({...meet, price})}
                     />
-                    <AgeField
-                        ageFrom={meet.ageFrom}
-                        ageTo={meet.ageTo}
-                        onChange={({ ageFrom, ageTo }) => setMeet({...meet, ageFrom, ageTo})}
-                    />
+                    {/*<AgeField*/}
+                    {/*    ageFrom={meet.ageFrom}*/}
+                    {/*    ageTo={meet.ageTo}*/}
+                    {/*    onChange={({ ageFrom, ageTo }) => setMeet({...meet, ageFrom, ageTo})}*/}
+                    {/*/>*/}
                 </Stack>
             </DialogContent>
             <div style={{ padding: 15 }}>
-                <Button onClick={onClickSave} disabled={!(meet.latitude && meet.longitude && meet.title)}>
+                <Button onClick={onClickSave} disabled={!(meet.latitude && meet.longitude && meet.project?.title)}>
                     {meet.id ? 'Сохранить' : "Создать встречу"}
                 </Button>
             </div>

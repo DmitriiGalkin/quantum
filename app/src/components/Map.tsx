@@ -26,7 +26,7 @@ export const Map2 = ({ state, meets, setSelectedMeetId }: Props) => {
                     size: [121, 130],
                     anchor: [46, 78],
                     label: {
-                        text: meet.title ? meet.title : 'meet.title',
+                        text: meet.project?.title ? meet.project.title : 'meet.title',
                         color: '#ffffff',
                         offset: [50, -38],
                         relativeAnchor: [0, .5],
