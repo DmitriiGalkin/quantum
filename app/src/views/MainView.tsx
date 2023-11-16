@@ -16,6 +16,7 @@ import {DisplaySwitch} from "../components/DisplaySwitch";
 import {Burger} from "../components/Burger";
 import {YMapsApi} from "@pbe/react-yandex-maps/typings/util/typing";
 import {useLocation, useNavigate} from "react-router-dom";
+import {Outlet} from "@mui/icons-material";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -46,22 +47,15 @@ export default function MainView(): JSX.Element {
     const navigate = useNavigate();
 
     const classes = useStyles();
-    const containerRef = useRef<HTMLDivElement>(null)
-    const containerHeight = containerRef.current?.offsetHeight
 
     const { isAuth, authFn } = useAuth();
     const [display, toggleDisplay] = useToggle()
     const [meet, toggleMeet] = useToggle()
 
     const onAdd = authFn(toggleMeet)
-    const coords = usePosition()
-    const [ymaps, setYmaps] = useState<YMapsApi>();
-
-    const { data: meets = [], refetch } = useMeets(coords)
-    const [selectedMeetId, setSelectedMeetId] = useState<number>()
     const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
-    const selectedMeet = meets.find(({id}) => id === selectedMeetId)
-    const { index, days, meetsGroup, filteredMeets } = getOm(meets, date)
+
+
     const [bottomNavigationValue, setBottomNavigationValue] = useState(0)
 
     return (
@@ -94,66 +88,7 @@ export default function MainView(): JSX.Element {
                         <div style={{ display: 'block', padding: 15 }}><Calendar days={days} onChange={setDate} map={display} /></div>
                     </div>
                 </Stack>
-                <div style={{ flex: '1 1 auto', overflowY: 'auto' }} ref={containerRef}>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ overflow: 'auto', flexGrow: 1 }}>
-                            {!display ? (
-                                <SwipeableViews
-                                    index={index}
-                                    onChangeIndex={(index) => setDate(days[index].id)}
-                                    containerStyle={{ height: containerHeight }}
-                                    springConfig={{duration: '0.2s', delay: '0s', easeFunction: 'cubic-bezier(0.0, 0.0, 0.58, 1.0)'}}
-                                    threshold={4}
-                                >
-                                    {meetsGroup.map(({id, meets}) => (
-                                        <div key={id} style={{ padding: '5px 15px'}}>
-                                            <Stack spacing={2}>
-                                                {meets.map((meet) =>
-                                                    <div key={meet.id}>
-                                                        <MeetCard meet={meet} refetch={refetch} />
-                                                    </div>
-                                                )}
-                                            </Stack>
-                                        </div>
-                                    ))}
-                                </SwipeableViews>
-                            ) : (
-                                <>
-                                    {coords.latitude && coords.longitude && (
-                                        <div style={{ position: 'absolute', top: 152, bottom: 0, left: 0, right: 0 }}>
-                                            <YMaps>
-                                                <Map defaultState={{ center: [coords.latitude, coords.longitude], zoom: 16 }} width="100%" height="100%"
-                                                     onLoad={ymaps => setYmaps(ymaps)}
-                                                     modules={['templateLayoutFactory',"geoObject.addon.balloon"]}
-                                                >
-                                                    {filteredMeets.map((meet) => (
-                                                        <Placemark
-                                                            key={meet.id}
-                                                            defaultGeometry={[meet.latitude, meet.longitude]}
-                                                            iconContent='12'
-                                                            onClick={() => setSelectedMeetId(meet.id)}
-                                                            // options={{
-                                                            //     iconLayout: getLayout(meet),
-                                                            // }}
-                                                            options={{ preset: 'islands#icon', iconColor: '#FFA427' }}
-                                                        />
-                                                    ))}
-                                                </Map>
-                                            </YMaps>
-                                        </div>
-                                    )}
-                                    {selectedMeetId && selectedMeet && (
-                                        <ClickAwayListener onClickAway={() => setSelectedMeetId(undefined)}>
-                                            <div style={{ position: 'absolute', bottom: 15, left: 15, right: 15 }}>
-                                                <MeetCard meet={selectedMeet} refetch={refetch} />
-                                            </div>
-                                        </ClickAwayListener>
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>
+                <Outlet />
                 <div className={classes.bottomNavigation} style={{ fontSize: 9 }}>
                     <Stack spacing={2} direction="row" justifyContent="space-evenly" style={{ width: '100%' }}>
                         <Stack spacing={1} direction="column" alignItems="center" onClick={() => setBottomNavigationValue(1)}>
