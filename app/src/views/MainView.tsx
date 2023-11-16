@@ -42,6 +42,8 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
+const MAIN_PAGES = ['', 'projects', 'tasks', 'uniques']
+
 export default function MainView(): JSX.Element {
     const navigate = useNavigate();
 
@@ -62,7 +64,7 @@ export default function MainView(): JSX.Element {
     const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
     const selectedMeet = meets.find(({id}) => id === selectedMeetId)
     const { index, days, meetsGroup, filteredMeets } = getOm(meets, date)
-    const bottomNavigationValue = 3
+    const bottomNavigationValue = MAIN_PAGES.findIndex((pageName) => '/' + pageName === location.pathname) || 0
     return (
         <>
             <Box className={classes.root}>
