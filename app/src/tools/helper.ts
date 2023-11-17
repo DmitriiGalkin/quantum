@@ -1,5 +1,5 @@
 import {convertToMeetsGroupTime, getDayOfWeekTitle} from "./date";
-import {Meet} from "./dto";
+import {Meet, Project} from "./dto";
 import {LocalDate} from "@js-joda/core";
 
 // @ts-ignore
@@ -100,8 +100,8 @@ export const getAgeTitle2 = (ageFrom?: number, ageTo?: number) => {
 /**
  * Формируем строку отображающую возрастное ограничение СВЕРХКОРОТКОЕ
  */
-export const getAgeLabel = (meet: Meet) => {
-    return `${meet.project?.ageFrom || 0}+`
+export const getAgeLabel = (project: Project) => {
+    return `${project.ageFrom || 0}+`
 
 }
 

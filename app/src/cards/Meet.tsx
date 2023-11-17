@@ -59,7 +59,7 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
                         <div className={classes.blockInner} style={{}}>
                             <img alt={title} src={meet.project?.image} className={classes.image}/>
                         </div>
-                        <Chip label={getAgeLabel(meet)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
+                        <Chip label={getAgeLabel(meet.project)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
                     </div>
                 )}
                 <div style={{ flexGrow: 1, padding: 11 }}>

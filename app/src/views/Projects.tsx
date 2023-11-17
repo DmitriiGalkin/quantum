@@ -7,11 +7,14 @@ export default function Projects(): JSX.Element {
     const { data: projects, refetch } = useProjects();
 
     return (
-        <Stack spacing={2}>
-            {projects?.map((project) =>
-                <div key={project.id}>
-                    <ProjectCard project={project} refetch={refetch} />
-                </div>
-            )}
-        </Stack>    )
+        <div style={{ padding: 8 }}>
+            <div style={{ columnWidth: 150, columnGap: 15 }}>
+                {projects?.map((project) =>
+                    <div key={project.id} style={{ display: 'inline-block', breakInside: 'avoid' }}>
+                        <ProjectCard project={project} refetch={refetch} />
+                    </div>
+                )}
+            </div>
+        </div>
+    )
 }
