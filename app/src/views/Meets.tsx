@@ -9,13 +9,14 @@ import {useMeets} from "../tools/service";
 import {usePosition} from "../tools/pwa";
 import {YMapsApi} from "@pbe/react-yandex-maps/typings/util/typing";
 import {LocalDate} from "@js-joda/core";
+import {Calendar} from "../components";
 
-export default function MainView(): JSX.Element {
+export default function Meets(): JSX.Element {
     const [display, toggleDisplay] = useToggle()
     const containerRef = useRef<HTMLDivElement>(null)
     const containerHeight = containerRef.current?.offsetHeight
-    const { data: meets = [], refetch } = useMeets(coords)
     const coords = usePosition()
+    const { data: meets = [], refetch } = useMeets(coords)
     const [ymaps, setYmaps] = useState<YMapsApi>();
     const [selectedMeetId, setSelectedMeetId] = useState<number>()
     const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
@@ -23,10 +24,11 @@ export default function MainView(): JSX.Element {
     const selectedMeet = meets.find(({id}) => id === selectedMeetId)
 
     const { index, days, meetsGroup, filteredMeets } = getOm(meets, date)
+
     return (
-        <div style={{ flex: '1 1 auto', overflowY: 'auto' }} ref={containerRef}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ overflow: 'auto', flexGrow: 1 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <div style={{ padding: 15 }}><Calendar days={days} onChange={setDate} map={display} /></div>
+            <div style={{ flex: '1 1 auto', overflowY: 'auto' }} ref={containerRef}>
                 {!display ? (
                     <SwipeableViews
                         index={index}
@@ -82,7 +84,6 @@ export default function MainView(): JSX.Element {
                     </>
                 )}
             </div>
-        </div>
         </div>
     )
 }
