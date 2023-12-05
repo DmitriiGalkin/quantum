@@ -39,8 +39,8 @@ export interface Project {
     description: string | null // Описание
     image: string | null // Картинка проекта
     userId: number // Инициатор
-    latitude: string // Широта, где потенциально проходит проект
-    longitude: string // Долгота, где потенциально проходит проект
+    latitude: string | null // Широта, где потенциально проходит проект
+    longitude: string | null // Долгота, где потенциально проходит проект
     ageFrom: number | null // Минимальный возраст
     ageTo: number | null // Максимальный возраст
 
@@ -59,9 +59,10 @@ export interface Meet {
     id: number // Идентификатор
     userId: number // Создатель
     projectId: number // По какому проекту
+    placeId: number | null // По какому проекту
     datetime: string // Время проведения
-    latitude: string // Широта, где проходит встреча
-    longitude: string // Долгота, где проходит встреча
+    latitude: string | null // Широта, где проходит встреча
+    longitude: string | null // Долгота, где проходит встреча
     price: number | null // Стоимость
 
     /**
