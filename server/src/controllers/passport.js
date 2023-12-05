@@ -1,13 +1,14 @@
 'use strict';
+const Passport = require('../models/passport');
 const User = require('../models/user');
 var jwt = require('jsonwebtoken');
 
-// Обновление участника
+// Обновление родителя
 exports.update = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
-        User.update(req.user.id, new User(req.body), function() {
+        Passport.update(req.user.id, new Passport(req.body), function() {
             res.json({ error:false, message: 'Обновление участника' });
         });
     }
@@ -17,13 +18,13 @@ exports.update = function(req, res) {
  * надобно проверить есть ли такой пользователь у нас уже. Если нет то создать, если есть то просто прописать ему токен
  */
 exports.googleLogin = function(req, res) {
-    User.findByEmail(req.body.email, function(err, user) {
-        if (user) {
-            User.updateTokenById(req.body.access_token, user.id, function() {
-                res.send({ error: false, message: "Участник обновлен" });
+    Passport.findByEmail(req.body.email, function(err, passport) {
+        if (passport) {
+            Passport.updateTokenById(req.body.access_token, passport.id, function() {
+                res.send({ error: false, message: "Родитель обновлен" });
             });
         } else {
-            const user = new User({
+            const passport = new Passport({
                 token: req.body.access_token,
                 title: req.body.name,
                 image: req.body.picture,
@@ -32,7 +33,7 @@ exports.googleLogin = function(req, res) {
             if(req.body.constructor === Object && Object.keys(req.body).length === 0){
                 res.status(400).send({ error:true, message: 'Сбой конструктора участника при создании участника через гугл' });
             } else {
-                User.create(user, function(err, data) {
+                Passport.create(passport, function(err, data) {
                     res.send({ error: false, message: "Участник создан" });
                 });
             }
@@ -41,19 +42,51 @@ exports.googleLogin = function(req, res) {
 };
 // Авторизация участника
 exports.login = function(req, res) {
-    User.findById(1, function(err, user) {
+    Passport.findById(1, function(err, passport) {
         // Если участник найден
-        if(user) {
+        if(passport) {
             var token = jwt.sign({ foo: 'bar' }, 'shhhhh');
-            User.updateTokenById(token, user.id, function() {
+            Passport.updateTokenById(token, passport.id, function() {
                 res.send({ access_token: token });
             });
         }
     });
 };
-// Участник
+// Родитель
 exports.findById = function(req, res) {
-    User.findById(req.user.id, function(err, users) {
-        res.send(users && users[0]);
+    Passport.findById(req.passport.id, function(err, passports) {
+        res.send(passports && passports[0]);
     });
 };
+// Вся информация по паспорту
+exports.all = function(req, res) {
+    User.findByPassportId(req.passport.id, function(err, users) {
+        res.send({
+            ...req.passport,
+            users
+        });
+    });
+};
+
+
+/**
+ * Подхватываем токен и авторизуем пользователя
+ */
+exports.usePassport = function(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (!token) {
+        next()
+    } else {
+        Passport.findByAccessToken(token, function(err, passport) {
+            if (passport) {
+                req.passport = passport
+                next()
+            } else {
+                // Надо бы его разлогинить
+                res.status(401).send({ error:true, message: 'Токен протух' });
+            }
+        });
+    }
+}

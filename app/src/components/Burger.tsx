@@ -64,11 +64,11 @@ export function Burger() {
                                 <div style={{ padding: 14 }}>
                                     <Stack spacing={3} direction="row"  justifyContent="space-between" alignItems="center">
                                         <Stack spacing={2} direction="row">
-                                            <div style={{ width: 72 }}>
-                                                <div className={classes.blockImage}>
-                                                    <img alt={user.title} src={user.image} className={classes.image}/>
-                                                </div>
-                                            </div>
+                                            {/*<div style={{ width: 72 }}>*/}
+                                            {/*    <div className={classes.blockImage}>*/}
+                                            {/*        <img alt={user.title} src={user.image} className={classes.image}/>*/}
+                                            {/*    </div>*/}
+                                            {/*</div>*/}
                                             <div>
                                                 <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: '0.18px' }}>Профиль</div>
                                                 <div style={{ fontSize: 19, fontWeight: 600, lineHeight: '30px', letterSpacing: '0.193px' }}>{user.title}</div>

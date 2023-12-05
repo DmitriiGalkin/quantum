@@ -1,6 +1,6 @@
 import React from 'react';
-import {Stack} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {Header} from "./Header";
 
 interface DialogHeaderProps {
     title?: string
@@ -12,7 +12,7 @@ export function DialogHeaderDefault({ title, onClick, isClose }: DialogHeaderPro
     const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
 
     return (
-        <Stack direction="row" alignItems="center" justifyContent="space-between" style={{ position: 'sticky', padding: '14px 18px 14px 18px', background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)', height: 54 }}>
+        <Header>
             <div style={{ width: 12 }}>
                 {!isClose && (
                     <div onClick={onBackClick} style={{ display: 'flex' }}>
@@ -36,7 +36,7 @@ export function DialogHeaderDefault({ title, onClick, isClose }: DialogHeaderPro
                     </div>
                 )}
             </div>
-        </Stack>
+        </Header>
     );
 }
 

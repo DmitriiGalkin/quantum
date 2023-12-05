@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {useUpdateUser, useUser} from "../tools/service";
-import {User} from "../tools/dto";
+import {useUpdatePassport, usePassport} from "../tools/service";
+import {Passport, User} from "../tools/dto";
 import {Stack} from "@mui/material";
 import {Button, DialogHeader, ImageField, Input} from "../components";
 import {useAuth} from "../tools/auth";
@@ -12,16 +12,16 @@ export interface UserViewProps {
     onClose: () => void
 }
 function Profile({ onLogout, onClose }: UserViewProps) {
-    const { data: defaultUser } = useUser();
+    const { data: defaultUser } = usePassport();
     const { logout } = useAuth();
-    const [user, setUser] = useState<User>()
-    const updateUser = useUpdateUser()
+    const [passport, setPassport] = useState<Passport>()
+    const updateUser = useUpdatePassport()
 
     const onClickSave = () => {
-        user && updateUser.mutate(user)
+        passport && updateUser.mutate(passport)
         onClose && onClose()
     }
-    useEffect(() => defaultUser && setUser(defaultUser), [defaultUser])
+    useEffect(() => defaultUser && setPassport(defaultUser), [defaultUser])
 
     return (
         <>
@@ -31,14 +31,8 @@ function Profile({ onLogout, onClose }: UserViewProps) {
                     <Input
                         name='title'
                         label="Имя и фамилия"
-                        value={user?.title}
-                        onChange={(e) => user && setUser({ ...user, title: e.target.value})}
-                    />
-                    <ImageField
-                        name="user"
-                        label="Аватарка"
-                        value={user?.image}
-                        onChange={(image) => user && setUser({...user, image})}
+                        value={passport?.title}
+                        onChange={(e) => passport && setPassport({ ...passport, title: e.target.value})}
                     />
                     <Button onClick={onClickSave} variant="outlined">
                         Сохранить

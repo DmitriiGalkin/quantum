@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import {Meet, Place, Project, User, Visit} from "./dto";
+import {Meet, Passport, Place, Project, User, Visit} from "./dto";
 import {ACCESS_TOKEN} from "./auth";
 
 // При разработки хост может быть разным
@@ -25,7 +25,7 @@ export const createService = (): AxiosInstance => {
         return response;
     }, error => {
         if (error.response.status === 401) {
-            localStorage.removeItem(ACCESS_TOKEN);
+            // localStorage.removeItem(ACCESS_TOKEN);
             // window.location.reload();
         }
         return error;
@@ -84,11 +84,13 @@ export const useUploadImage = (): UseMutate<FormData, string> => {
     return useMutation((formData) => service.post(`/image`, formData, { headers: { "Content-Type": "multipart/form-data" }}))
 }
 
+export const usePassport = (): UseQueryResult<Passport> => useQuery(['passport'], () => service.get(`/passport`))
+export const useUpdatePassport = (): UseMutate<Passport> => useMutation((passport) => service.put(`/passport`, passport))
+
 /**
  * Пользователь
  */
-export const useUser = (): UseQueryResult<User> => useQuery(['user'], () => service.get(`/user`))
-export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
+//export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
 export const useVisits = (): UseQueryResult<Meet[]> => useQuery(['visits'], () => service.get(`/visits`))
 
 export const useCreateVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId))
@@ -117,7 +119,9 @@ export const useProjects = (): UseQueryResult<Project[]> => useQuery(['projects'
 export const useProject = (id?: number): UseQueryResult<Project> => useQuery(['project', id], () => service.get(`/project/${id}`), {
     enabled: Boolean(id),
 })
-export const useAddProject = (): UseMutate<Project> => useMutation((project) => service.post("/project", project))
-export const useEditProject = (id: number): UseMutate<Project> => useMutation((project) => service.put(`/project/${id}`, project))
+
+export interface EditProject extends Omit<Project, "id" | "userId"> { id?: number; userId?: number }
+export const useAddProject = (): UseMutate<EditProject> => useMutation((project) => service.post("/project", project))
+export const useEditProject = (id?: number): UseMutate<EditProject> => useMutation((project) => service.put(`/project/${id}`, project))
 
 export default service

@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {useAddProject, useEditProject, useProject} from "../tools/service";
-import {Project} from "../tools/dto";
+import {useAddProject, useEditProject, useProject, EditProject} from "../tools/service";
 import {Button, DialogHeader, ImageField, Input, Textarea } from "../components";
 import {useParams} from "react-router-dom";
 import {DialogContent} from "../components/DialogContent";
@@ -15,7 +14,7 @@ export interface CreateProjectProps {
 function CreateProject({ onClose }: CreateProjectProps) {
     const { id: projectId } = useParams();
     const { data: defaultProject } = useProject(Number(projectId))
-    const [project, setProject] = useState<Project>({ id: 0, title: '', description:''})
+    const [project, setProject] = useState<EditProject>({ title: '' })
     const addProject = useAddProject()
     const editProject = useEditProject(project.id)
 

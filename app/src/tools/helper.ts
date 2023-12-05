@@ -76,7 +76,7 @@ export const getWeek = (selectedDate?: string, meets?: Meet[]): Day[] => Array.f
         dayOfWeekValue: getDayOfWeekTitle(targetDay.dayOfWeek().value() - 1),
         day: targetDay.dayOfMonth(),
         active: selectedDate === re,
-        activeMeetsLength: meets3?.filter((meet) => meet.Visit).length || 0,
+        activeMeetsLength: meets3?.filter((meet) => meet.visits).length || 0,
         meets: meets3 || [],
     }
 })

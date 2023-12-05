@@ -55,6 +55,7 @@ export default function MeetPage() {
     const date = convertToMeetDateLong(meet.datetime)
     const time = convertToMeetTime(meet.datetime)
     const isOrganizer = user && (meet.user?.id === user.id)
+    const userVisit = meet.visits.find(({ userId }) => userId === user.id)
 
     const onCreateVisit = () => isAuth ? createMeetUser.mutateAsync({ userId: user.id, meetId: meet.id }).then(() => refetch()) : openLogin()
     const onDeleteVisit = () => console.log('удаление визита' ) // meet?.userMeet && deleteMeetUser.mutateAsync(meet.userMeet).then(() => refetch())
@@ -99,7 +100,7 @@ export default function MeetPage() {
                 <Stack spacing={3} direction="row" alignItems="flex-start">
                     <div>{meet?.price}</div>
                     <div>
-                        {meet.userMeet?.paided ? (
+                        {userVisit?.paided ? (
                             <div>Оплачено</div>
                         ) : (
                             <div
@@ -150,7 +151,7 @@ export default function MeetPage() {
                                 <div style={{ paddingTop: 24, opacity: .6, lineHeight: '21px'}}>
                                     {meet.project?.description}
                                 </div>
-                                {Boolean(meet.userMeets?.length) && (
+                                {Boolean(meet.visits?.length) && (
                                     <div style={{ paddingTop: 36}}>
                                         <div style={{ color: '#070707', opacity: .4, lineHeight: '18px', letterSpacing: '0.05em' }}>
                                             Участники
@@ -158,33 +159,37 @@ export default function MeetPage() {
                                         <Box sx={{ display: 'flex' }} style={{ paddingTop: 10}}>
                                             {isOrganizer ? (
                                                 <Stack spacing={3} direction="column">
-                                                    {meet.userMeets?.map((userMeet) => (
+                                                    {meet.visits?.map((visit) => (
                                                         <Stack spacing={3} direction="row" alignItems="flex-start">
-                                                            <Avatar key={userMeet.id} alt={userMeet.title} src={userMeet.image} />
-                                                            <Stack spacing={2} direction="column">
-                                                                <div style={{ opacity: .6, lineHeight: '21px'}}>
-                                                                    {userMeet.title}
-                                                                </div>
-                                                                <div style={{ opacity: .6, lineHeight: '21px'}}>
-                                                                    {!meet.price || meet?.user?.id === userMeet.userId ? (
-                                                                        <span>бесплатно</span>
-                                                                    ) : userMeet.paided ? (
-                                                                        <span>оплатил</span>
-                                                                    ) : (
-                                                                        <span>не оплатил</span>
-                                                                    )}
-                                                                </div>
-                                                            </Stack>
-                                                            {!userMeet.started && <Button onClick={() => onStarted(userMeet)} variant="small">Пришел</Button>}
-                                                            {userMeet.started && !userMeet.stopped && <Button onClick={() => onStopped(userMeet)} variant="small">Ушел</Button>}
+                                                            {visit.user && (
+                                                                <>
+                                                                    <Avatar key={visit.user.id} alt={visit.user.title} src={visit.user.image} />
+                                                                    <Stack spacing={2} direction="column">
+                                                                        <div style={{ opacity: .6, lineHeight: '21px'}}>
+                                                                            {visit.user.title}
+                                                                        </div>
+                                                                        <div style={{ opacity: .6, lineHeight: '21px'}}>
+                                                                            {!meet?.price || meet?.user?.id === visit.userId ? (
+                                                                                <span>бесплатно</span>
+                                                                            ) : visit.paided ? (
+                                                                                <span>оплатил</span>
+                                                                            ) : (
+                                                                                <span>не оплатил</span>
+                                                                            )}
+                                                                        </div>
+                                                                    </Stack>
+                                                                </>
+                                                            )}
+                                                            {!visit.started && <Button onClick={() => onStarted(visit)} variant="small">Пришел</Button>}
+                                                            {visit.started && !visit.stopped && <Button onClick={() => onStopped(visit)} variant="small">Ушел</Button>}
                                                         </Stack>
                                                     ))}
                                                 </Stack>
                                             ) : (
                                                 <AvatarGroup max={4}>
-                                                    {meet.userMeets?.map((user) => (
-                                                        <Tooltip title={user.title} enterTouchDelay={0}>
-                                                            <Avatar key={user.id} alt={user.title} src={user.image} />
+                                                    {meet.visits?.map((visit) => (
+                                                        <Tooltip title={visit.user?.title} enterTouchDelay={0}>
+                                                            <Avatar key={visit.user?.id} alt={visit.user?.title} src={visit.user?.image} />
                                                         </Tooltip>
                                                     ))}
                                                 </AvatarGroup>
@@ -210,7 +215,7 @@ export default function MeetPage() {
                                 </div>
                                 {!isOrganizer && (
                                     <div style={{ paddingTop: 20, marginLeft: -8, marginRight: -8 }}>
-                                        {meet.userMeet ? (
+                                        {userVisit ? (
                                             <Button onClick={onDeleteVisit} variant="outlined">Покинуть встречу</Button>
                                         ) : (
                                             <Button onClick={onCreateVisit}>Участвовать</Button>

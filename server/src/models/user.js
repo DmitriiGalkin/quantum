@@ -39,6 +39,12 @@ User.findById = function (id, result) {
         result(null, res?.length ? res[0] : undefined);
     });
 };
+// Участники по паспорту
+User.findByPassportId = function (id, result) {
+    dbConn.query("SELECT * from user where passportId = ? ", id, function (err, res) {
+        result(null, res);
+    });
+};
 // Участник
 User.findByEmail = function (email, result) {
     dbConn.query("SELECT * from user where email = ? ", email, function (err, res) {

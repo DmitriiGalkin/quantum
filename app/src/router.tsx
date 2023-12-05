@@ -6,7 +6,6 @@ import MeetView from "./views/MeetView";
 import Meets from "./views/Meets";
 import Projects from "./views/Projects";
 import ProjectView from "./views/ProjectView";
-import ControlView from "./views/ControlView";
 import {AuthProvider} from "./tools/auth";
 
 export default function AuthLayout(): JSX.Element {

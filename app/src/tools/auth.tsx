@@ -1,15 +1,15 @@
 import React, {createContext, useContext, useMemo} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import service, {useUser} from "./service";
+import service, {usePassport} from "./service";
 import Login from "../dialogs/Login";
 import {useToggle} from "usehooks-ts";
-import {User} from "./dto";
+import {Passport, User} from "./dto";
 
 export const ACCESS_TOKEN = 'access_token'
 export const AuthContext = createContext('auth' as any);
 
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
-    const { data: user } = useUser();
+    const { data: passport } = usePassport();
     const [searchParams] = useSearchParams();
     const tokenSearchParam = searchParams.get("access_token")
     const access_token = localStorage.getItem(ACCESS_TOKEN) || tokenSearchParam
@@ -18,9 +18,9 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const isAuth =  !!access_token
 
     if (tokenSearchParam) {
-        console.log('navigate')
+        console.log('navigate', ACCESS_TOKEN, tokenSearchParam)
         localStorage.setItem(ACCESS_TOKEN, tokenSearchParam);
-        navigate("/");
+        // navigate("/");
     }
 
     const logout = () => {
@@ -42,14 +42,15 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
 
     const value = useMemo(
         () => ({
-            user,
+            user: passport,
+            passport,
             isAuth,
             openLogin: toggleOpenLogin,
             access_token,
             logout,
             authFn
         }),
-        [access_token, user]
+        [access_token, passport]
     );
     return <AuthContext.Provider value={value}>
         {children}
@@ -59,6 +60,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
 
 export interface Auth {
     user: User,
+    passport: Passport,
     isAuth: boolean
     openLogin: () => void
     logout: () => void

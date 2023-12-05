@@ -6,6 +6,8 @@ export interface Passport {
     title: string // Имя родителя
     email?: string // Почта
     accessToken?: string // Токен
+
+    users: User[] // Дети
 }
 
 /**
@@ -68,7 +70,7 @@ export interface Meet {
     /**
      * Дополнительные поля
      */
-    visits?: Visit[] // Все участники встречи
+    visits: Visit[] // Все участники встречи
     user?: User // Организатор встречи
     place?: Place // Место проведения
     project?: Project // Проект

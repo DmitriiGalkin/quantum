@@ -3,6 +3,7 @@ const router = express.Router()
 var passport = require('passport');
 
 const user =   require('./controllers/user');
+const passportController =   require('./controllers/passport');
 const meet =   require('./controllers/meet');
 const userMeet =   require('./controllers/userMeet');
 const image =   require('./controllers/image');
@@ -22,11 +23,11 @@ passport.use(strategys.vkontakte);
 /**
  * Встречи
  */
-router.get('/meets', user.useUser, meet.findAll);
-router.get('/meet/:id', user.useUser, meet.findById);
-router.post('/meet', user.useUser, helper.checkConstructor, meet.create);
-router.put('/meet/:id', user.useUser, helper.checkConstructor, meet.update);
-router.delete('/meet/:id', user.useUser, meet.delete );
+router.get('/meets', passportController.usePassport, meet.findAll);
+router.get('/meet/:id', passportController.usePassport, meet.findById);
+router.post('/meet', passportController.usePassport, helper.checkConstructor, meet.create);
+router.put('/meet/:id', passportController.usePassport, helper.checkConstructor, meet.update);
+router.delete('/meet/:id', passportController.usePassport, meet.delete );
 
 /**
  * Картинки
@@ -61,30 +62,34 @@ router.get('/oauth2/redirect/vkontakte', (req, res) => passport.authenticate('vk
 })(req, res));
 
 /**
+ * Родитель
+ */
+router.get('/passport', passportController.usePassport, passportController.all, function(req, res) { res.send(req.passport) });
+router.put('/passport', passportController.usePassport, passportController.update);
+
+/**
  * Участники
  */
-router.get('/user', user.useUser, function(req, res) { res.send(req.user) });
-router.put('/user', user.useUser, user.update);
-router.get('/userMeets', user.useUser, meet.findUserMeets);
-router.post('/userMeet/:userId/:meetId', user.useUser, userMeet.createUserMeet );
-router.post('/userMeet/:userId/:meetId/started', user.useUser, userMeet.startedUserMeet );
-router.post('/userMeet/:userId/:meetId/stopped', user.useUser, userMeet.stoppedUserMeet );
-router.post('/userMeet/:userId/:meetId/paided', user.useUser, userMeet.paidedUserMeet );
-router.delete('/userMeet/:userId/:meetId', user.useUser, userMeet.deleteUserMeet );
+router.get('/userMeets', passportController.usePassport, meet.findUserMeets);
+router.post('/userMeet/:userId/:meetId', passportController.usePassport, userMeet.createUserMeet );
+router.post('/userMeet/:userId/:meetId/started', passportController.usePassport, userMeet.startedUserMeet );
+router.post('/userMeet/:userId/:meetId/stopped', passportController.usePassport, userMeet.stoppedUserMeet );
+router.post('/userMeet/:userId/:meetId/paided', passportController.usePassport, userMeet.paidedUserMeet );
+router.delete('/userMeet/:userId/:meetId', passportController.usePassport, userMeet.deleteUserMeet );
 
 /**
  * Места
  */
-router.get('/places', user.useUser, place.findAll);
-router.post('/place', user.useUser, place.create);
+router.get('/places', passportController.usePassport, place.findAll);
+router.post('/place', passportController.usePassport, place.create);
 
 /**
  * Проекты
  */
-router.get('/projects', user.useUser, project.findAll);
+router.get('/projects', passportController.usePassport, project.findAll);
 router.get('/timing', project.timing);
-router.get('/project/:id', user.useUser, project.findById);
-router.post('/project', user.useUser, helper.checkConstructor, project.create);
-router.put('/project/:id', user.useUser, helper.checkConstructor, project.update);
+router.get('/project/:id', passportController.usePassport, project.findById);
+router.post('/project', passportController.usePassport, helper.checkConstructor, project.create);
+router.put('/project/:id', passportController.usePassport, helper.checkConstructor, project.update);
 
 module.exports = router
