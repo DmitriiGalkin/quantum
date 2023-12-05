@@ -20,14 +20,14 @@ export interface User {
 }
 
 /**
- * Место проведения встречи
+ * Место проведения
  */
 export interface Place {
-    id: number
-    title: string
-    image: string
-    latitude: string
-    longitude: string
+    id: number // Идентификатор
+    title: string // Название
+    image: string // Фотография
+    latitude: string // Широта
+    longitude: string // Долгота
 }
 
 /**
@@ -48,7 +48,7 @@ export interface Project {
      * Дополнительные поля
      */
     editable?: boolean // Право на редактирование/удаление
-    user?: User // Организатор проекта
+    user?: User // Организатор (Участник)
     place?: Place // Место проведения
 }
 
@@ -67,12 +67,11 @@ export interface Meet {
     /**
      * Дополнительные поля
      */
-    // userMeet?: UserMeet // Участие пользователя
-    visits?: Visit[] // Все участники встречи
-    user?: User // Организатор встречи
-    place?: Place
-    project?: Project
-    editable?: boolean // Право на редактирование/удаление
+    visits: Visit[] | null // Все участники встречи
+    user: User | null // Организатор встречи
+    place: Place | null // Место проведения
+    project: Project | null // Проект
+    editable: boolean | null // Право на редактирование/удаление
 }
 
 /**
