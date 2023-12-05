@@ -1,5 +1,5 @@
 /**
- * Родитель
+ * Пользователь (Родитель)
  */
 export interface Passport {
     id: number // Идентификатор
@@ -9,7 +9,7 @@ export interface Passport {
 }
 
 /**
- * Ребенок
+ * Участник (Ребенок)
  */
 export interface User {
     id: number // Идентификатор
@@ -47,7 +47,6 @@ export interface Project {
     /**
      * Дополнительные поля
      */
-    // timing?: Timing[]
     editable?: boolean // Право на редактирование/удаление
     user?: User // Организатор проекта
     place?: Place // Место проведения
@@ -90,11 +89,5 @@ export interface Visit {
     /**
      * Дополнительные поля
      */
-    user: User
+    user: User | null // Участник
 }
-
-// export interface Timing {
-//     id: number
-//     dayOfWeek: number
-//     time: string
-// }
