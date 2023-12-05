@@ -24,7 +24,6 @@ export const router = createBrowserRouter(
             </Route>
             <Route path="/meet/:id" element={<MeetView />}/>
             <Route path="/project/:id" element={<ProjectView />}/>
-            <Route path="/timing" element={<ControlView />}/>
         </Route>
     )
 );

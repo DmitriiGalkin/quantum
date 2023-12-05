@@ -1,8 +1,8 @@
 import React from 'react';
-import {Meet, UserMeet} from "../tools/dto";
+import {Meet, Visit} from "../tools/dto";
 import {convertToMeetDate, convertToMeetTime} from "../tools/date";
 import {Avatar, AvatarGroup, Box, Chip, Stack} from "@mui/material";
-import {useCreateMeetUser, useDeleteMeetUser} from "../tools/service";
+import {useCreateVisit, useDeleteVisit} from "../tools/service";
 import {makeStyles} from '@mui/styles';
 import {BOX_SHADOW, DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
@@ -32,8 +32,8 @@ const useStyles = makeStyles(() => ({
 }));
 export function MeetCard({ meet, refetch }: MeetCardProps) {
     const { isAuth, user, openLogin } = useAuth();
-    const createMeetUser = useCreateMeetUser()
-    const deleteMeetUser = useDeleteMeetUser()
+    const createVisit = useCreateVisit()
+    const deleteVisit = useDeleteVisit()
     const classes = useStyles();
     const navigate = useNavigate();
 
@@ -42,13 +42,13 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
 
     const onCreateUserMeet = () => {
         if (isAuth && user) {
-            createMeetUser.mutateAsync({ userId: user.id, meetId: meet.id, ...user }).then(refetch)
+            createVisit.mutateAsync({ userId: user.id, meetId: meet.id }).then(refetch)
         } else {
             openLogin()
         }
     }
-    const onDeleteUserMeet = (userMeet: UserMeet) => {
-        deleteMeetUser.mutateAsync(userMeet).then(refetch)
+    const onDeleteUserMeet = (visit: Visit) => {
+        deleteVisit.mutateAsync(visit).then(refetch)
     }
     const title = meet.project?.title
 
@@ -84,23 +84,23 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
                             </Stack>
                             <div style={{ flex: '1 0 auto', display: 'flex', height: 30, paddingTop: 8 }}>
                                 <div style={{ flexGrow: 1 }}>
-                                    {Boolean(meet.userMeets?.length) && (
+                                    {Boolean(meet.visits?.length) && (
                                         <Box sx={{ display: 'flex' }}>
                                             <AvatarGroup max={4}>
-                                                {meet.userMeets?.map((user) => (
-                                                    <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 21, height: 21 }} />
-                                                ))}
+                                                {meet.visits?.map(({user}) => {
+                                                    return user ? <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 21, height: 21 }} /> : null
+                                                })}
                                             </AvatarGroup>
                                         </Box>
                                     )}
                                 </div>
                                 <div>
-                                    {meet.userMeet ? (
+                                    {meet.visits?.some(({ userId }) => user.id) ? (
                                         <div
                                             style={{ backgroundColor: '#7139FF', fontSize: 11, fontWeight: 500, padding: '3px 9px', color: 'white', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
                                             onClick={(e) => {
                                                 e.stopPropagation()
-                                                meet.userMeet && onDeleteUserMeet(meet.userMeet)
+                                                console.log('Ай') // meet.userMeet && onDeleteUserMeet(meet.userMeet)
                                             }}
                                         >
                                             <Stack spacing={1} direction="row" justifyContent="space-between" alignItems="center">

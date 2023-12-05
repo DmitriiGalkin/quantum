@@ -4,7 +4,6 @@ import {useAddProject, useEditProject, useProject} from "../tools/service";
 import {Project} from "../tools/dto";
 import {Button, DialogHeader, ImageField, Input, Textarea } from "../components";
 import {useParams} from "react-router-dom";
-import {TimingField} from "../components/TimingField";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {PlaceSelect} from "../components/PlaceSelect";
@@ -68,10 +67,6 @@ function CreateProject({ onClose }: CreateProjectProps) {
                         onChange={onChangePlace}
                         latitude={project.latitude}
                         longitude={project.longitude}
-                    />
-                    <TimingField
-                        values={project.timing || []}
-                        onChange={(values) => setProject({ ...project, timing: values })}
                     />
                     <AgeField
                         ageFrom={project.ageFrom}

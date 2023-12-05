@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import {Meet, Place, Project, User, UserMeet} from "./dto";
+import {Meet, Place, Project, User, Visit} from "./dto";
 import {ACCESS_TOKEN} from "./auth";
 
 // При разработки хост может быть разным
@@ -89,13 +89,13 @@ export const useUploadImage = (): UseMutate<FormData, string> => {
  */
 export const useUser = (): UseQueryResult<User> => useQuery(['user'], () => service.get(`/user`))
 export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
-export const useUserMeets = (): UseQueryResult<Meet[]> => useQuery(['userMeets'], () => service.get(`/userMeets`))
+export const useVisits = (): UseQueryResult<Meet[]> => useQuery(['visits'], () => service.get(`/visits`))
 
-export const useCreateMeetUser = (): UseMutate<UserMeet> => useMutation((userMeet) => service.post("/userMeet/" + userMeet.userId + "/" + userMeet.meetId))
-export const useStartedUserMeet = (): UseMutate<UserMeet> => useMutation((userMeet) => service.post("/userMeet/" + userMeet.userId + "/" + userMeet.meetId + "/started"))
-export const useStoppedUserMeet = (): UseMutate<UserMeet> => useMutation((userMeet) => service.post("/userMeet/" + userMeet.userId + "/" + userMeet.meetId + "/stopped"))
-export const usePaidedUserMeet = (): UseMutate<UserMeet> => useMutation((userMeet) => service.post("/userMeet/" + userMeet.userId + "/" + userMeet.meetId + "/paided"))
-export const useDeleteMeetUser = (): UseMutate<UserMeet> => useMutation((userMeet) => service.delete("/userMeet/" + userMeet.userId + "/" + userMeet.meetId))
+export const useCreateVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId))
+export const useStartedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId + "/started"))
+export const useStoppedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId + "/stopped"))
+export const usePaidedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId + "/paided"))
+export const useDeleteVisit = (): UseMutate<Visit> => useMutation((visit) => service.delete("/visit/" + visit.userId + "/" + visit.meetId))
 
 /**
  * Место
@@ -119,7 +119,5 @@ export const useProject = (id?: number): UseQueryResult<Project> => useQuery(['p
 })
 export const useAddProject = (): UseMutate<Project> => useMutation((project) => service.post("/project", project))
 export const useEditProject = (id: number): UseMutate<Project> => useMutation((project) => service.put(`/project/${id}`, project))
-
-export const useTiming = (): UseQueryResult<User> => useQuery(['timing'], () => service.get(`/timing`))
 
 export default service

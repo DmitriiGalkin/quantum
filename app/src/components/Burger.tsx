@@ -2,7 +2,7 @@ import React from 'react';
 import {Stack, SwipeableDrawer} from "@mui/material";
 import {AppBanner} from "./AppBanner";
 import Profile from "../dialogs/Profile";
-import UserMeets from "../dialogs/UserMeets";
+import UserMeets from "../dialogs/Visits";
 import Projects from "../dialogs/Projects";
 import {useToggle} from "usehooks-ts";
 import {makeStyles} from "@mui/styles";

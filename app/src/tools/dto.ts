@@ -4,8 +4,8 @@
 export interface Passport {
     id: number // Идентификатор
     title: string // Имя родителя
-    email: string | null // Почта
-    accessToken: string | null // Токен
+    email?: string // Почта
+    accessToken?: string // Токен
 }
 
 /**
@@ -16,7 +16,7 @@ export interface User {
     passportId: number // Идентификатор паспорта родителя
     title: string // Имя ребенка
     age: number // Возраст ребенка
-    image: string | null // Фотография ребенка
+    image?: string // Фотография ребенка
 }
 
 /**
@@ -36,13 +36,13 @@ export interface Place {
 export interface Project {
     id: number // Идентификатор
     title: string // Название
-    description: string | null // Описание
-    image: string | null // Картинка проекта
+    description?: string // Описание
+    image?: string // Картинка проекта
     userId: number // Инициатор
-    latitude: string | null // Широта, где потенциально проходит проект
-    longitude: string | null // Долгота, где потенциально проходит проект
-    ageFrom: number | null // Минимальный возраст
-    ageTo: number | null // Максимальный возраст
+    latitude?: string // Широта, где потенциально проходит проект
+    longitude?: string // Долгота, где потенциально проходит проект
+    ageFrom?: number // Минимальный возраст
+    ageTo?: number // Максимальный возраст
 
     /**
      * Дополнительные поля
@@ -59,20 +59,20 @@ export interface Meet {
     id: number // Идентификатор
     userId: number // Создатель
     projectId: number // По какому проекту
-    placeId: number | null // По какому проекту
+    placeId?: number  // По какому проекту
     datetime: string // Время проведения
-    latitude: string | null // Широта, где проходит встреча
-    longitude: string | null // Долгота, где проходит встреча
-    price: number | null // Стоимость
+    latitude?: string  // Широта, где проходит встреча
+    longitude?: string  // Долгота, где проходит встреча
+    price?: number  // Стоимость
 
     /**
      * Дополнительные поля
      */
-    visits: Visit[] | null // Все участники встречи
-    user: User | null // Организатор встречи
-    place: Place | null // Место проведения
-    project: Project | null // Проект
-    editable: boolean | null // Право на редактирование/удаление
+    visits?: Visit[] // Все участники встречи
+    user?: User // Организатор встречи
+    place?: Place // Место проведения
+    project?: Project // Проект
+    editable?: boolean // Право на редактирование/удаление
 }
 
 /**
@@ -89,5 +89,5 @@ export interface Visit {
     /**
      * Дополнительные поля
      */
-    user: User | null // Участник
+    user?: User // Участник
 }

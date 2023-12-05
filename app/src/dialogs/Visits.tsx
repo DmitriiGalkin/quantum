@@ -1,5 +1,5 @@
 import React from 'react';
-import {useUserMeets} from "../tools/service";
+import {useVisits} from "../tools/service";
 import {Stack} from "@mui/material";
 import {DialogHeader, MeetCard} from "../components";
 import {DialogContent} from "../components/DialogContent";
@@ -8,8 +8,8 @@ import {withDialog} from "../components/helper";
 export interface UserMeetsProps {
     onClose: () => void
 }
-function UserMeets({ onClose }: UserMeetsProps) {
-    const { data: userMeets, refetch } = useUserMeets();
+function Visits({ onClose }: UserMeetsProps) {
+    const { data: userMeets, refetch } = useVisits();
 
     return (
         <>
@@ -26,4 +26,4 @@ function UserMeets({ onClose }: UserMeetsProps) {
         </>
     );
 }
-export default withDialog(UserMeets)
+export default withDialog(Visits)

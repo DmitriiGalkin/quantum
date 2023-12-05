@@ -1,10 +1,10 @@
 import React from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {
-    useCreateMeetUser,
+    useCreateVisit,
     useDeleteMeet,
-    useDeleteMeetUser,
-    useMeet, usePaidedUserMeet, useStartedUserMeet, useStoppedUserMeet,
+    useDeleteVisit,
+    useMeet, usePaidedVisit, useStartedVisit, useStoppedVisit,
 } from "../tools/service";
 import {Back, Button, Icon} from "../components";
 import CreateMeet from "../dialogs/CreateMeet";
@@ -15,7 +15,7 @@ import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 import {getOnShare} from "../tools/pwa";
 import {convertToMeetDateLong, convertToMeetTime} from "../tools/date";
 import {makeStyles} from "@mui/styles";
-import {UserMeet} from "../tools/dto";
+import {Visit} from "../tools/dto";
 import {Parameters, Parameter} from "../components/Parameters";
 import {getAgeTitle} from "../tools/helper";
 
@@ -43,11 +43,11 @@ export default function MeetPage() {
     const { id: meetId } = useParams();
     const { data: meet, refetch } = useMeet(Number(meetId))
     const [create, toggleCreate] = useToggle()
-    const createMeetUser = useCreateMeetUser()
-    const startedUserMeet = useStartedUserMeet()
-    const stoppedUserMeet = useStoppedUserMeet()
-    const paidedUserMeet = usePaidedUserMeet()
-    const deleteMeetUser = useDeleteMeetUser()
+    const createMeetUser = useCreateVisit()
+    const startedUserMeet = useStartedVisit()
+    const stoppedUserMeet = useStoppedVisit()
+    const paidedUserMeet = usePaidedVisit()
+    const deleteMeetUser = useDeleteVisit()
     const deleteMeet = useDeleteMeet()
 
     if (!meet) return null;
@@ -56,11 +56,11 @@ export default function MeetPage() {
     const time = convertToMeetTime(meet.datetime)
     const isOrganizer = user && (meet.user?.id === user.id)
 
-    const onCreateUserMeet = () => isAuth ? createMeetUser.mutateAsync({ userId: user.id, meetId: meet.id, ...user }).then(() => refetch()) : openLogin()
-    const onDeleteUserMeet = () => meet?.userMeet && deleteMeetUser.mutateAsync(meet.userMeet).then(() => refetch())
-    const onStarted = (userMeet: UserMeet) => startedUserMeet.mutateAsync(userMeet).then(() => refetch())
-    const onStopped =  (userMeet: UserMeet) => stoppedUserMeet.mutateAsync(userMeet).then(() => refetch())
-    const onPaided =  (userMeet: UserMeet) => paidedUserMeet.mutateAsync(userMeet).then(() => refetch())
+    const onCreateVisit = () => isAuth ? createMeetUser.mutateAsync({ userId: user.id, meetId: meet.id }).then(() => refetch()) : openLogin()
+    const onDeleteVisit = () => console.log('удаление визита' ) // meet?.userMeet && deleteMeetUser.mutateAsync(meet.userMeet).then(() => refetch())
+    const onStarted = (userMeet: Visit) => startedUserMeet.mutateAsync(userMeet).then(() => refetch())
+    const onStopped =  (userMeet: Visit) => stoppedUserMeet.mutateAsync(userMeet).then(() => refetch())
+    const onPaided =  (userMeet: Visit) => paidedUserMeet.mutateAsync(userMeet).then(() => refetch())
     const onDelete =  () => deleteMeet.mutateAsync(meet.id).then(() => navigate(`/`))
 
     const parameters = [
@@ -211,9 +211,9 @@ export default function MeetPage() {
                                 {!isOrganizer && (
                                     <div style={{ paddingTop: 20, marginLeft: -8, marginRight: -8 }}>
                                         {meet.userMeet ? (
-                                            <Button onClick={onDeleteUserMeet} variant="outlined">Покинуть встречу</Button>
+                                            <Button onClick={onDeleteVisit} variant="outlined">Покинуть встречу</Button>
                                         ) : (
-                                            <Button onClick={onCreateUserMeet}>Участвовать</Button>
+                                            <Button onClick={onCreateVisit}>Участвовать</Button>
                                         )}
                                     </div>
                                 )}

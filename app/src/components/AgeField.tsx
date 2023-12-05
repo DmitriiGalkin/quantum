@@ -1,11 +1,7 @@
 import React from 'react';
 import {Stack} from "@mui/material";
-import {getDayOfWeekTitleLong} from "../tools/date";
-import {Timing} from "../tools/dto";
-import Checkbox from "./Checkbox";
 import Switch from "./Switch";
 import {useToggle} from "usehooks-ts";
-import {useInputStyles} from "./helper";
 import {Input} from "./Input";
 
 interface PriceFieldProps {
