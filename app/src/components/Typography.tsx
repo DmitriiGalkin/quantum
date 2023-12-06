@@ -14,7 +14,7 @@ export const useStyles = makeStyles(() => ({
                 }
             case "Header3":
                 return {
-                    fontSize: 18,
+                    fontSize: 13,
                     opacity: .4,
                     color: '#070707',
                     fontWeight: 400,

@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import {Meet, Passport, Place, Project, Visit} from "./dto";
+import {Meet, Participation, Passport, Place, Project, Visit} from "./dto";
 import {ACCESS_TOKEN} from "./auth";
 
 // При разработки хост может быть разным
@@ -121,8 +121,13 @@ export const useProject = (id?: number): UseQueryResult<Project> => useQuery(['p
     enabled: Boolean(id),
 })
 
-export interface EditProject extends Omit<Project, "id" | "userId"> { id?: number; userId?: number }
-export const useAddProject = (): UseMutate<EditProject> => useMutation((project) => service.post("/project", project))
-export const useEditProject = (id?: number): UseMutate<EditProject> => useMutation((project) => service.put(`/project/${id}`, project))
+export const useAddProject = (): UseMutate<Partial<Project>> => useMutation((project) => service.post("/project", project))
+export const useEditProject = (id?: number): UseMutate<Partial<Project>> => useMutation((project) => service.put(`/project/${id}`, project))
+
+/**
+ * Подписка на проект
+ */
+export const useCreateParticipation = (): UseMutate<number> => useMutation((projectId) => service.post("/participation", { projectId }))
+export const useDeleteParticipation = (): UseMutate<Participation> => useMutation((participation) => service.delete("/participation/" + participation.id))
 
 export default service

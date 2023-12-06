@@ -1,7 +1,7 @@
 import React from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import {useDeleteMeet, useProject} from "../tools/service";
-import {Back, MeetCard} from "../components";
+import {useCreateParticipation, useDeleteMeet, useDeleteParticipation, useProject} from "../tools/service";
+import {Back, Button, MeetCard} from "../components";
 import {useToggle} from "usehooks-ts";
 import CreateProject from "../dialogs/CreateProject";
 import {getOnShare} from "../tools/pwa";
@@ -39,8 +39,13 @@ export default function ProjectPage() {
     const { data: project, refetch } = useProject(Number(projectId))
     const [create, toggleCreate] = useToggle()
     const deleteMeet = useDeleteMeet()
+    const createParticipation = useCreateParticipation()
+    const deleteParticipation = useDeleteParticipation()
 
     if (!project) return null;
+
+    const participation = project.participationUsers?.find(({ userId }) => userId === user.id)
+
 
     const parameters = [
         { name: "place", title: 'Место проведения', value: project?.place?.title },
@@ -58,6 +63,10 @@ export default function ProjectPage() {
     ] as Parameter[]
 
     const onDelete =  () => deleteMeet.mutateAsync(project.id).then(() => navigate(`/`))
+    const onCreateParticipation =  () => createParticipation.mutateAsync(project.id).then(() => refetch())
+    const onDeleteParticipation =  () => participation && deleteParticipation.mutateAsync(participation).then(() => refetch())
+
+
     const menuItems = project.editable ? [
         { title: 'Редактировать', onClick: toggleCreate},
         { title: 'Удалить', onClick: onDelete}
@@ -91,6 +100,7 @@ export default function ProjectPage() {
                             </div>
                         </div>
                         <Typography variant="Body">{project.description}</Typography>
+                        {participation ? <Button variant="outlined" onClick={onDeleteParticipation}>Покинуть</Button> : <Button onClick={onCreateParticipation}>Присоединиться</Button>}
                         <Block title="Параметры">
                             <Parameters items={parameters}/>
                         </Block>

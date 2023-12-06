@@ -9,6 +9,7 @@ const visit =   require('./controllers/visit');
 const image =   require('./controllers/image');
 const place =   require('./controllers/place');
 const project =   require('./controllers/project');
+const participation =   require('./controllers/participation');
 const strategys =   require('./strategys');
 const helper =   require('./helper');
 
@@ -90,5 +91,11 @@ router.get('/projects', passportController.usePassport, project.findAll);
 router.get('/project/:id', passportController.usePassport, project.findById);
 router.post('/project', passportController.usePassport, helper.checkConstructor, project.create);
 router.put('/project/:id', passportController.usePassport, helper.checkConstructor, project.update);
+
+/**
+ * Участие в проекте
+ */
+router.post('/participation', passportController.usePassport, participation.create);
+router.delete('/participation/:id', passportController.usePassport, participation.delete );
 
 module.exports = router

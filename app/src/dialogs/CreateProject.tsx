@@ -1,12 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {EditProject, useAddProject, useEditProject, useProject} from "../tools/service";
+import {useAddProject, useEditProject, useProject} from "../tools/service";
 import {Button, DialogHeader, ImageField, Input, Textarea} from "../components";
 import {useParams} from "react-router-dom";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {PlaceSelect} from "../components/PlaceSelect";
 import {AgeField} from "../components/AgeField";
+import {Project} from "../tools/dto";
 
 export interface CreateProjectProps {
     onClose: () => void
@@ -14,7 +15,7 @@ export interface CreateProjectProps {
 function CreateProject({ onClose }: CreateProjectProps) {
     const { id: projectId } = useParams();
     const { data: defaultProject } = useProject(Number(projectId))
-    const [project, setProject] = useState<EditProject>({ title: '' })
+    const [project, setProject] = useState<Partial<Project>>({ title: '' })
     const addProject = useAddProject()
     const editProject = useEditProject(project.id)
 
@@ -24,9 +25,9 @@ function CreateProject({ onClose }: CreateProjectProps) {
 
     const onClickSave = () => {
         if (project.id) {
-            editProject.mutateAsync({ ...project }).then(onClose)
+            editProject.mutateAsync(project).then(onClose)
         } else {
-            addProject.mutateAsync({ ...project }).then(() => {
+            addProject.mutateAsync(project).then(() => {
                 onClose()
             })
         }

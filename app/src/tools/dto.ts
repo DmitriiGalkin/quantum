@@ -49,7 +49,7 @@ export interface Project {
     /**
      * Дополнительные поля
      */
-    participationUsers?: ParticipationUser[] // Участия участников
+    participationUsers: ParticipationUser[] // Участия участников
     editable?: boolean // Право на редактирование/удаление
     user?: User // Организатор (Участник)
     place?: Place // Место проведения
