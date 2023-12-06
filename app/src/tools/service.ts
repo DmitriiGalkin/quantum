@@ -75,7 +75,7 @@ export const useEditMeet = (id?: number): UseMutate<Partial<Meet>> => {
         },
     })
 }
-export const useDeleteMeet = (): UseMutate<number> => useMutation((meetId) => service.delete(`/meet/${meetId}`))
+export const useDeleteMeet = (): UseMutate<number | undefined> => useMutation((meetId) => service.delete(`/meet/${meetId}`))
 
 /**
  * Картинки
@@ -94,11 +94,11 @@ export const useUpdatePassport = (): UseMutate<Passport> => useMutation((passpor
 export const useVisits = (): UseQueryResult<Meet[]> => useQuery(['visits'], () => service.get(`/visits`))
 
 export interface EditVisit extends Omit<Visit, "id"> { id?: number; }
-export const useCreateVisit = (): UseMutate<EditVisit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId))
-export const useStartedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId + "/started"))
-export const useStoppedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId + "/stopped"))
-export const usePaidedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId + "/paided"))
-export const useDeleteVisit = (): UseMutate<Visit> => useMutation((visit) => service.delete("/visit/" + visit.userId + "/" + visit.meetId))
+export const useCreateVisit = (): UseMutate<EditVisit> => useMutation((visit) => service.post("/visit", visit))
+export const useStartedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.id + "/started"))
+export const useStoppedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.id + "/stopped"))
+export const usePaidedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.id + "/paided"))
+export const useDeleteVisit = (): UseMutate<Visit> => useMutation((visit) => service.delete("/visit/" + visit.id))
 
 /**
  * Место

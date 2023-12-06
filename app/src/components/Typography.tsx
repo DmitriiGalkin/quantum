@@ -23,7 +23,7 @@ export const useStyles = makeStyles(() => ({
                 }
             case "Body":
                 return {
-                    fontSize: 18,
+                    fontSize: 16,
                     opacity: .6,
                 }
             case "Body2-Bold":

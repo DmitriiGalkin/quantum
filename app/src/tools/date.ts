@@ -37,6 +37,19 @@ export const convertToMeetTime = (datetime?: string): string => {
 }
 
 /**
+ * Server datetime в разные объекты
+ */
+export const convertToObject = (datetime?: string): { time?: string; shortMonth?: string; day?: string } => {
+    if (!datetime) return {};
+    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN))
+    return ({
+        time: localDateTime.format(DateTimeFormatter.ofPattern('HH:mm')),
+        shortMonth: getMonthShortTitle(Number(localDateTime.format(DateTimeFormatter.ofPattern('MM')))),
+        day: localDateTime.format(DateTimeFormatter.ofPattern('dd'))
+    })
+}
+
+/**
  * Server datetime to 'MM-dd'
  */
 export const convertToMeetDate = (datetime?: string): string => {

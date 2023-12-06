@@ -71,11 +71,11 @@ router.put('/passport', passportController.usePassport, passportController.updat
  * Участники
  */
 router.get('/userMeets', passportController.usePassport, meet.findUserMeets);
-router.post('/visit/:userId/:meetId', passportController.usePassport, visit.create );
-router.post('/visit/:userId/:meetId/started', passportController.usePassport, visit.started );
-router.post('/visit/:userId/:meetId/stopped', passportController.usePassport, visit.stopped );
-router.post('/visit/:userId/:meetId/paided', passportController.usePassport, visit.paided );
-router.delete('/visit/:userId/:meetId', passportController.usePassport, visit.delete );
+router.post('/visit', passportController.usePassport, visit.create );
+router.post('/visit/:id/started', passportController.usePassport, visit.started );
+router.post('/visit/:id/stopped', passportController.usePassport, visit.stopped );
+router.post('/visit/:id/paided', passportController.usePassport, visit.paided );
+router.delete('/visit/:id', passportController.usePassport, visit.delete );
 
 /**
  * Места

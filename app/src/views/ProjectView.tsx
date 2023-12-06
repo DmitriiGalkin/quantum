@@ -2,7 +2,7 @@ import React from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteMeet, useProject} from "../tools/service";
 import Dialog from "@mui/material/Dialog";
-import {Back, TransitionDialog} from "../components";
+import {Back, MeetCard, TransitionDialog} from "../components";
 import {useToggle} from "usehooks-ts";
 import CreateProject from "../dialogs/CreateProject";
 import {getOnShare} from "../tools/pwa";
@@ -15,6 +15,7 @@ import {Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {ParticipationCard} from "../cards/ParticipationCard";
 import {Block} from "../components/Block";
+import CreateMeet from "../dialogs/CreateMeet";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -38,7 +39,7 @@ export default function ProjectPage() {
     const classes = useStyles();
 
     const { id: projectId } = useParams();
-    const { data: project } = useProject(Number(projectId))
+    const { data: project, refetch } = useProject(Number(projectId))
     const [create, toggleCreate] = useToggle()
     const deleteMeet = useDeleteMeet()
 
@@ -97,11 +98,17 @@ export default function ProjectPage() {
                             <Parameters items={parameters}/>
                         </Block>
                         <Block title="Расписание">
-                            <Stack spacing={2}>
-                                {project.meets?.map((meet) => <ProjectMeetCard project={project} meet={meet}/>)}
-                            </Stack>
+                            <div>
+                                {project.meets?.map((meet, index, meets) => {
+                                    return (
+                                        <div style={{ borderBottom: meets.length === index + 1 ? 'none' : '1px solid rgba(0, 0, 0, 0.12)' }}>
+                                            <MeetCard meet={meet} refetch={refetch}/>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </Block>
-                        <Block title="Участники">
+                        <Block title="Участники проекта">
                             <Stack spacing={1}>
                                 {project.participationUsers?.map((participationUser) => <ParticipationCard participationUser={participationUser}/>)}
                             </Stack>
