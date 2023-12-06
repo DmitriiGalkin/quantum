@@ -18,6 +18,8 @@ import {makeStyles} from "@mui/styles";
 import {Visit} from "../tools/dto";
 import {Parameters, Parameter} from "../components/Parameters";
 import {getAgeTitle} from "../tools/helper";
+import {Block} from "../components/Block";
+import Typography from "../components/Typography";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -67,7 +69,7 @@ export default function MeetPage() {
     const parameters = [
         { name: "date", title: 'Дата', value: date },
         { name: "time", title: 'Начало', value: time },
-        { name: "place", title: 'Место', value: meet?.place?.title },
+        { name: "place", title: 'Место', value: meet?.placeTitle },
         {
             name: "place",
             title: 'Проект',
@@ -132,105 +134,87 @@ export default function MeetPage() {
         <>
             <div style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column', position: 'absolute' }}>
                 <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)', flex: '1 1 auto', overflowY: 'auto' }}>
-                    <div>
-                        <div style={{ height: 230, backgroundImage: `url(${meet.project?.image})`, backgroundSize: 'cover' }} >
-                            <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
-                                <Back menuItems={menuItems} />
-                            </div>
-                        </div>
-                        <div style={{ position: "relative"}}>
-                            <div className={classes.container}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <div style={{ fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }}>
-                                        {meet.project?.title}
-                                    </div>
-                                    <div onClick={onShare}>
-                                        <Icon name="share"/>
-                                    </div>
+                    <Back menuItems={menuItems} />
+                    <div style={{ height: 230, backgroundImage: `url(${meet.project?.image})`, backgroundSize: 'cover' }} />
+                    <div style={{ position: "relative"}}>
+                        <Stack className={classes.container} spacing={3}>
+                            <Stack flexDirection="row" justifyContent='space-between' alignItems='center' spacing={2}>
+                                <Typography variant="Header1">{meet.project?.title}</Typography>
+                                <div onClick={onShare}>
+                                    <Icon name="share"/>
                                 </div>
-                                <div style={{ paddingTop: 24, opacity: .6, lineHeight: '21px'}}>
-                                    {meet.project?.description}
-                                </div>
-                                {Boolean(meet.visits?.length) && (
-                                    <div style={{ paddingTop: 36}}>
-                                        <div style={{ color: '#070707', opacity: .4, lineHeight: '18px', letterSpacing: '0.05em' }}>
-                                            Участники
-                                        </div>
-                                        <Box sx={{ display: 'flex' }} style={{ paddingTop: 10}}>
-                                            {isOrganizer ? (
-                                                <Stack spacing={3} direction="column">
-                                                    {meet.visits?.map((visit) => (
-                                                        <Stack spacing={3} direction="row" alignItems="flex-start">
-                                                            {visit.user && (
-                                                                <>
-                                                                    <Avatar key={visit.user.id} alt={visit.user.title} src={visit.user.image} />
-                                                                    <Stack spacing={2} direction="column">
-                                                                        <div style={{ opacity: .6, lineHeight: '21px'}}>
-                                                                            {visit.user.title}
-                                                                        </div>
-                                                                        <div style={{ opacity: .6, lineHeight: '21px'}}>
-                                                                            {!meet?.price || meet?.user?.id === visit.userId ? (
-                                                                                <span>бесплатно</span>
-                                                                            ) : visit.paided ? (
-                                                                                <span>оплатил</span>
-                                                                            ) : (
-                                                                                <span>не оплатил</span>
-                                                                            )}
-                                                                        </div>
-                                                                    </Stack>
-                                                                </>
-                                                            )}
-                                                            {!visit.started && <Button onClick={() => onStarted(visit)} variant="small">Пришел</Button>}
-                                                            {visit.started && !visit.stopped && <Button onClick={() => onStopped(visit)} variant="small">Ушел</Button>}
+                            </Stack>
+                            <Typography variant="Body">{meet.project?.description}</Typography>
+                            <Block title="Участники">
+                                <AvatarGroup>
+                                    {meet.visits?.map((visitUser) => (
+                                        <Tooltip title={visitUser.title} enterTouchDelay={0}>
+                                            <Avatar key={visitUser.userId} alt={visitUser.title} src={visitUser.image} />
+                                        </Tooltip>
+                                    ))}
+                                </AvatarGroup>
+                            </Block>
+                            {isOrganizer && (
+                                <Block title="Управление участниками">
+                                    <Stack spacing={3} direction="column">
+                                        {meet.visits?.map((visitUser) => (
+                                            <Stack spacing={3} direction="row" alignItems="flex-start">
+                                                {visitUser && (
+                                                    <>
+                                                        <Avatar key={visitUser.userId} alt={visitUser.title} src={visitUser.image} />
+                                                        <Stack spacing={2} direction="column">
+                                                            <div style={{ opacity: .6, lineHeight: '21px'}}>
+                                                                {visitUser.title}
+                                                            </div>
+                                                            <div style={{ opacity: .6, lineHeight: '21px'}}>
+                                                                {!meet?.price || meet?.user?.id === visitUser.userId ? (
+                                                                    <span>бесплатно</span>
+                                                                ) : visitUser.paided ? (
+                                                                    <span>оплатил</span>
+                                                                ) : (
+                                                                    <span>не оплатил</span>
+                                                                )}
+                                                            </div>
                                                         </Stack>
-                                                    ))}
-                                                </Stack>
-                                            ) : (
-                                                <AvatarGroup max={4}>
-                                                    {meet.visits?.map((visit) => (
-                                                        <Tooltip title={visit.user?.title} enterTouchDelay={0}>
-                                                            <Avatar key={visit.user?.id} alt={visit.user?.title} src={visit.user?.image} />
-                                                        </Tooltip>
-                                                    ))}
-                                                </AvatarGroup>
-                                            )}
-                                        </Box>
-                                    </div>
-                                )}
+                                                    </>
+                                                )}
+                                                {!visitUser.started && <Button onClick={() => onStarted(visitUser)} variant="small">Пришел</Button>}
+                                                {visitUser.started && !visitUser.stopped && <Button onClick={() => onStopped(visitUser)} variant="small">Ушел</Button>}
+                                            </Stack>
+                                        ))}
+                                    </Stack>
+                                </Block>
+                            )}
+                            <Block title="Параметры">
                                 <Parameters items={parameters}/>
-                                <div style={{ width: '100%', height: '200px', marginTop: 25, borderRadius: 15, overflow: 'hidden' }}>
-                                    <YMaps>
-                                        <Map defaultState={{ center: [Number(meet.latitude), Number(meet.longitude)], zoom: 16 }} width="100%" height="100%">
-                                            <Placemark
-                                                key={meet.id}
-                                                modules={["geoObject.addon.balloon"]}
-                                                defaultGeometry={[meet.latitude, meet.longitude]}
-                                                options={{
-                                                    preset: 'islands#icon',
-                                                    iconColor: '#FFA427',
-                                                }}
-                                            />
-                                        </Map>
-                                    </YMaps>
-                                </div>
-                                {!isOrganizer && (
-                                    <div style={{ paddingTop: 20, marginLeft: -8, marginRight: -8 }}>
-                                        {userVisit ? (
-                                            <Button onClick={onDeleteVisit} variant="outlined">Покинуть встречу</Button>
-                                        ) : (
-                                            <Button onClick={onCreateVisit}>Участвовать</Button>
-                                        )}
-                                    </div>
-                                )}
+                            </Block>
+                            <div style={{ width: '100%', height: '200px', marginTop: 25, borderRadius: 15, overflow: 'hidden' }}>
+                                <YMaps>
+                                    <Map defaultState={{ center: [Number(meet.latitude), Number(meet.longitude)], zoom: 16 }} width="100%" height="100%">
+                                        <Placemark
+                                            key={meet.id}
+                                            modules={["geoObject.addon.balloon"]}
+                                            defaultGeometry={[meet.latitude, meet.longitude]}
+                                            options={{
+                                                preset: 'islands#icon',
+                                                iconColor: '#FFA427',
+                                            }}
+                                        />
+                                    </Map>
+                                </YMaps>
                             </div>
-                        </div>
+                        </Stack>
                     </div>
                 </div>
-                <div style={{ padding: 15 }}>
-                    <Button onClick={() => console.log('1')}>
-                        Участвовать
-                    </Button>
-                </div>
+                {!isOrganizer && (
+                    <div style={{ padding: 15 }}>
+                        {userVisit ? (
+                            <Button onClick={onDeleteVisit} variant="outlined">Покинуть встречу</Button>
+                        ) : (
+                            <Button onClick={onCreateVisit}>Участвовать</Button>
+                        )}
+                    </div>
+                )}
             </div>
             <CreateMeet open={create} onClose={toggleCreate} />
         </>

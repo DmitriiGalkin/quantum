@@ -93,7 +93,8 @@ export const useUpdatePassport = (): UseMutate<Passport> => useMutation((passpor
 //export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
 export const useVisits = (): UseQueryResult<Meet[]> => useQuery(['visits'], () => service.get(`/visits`))
 
-export const useCreateVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId))
+export interface EditVisit extends Omit<Visit, "id"> { id?: number; }
+export const useCreateVisit = (): UseMutate<EditVisit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId))
 export const useStartedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId + "/started"))
 export const useStoppedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId + "/stopped"))
 export const usePaidedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.userId + "/" + visit.meetId + "/paided"))

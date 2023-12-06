@@ -1,20 +1,52 @@
-import {Stack} from "@mui/material";
+import {Avatar, AvatarGroup, Box} from "@mui/material";
 import React from "react";
+import {useAuth} from "../tools/auth";
+import {Burger} from "../components/Burger";
+import {Header} from "../components/Header";
+import {ProjectCard} from "../cards/Project";
 import {useProjects} from "../tools/service";
-import {ProjectCard} from "../components";
+import Meets from "../dialogs/Meets";
+import {useToggle} from "usehooks-ts";
 
 export default function Projects(): JSX.Element {
+    const { isAuth, passport } = useAuth();
     const { data: projects, refetch } = useProjects();
+    const [isOpenMeets, toggleIsOpenMeets] = useToggle()
 
     return (
-        <div style={{ padding: 8 }}>
-            <div style={{ columnWidth: 150, columnGap: 15 }}>
-                {projects?.map((project) =>
-                    <div key={project.id} style={{ display: 'inline-block', breakInside: 'avoid' }}>
-                        <ProjectCard project={project} refetch={refetch} />
+        <>
+            <Box style={{
+                backgroundColor: '#F5F5F5',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100vh'
+            }}>
+                <Header>
+                    {isAuth && <Burger />}
+                    {Boolean(passport?.users?.length) && (
+                        <Box sx={{ display: 'flex' }}>
+                            <AvatarGroup max={4}>
+                                {passport.users.map((user) => <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 21, height: 21 }} />)}
+                            </AvatarGroup>
+                        </Box>
+                    )}
+                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={toggleIsOpenMeets}>
+                        <path d="M2.99348 18H16.0161C18.0085 18 19 16.9832 19 14.969V3.03096C19 1.01684 18.0085 0 16.0161 0H2.99348C1.001 0 0 1.00706 0 3.03096V14.969C0 16.9929 1.001 18 2.99348 18ZM2.85048 16.4259C2.00201 16.4259 1.53487 15.9663 1.53487 15.057V5.83705C1.53487 4.93753 2.00201 4.46822 2.85048 4.46822H16.14C16.9885 4.46822 17.4651 4.93753 17.4651 5.83705V15.057C17.4651 15.9663 16.9885 16.4259 16.14 16.4259H2.85048ZM7.63623 7.97827H8.1987C8.53236 7.97827 8.64676 7.8805 8.64676 7.53829V6.96143C8.64676 6.61923 8.53236 6.51168 8.1987 6.51168H7.63623C7.30256 6.51168 7.18816 6.61923 7.18816 6.96143V7.53829C7.18816 7.8805 7.30256 7.97827 7.63623 7.97827ZM10.8108 7.97827H11.3638C11.6974 7.97827 11.8118 7.8805 11.8118 7.53829V6.96143C11.8118 6.61923 11.6974 6.51168 11.3638 6.51168H10.8108C10.4676 6.51168 10.3628 6.61923 10.3628 6.96143V7.53829C10.3628 7.8805 10.4676 7.97827 10.8108 7.97827ZM13.9759 7.97827H14.5384C14.8721 7.97827 14.9769 7.8805 14.9769 7.53829V6.96143C14.9769 6.61923 14.8721 6.51168 14.5384 6.51168H13.9759C13.6422 6.51168 13.5278 6.61923 13.5278 6.96143V7.53829C13.5278 7.8805 13.6422 7.97827 13.9759 7.97827ZM4.47115 11.1754H5.03362C5.36729 11.1754 5.47215 11.0777 5.47215 10.7355V10.1586C5.47215 9.8164 5.36729 9.71863 5.03362 9.71863H4.47115C4.13748 9.71863 4.02308 9.8164 4.02308 10.1586V10.7355C4.02308 11.0777 4.13748 11.1754 4.47115 11.1754ZM7.63623 11.1754H8.1987C8.53236 11.1754 8.64676 11.0777 8.64676 10.7355V10.1586C8.64676 9.8164 8.53236 9.71863 8.1987 9.71863H7.63623C7.30256 9.71863 7.18816 9.8164 7.18816 10.1586V10.7355C7.18816 11.0777 7.30256 11.1754 7.63623 11.1754ZM10.8108 11.1754H11.3638C11.6974 11.1754 11.8118 11.0777 11.8118 10.7355V10.1586C11.8118 9.8164 11.6974 9.71863 11.3638 9.71863H10.8108C10.4676 9.71863 10.3628 9.8164 10.3628 10.1586V10.7355C10.3628 11.0777 10.4676 11.1754 10.8108 11.1754ZM13.9759 11.1754H14.5384C14.8721 11.1754 14.9769 11.0777 14.9769 10.7355V10.1586C14.9769 9.8164 14.8721 9.71863 14.5384 9.71863H13.9759C13.6422 9.71863 13.5278 9.8164 13.5278 10.1586V10.7355C13.5278 11.0777 13.6422 11.1754 13.9759 11.1754ZM4.47115 14.3824H5.03362C5.36729 14.3824 5.47215 14.2749 5.47215 13.9326V13.3558C5.47215 13.0136 5.36729 12.9158 5.03362 12.9158H4.47115C4.13748 12.9158 4.02308 13.0136 4.02308 13.3558V13.9326C4.02308 14.2749 4.13748 14.3824 4.47115 14.3824ZM7.63623 14.3824H8.1987C8.53236 14.3824 8.64676 14.2749 8.64676 13.9326V13.3558C8.64676 13.0136 8.53236 12.9158 8.1987 12.9158H7.63623C7.30256 12.9158 7.18816 13.0136 7.18816 13.3558V13.9326C7.18816 14.2749 7.30256 14.3824 7.63623 14.3824ZM10.8108 14.3824H11.3638C11.6974 14.3824 11.8118 14.2749 11.8118 13.9326V13.3558C11.8118 13.0136 11.6974 12.9158 11.3638 12.9158H10.8108C10.4676 12.9158 10.3628 13.0136 10.3628 13.3558V13.9326C10.3628 14.2749 10.4676 14.3824 10.8108 14.3824Z" fill="white"/>
+                    </svg>
+                </Header>
+                <div style={{ flex: '1 1 auto', overflowY: 'auto' }}>
+                    <div style={{ padding: 8 }}>
+                        <div style={{ columnWidth: 150, columnGap: 15 }}>
+                            {projects?.map((project) =>
+                                <div key={project.id} style={{ display: 'inline-block', breakInside: 'avoid' }}>
+                                    <ProjectCard project={project} refetch={refetch} />
+                                </div>
+                            )}
+                        </div>
                     </div>
-                )}
-            </div>
-        </div>
+                </div>
+            </Box>
+            <Meets open={isOpenMeets} onClose={toggleIsOpenMeets} />
+        </>
     )
 }

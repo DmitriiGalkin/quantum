@@ -2,7 +2,7 @@
 const async = require("async");
 const Meet = require('../models/meet');
 const User = require('../models/user');
-const UserMeet = require('../models/userMeet');
+const UserMeet = require('../models/visit');
 const Place = require('../models/place');
 const Project = require('../models/project');
 
@@ -86,8 +86,8 @@ exports.findById = function(req, res) {
                             ...meet,
                             user,
                             editable: req.user?.id === meet.userId,
-                            userMeet: userMeets.find((user) => user.userId === req.user?.id),
-                            userMeets: userMeets,
+                            // userMeet: userMeets.find((user) => user.userId === req.user?.id),
+                            visits: userMeets,
                             place
                         }
                         if (meet.projectId) {

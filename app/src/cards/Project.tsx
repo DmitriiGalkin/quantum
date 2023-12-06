@@ -4,7 +4,7 @@ import {Box, Chip, Stack} from "@mui/material";
 import {makeStyles} from '@mui/styles';
 import {DEFAULT_COLOR} from "../tools/theme";
 import {useNavigate} from "react-router-dom";
-import {getAgeLabel, getAgeTitle2} from "../tools/helper";
+import {getAgeLabel} from "../tools/helper";
 
 interface ProjectCardProps {
     project: Project
@@ -39,16 +39,16 @@ export function ProjectCard({ project, refetch }: ProjectCardProps) {
                         <div className={classes.blockInner}>
                             <img alt={project.title} src={project.image} className={classes.image}/>
                         </div>
+                        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: 10, background: 'rgba(0,0,0,.5)', borderRadius: '0px 0px 16px 16px' }}>
+                            <Box style={{ display: 'flex', height: '96%' }} flexDirection="column" justifyContent="space-between">
+                                <div style={{ textOverflow: 'ellipsis', width: '100%', fontSize: 15, overflow: 'hidden', color: 'white', fontWeight: 500 }}>
+                                    {project.title}
+                                </div>
+                            </Box>
+                        </div>
                         <Chip label={getAgeLabel(project)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
                     </div>
                 )}
-                <div style={{ padding: '4px 4px 12px 4px' }}>
-                    <Box style={{ display: 'flex', height: '96%' }} flexDirection="column" justifyContent="space-between">
-                        <div style={{ textOverflow: 'ellipsis', width: '100%', fontSize: 15, overflow: 'hidden', color: '#3F3F3F', fontWeight: 500 }}>
-                            {project.title}
-                        </div>
-                    </Box>
-                </div>
             </Stack>
         </div>
     );

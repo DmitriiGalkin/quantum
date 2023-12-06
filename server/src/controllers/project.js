@@ -2,8 +2,8 @@
 const async = require("async");
 const Project = require('../models/project');
 const User = require('../models/user');
+const UserMeet = require('../models/visit');
 const Meet = require('../models/meet');
-const ProjectTime = require('../models/projectTime');
 const Place = require('../models/place');
 
 exports.create = function(req, res) {
@@ -16,9 +16,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
     const obj = new Project(req.body)
     Project.update(req.params.id, obj, function() {
-        ProjectTime.updates(req.params.id, req.body.timing, function() {
-            res.json({ error:false, message: 'Проект обновлен' });
-        })
+        res.json({ error:false, message: 'Проект обновлен' });
     });
 };
 exports.delete = function(req, res) {
@@ -40,8 +38,19 @@ exports.findById = function(req, res) {
         } else {
             Place.findByMeet(project, function(err, place) {
                 User.findById(project.userId, function (err, user) {
-                    ProjectTime.findAll(req.params.id, function(timing) {
-                        res.send({...project, editable: req.user?.id === project.userId, timing, user, place });
+                    User.findParticipationUsersByProjectId(project.id, function (err, participationUsers) {
+                        Meet.findByProjectId(project.id, function (err, meets) {
+                            async.map(meets, UserMeet.findByMeet, function(err, meetsUsers) {
+                                res.send({
+                                    ...project,
+                                    editable: req.user?.id === project.userId,
+                                    user,
+                                    place,
+                                    meets: meets.map((m, index) => ({ ...m, visits: meetsUsers[index] })),
+                                    participationUsers,
+                                });
+                            })
+                        })
                     })
                 })
             })
@@ -49,17 +58,3 @@ exports.findById = function(req, res) {
     });
 };
 
-// Таинство тайминга
-exports.timing = function(req, res) {
-    ProjectTime.findAllAll(function(projectTimes) {
-        // Исключаем уже созданные встречи
-        async.map(projectTimes, Meet.check, function(err, times) {
-            const z = times.filter(f=>Boolean(f))
-            console.log(z,'z')
-            async.map(z, Meet.createByTimer, function(err, data) {
-                console.log(data,'data')
-                res.send(data);
-            });
-        });
-    });
-};

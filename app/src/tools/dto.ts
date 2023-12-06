@@ -15,10 +15,10 @@ export interface Passport {
  */
 export interface User {
     id: number // Идентификатор
-    passportId: number // Идентификатор паспорта родителя
     title: string // Имя ребенка
     age: number // Возраст ребенка
     image?: string // Фотография ребенка
+    passportId?: number // Идентификатор паспорта родителя
 }
 
 /**
@@ -49,9 +49,11 @@ export interface Project {
     /**
      * Дополнительные поля
      */
+    participationUsers?: ParticipationUser[] // Участия участников
     editable?: boolean // Право на редактирование/удаление
     user?: User // Организатор (Участник)
     place?: Place // Место проведения
+    meets?: Meet[] // Встречи
 }
 
 /**
@@ -70,9 +72,9 @@ export interface Meet {
     /**
      * Дополнительные поля
      */
-    visits: Visit[] // Все участники встречи
+    visits: VisitUser[] // Участия участников
     user?: User // Организатор встречи
-    place?: Place // Место проведения
+    placeTitle?: string // Место проведения
     project?: Project // Проект
     editable?: boolean // Право на редактирование/удаление
 }
@@ -81,15 +83,30 @@ export interface Meet {
  * Посещение
  */
 export interface Visit {
+    id: number // Идентификатор
     userId: number // Идентификатор участника
     meetId: number // Идентификатор встречи
     created?: string // Время вступления во встречу
     started?: string // Время начала участия во встрече
     stopped?: string // Время завершения участия во встрече
     paided?: string // Время оплаты участия во встрече
-
-    /**
-     * Дополнительные поля
-     */
-    user?: User // Участник
 }
+/**
+ * Посещение участника
+ */
+export interface VisitUser extends User, Visit {}
+
+/**
+ * Участие
+ */
+export interface Participation {
+    id: number // Идентификатор
+    userId: number // Идентификатор участника
+    projectId: number // Идентификатор проекта
+}
+
+/**
+ * Участие участника
+ */
+export interface ParticipationUser extends User, Participation {}
+

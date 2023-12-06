@@ -8,8 +8,13 @@ import CreateProject from "../dialogs/CreateProject";
 import {getOnShare} from "../tools/pwa";
 import {makeStyles} from "@mui/styles";
 import {Parameter, Parameters} from "../components/Parameters";
+import {ProjectMeetCard} from "../cards/ProjectMeet";
 import {getAgeTitle} from "../tools/helper";
 import {useAuth} from "../tools/auth";
+import {Stack} from "@mui/material";
+import Typography from "../components/Typography";
+import {ParticipationCard} from "../cards/ParticipationCard";
+import {Block} from "../components/Block";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -67,12 +72,12 @@ export default function ProjectPage() {
     return (
         <>
             <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)'}}>
+                <Back menuItems={menuItems} />
                 <div style={{ height: 230 }}>
                     {project.image && <img alt={project.title} src={project.image} className={classes.image}/>}
                 </div>
-                <Back menuItems={menuItems} />
                 <div style={{ position: "relative"}}>
-                    <div className={classes.container}>
+                    <Stack className={classes.container} spacing={3}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div style={{ fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }}>
                                 {project.title}
@@ -87,11 +92,21 @@ export default function ProjectPage() {
                                 </svg>
                             </div>
                         </div>
-                        <div style={{ paddingTop: 24, opacity: .6, lineHeight: '21px'}}>
-                            {project.description}
-                        </div>
-                        <Parameters items={parameters}/>
-                    </div>
+                        <Typography variant="Body">{project.description}</Typography>
+                        <Block title="Параметры">
+                            <Parameters items={parameters}/>
+                        </Block>
+                        <Block title="Расписание">
+                            <Stack spacing={2}>
+                                {project.meets?.map((meet) => <ProjectMeetCard project={project} meet={meet}/>)}
+                            </Stack>
+                        </Block>
+                        <Block title="Участники">
+                            <Stack spacing={1}>
+                                {project.participationUsers?.map((participationUser) => <ParticipationCard participationUser={participationUser}/>)}
+                            </Stack>
+                        </Block>
+                    </Stack>
                 </div>
             </div>
             <CreateProject open={create} onClose={toggleCreate} />

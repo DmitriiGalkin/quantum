@@ -51,6 +51,12 @@ User.findByEmail = function (email, result) {
         result(null, res?.length ? res[0] : undefined);
     });
 };
+// Участия участников
+User.findParticipationUsersByProjectId = function (id, result) {
+    dbConn.query("SELECT user.*, participation.* FROM participation LEFT JOIN user ON user.id = participation.userId WHERE projectId = ? ", id, function (err, res) {
+        result(null, res);
+    });
+};
 
 
 const parse = (res) => {
@@ -64,7 +70,7 @@ User.findByAccessToken = function (accessToken, result) {
 };
 // Участники встречи
 User.findByMeet = function (meet, result) {
-    dbConn.query("SELECT * from user LEFT JOIN user_meet ON user.id = user_meet.userId where meetId = ?", meet.id, function (err, res) {
+    dbConn.query("SELECT * from user LEFT JOIN visit ON user.id = visit.userId where meetId = ?", meet.id, function (err, res) {
         result(null, parse(res));
     });
 };
@@ -74,20 +80,5 @@ User.findByProjectOne = function (project, result) {
         result(null, (res && res.length) ? parse(res)[0] : null);
     });
 };
-
-// Участники сообщества
-User.findByCommunity = function (community, result) {
-    dbConn.query("SELECT * from user LEFT JOIN user_community ON user.id = user_community.userId where communityId = ?", community.id, function (err, res) {
-        result(null, parse(res));
-    });
-};
-
-// Начислеине баллов
-User.userpoints = function (userId, points, result) {
-    dbConn.query("UPDATE user SET points=? WHERE id = ?", [points, userId], function (err, res) {
-        result(null, res);
-    });
-};
-
 
 module.exports = User;

@@ -49,10 +49,17 @@ Meet.findAll = () => function (result) {
 };
 
 Meet.findById = function (id, result) {
-    dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet WHERE id = ?", id, function (err, res) {
+    dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE id = ?", id, function (err, res) {
         result(null, res[0]);
     });
 };
+Meet.findByProjectId = function (id, result) {
+    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime, place.title AS placeTitle FROM meet LEFT JOIN place ON place.latitude=meet.latitude AND place.longitude=meet.longitude WHERE projectId = ?", id, function (err, res) {
+        result(null, res);
+    });
+};
+
+
 // Встречи участника
 Meet.findAllByUserId2 = (id) => function (result) {
     dbConn.query("SELECT * FROM user_meet WHERE userId = ?", id, function (err, res) {

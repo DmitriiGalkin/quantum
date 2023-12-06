@@ -15,7 +15,7 @@ interface ParametersProps {
 }
 export function Parameters({ items }: ParametersProps) {
     return (
-        <div id="parameters" style={{ paddingTop: 48}}>
+        <div id="parameters">
             <Stack spacing={3} direction="column">
                 {items.map(({ name, title, value }) => (
                     <Grid container key={title}>

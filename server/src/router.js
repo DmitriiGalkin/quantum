@@ -5,7 +5,7 @@ var passport = require('passport');
 const user =   require('./controllers/user');
 const passportController =   require('./controllers/passport');
 const meet =   require('./controllers/meet');
-const userMeet =   require('./controllers/userMeet');
+const visit =   require('./controllers/visit');
 const image =   require('./controllers/image');
 const place =   require('./controllers/place');
 const project =   require('./controllers/project');
@@ -71,11 +71,11 @@ router.put('/passport', passportController.usePassport, passportController.updat
  * Участники
  */
 router.get('/userMeets', passportController.usePassport, meet.findUserMeets);
-router.post('/userMeet/:userId/:meetId', passportController.usePassport, userMeet.createUserMeet );
-router.post('/userMeet/:userId/:meetId/started', passportController.usePassport, userMeet.startedUserMeet );
-router.post('/userMeet/:userId/:meetId/stopped', passportController.usePassport, userMeet.stoppedUserMeet );
-router.post('/userMeet/:userId/:meetId/paided', passportController.usePassport, userMeet.paidedUserMeet );
-router.delete('/userMeet/:userId/:meetId', passportController.usePassport, userMeet.deleteUserMeet );
+router.post('/visit/:userId/:meetId', passportController.usePassport, visit.create );
+router.post('/visit/:userId/:meetId/started', passportController.usePassport, visit.started );
+router.post('/visit/:userId/:meetId/stopped', passportController.usePassport, visit.stopped );
+router.post('/visit/:userId/:meetId/paided', passportController.usePassport, visit.paided );
+router.delete('/visit/:userId/:meetId', passportController.usePassport, visit.delete );
 
 /**
  * Места
@@ -87,7 +87,6 @@ router.post('/place', passportController.usePassport, place.create);
  * Проекты
  */
 router.get('/projects', passportController.usePassport, project.findAll);
-router.get('/timing', project.timing);
 router.get('/project/:id', passportController.usePassport, project.findById);
 router.post('/project', passportController.usePassport, helper.checkConstructor, project.create);
 router.put('/project/:id', passportController.usePassport, helper.checkConstructor, project.update);
