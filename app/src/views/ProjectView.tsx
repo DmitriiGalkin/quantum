@@ -70,9 +70,7 @@ export default function ProjectPage() {
                 <div style={{ height: 230 }}>
                     {project.image && <img alt={project.title} src={project.image} className={classes.image}/>}
                 </div>
-                <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
-                    <Back menuItems={menuItems} />
-                </div>
+                <Back menuItems={menuItems} />
                 <div style={{ position: "relative"}}>
                     <div className={classes.container}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
