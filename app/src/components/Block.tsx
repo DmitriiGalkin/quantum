@@ -1,7 +1,6 @@
 import React, {ReactNode} from 'react';
 import {Stack} from "@mui/material";
 import Typography from "./Typography";
-import {Parameters} from "./Parameters";
 
 interface BlockProps {
     title: string

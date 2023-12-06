@@ -2,7 +2,8 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Avatar, Stack} from "@mui/material";
 import {
     useAddMeet,
-    useDeleteMeet, useDeleteVisit,
+    useDeleteMeet,
+    useDeleteVisit,
     useEditMeet,
     useMeet,
     usePaidedVisit,
@@ -15,7 +16,7 @@ import {convertToMeetsGroupTime} from "../tools/date";
 import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
 import dayjs from "dayjs";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {PlaceSelect} from "../components/PlaceSelect";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";

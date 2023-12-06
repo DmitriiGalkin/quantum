@@ -1,8 +1,6 @@
 import React from 'react';
-import {Meet, Project, Visit} from "../tools/dto";
-import {Avatar, AvatarGroup, Box, Chip, Stack} from "@mui/material";
-import {makeStyles} from '@mui/styles';
-import {BOX_SHADOW, DEFAULT_COLOR} from "../tools/theme";
+import {Meet, Project} from "../tools/dto";
+import {Stack} from "@mui/material";
 import {MeetCard} from "./MeetCard";
 
 interface ProjectMeetCardProps {

@@ -1,13 +1,11 @@
 import SwipeableViews from "react-swipeable-views";
-import {ClickAwayListener, Stack} from "@mui/material";
+import {Stack} from "@mui/material";
 import {MeetCard} from "../cards/MeetCard";
-import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
-import React, {useRef, useState} from "react";
+import React, {useRef} from "react";
 import {useLocalStorage, useToggle} from "usehooks-ts";
 import {getOm} from "../tools/helper";
 import {useMeets} from "../tools/service";
 import {usePosition} from "../tools/pwa";
-import {YMapsApi} from "@pbe/react-yandex-maps/typings/util/typing";
 import {LocalDate} from "@js-joda/core";
 import {Calendar, DialogHeader} from "../components";
 import {DialogContent} from "../components/DialogContent";

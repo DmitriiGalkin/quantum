@@ -1,21 +1,18 @@
 import React from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteMeet, useProject} from "../tools/service";
-import Dialog from "@mui/material/Dialog";
-import {Back, MeetCard, TransitionDialog} from "../components";
+import {Back, MeetCard} from "../components";
 import {useToggle} from "usehooks-ts";
 import CreateProject from "../dialogs/CreateProject";
 import {getOnShare} from "../tools/pwa";
 import {makeStyles} from "@mui/styles";
 import {Parameter, Parameters} from "../components/Parameters";
-import {ProjectMeetCard} from "../cards/ProjectMeet";
 import {getAgeTitle} from "../tools/helper";
 import {useAuth} from "../tools/auth";
 import {Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {ParticipationCard} from "../cards/ParticipationCard";
 import {Block} from "../components/Block";
-import CreateMeet from "../dialogs/CreateMeet";
 
 const useStyles = makeStyles(() => ({
     container: {

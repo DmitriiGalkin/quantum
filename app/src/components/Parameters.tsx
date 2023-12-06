@@ -1,9 +1,7 @@
-import React, {TextareaHTMLAttributes} from 'react';
-import {useInputStyles} from "./helper";
+import React from 'react';
 import {Stack} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import {Icon} from "./Icon";
-import {IconName} from "./Icon";
+import {Icon, IconName} from "./Icon";
 
 export interface Parameter {
     name: IconName,

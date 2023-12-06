@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {useUpdatePassport, usePassport} from "../tools/service";
-import {Passport, User} from "../tools/dto";
+import {usePassport, useUpdatePassport} from "../tools/service";
+import {Passport} from "../tools/dto";
 import {Stack} from "@mui/material";
-import {Button, DialogHeader, ImageField, Input} from "../components";
+import {Button, DialogHeader, Input} from "../components";
 import {useAuth} from "../tools/auth";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";

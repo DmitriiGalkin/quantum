@@ -1,13 +1,9 @@
 import React from 'react';
 import {Meet, Visit} from "../tools/dto";
-import {convertToMeetDate, convertToMeetTime, convertToObject} from "../tools/date";
-import {Avatar, AvatarGroup, Box, Chip, Stack} from "@mui/material";
+import {convertToObject} from "../tools/date";
+import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
 import {useCreateVisit, useDeleteVisit} from "../tools/service";
-import {makeStyles} from '@mui/styles';
-import {BOX_SHADOW, DEFAULT_COLOR} from "../tools/theme";
-import {useNavigate} from "react-router-dom";
 import {useAuth} from "../tools/auth";
-import {getAgeLabel} from "../tools/helper";
 import Typography from "../components/Typography";
 import {useToggle} from "usehooks-ts";
 import CreateMeet from "../dialogs/CreateMeet";
