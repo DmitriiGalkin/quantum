@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles} from "@mui/styles";
 
 export const useStyles = makeStyles(() => ({
-    span: ({ variant }: { variant?: Variant }) => {
+    span: ({ variant, color }: { variant?: Variant, color?: 'primary' }) => {
         switch (variant) {
             case "Header1":
                 return {
@@ -26,6 +26,13 @@ export const useStyles = makeStyles(() => ({
                     fontSize: 18,
                     opacity: .6,
                 }
+            case "Body2-Bold":
+                return {
+                    fontSize: 13,
+                    fontWeight: 900,
+                    color: color === 'primary' ? '#7139FF' : '#070707',
+                    letterSpacing: -0.369231,
+                }
             default:
                 return {
                     fontSize: 16,
@@ -34,13 +41,14 @@ export const useStyles = makeStyles(() => ({
     },
 }));
 
-type Variant = 'Header1' | 'Header2' | 'Header3' | 'Body'
+type Variant = 'Header1' | 'Header2' | 'Header3' | 'Body' | 'Body2-Bold'
 interface TypographyProps{
     variant?: Variant
+    color?: 'primary'
     children: React.ReactNode
 }
-export function Typography({ variant, children }: TypographyProps) {
-    const classes = useStyles({ variant });
+export function Typography({ variant, color, children }: TypographyProps) {
+    const classes = useStyles({ variant, color });
 
     return (
         <span className={classes.span}>
