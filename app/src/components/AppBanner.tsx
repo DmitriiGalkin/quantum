@@ -51,8 +51,8 @@ export function AppBanner({title}: AppBannerProps) {
                     letterSpacing: '0.45px'
                 }}>не сейчас</div>
             </Stack>
-            <div style={{ position: "absolute", right: 18, top: 18}} onClick={onClose}>
-                <Icon name="close"/>
+            <div style={{ position: "absolute", right: 18, top: 18}}>
+                <Icon onClick={onClose} name="close"/>
             </div>
         </div>
 

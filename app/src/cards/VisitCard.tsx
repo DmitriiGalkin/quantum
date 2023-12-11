@@ -36,9 +36,7 @@ export function VisitCard({ visit, refetch }: VisitCardProps) {
                 </Stack>
                 {!visit.started && <Button onClick={onStarted} variant="small">Пришел</Button>}
                 {visit.started && !visit.stopped && <Button onClick={onStopped} variant="small">Ушел</Button>}
-                <div onClick={onDeleteVisit}>
-                    <Icon name="delete"/>
-                </div>
+                <Icon onClick={onDeleteVisit} name="delete"/>
             </Stack>
         </Stack>
     );

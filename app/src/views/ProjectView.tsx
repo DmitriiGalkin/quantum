@@ -90,9 +90,7 @@ export default function ProjectPage() {
                             <div style={{ fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }}>
                                 {project.title}
                             </div>
-                            <div onClick={onShare}>
-                                <Icon name="share" />
-                            </div>
+                            <Icon onClick={onShare} name="share" />
                         </div>
                         <Typography variant="Body">{project.description}</Typography>
                         {!participation && <Button onClick={onCreateParticipation}>Присоединиться</Button>}

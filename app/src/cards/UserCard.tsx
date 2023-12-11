@@ -18,9 +18,7 @@ export function UserCard({ user, refetch }: UserCardProps) {
         <Stack spacing={2} direction="row">
             <Avatar key={user.id} alt={user.title} src={user.image} />
             <Typography variant="Body">{user.title}, {user.age} лет</Typography>
-            <div  onClick={onDeleteUser}>
-                <Icon name="delete" />
-            </div>
+            <Icon onClick={onDeleteUser} name="delete" />
         </Stack>
     );
 }

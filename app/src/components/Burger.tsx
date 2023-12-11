@@ -42,8 +42,8 @@ export function Burger() {
 
     return (
         <div>
-            <div onClick={toggleMenu} style={{ display: 'flex', zIndex: 1200 }}>
-                <Icon name="burger"/>
+            <div style={{ display: 'flex', zIndex: 1200 }}>
+                <Icon onClick={toggleMenu} name="burger"/>
             </div>
             <SwipeableDrawer
                 anchor="left"
