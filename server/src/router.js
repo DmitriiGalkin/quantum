@@ -38,8 +38,8 @@ router.post('/image', image.upload);
 /**
  * Авторизация
  */
-router.post('/user/login', user.login);
-router.post('/user/googleLogin', user.googleLogin);
+router.post('/passport/login', passportController.login);
+router.post('/passport/googleLogin', passportController.googleLogin);
 router.get('/login/federated/google', passport.authenticate('google'));
 router.get('/oauth2/redirect/google', (req, res) => passport.authenticate('google', function(err, user) {
     if (!user) { return res.redirect('/login'); }
@@ -65,11 +65,16 @@ router.get('/oauth2/redirect/vkontakte', (req, res) => passport.authenticate('vk
 /**
  * Родитель
  */
-router.get('/passport', passportController.usePassport, passportController.all, function(req, res) { res.send(req.passport) });
+router.get('/passport', passportController.usePassport, passportController.all);
 router.put('/passport', passportController.usePassport, passportController.update);
 
 /**
- * Участники
+ * Ребенок
+ */
+router.delete('/user/:id', passportController.usePassport, user.delete );
+
+/**
+ * Посещения
  */
 router.get('/userMeets', passportController.usePassport, meet.findUserMeets);
 router.post('/visit', passportController.usePassport, visit.create );

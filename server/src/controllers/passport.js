@@ -8,8 +8,8 @@ exports.update = function(req, res) {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
-        Passport.update(req.user.id, new Passport(req.body), function() {
-            res.json({ error:false, message: 'Обновление участника' });
+        Passport.update(req.passport.id, new Passport(req.body), function() {
+            res.json({ error:false, message: 'Обновление родителя' });
         });
     }
 };

@@ -1,6 +1,6 @@
 'use strict';
 const User = require('../models/user');
-var jwt = require('jsonwebtoken');
+const Passport = require('../models/passport');
 
 // Обновление участника
 exports.update = function(req, res) {
@@ -12,45 +12,21 @@ exports.update = function(req, res) {
         });
     }
 };
-/**
- * С бека пришла авторизационная информация с токеном по пользователю,
- * надобно проверить есть ли такой пользователь у нас уже. Если нет то создать, если есть то просто прописать ему токен
- */
-exports.googleLogin = function(req, res) {
-    User.findByEmail(req.body.email, function(err, user) {
-        if (user) {
-            User.updateTokenById(req.body.access_token, user.id, function() {
-                res.send({ error: false, message: "Участник обновлен" });
-            });
-        } else {
-            const user = new User({
-                token: req.body.access_token,
-                title: req.body.name,
-                image: req.body.picture,
-                email: req.body.email
-            });
-            if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-                res.status(400).send({ error:true, message: 'Сбой конструктора участника при создании участника через гугл' });
-            } else {
-                User.create(user, function(err, data) {
-                    res.send({ error: false, message: "Участник создан" });
-                });
-            }
-        }
+
+exports.delete = function(req, res) {
+    User.findById(req.params.id, function(err, user) {
+        if (err) { return res.json({error:true,message:"Ребенок не существует"}); }
+        Passport.findById(user.passportId, function(err, passport) {
+            if (err) { return res.json({ error: true, message: "Родитель не найден" }); }
+            if (passport.id !== req.passport.id) { return res.json({ error: true, message: "Нет прав на удаление" }); }
+            console.log('типа удаление участника')
+            // User.delete( req.params.id, function() {
+            //     res.json({ error:false, message: 'Удаление участника из встречи' });
+            // });
+        })
     })
 };
-// Авторизация участника
-exports.login = function(req, res) {
-    User.findById(1, function(err, user) {
-        // Если участник найден
-        if(user) {
-            var token = jwt.sign({ foo: 'bar' }, 'shhhhh');
-            User.updateTokenById(token, user.id, function() {
-                res.send({ access_token: token });
-            });
-        }
-    });
-};
+
 // Участник
 exports.findById = function(req, res) {
     User.findById(req.user.id, function(err, users) {

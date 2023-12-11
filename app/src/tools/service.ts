@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import {Meet, Participation, Passport, Place, Project, Visit} from "./dto";
+import {Meet, Participation, Passport, Place, Project, User, Visit} from "./dto";
 import {ACCESS_TOKEN} from "./auth";
 
 // При разработки хост может быть разным
@@ -86,11 +86,12 @@ export const useUploadImage = (): UseMutate<FormData, string> => {
 
 export const usePassport = (): UseQueryResult<Passport> => useQuery(['passport'], () => service.get(`/passport`))
 export const useUpdatePassport = (): UseMutate<Passport> => useMutation((passport) => service.put(`/passport`, passport))
+//export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
+export const useDeleteUser = (): UseMutate<User> => useMutation((user) => service.delete("/user/" + user.id))
 
 /**
  * Пользователь
  */
-//export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
 export const useVisits = (): UseQueryResult<Meet[]> => useQuery(['visits'], () => service.get(`/visits`))
 
 export interface EditVisit extends Omit<Visit, "id"> { id?: number; }

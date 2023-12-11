@@ -17,8 +17,8 @@ export const useStyles = makeStyles(() => ({
                     fontSize: 13,
                     opacity: .4,
                     color: '#070707',
-                    fontWeight: 400,
-                    lineHeight: '23.343px',
+                    fontWeight: 900,
+                    lineHeight: '16px',
                     letterSpacing: '0.36px',
                 }
             case "Body":
@@ -33,6 +33,12 @@ export const useStyles = makeStyles(() => ({
                     color: color === 'primary' ? '#7139FF' : '#070707',
                     letterSpacing: -0.369231,
                 }
+            case "Caption":
+                return {
+                    fontSize: 9,
+                    fontWeight: 500,
+                    letterSpacing: '0.18px'
+                }
             default:
                 return {
                     fontSize: 16,
@@ -41,7 +47,7 @@ export const useStyles = makeStyles(() => ({
     },
 }));
 
-type Variant = 'Header1' | 'Header2' | 'Header3' | 'Body' | 'Body2-Bold'
+type Variant = 'Header1' | 'Header2' | 'Header3' | 'Body' | 'Body2-Bold' | 'Caption'
 interface TypographyProps{
     variant?: Variant
     color?: 'primary'

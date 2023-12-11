@@ -3,18 +3,20 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import service, {usePassport} from "./service";
 import Login from "../dialogs/Login";
 import {useToggle} from "usehooks-ts";
-import {Passport, User} from "./dto";
+import {User, Passport} from "./dto";
+import PassportDialog from "../dialogs/Passport";
 
 export const ACCESS_TOKEN = 'access_token'
 export const AuthContext = createContext('auth' as any);
 
 export const AuthProvider = ({ children }: {children: JSX.Element}) => {
-    const { data: passport } = usePassport();
+    const { data: passport, refetch } = usePassport();
     const [searchParams] = useSearchParams();
     const tokenSearchParam = searchParams.get("access_token")
     const access_token = localStorage.getItem(ACCESS_TOKEN) || tokenSearchParam
     const navigate = useNavigate();
     const [openLogin, toggleOpenLogin] = useToggle()
+    const [openPassport, toggleOpenPassport] = useToggle()
     const isAuth =  !!access_token
 
     if (tokenSearchParam) {
@@ -42,7 +44,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
 
     const value = useMemo(
         () => ({
-            user: passport,
+            user: passport?.users[0],
             passport,
             isAuth,
             openLogin: toggleOpenLogin,
@@ -55,6 +57,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     return <AuthContext.Provider value={value}>
         {children}
         <Login open={openLogin} onClose={toggleOpenLogin} />
+        <PassportDialog open={isAuth && !passport?.users[0]} onClose={refetch} />
     </AuthContext.Provider>;
 };
 
