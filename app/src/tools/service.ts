@@ -53,9 +53,7 @@ interface GetMeets {
 /**
  * Встречи
  */
-export const useMeets = (params?: GetMeets): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets`, { params }), {
-    enabled: Boolean(params?.latitude) || Boolean(params?.longitude),
-})
+export const useMeets = (userId: number): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets?userId=${userId}`))
 export const useMeet = (id?: number): UseQueryResult<Meet> => useQuery(['meet', id], () => service.get(`/meet/${id}`), {
     enabled: Boolean(id),
 })
@@ -128,7 +126,7 @@ export const useEditProject = (id?: number): UseMutate<Partial<Project>> => useM
 /**
  * Подписка на проект
  */
-export const useCreateParticipation = (): UseMutate<number> => useMutation((projectId) => service.post("/participation", { projectId }))
+export const useCreateParticipation = (): UseMutate<{ projectId: number, userId: number }> => useMutation((params) => service.post("/participation", params))
 export const useDeleteParticipation = (): UseMutate<Participation> => useMutation((participation) => service.delete("/participation/" + participation.id))
 
 export default service
