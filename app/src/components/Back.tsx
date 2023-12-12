@@ -3,7 +3,7 @@ import {Menu, MenuItem, Stack} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {Icon} from "./Icon";
 
-interface MenuItemProps {
+export interface MenuItemProps {
     title: string,
     onClick: () => void
 }

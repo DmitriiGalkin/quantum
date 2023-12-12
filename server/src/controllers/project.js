@@ -2,7 +2,7 @@
 const async = require("async");
 const Project = require('../models/project');
 const User = require('../models/user');
-const UserMeet = require('../models/visit');
+const Visit = require('../models/visit');
 const Meet = require('../models/meet');
 const Place = require('../models/place');
 
@@ -40,15 +40,18 @@ exports.findById = function(req, res) {
                 User.findById(project.userId, function (err, user) {
                     User.findParticipationUsersByProjectId(project.id, function (err, participationUsers) {
                         Meet.findByProjectId(project.id, function (err, meets) {
-                            async.map(meets, UserMeet.findByMeet, function(err, meetsUsers) {
-                                res.send({
-                                    ...project,
-                                    editable: req.user?.id === project.userId,
-                                    user,
-                                    place,
-                                    meets: meets.map((m, index) => ({ ...m, visits: meetsUsers[index] })),
-                                    participationUsers,
-                                });
+                            async.map(meets, Visit.findByMeet, function(err, visits) {
+                                async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
+                                    console.log(meets, 'TUT')
+                                    res.send({
+                                        ...project,
+                                        editable: req.user?.id === project.userId,
+                                        user,
+                                        place,
+                                        meets: meets?.map((m, index) => ({ ...m, visits: visits[index], place: meetsPlaces[index] })),
+                                        participationUsers,
+                                    });
+                                })
                             })
                         })
                     })

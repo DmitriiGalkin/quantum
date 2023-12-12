@@ -22,12 +22,13 @@ import {VisitCard} from "../cards/VisitCard";
 
 export interface CreateMeetDialogProps {
     meetId: number
+    defaultProjectId: number
     onClose: () => void
 }
-function CreateMeet({ meetId, onClose }: CreateMeetDialogProps) {
+function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps) {
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
     const [isSetTime, setIsSetTime] = useState(false)
-    const [meet, setMeet] = useState<Partial<Meet>>({ datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss') })
+    const [meet, setMeet] = useState<Partial<Meet>>({ datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'), projectId: defaultProjectId })
     const navigate = useNavigate();
 
     const { data: defaultMeet, refetch } = useMeet(meetId)
@@ -93,9 +94,7 @@ function CreateMeet({ meetId, onClose }: CreateMeetDialogProps) {
                 </Stack>
             </DialogContent>
             <div style={{ padding: 15 }}>
-                <Button onClick={onClickSave} disabled={!(meet.latitude && meet.longitude && meet.project?.title)}>
-                    {meet.id ? 'Сохранить' : "Создать встречу"}
-                </Button>
+                <Button onClick={onClickSave} disabled={!(meet.latitude && meet.longitude)}>{meet.id ? 'Сохранить' : "Создать встречу"}</Button>
                 <div style={{ color: 'black',
                     textAlign: 'center',
                     fontSize: 15,

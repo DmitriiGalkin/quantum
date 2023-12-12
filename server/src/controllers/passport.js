@@ -83,7 +83,7 @@ exports.usePassport = function(req, res, next) {
             if (passport) {
                 req.passport = passport
                 User.findByPassportId(passport.id, function(err, users) {
-                    req.user = users[0]
+                    req.users = users
                     next()
                 })
             } else {

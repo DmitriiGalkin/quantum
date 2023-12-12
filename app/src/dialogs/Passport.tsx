@@ -31,6 +31,8 @@ function PassportDialog({ onLogout, onClose }: UserViewProps) {
         onClose()
     }
 
+    if (!passport) return null
+
     return (
         <>
             <DialogHeader title="Профиль" onClick={onClose}/>
@@ -39,12 +41,12 @@ function PassportDialog({ onLogout, onClose }: UserViewProps) {
                     <Input
                         name='title'
                         label="Имя и фамилия"
-                        value={passport?.title}
+                        value={passport.title}
                         onChange={(e) => passport && setPassport({ ...passport, title: e.target.value})}
                     />
                     <Block title="Дети">
                         <Stack spacing={1}>
-                            {passport?.users?.map((user) => <UserCard user={user} refetch={refetch} />)}
+                            {passport.users?.map((user) => <UserCard key={user.id} user={user} refetch={refetch} />)}
                         </Stack>
                     </Block>
                     <Button onClick={onClickSave} variant="outlined">

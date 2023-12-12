@@ -2,7 +2,7 @@ import React, {createContext, useContext, useMemo} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import service, {usePassport} from "./service";
 import Login from "../dialogs/Login";
-import {useToggle} from "usehooks-ts";
+import {useLocalStorage, useToggle} from "usehooks-ts";
 import {User, Passport} from "./dto";
 import PassportDialog from "../dialogs/Passport";
 
@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const [openLogin, toggleOpenLogin] = useToggle()
     const [openPassport, toggleOpenPassport] = useToggle()
     const isAuth =  !!access_token
+    const [selectedUserId, setSelectedUserId] = useLocalStorage('selectedUserId', 0)
 
     if (tokenSearchParam) {
         console.log('navigate', ACCESS_TOKEN, tokenSearchParam)
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
 
     const value = useMemo(
         () => ({
-            user: passport?.users[0],
+            user: passport?.users.length ? passport?.users.find((u) => u.id === selectedUserId) || passport?.users[0] : undefined,
             passport,
             isAuth,
             openLogin: toggleOpenLogin,

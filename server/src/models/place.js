@@ -20,8 +20,13 @@ Place.findAll = () => function (result) {
         result(null, res || []);
     });
 };
+// Place.findByMeet = function (meet, result) {
+//     dbConn.query("SELECT * FROM place WHERE latitude = ? AND longitude = ?", [meet.latitude, meet.longitude], function (err, res) {
+//         result(null, res.length ? res[0] : undefined);
+//     });
+// };
 Place.findByMeet = function (meet, result) {
-    dbConn.query("SELECT * FROM place WHERE latitude = ? AND longitude = ?", [meet.latitude, meet.longitude], function (err, res) {
+    dbConn.query("SELECT * FROM place WHERE id = ?", [meet.placeId], function (err, res) {
         result(null, res.length ? res[0] : undefined);
     });
 };

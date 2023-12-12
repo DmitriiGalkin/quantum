@@ -6,17 +6,11 @@ var ChronoUnit = require('@js-joda/core').ChronoUnit;
 
 var Meet = function(data){
     this.id = data.id;
-    this.title = data.title;
-    this.description = data.description;
-    this.image = data.image;
+    this.passportId = data.passportId; // Идентификатор наблюдателя
     this.datetime = data.datetime;
-    this.userId = data.userId; // Идентификатор создателя
-    this.projectId = data.project?.id; // Идентификатор проекта
-    this.price = data.price; // Идентификатор проекта
-    this.ageFrom = data.ageFrom;
-    this.ageTo = data.ageTo;
-    this.latitude = data.latitude;
-    this.longitude = data.longitude;
+    this.projectId = data.projectId; // Идентификатор проекта
+    this.placeId = data.placeId; // Идентификатор пространства
+    this.price = data.price;
 };
 
 Meet.create = function (data, result) {
@@ -39,7 +33,7 @@ Meet.delete = function(id, result){
 };
 // Встречи
 const RADIUS = 100000 // Количество метров между мной и местом встречи TODO: сократить радиус с ростом аудитории
-Meet.findAll = () => function (result) {
+Meet.findAll = function (result) {
     dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet " +
         "WHERE DATE(datetime) >= CURDATE() " +
         //"AND ST_Distance_Sphere(point(" + x + ", " + y + "), point(x, y)) < " + RADIUS + " " +
@@ -54,11 +48,15 @@ Meet.findById = function (id, result) {
     });
 };
 Meet.findByProjectId = function (id, result) {
-    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime, place.title AS placeTitle FROM meet LEFT JOIN place ON place.latitude=meet.latitude AND place.longitude=meet.longitude WHERE projectId = ?", id, function (err, res) {
+    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE projectId = ?", id, function (err, res) {
         result(null, res);
     });
 };
-
+Meet.findByUserId = function (id, result) {
+    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet LEFT JOIN participation ON participation.projectId = meet.projectId WHERE participation.userId = ?", id, function (err, res) {
+        result(null, res || []);
+    });
+};
 
 // Встречи участника
 Meet.findAllByUserId2 = (id) => function (result) {

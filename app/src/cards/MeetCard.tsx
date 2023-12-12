@@ -22,7 +22,9 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
 
     const { time, shortMonth, day } = convertToObject(meet.datetime)
 
-    const visit = meet.visits?.find(({ userId }) => userId === user.id)
+    const visits = (meet.visits || [])
+
+    const visit = (meet.visits || []).find(({ userId }) => userId === user.id)
     const isOrganizer = user && (meet.userId === user.id)
     const [create, toggleCreate] = useToggle()
 
@@ -48,7 +50,7 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
                     <Stack direction="row" justifyContent="space-between" alignContent="center">
                         <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
                             <Icon name="place2" />
-                            <Typography variant="Body">{meet.placeTitle}</Typography>
+                            <Typography variant="Body">{meet.place?.title}</Typography>
                         </Stack>
                         <Typography variant="Body2-Bold" color="primary">{time}</Typography>
                     </Stack>

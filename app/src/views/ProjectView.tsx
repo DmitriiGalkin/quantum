@@ -13,15 +13,23 @@ import {Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {ParticipationCard} from "../cards/ParticipationCard";
 import {Block} from "../components/Block";
+import CreateMeet from "../dialogs/CreateMeet";
+import {MenuItemProps} from "../components/Back";
 
 const useStyles = makeStyles(() => ({
     container: {
         position: 'absolute',
         top: -33,
-        backgroundColor: 'white',
         width: '100%',
-        borderRadius: `28px 28px 0 0`,
+    },
+    container2: {
+        backgroundColor: 'white',
+        borderRadius: 28,
         padding: '24px 26px'
+    },
+    container3: {
+        padding: '24px 26px',
+        backgroundColor: 'rgb(245, 245, 245)'
     },
     image: {
         width: '100%',
@@ -32,20 +40,22 @@ const useStyles = makeStyles(() => ({
 
 export default function ProjectPage() {
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const { user, passport } = useAuth();
     const classes = useStyles();
 
     const { id: projectId } = useParams();
     const { data: project, refetch } = useProject(Number(projectId))
     const [create, toggleCreate] = useToggle()
+    const [createMeet, toggleCreateMeet] = useToggle()
+
     const deleteMeet = useDeleteMeet()
     const createParticipation = useCreateParticipation()
     const deleteParticipation = useDeleteParticipation()
 
     if (!project) return null;
 
-    const participation = project.participationUsers?.find(({ userId }) => userId === user.id)
-    const editable = project.participationUsers?.find(({ userId }) => userId === user.id)
+    const participation = project.participationUsers?.find(({ userId }) => userId === user?.id)
+    const editable = project.passportId === passport?.id
 
 
     const parameters = [
@@ -64,14 +74,16 @@ export default function ProjectPage() {
     ] as Parameter[]
 
     const onDelete =  () => deleteMeet.mutateAsync(project.id).then(() => navigate(`/`))
-    const onCreateParticipation =  () => createParticipation.mutateAsync(project.id).then(() => refetch())
+    const onCreateParticipation =  () => createParticipation.mutateAsync({ projectId: project.id, userId: user.id }).then(() => refetch())
     const onDeleteParticipation =  () => participation && deleteParticipation.mutateAsync(participation).then(() => refetch())
 
 
-    const menuItems = project.editable ? [
-        { title: 'Редактировать', onClick: toggleCreate},
-        { title: 'Удалить', onClick: onDelete}
-    ] : undefined
+    const menuItems = [
+        editable && { title: 'Новая встреча', onClick: toggleCreateMeet},
+        editable && { title: 'Редактировать', onClick: toggleCreate},
+        editable && { title: 'Удалить', onClick: onDelete},
+        participation && { title: 'Выйти из проекта', onClick: onDeleteParticipation}
+    ] as MenuItemProps[]
     const onShare = getOnShare({
         title: `Приглашаю в проект: ${project?.title}`,
         url: `/project/${project?.id}`
@@ -86,39 +98,44 @@ export default function ProjectPage() {
                 </div>
                 <div style={{ position: "relative"}}>
                     <Stack className={classes.container} spacing={3}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div style={{ fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }}>
-                                {project.title}
+                        <Stack className={classes.container2} spacing={3}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }}>
+                                    {project.title}
+                                </div>
+                                <div onClick={onShare}>
+                                    <Icon name="share" />
+                                </div>
                             </div>
-                            <Icon onClick={onShare} name="share" />
+                            <Typography variant="Body">{project.description}</Typography>
+                            {!participation && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
+                            <Block title="Параметры">
+                                <Parameters items={parameters}/>
+                            </Block>
+                        </Stack>
+                        <div className={classes.container3}>
+                            <Block title="Расписание">
+                                <div>
+                                    {project.meets?.map((meet, index, meets) => {
+                                        return (
+                                            <div style={{ borderBottom: meets.length === index + 1 ? 'none' : '1px solid rgba(0, 0, 0, 0.12)' }}>
+                                                <MeetCard meet={meet} refetch={refetch}/>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </Block>
+                            <Block title="Участники проекта">
+                                <Stack spacing={1}>
+                                    {project.participationUsers?.map((participationUser) => <ParticipationCard key={participationUser.id} participationUser={participationUser}/>)}
+                                </Stack>
+                            </Block>
                         </div>
-                        <Typography variant="Body">{project.description}</Typography>
-                        {!participation && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
-                        <Block title="Параметры">
-                            <Parameters items={parameters}/>
-                        </Block>
-                        <Block title="Расписание">
-                            <div>
-                                {project.meets?.map((meet, index, meets) => {
-                                    return (
-                                        <div style={{ borderBottom: meets.length === index + 1 ? 'none' : '1px solid rgba(0, 0, 0, 0.12)' }}>
-                                            <MeetCard meet={meet} refetch={refetch}/>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </Block>
-                        <Block title="Участники проекта">
-                            <Stack spacing={1}>
-                                {project.participationUsers?.map((participationUser) => <ParticipationCard participationUser={participationUser}/>)}
-                            </Stack>
-                        </Block>
-                        {participation && <Button onClick={onDeleteParticipation} variant="gray">Выйти из проекта</Button>}
-
                     </Stack>
                 </div>
             </div>
             <CreateProject open={create} onClose={toggleCreate} />
+            <CreateMeet defaultProjectId={project.id} open={createMeet} onClose={toggleCreateMeet} />
         </>
     );
 }

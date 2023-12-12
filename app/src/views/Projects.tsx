@@ -10,7 +10,7 @@ import {useToggle} from "usehooks-ts";
 import Masonry from '@mui/lab/Masonry';
 
 export default function Projects(): JSX.Element {
-    const { isAuth, openLogin, passport } = useAuth();
+    const { isAuth, openLogin, passport, user } = useAuth();
     const { data: projects = [] } = useProjects();
     const [isOpenMeets, toggleIsOpenMeets] = useToggle()
 
@@ -36,10 +36,10 @@ export default function Projects(): JSX.Element {
                         </svg>
                     )}
                     {isAuth && <Burger />}
-                    {Boolean(passport?.users?.length) && (
+                    {Boolean(user) && (
                         <Box sx={{ display: 'flex' }}>
                             <AvatarGroup max={4}>
-                                <Avatar key={passport.users[0].id} alt={passport.users[0].title} src={passport.users[0].image} sx={{ width: 21, height: 21 }} />
+                                <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 21, height: 21 }} />
                             </AvatarGroup>
                         </Box>
                     )}
