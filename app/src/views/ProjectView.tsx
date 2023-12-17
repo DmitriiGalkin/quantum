@@ -14,7 +14,6 @@ import Typography from "../components/Typography";
 import {ParticipationCard} from "../cards/ParticipationCard";
 import {Block} from "../components/Block";
 import CreateMeet from "../dialogs/CreateMeet";
-import {MenuItemProps} from "../components/Back";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -78,12 +77,15 @@ export default function ProjectPage() {
     const onDeleteParticipation =  () => participation && deleteParticipation.mutateAsync(participation).then(() => refetch())
 
 
-    const menuItems = [
-        editable && { title: 'Новая встреча', onClick: toggleCreateMeet},
-        editable && { title: 'Редактировать', onClick: toggleCreate},
-        editable && { title: 'Удалить', onClick: onDelete},
-        participation && { title: 'Выйти из проекта', onClick: onDeleteParticipation}
-    ] as MenuItemProps[]
+    const menuItems = []
+    if (editable) {
+        menuItems.push({ title: 'Новая встреча', onClick: toggleCreateMeet})
+        menuItems.push({ title: 'Редактировать', onClick: toggleCreate})
+        menuItems.push({ title: 'Удалить', onClick: onDelete})
+    }
+    if (participation) {
+        menuItems.push({ title: 'Выйти из проекта', onClick: onDeleteParticipation})
+    }
     const onShare = getOnShare({
         title: `Приглашаю в проект: ${project?.title}`,
         url: `/project/${project?.id}`
@@ -99,14 +101,10 @@ export default function ProjectPage() {
                 <div style={{ position: "relative"}}>
                     <Stack className={classes.container} spacing={3}>
                         <Stack className={classes.container2} spacing={3}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <div style={{ fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }}>
-                                    {project.title}
-                                </div>
-                                <div onClick={onShare}>
-                                    <Icon name="share" />
-                                </div>
-                            </div>
+                            <Stack direction="row" justifyContent="space-between" alignContent="center">
+                                <Typography variant="TITLE">{project.title}</Typography>
+                                <Icon name="share" onClick={onShare} />
+                            </Stack>
                             <Typography variant="Body">{project.description}</Typography>
                             {!participation && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
                             <Block title="Параметры">

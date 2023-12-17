@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import {makeStyles} from "@mui/styles";
 
 export const useStyles = makeStyles(() => ({
@@ -39,6 +39,16 @@ export const useStyles = makeStyles(() => ({
                     fontWeight: 500,
                     letterSpacing: '0.18px'
                 }
+            case "H5":
+                return {
+                    flexGrow:1, color: 'white', fontWeight: 'bold', fontSize: 20, letterSpacing: '-0.01em', lineHeight: '22px'
+                }
+            case 'MenuButton':
+                return {
+                    flexGrow: 1, fontSize: 15, fontWeight: 500, lineHeight: '30px', letterSpacing: '0.15px'
+                }
+            case 'TITLE':
+                return { fontSize: 23, lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: 900 }
             default:
                 return {
                     fontSize: 16,
@@ -47,17 +57,18 @@ export const useStyles = makeStyles(() => ({
     },
 }));
 
-type Variant = 'Header1' | 'Header2' | 'Header3' | 'Body' | 'Body2-Bold' | 'Caption'
+type Variant = 'Header1' | 'Header2' | 'Header3' | 'Body' | 'Body2-Bold' | 'Caption' | 'H5' | 'MenuButton' | 'TITLE'
 interface TypographyProps{
     variant?: Variant
     color?: 'primary'
     children: React.ReactNode
+    style?: CSSProperties
 }
-export function Typography({ variant, color, children }: TypographyProps) {
+export function Typography({ variant, color, children, style }: TypographyProps) {
     const classes = useStyles({ variant, color });
 
     return (
-        <span className={classes.span}>
+        <span className={classes.span} style={style}>
             {children}
         </span>
     );

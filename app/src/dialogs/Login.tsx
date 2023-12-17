@@ -76,7 +76,6 @@ function Login({ onClose }: LoginProps) {
                             ))}
                         </Stack>
                     </Stack>
-                    <AppBanner title="Установите наше приложение, пожалуйста"/>
                 </Stack>
             </DialogContent>
         </>

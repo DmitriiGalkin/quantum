@@ -2,6 +2,8 @@ import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {Header} from "./Header";
 import {Icon} from "./Icon";
+import Typography from "./Typography";
+import {Stack} from "@mui/material";
 
 interface DialogHeaderProps {
     title?: string
@@ -14,23 +16,9 @@ export function DialogHeaderDefault({ title, onClick, isClose }: DialogHeaderPro
 
     return (
         <Header>
-            <div style={{ width: 12 }}>
-                {!isClose && (
-                    <div onClick={onBackClick} style={{ display: 'flex' }}>
-                        <Icon name="left" />
-                    </div>
-                )}
-            </div>
-            <div style={{ color: 'white', fontWeight: 'bold', fontSize: 20, letterSpacing: '-0.01em', lineHeight: '22px' }}>
-                {title}
-            </div>
-            <div style={{ width: 12 }}>
-                {isClose && (
-                    <div onClick={onBackClick} style={{ display: 'flex' }}>
-                        <Icon name="close" />
-                    </div>
-                )}
-            </div>
+            {!isClose && <Icon name="left" onClick={onBackClick} />}
+            <Typography variant="H5">{title}</Typography>
+            {isClose && <Icon name="close" onClick={onBackClick} />}
         </Header>
     );
 }

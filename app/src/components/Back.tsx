@@ -26,7 +26,7 @@ export function Back({ onClick, menuItems }: BackProps) {
     return (
         <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
             <Stack spacing={2} direction="row" justifyContent="space-between" style={{ width: '100%' }}>
-                <div style={{ display: 'flex', padding: '13px 10px 13px 12px', background: '#FFFFFF', borderRadius: 18 }} onClick={onBackClick}>
+                <div style={{ display: 'flex', padding: 7, background: '#FFFFFF', borderRadius: 18 }} onClick={onBackClick}>
                     <Icon name="left2"/>
                 </div>
                 {Boolean(menuItems?.length) && (

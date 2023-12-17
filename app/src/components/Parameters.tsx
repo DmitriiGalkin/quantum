@@ -2,6 +2,7 @@ import React from 'react';
 import {Stack} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import {Icon, IconName} from "./Icon";
+import Typography from "./Typography";
 
 export interface Parameter {
     name: IconName,
@@ -13,26 +14,20 @@ interface ParametersProps {
 }
 export function Parameters({ items }: ParametersProps) {
     return (
-        <div id="parameters">
-            <Stack spacing={3} direction="column">
-                {items.map(({ name, title, value }) => (
-                    <Grid container key={title}>
-                        <Grid xs={6}>
-                            <Stack spacing={2} direction="row" alignItems="center">
-                                <Icon name={name}/>
-                                <div style={{ fontWeight: 900 }}>
-                                    {title}
-                                </div>
-                            </Stack>
-                        </Grid>
-                        <Grid xs={6}>
-                            <div style={{ color: '#070707', letterSpacing: '0.05em' }}>
-                                {value}
-                            </div>
-                        </Grid>
+        <Stack spacing={3} direction="column">
+            {items.map(({ name, title, value }) => (
+                <Grid container key={title}>
+                    <Grid xs={6}>
+                        <Stack spacing={2} direction="row" alignItems="center">
+                            <Icon name={name}/>
+                            <Typography variant="Body2-Bold">{title}</Typography>
+                        </Stack>
                     </Grid>
-                ))}
-            </Stack>
-        </div>
+                    <Grid xs={6}>
+                        <Typography variant="Body">{value}</Typography>
+                    </Grid>
+                </Grid>
+            ))}
+        </Stack>
     );
 }

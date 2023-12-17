@@ -43,19 +43,21 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
      */
     const authFn = (fn: () => void) => isAuth ? fn : toggleOpenLogin
 
-    const value = useMemo(
-        () => ({
-            user: passport?.users.length ? passport?.users.find((u) => u.id === selectedUserId) || passport?.users[0] : undefined,
-            passport,
-            isAuth,
-            openLogin: toggleOpenLogin,
-            access_token,
-            logout,
-            authFn
-        }),
-        [access_token, passport]
-    );
-    return <AuthContext.Provider value={value}>
+
+    // const value = useMemo(
+    //     () => (),
+    //     [access_token, passport]
+    // );
+    return <AuthContext.Provider value={{
+        user: passport?.users.length ? passport?.users.find((u) => u.id === selectedUserId) || passport?.users[0] : undefined,
+        passport,
+        isAuth,
+        openLogin: toggleOpenLogin,
+        access_token,
+        logout,
+        authFn,
+        setSelectedUserId,
+    }}>
         {children}
         <Login open={openLogin} onClose={toggleOpenLogin} />
         <PassportDialog open={isAuth && !passport?.users[0]} onClose={refetch} />
@@ -69,6 +71,7 @@ export interface Auth {
     openLogin: () => void
     logout: () => void
     authFn: (fn: () => void) => () => void
+    setSelectedUserId: (userId: number) => void
 }
 
 export const useAuth = (): Auth => {
