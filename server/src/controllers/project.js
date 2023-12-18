@@ -36,21 +36,19 @@ exports.findById = function(req, res) {
         if (!project) {
             res.status(400).send({ error:true, message: 'Проект с таким номером не найден' });
         } else {
-            Place.findByMeet(project, function(err, place) {
+            Place.findById(project.placeId, function(err, place) {
                 User.findById(project.userId, function (err, user) {
                     User.findParticipationUsersByProjectId(project.id, function (err, participationUsers) {
                         Meet.findByProjectId(project.id, function (err, meets) {
                             async.map(meets, Visit.findByMeet, function(err, visits) {
-                                async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
-                                    res.send({
-                                        ...project,
-                                        editable: req.user?.id === project.userId,
-                                        user,
-                                        place,
-                                        meets: meets?.map((m, index) => ({ ...m, visits: visits[index], place: meetsPlaces[index] })),
-                                        participationUsers,
-                                    });
-                                })
+                                res.send({
+                                    ...project,
+                                    editable: req.user?.id === project.userId,
+                                    user,
+                                    place,
+                                    meets: meets?.map((m, index) => ({ ...m, visits: visits[index] })),
+                                    participationUsers,
+                                });
                             })
                         })
                     })

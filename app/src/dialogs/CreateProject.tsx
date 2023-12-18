@@ -7,7 +7,7 @@ import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {PlaceSelect} from "../components/PlaceSelect";
 import {AgeField} from "../components/AgeField";
-import {Project} from "../tools/dto";
+import {Place, Project} from "../tools/dto";
 
 export interface CreateProjectProps {
     onClose: () => void
@@ -20,7 +20,7 @@ function CreateProject({ onClose }: CreateProjectProps) {
     const editProject = useEditProject(project.id)
 
     useEffect(() => defaultProject && setProject(defaultProject), [defaultProject])
-    const onChangePlace = useCallback((place: { latitude: string, longitude: string }) => setProject({ ...project, ...place}), [project, setProject])
+    const onChangePlace = useCallback((place: Place) => setProject({ ...project, placeId: place.id}), [project, setProject])
 
     const onClickSave = () => {
         if (project.id) {
@@ -63,7 +63,6 @@ function CreateProject({ onClose }: CreateProjectProps) {
                     <PlaceSelect
                         onChange={onChangePlace}
                         value={project.placeId}
-                        longitude={project.longitude}
                     />
                     <AgeField
                         ageFrom={project.ageFrom}

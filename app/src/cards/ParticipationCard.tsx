@@ -9,7 +9,7 @@ interface ParticipationCardProps {
 
 export function ParticipationCard({ participationUser }: ParticipationCardProps) {
     return (
-        <Stack spacing={2} direction="row">
+        <Stack spacing={2} direction="row" style={{ borderRadius: 8, backgroundColor: 'white', padding: 8 }}>
             <Avatar key={participationUser.userId} alt={participationUser.title} src={participationUser.image} />
             <Typography variant="Body">{participationUser.title}, {participationUser.age} лет</Typography>
         </Stack>

@@ -25,8 +25,8 @@ Place.findAll = () => function (result) {
 //         result(null, res.length ? res[0] : undefined);
 //     });
 // };
-Place.findByMeet = function (meet, result) {
-    dbConn.query("SELECT * FROM place WHERE id = ?", [meet.placeId], function (err, res) {
+Place.findById = function (id, result) {
+    dbConn.query("SELECT * FROM place WHERE id = ?", [id], function (err, res) {
         result(null, res.length ? res[0] : undefined);
     });
 };

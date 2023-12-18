@@ -1,5 +1,5 @@
 import React from 'react';
-import {Meet, Visit} from "../tools/dto";
+import {Meet, Place, Project, Visit} from "../tools/dto";
 import {convertToObject} from "../tools/date";
 import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
 import {useCreateVisit, useDeleteVisit} from "../tools/service";
@@ -11,11 +11,12 @@ import {Button, Icon} from "../components";
 
 interface MeetCardProps {
     meet: Meet
+    project?: Project
     selected?: boolean
     refetch?: () => void
 }
 
-export function MeetCard({ meet, refetch }: MeetCardProps) {
+export function MeetCard({ meet, refetch, project }: MeetCardProps) {
     const { isAuth, user, openLogin } = useAuth();
     const createVisit = useCreateVisit()
     const deleteVisit = useDeleteVisit()
@@ -38,7 +39,7 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
     }
 
     return (
-        <Stack spacing={2} direction="row" style={{ padding: '18px 0'}}>
+        <Stack spacing={2} direction="row" style={{ padding: '11px 11px 16px', borderRadius: 8, backgroundColor: 'white'}}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ fontSize: 33, lineHeight: '33px' }}>{day}</div>
                 <div style={{ fontSize: 13, paddingTop: 4 }}>{shortMonth}</div>
@@ -46,10 +47,12 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
             <div style={{ flexGrow: 1 }}>
                 <div>
                     <Stack direction="row" justifyContent="space-between" alignContent="center">
-                        <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
-                            <Icon name="place2" />
-                            <Typography variant="Body">{meet.place?.title}</Typography>
-                        </Stack>
+                        {project && (
+                            <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
+                                <Icon name="place2" />
+                                <Typography variant="Body">{project.place?.title}</Typography>
+                            </Stack>
+                        )}
                         <Typography variant="Body2-Bold" color="primary">{time}</Typography>
                     </Stack>
                     <div style={{ flex: '1 0 auto', display: 'flex', height: 30, paddingTop: 8 }}>

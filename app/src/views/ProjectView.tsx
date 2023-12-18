@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
         padding: '24px 26px'
     },
     container3: {
-        padding: '24px 26px',
+        padding: '24px 11px',
         backgroundColor: 'rgb(245, 245, 245)'
     },
     image: {
@@ -113,15 +113,13 @@ export default function ProjectPage() {
                             <Stack flexDirection="column" spacing={3}>
                                 <Block title="Расписание">
                                     {Boolean(project.meets?.length) ? (
-                                        <div>
+                                        <Stack flexDirection="column" spacing={1}>
                                             {project.meets?.map((meet, index, meets) => {
                                                 return (
-                                                    <div key={index} style={{ borderBottom: meets.length === index + 1 ? 'none' : '1px solid rgba(0, 0, 0, 0.12)' }}>
-                                                        <MeetCard meet={meet} refetch={refetch}/>
-                                                    </div>
+                                                    <MeetCard key={index} meet={meet} refetch={refetch}/>
                                                 )
                                             })}
-                                        </div>
+                                        </Stack>
                                     ) : (
                                         <div style={{ height: 60, alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
                                             <Typography variant="Caption">Ближайших встреч нет</Typography>
