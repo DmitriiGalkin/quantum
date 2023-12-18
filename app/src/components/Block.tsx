@@ -9,7 +9,7 @@ interface BlockProps {
 export function Block({ title, children }: BlockProps) {
     return (
         <Stack spacing={2} flexDirection="column">
-            {title && <Typography variant="Header3">{title}</Typography>}
+            {title && <Typography variant="Header2">{title}</Typography>}
             {children}
         </Stack>
     );

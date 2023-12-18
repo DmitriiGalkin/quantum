@@ -91,6 +91,15 @@ export default function ProjectPage() {
         url: `/project/${project?.id}`
     })
 
+    const onCloseCreateProject = () => {
+        toggleCreate()
+        refetch()
+    }
+    const onCloseCreateMeet = () => {
+        toggleCreateMeet()
+        refetch()
+    }
+
     return (
         <>
             <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)'}}>
@@ -102,10 +111,10 @@ export default function ProjectPage() {
                     <Stack className={classes.container} spacing={3}>
                         <Stack className={classes.container2} spacing={3}>
                             <Stack direction="row" justifyContent="space-between" alignContent="center">
-                                <Typography variant="TITLE">{project.title}</Typography>
+                                <Typography variant="Header1">{project.title}</Typography>
                                 <Icon name="share" onClick={onShare} />
                             </Stack>
-                            <Typography variant="Body">{project.description}</Typography>
+                            <Typography variant="Subheader1">{project.description}</Typography>
                             {!participation && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
                             <Parameters items={parameters}/>
                         </Stack>
@@ -136,14 +145,8 @@ export default function ProjectPage() {
                     </Stack>
                 </div>
             </div>
-            <CreateProject open={create} onClose={() => {
-                toggleCreate()
-                refetch()
-            }} />
-            <CreateMeet defaultProjectId={project.id} open={createMeet} onClose={() => {
-                toggleCreateMeet()
-                refetch()
-            }} />
+            <CreateProject open={create} onClose={onCloseCreateProject} />
+            <CreateMeet defaultProjectId={project.id} open={createMeet} onClose={onCloseCreateMeet} />
         </>
     );
 }

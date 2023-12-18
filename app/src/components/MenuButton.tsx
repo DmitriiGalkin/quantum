@@ -15,7 +15,7 @@ export function MenuButton({ title, icon, onClick, variant }: MenuButtonProps) {
     return (
         <Stack key={title} spacing={3} direction="row" alignItems="center" style={style} onClick={onClick}>
             {variant === 'primary' ? <div style={{ borderRadius: 12, padding: '1px 2px', backgroundColor: '#7139FF'}}>{icon}</div> : icon}
-            <Typography variant="MenuButton">{title}</Typography>
+            <Typography variant="Body-Bold">{title}</Typography>
             <Icon name='right'/>
         </Stack>
     );

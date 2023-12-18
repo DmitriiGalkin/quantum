@@ -29,7 +29,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                         <Chip label={getAgeLabel(project)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
                         <img alt={project.title} src={project.image} className={classes.image}/>
                         <div style={{ padding: 4 }}>
-                            <Typography variant="Body2-Bold">{project.title}</Typography>
+                            <Typography variant="Body-Bold">{project.title}</Typography>
                         </div>
                     </div>
                 )}

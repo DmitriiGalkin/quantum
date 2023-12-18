@@ -53,7 +53,7 @@ export function MeetCard({ meet, refetch, project }: MeetCardProps) {
                                 <Typography variant="Body">{project.place?.title}</Typography>
                             </Stack>
                         )}
-                        <Typography variant="Body2-Bold" color="primary">{time}</Typography>
+                        <Typography variant="Body-Bold" color="primary">{time}</Typography>
                     </Stack>
                     <div style={{ flex: '1 0 auto', display: 'flex', height: 30, paddingTop: 8 }}>
                         <div style={{ flexGrow: 1 }}>

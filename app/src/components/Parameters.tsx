@@ -20,7 +20,7 @@ export function Parameters({ items }: ParametersProps) {
                     <Grid xs={6}>
                         <Stack spacing={1} direction="row" alignItems="center">
                             <Icon name={name}/>
-                            <Typography variant="Body2-Bold">{title}</Typography>
+                            <Typography variant="Body-Bold">{title}</Typography>
                         </Stack>
                     </Grid>
                     <Grid xs={6}>

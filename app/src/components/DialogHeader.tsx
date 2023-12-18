@@ -17,7 +17,7 @@ export function DialogHeaderDefault({ title, onClick, isClose }: DialogHeaderPro
     return (
         <Header>
             {!isClose && <Icon name="left" onClick={onBackClick} />}
-            <Typography variant="H5">{title}</Typography>
+            <Typography variant="Header1">{title}</Typography>
             {isClose && <Icon name="close" onClick={onBackClick} />}
         </Header>
     );

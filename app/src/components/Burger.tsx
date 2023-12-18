@@ -66,7 +66,7 @@ export function Burger() {
                         <div style={{ backgroundColor: '#FFB628', width: 54, padding: '24px 8px', height: '100%' }}>
                             <Stack flexDirection="column" alignItems="center" spacing={2}>
                                 {passportAll && passportAll?.users.map((user) => (
-                                    <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 32, height: 32 }} onClick={()=>setSelectedUserId(user.id)}/>
+                                    <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 32, height: 32, border: '2px solid white' }} onClick={()=>setSelectedUserId(user.id)}/>
                                 ))}
                             </Stack>
                         </div>
@@ -81,10 +81,10 @@ export function Burger() {
                                             <img alt={user.title} src={user.image} className={classes.image}/>
                                         </div>
                                     </div>
-                                    <div>
+                                    <Stack spacing={1} direction="column">
                                         <Typography variant="Caption">Ребенок</Typography>
-                                        <div style={{ fontSize: 19, fontWeight: 600, lineHeight: '30px', letterSpacing: '0.193px' }}>{user.title}</div>
-                                    </div>
+                                        <Typography variant="Header3">{user.title}</Typography>
+                                    </Stack>
                                 </Stack>
                             </Stack>
                             <Stack spacing={1}>
