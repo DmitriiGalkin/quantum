@@ -22,7 +22,7 @@ exports.delete = function(req, res) {
         if (err) { return res.json({error:true,message:"Участие не существует"}); }
         Meet.findById(visit.meetId, function(err, meet) {
             if (err) { return res.json({ error: true, message: "Встреча не найдена" }); }
-            if (visit.userId !== req.user.id && meet.userId !== req.user.id) { return res.json({ error: true, message: "Нет прав на удаление" }); }
+            if (!req.users.map(u=>u.id).includes(visit.userId)) { return res.json({ error: true, message: "Нет прав на удаление" }); }
             Visit.delete( req.params.id, function() {
                 res.json({ error:false, message: 'Удаление участника из встречи' });
             });

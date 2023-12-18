@@ -58,7 +58,7 @@ export function Button({ children, variant, onClick, href, color, disabled }: Pr
     if (variant === 'gray'){
         return (
             <Stack spacing={2} direction="row" onClick={() => onClick && !disabled && onClick()}  alignItems="center" justifyContent="center">
-                <Icon name="leave"/>
+                <Icon name="logout"/>
                 <div style={{ color: 'black',
                     textAlign: 'center',
                     fontSize: 15,

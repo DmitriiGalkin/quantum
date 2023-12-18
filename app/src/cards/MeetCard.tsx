@@ -22,9 +22,7 @@ export function MeetCard({ meet, refetch }: MeetCardProps) {
 
     const { time, shortMonth, day } = convertToObject(meet.datetime)
 
-    const visits = (meet.visits || [])
-
-    const visit = (meet.visits || []).find(({ userId }) => userId === user.id)
+    const visit = user && (meet.visits || []).find(({ userId }) => userId === user.id)
     const isOrganizer = user && (meet.userId === user.id)
     const [create, toggleCreate] = useToggle()
 

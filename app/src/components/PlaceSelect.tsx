@@ -6,15 +6,14 @@ import {useToggle} from "usehooks-ts";
 import {usePlaces} from "../tools/service";
 
 interface PlaceSelectProps {
-    onChange: (place: { latitude: string, longitude: string }) => void
-    latitude?: string
-    longitude?: string
+    onChange: (place: Place) => void
+    value?: number
 }
 
-export function PlaceSelectDefault({ onChange, latitude, longitude }: PlaceSelectProps) {
+export function PlaceSelectDefault({ onChange, value }: PlaceSelectProps) {
     const [findPlace, toggleFindPlace] = useToggle()
     const { data: places = [] } = usePlaces()
-    const selected = places.find(p => p.latitude === String(latitude) && p.longitude === String(longitude))
+    const selected = places.find(p => p.id === value)
 
     return (
         <>
@@ -22,13 +21,13 @@ export function PlaceSelectDefault({ onChange, latitude, longitude }: PlaceSelec
                 label="Место"
                 selected={selected}
                 items={places}
-                onChange={(place) => onChange({ latitude: place.latitude, longitude: place.longitude })}
+                onChange={onChange}
                 onAdd={toggleFindPlace}
             />
             <Places
                 open={findPlace}
                 onSuccess={(place: Place) => {
-                    onChange({ latitude: place.latitude, longitude: place.longitude})
+                    onChange(place)
                     toggleFindPlace()
                 }}
                 onClose={toggleFindPlace}

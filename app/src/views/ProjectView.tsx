@@ -59,7 +59,7 @@ export default function ProjectPage() {
 
     const parameters = [
         { name: "place", title: 'Место проведения', value: project?.place?.title },
-        { name: "place", title: 'Возраст', value: getAgeTitle(project?.ageFrom, project?.ageTo) },
+        { name: "age", title: 'Возраст', value: getAgeTitle(project?.ageFrom, project?.ageTo) },
         {
             name: "date",
             title: 'Организатор',
@@ -107,33 +107,45 @@ export default function ProjectPage() {
                             </Stack>
                             <Typography variant="Body">{project.description}</Typography>
                             {!participation && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
-                            <Block title="Параметры">
-                                <Parameters items={parameters}/>
-                            </Block>
+                            <Parameters items={parameters}/>
                         </Stack>
                         <div className={classes.container3}>
-                            <Block title="Расписание">
-                                <div>
-                                    {project.meets?.map((meet, index, meets) => {
-                                        return (
-                                            <div style={{ borderBottom: meets.length === index + 1 ? 'none' : '1px solid rgba(0, 0, 0, 0.12)' }}>
-                                                <MeetCard meet={meet} refetch={refetch}/>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            </Block>
-                            <Block title="Участники проекта">
-                                <Stack spacing={1}>
-                                    {project.participationUsers?.map((participationUser) => <ParticipationCard key={participationUser.id} participationUser={participationUser}/>)}
-                                </Stack>
-                            </Block>
+                            <Stack flexDirection="column" spacing={3}>
+                                <Block title="Расписание">
+                                    {Boolean(project.meets?.length) ? (
+                                        <div>
+                                            {project.meets?.map((meet, index, meets) => {
+                                                return (
+                                                    <div key={index} style={{ borderBottom: meets.length === index + 1 ? 'none' : '1px solid rgba(0, 0, 0, 0.12)' }}>
+                                                        <MeetCard meet={meet} refetch={refetch}/>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    ) : (
+                                        <div style={{ height: 60, alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
+                                            <Typography variant="Caption">Ближайших встреч нет</Typography>
+                                        </div>
+                                    )}
+                                </Block>
+                                <Block title="Участники проекта">
+                                    <Stack spacing={1}>
+                                        {project.participationUsers?.map((participationUser) => <ParticipationCard key={participationUser.id} participationUser={participationUser}/>)}
+                                    </Stack>
+                                </Block>
+                            </Stack>
                         </div>
                     </Stack>
                 </div>
             </div>
-            <CreateProject open={create} onClose={toggleCreate} />
-            <CreateMeet defaultProjectId={project.id} open={createMeet} onClose={toggleCreateMeet} />
+            <CreateProject open={create} onClose={() => {
+                toggleCreate()
+                refetch()
+            }} />
+            <CreateMeet defaultProjectId={project.id} open={createMeet} onClose={() => {
+                toggleCreateMeet()
+                refetch()
+            }} />
         </>
     );
 }

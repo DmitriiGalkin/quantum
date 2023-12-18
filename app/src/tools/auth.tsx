@@ -21,9 +21,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const [selectedUserId, setSelectedUserId] = useLocalStorage('selectedUserId', 0)
 
     if (tokenSearchParam) {
-        console.log('navigate', ACCESS_TOKEN, tokenSearchParam)
         localStorage.setItem(ACCESS_TOKEN, tokenSearchParam);
-        // navigate("/");
     }
 
     const logout = () => {

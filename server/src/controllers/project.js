@@ -42,7 +42,6 @@ exports.findById = function(req, res) {
                         Meet.findByProjectId(project.id, function (err, meets) {
                             async.map(meets, Visit.findByMeet, function(err, visits) {
                                 async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
-                                    console.log(meets, 'TUT')
                                     res.send({
                                         ...project,
                                         editable: req.user?.id === project.userId,

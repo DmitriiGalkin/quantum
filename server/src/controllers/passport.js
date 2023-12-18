@@ -60,6 +60,9 @@ exports.findById = function(req, res) {
 };
 // Вся информация по паспорту
 exports.all = function(req, res) {
+    if (!req.passport) {
+        return res.status(400).json({ error:true, message: "Паспорт отсутствует" });
+    }
     User.findByPassportId(req.passport.id, function(err, users) {
         res.send({
             ...req.passport,

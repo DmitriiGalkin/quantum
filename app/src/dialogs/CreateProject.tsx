@@ -22,14 +22,11 @@ function CreateProject({ onClose }: CreateProjectProps) {
     useEffect(() => defaultProject && setProject(defaultProject), [defaultProject])
     const onChangePlace = useCallback((place: { latitude: string, longitude: string }) => setProject({ ...project, ...place}), [project, setProject])
 
-
     const onClickSave = () => {
         if (project.id) {
             editProject.mutateAsync(project).then(onClose)
         } else {
-            addProject.mutateAsync(project).then(() => {
-                onClose()
-            })
+            addProject.mutateAsync(project).then(onClose)
         }
     };
 
@@ -65,7 +62,7 @@ function CreateProject({ onClose }: CreateProjectProps) {
                     />
                     <PlaceSelect
                         onChange={onChangePlace}
-                        latitude={project.latitude}
+                        value={project.placeId}
                         longitude={project.longitude}
                     />
                     <AgeField

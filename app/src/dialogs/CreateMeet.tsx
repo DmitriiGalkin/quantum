@@ -6,7 +6,7 @@ import {
     useEditMeet,
     useMeet,
 } from "../tools/service";
-import {Meet, Visit} from "../tools/dto";
+import {Meet} from "../tools/dto";
 import {Button, DatePicker, DialogHeader, TimePicker,} from "../components";
 import {convertToMeetsGroupTime} from "../tools/date";
 import {useLocalStorage} from "usehooks-ts";
@@ -77,11 +77,6 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
                             />
                         </div>
                     </Stack>
-                    <PlaceSelect
-                        onChange={onChangePlace}
-                        latitude={meet.latitude}
-                        longitude={meet.longitude}
-                    />
                     <PriceField
                         value={meet.price}
                         onChange={(price) => setMeet({...meet, price})}

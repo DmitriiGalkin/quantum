@@ -42,10 +42,9 @@ export interface Project {
     image?: string // Картинка проекта
     userId: number // Инициатор
     passportId: number // Администратор
-    latitude?: string // Широта, где потенциально проходит проект
-    longitude?: string // Долгота, где потенциально проходит проект
     ageFrom?: number // Минимальный возраст
     ageTo?: number // Максимальный возраст
+    placeId?: number  // По какому проекту
 
     /**
      * Дополнительные поля
@@ -64,7 +63,6 @@ export interface Meet {
     id: number // Идентификатор
     userId: number // Создатель
     projectId: number // По какому проекту
-    placeId?: number  // По какому проекту
     datetime: string // Время проведения
     latitude?: string  // Широта, где проходит встреча
     longitude?: string  // Долгота, где проходит встреча
@@ -75,7 +73,6 @@ export interface Meet {
      */
     visits?: VisitUser[] // Участия участников
     user?: User // Организатор встречи
-    place?: Place // Место проведения
     project?: Project // Проект
     editable?: boolean // Право на редактирование/удаление
 }

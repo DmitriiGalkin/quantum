@@ -14,11 +14,11 @@ interface ParametersProps {
 }
 export function Parameters({ items }: ParametersProps) {
     return (
-        <Stack spacing={3} direction="column">
+        <Stack spacing={1} direction="column">
             {items.map(({ name, title, value }) => (
                 <Grid container key={title}>
                     <Grid xs={6}>
-                        <Stack spacing={2} direction="row" alignItems="center">
+                        <Stack spacing={1} direction="row" alignItems="center">
                             <Icon name={name}/>
                             <Typography variant="Body2-Bold">{title}</Typography>
                         </Stack>

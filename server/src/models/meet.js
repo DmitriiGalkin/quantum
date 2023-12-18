@@ -48,7 +48,7 @@ Meet.findById = function (id, result) {
     });
 };
 Meet.findByProjectId = function (id, result) {
-    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE projectId = ?", id, function (err, res) {
+    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE projectId = ? AND DATE(datetime) >= CURDATE()", id, function (err, res) {
         result(null, res);
     });
 };
