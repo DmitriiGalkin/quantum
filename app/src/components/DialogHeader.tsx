@@ -3,7 +3,6 @@ import {useNavigate} from "react-router-dom";
 import {Header} from "./Header";
 import {Icon} from "./Icon";
 import Typography from "./Typography";
-import {Stack} from "@mui/material";
 
 interface DialogHeaderProps {
     title?: string
@@ -17,7 +16,7 @@ export function DialogHeaderDefault({ title, onClick, isClose }: DialogHeaderPro
     return (
         <Header>
             {!isClose && <Icon name="left" onClick={onBackClick} />}
-            <Typography variant="Header1">{title}</Typography>
+            <Typography variant="Header1" style={{ flexGrow: 1, color: 'white', textAlign: 'center', paddingLeft: isClose ? 36 : undefined, paddingRight: !isClose ? 36 : undefined }}>{title}</Typography>
             {isClose && <Icon name="close" onClick={onBackClick} />}
         </Header>
     );

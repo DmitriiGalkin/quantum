@@ -7,10 +7,8 @@ import {makeStyles} from "@mui/styles";
 import {useAuth} from "../tools/auth";
 import CreateProject from "../dialogs/CreateProject";
 import Typography from "./Typography";
-import {MenuButton} from "./MenuButton";
 import {Icon} from "./Icon";
-import SwipeableViews from "react-swipeable-views";
-import clsx from "clsx";
+import {Button} from "./Button";
 
 const useStyles = makeStyles(() => ({
     blockImage: {
@@ -93,7 +91,7 @@ export function Burger() {
                                         title: 'Новая заявка',
                                         icon: (<Icon name='add'/>),
                                         onClick: toggleProject,
-                                        variant: 'primary' as const
+                                        variant: 'primary'
                                     },
                                     {
                                         title: 'Посещения',
@@ -101,15 +99,12 @@ export function Burger() {
                                         onClick: toggleVisits
                                     },
                                 ].map((item, index) => (
-                                    <MenuButton key={index} {...item}/>
+                                    <Button variant="menuButton" key={index} icon={item.icon} onClick={item.onClick} color={item.variant}>{item.title}</Button>
                                 ))}
                             </Stack>
                         </Stack>
                         <Stack>
-                            <MenuButton icon={<Icon name='passport'/>}
-                                        title="Паспорт родителя"
-                                        onClick={togglePassport}
-                            />
+                            <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassport}>Паспорт родителя</Button>
                         </Stack>
                     </Stack>
                     </div>

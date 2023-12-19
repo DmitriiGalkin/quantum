@@ -61,11 +61,11 @@ export interface Project {
  */
 export interface Meet {
     id: number // Идентификатор
-    userId: number // Создатель
+    passportId: number // Создатель
     projectId: number // По какому проекту
     datetime: string // Время проведения
-    latitude?: string  // Широта, где проходит встреча
-    longitude?: string  // Долгота, где проходит встреча
+    // latitude?: string  // Широта, где проходит встреча
+    // longitude?: string  // Долгота, где проходит встреча
     price?: number  // Стоимость
 
     /**

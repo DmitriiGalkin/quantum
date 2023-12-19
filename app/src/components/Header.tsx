@@ -11,7 +11,7 @@ export function Header({ children }: HeaderProps) {
             alignItems="center"
             justifyContent="space-between"
             style={{ position: 'sticky', padding: '14px 18px 14px 18px', background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)', height: 54 }}
-            spacing={2}
+            spacing={1}
         >
             {children}
         </Stack>

@@ -35,7 +35,7 @@ exports.started = function(req, res) {
         if (err) { return res.json({error:true,message:"Участие не существует"}); }
         Meet.findById(visit.meetId, function(err, meet) {
             if (err) { return res.json({ error: true, message: "Встреча не найдена" }); }
-            if (meet.userId !== req.user.id) { return res.json({ error: true, message: "Нет прав на редактирование" }); }
+            if (meet.passportId !== req.passport.id) { return res.json({ error: true, message: "Нет прав на редактирование" }); }
             Visit.started( req.params.id, function() {
                 res.json({ error:false, message: 'Участник начал участие во встрече' });
             });
@@ -49,7 +49,7 @@ exports.stopped = function(req, res) {
         if (err) { return res.json({error:true,message:"Участие не существует"}); }
         Meet.findById(visit.meetId, function(err, meet) {
             if (err) { return res.json({ error: true, message: "Встреча не найдена" }); }
-            if (meet.userId !== req.user.id) { return res.json({ error: true, message: "Нет прав на редактирование" }); }
+            if (meet.passportId !== req.passport.id) { return res.json({ error: true, message: "Нет прав на редактирование" }); }
             Visit.stopped( req.params.id, function() {
                 res.json({ error:false, message: 'Участник начал участие во встрече' });
             });

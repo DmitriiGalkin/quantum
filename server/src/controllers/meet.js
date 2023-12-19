@@ -62,13 +62,15 @@ exports.findUserMeets = function(req, res) {
 
 exports.findAll = function(req, res) {
     Meet.findByUserId(req.query.userId, function(err, meets) {
-        async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
-            async.map(meets, User.findByMeet, function(err, meetsUsers) {
-                res.send(meets.map((p, index) => ({
-                    ...p,
-                    visits: meetsUsers[index],
-                    place: meetsPlaces[index]
-                })));
+        async.map(meets.map(m=>m.projectId), Project.findById, function(err, meetsProject) {
+            async.map(meetsProject.map(p=>p.placeId), Place.findById, function(err, meetsPlace) {
+                async.map(meets, User.findByMeet, function(err, meetsUsers) {
+                    res.send(meets.map((p, index) => ({
+                        ...p,
+                        visits: meetsUsers[index],
+                        project: {...meetsProject[index], place: meetsPlace[index]}
+                    })));
+                });
             });
         });
     });
@@ -79,27 +81,17 @@ exports.findById = function(req, res) {
         if (!meet) {
             res.status(400).send({ error:true, message: 'Встреча с таким номером не найдена' });
         } else {
-            Place.findByMeet(meet, function(err, place) {
-                User.findById(meet.userId, function (err, user) {
+            Project.findById(meet.projectId, function (err, project) {
+                Place.findById(project.placeId, function(err, place) {
                     User.findByMeet(meet, function (err, userMeets) {
-                        const exMeet = {
+                        res.send({
                             ...meet,
-                            user,
-                            editable: req.user?.id === meet.userId,
-                            // userMeet: userMeets.find((user) => user.userId === req.user?.id),
                             visits: userMeets,
-                            place
-                        }
-                        if (meet.projectId) {
-                            Project.findById(meet.projectId, function (err, project) {
-                                res.send({...exMeet, project });
-                            });
-                        } else {
-                            res.send(exMeet);
-                        }
+                            project: { ...project, place },
+                        });
                     });
-                });
-            })
+                })
+            });
         }
     });
 };

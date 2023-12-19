@@ -13,20 +13,15 @@ interface BackProps {
 }
 export function Back({ onClick, menuItems }: BackProps) {
     const navigate = useNavigate();
-    const onBackClick = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
+    const onClickBack = onClick ? onClick : (() => (window.history.length - 1) ? window.history.back() : navigate('/'))
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const handleProjectMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const isMenuOpen = Boolean(anchorEl);
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
+    const onMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)
+    const onMenuClose = () => setAnchorEl(null)
 
     return (
-        <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
-            <Stack spacing={2} direction="row" justifyContent="space-between" style={{ width: '100%' }}>
-                <div style={{ display: 'flex', padding: 7, background: '#FFFFFF', borderRadius: 18 }} onClick={onBackClick}>
+        <Stack spacing={2} direction="row" justifyContent="space-between" style={{ width: '100%' }}>
+                <div style={{ display: 'flex', padding: 7, background: '#FFFFFF', borderRadius: 18 }} onClick={onClickBack}>
                     <Icon name="left2"/>
                 </div>
                 {Boolean(menuItems?.length) && (
@@ -46,13 +41,13 @@ export function Back({ onClick, menuItems }: BackProps) {
                                 vertical: 'top',
                                 horizontal: 'right',
                             }}
-                            open={isMenuOpen}
-                            onClose={handleMenuClose}
+                            open={Boolean(anchorEl)}
+                            onClose={onMenuClose}
                         >
                             {menuItems?.map(({ title, onClick }) => {
                                 const onClickWithClose = () => {
                                     onClick()
-                                    handleMenuClose()
+                                    onMenuClose()
                                 }
                                 return <MenuItem key={title} onClick={onClickWithClose}>{title}</MenuItem>
                             })}
@@ -60,6 +55,5 @@ export function Back({ onClick, menuItems }: BackProps) {
                     </div>
                 )}
             </Stack>
-        </div>
     );
 }

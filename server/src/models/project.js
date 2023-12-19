@@ -36,6 +36,7 @@ Project.findAll = () => function (result) {
     });
 };
 Project.findById = function (id, result) {
+    console.log(id,'id')
     dbConn.query("SELECT * FROM project WHERE id = ?", id, function (err, res) {
         result(null, res[0]);
     });

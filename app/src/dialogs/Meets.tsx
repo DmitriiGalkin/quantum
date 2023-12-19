@@ -30,7 +30,7 @@ function Meets({ onClose }: MeetsProps) {
         <>
             <DialogHeader title="Календарь встреч" onClick={onClose}/>
             <DialogContent>
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <Stack direction="column" spacing={2} style={{ height: '100%' }}>
                     <Calendar days={days} onChange={setDate} map={display} />
                     <div style={{ flex: '1 1 auto', overflowY: 'auto' }} ref={containerRef}>
                         <SwipeableViews
@@ -41,19 +41,18 @@ function Meets({ onClose }: MeetsProps) {
                             threshold={4}
                         >
                             {meetsGroup.map(({id, meets}) => (
-                                <div key={id}>
-                                    <Stack spacing={2}>
-                                        {meets.map((meet) =>
-                                            <div key={meet.id}>
-                                                <MeetCard meet={meet} refetch={refetch} />
-                                            </div>
-                                        )}
-                                    </Stack>
-                                </div>
+                                <Stack key={id} spacing={2}>
+                                    {meets.map((meet) =>
+                                        <MeetCard key={meet.id} meet={meet} refetch={refetch} />
+                                    )}
+                                </Stack>
                             ))}
                         </SwipeableViews>
                     </div>
-                </div>
+                </Stack>
+                {/*<div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>*/}
+                {/*    */}
+                {/*</div>*/}
             </DialogContent>
         </>
     )

@@ -39,8 +39,8 @@ export const convertToMeetTime = (datetime?: string): string => {
 /**
  * Server datetime в разные объекты
  */
-export const convertToObject = (datetime?: string): { time?: string; shortMonth?: string; day?: string } => {
-    if (!datetime) return {};
+export const convertToObject = (datetime: string): { time: string; shortMonth?: string; day?: string } => {
+    //if (!datetime) return {};
     const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN))
     return ({
         time: localDateTime.format(DateTimeFormatter.ofPattern('HH:mm')),
@@ -74,4 +74,15 @@ export const convertToMeetsGroupTime = (datetime?: string): string => {
     if (!datetime) return '';
     const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN))
     return localDateTime.format(formatter2)
+}
+
+/**
+ * Началось ли уже это время
+ */
+export const getIsStart = (datetime?: string): boolean => {
+    if (!datetime) return false;
+    const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN))
+    const f = localDateTime.isBefore(LocalDateTime.now())
+    console.log(f,'f')
+    return f
 }

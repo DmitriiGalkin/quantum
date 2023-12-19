@@ -58,7 +58,7 @@ export default function ProjectPage() {
 
 
     const parameters = [
-        { name: "place", title: 'Место проведения', value: project?.place?.title },
+        { name: "place", title: 'Место', value: project?.place?.title },
         { name: "age", title: 'Возраст', value: getAgeTitle(project?.ageFrom, project?.ageTo) },
         {
             name: "date",
@@ -103,7 +103,9 @@ export default function ProjectPage() {
     return (
         <>
             <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)'}}>
-                <Back menuItems={menuItems} />
+                <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
+                    <Back menuItems={menuItems} />
+                </div>
                 <div style={{ height: 230 }}>
                     {project.image && <img alt={project.title} src={project.image} className={classes.image}/>}
                 </div>
@@ -125,7 +127,7 @@ export default function ProjectPage() {
                                         <Stack flexDirection="column" spacing={1}>
                                             {project.meets?.map((meet, index, meets) => {
                                                 return (
-                                                    <MeetCard key={index} meet={meet} refetch={refetch}/>
+                                                    <MeetCard key={index} meet={meet} refetch={refetch} showDate />
                                                 )
                                             })}
                                         </Stack>
@@ -137,7 +139,7 @@ export default function ProjectPage() {
                                 </Block>
                                 <Block title="Участники проекта">
                                     <Stack spacing={1}>
-                                        {project.participationUsers?.map((participationUser) => <ParticipationCard key={participationUser.id} participationUser={participationUser}/>)}
+                                        {project.participationUsers?.map((participationUser) => <ParticipationCard key={participationUser.id} participationUser={participationUser} isOrganizer={editable} refetch={refetch} />)}
                                     </Stack>
                                 </Block>
                             </Stack>

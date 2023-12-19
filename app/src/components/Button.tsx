@@ -1,16 +1,18 @@
 import React from 'react';
 import {Stack} from "@mui/material";
 import {Icon} from "./Icon";
+import Typography from "./Typography";
 
 interface Props {
-    variant?: 'outlined' | 'small' | 'small2' | 'gray'
+    variant?: 'outlined' | 'small' | 'small2' | 'gray' | 'menuButton'
     children: string | JSX.Element | JSX.Element[]
     onClick?: () => void
     href?: string
     color?: string
     disabled?: boolean
+    icon?: JSX.Element
 }
-export function Button({ children, variant, onClick, href, color, disabled }: Props) {
+export function Button({ children, variant, onClick, href, color, disabled, icon }: Props) {
     if (variant === 'small') {
         return (
             <div
@@ -69,6 +71,18 @@ export function Button({ children, variant, onClick, href, color, disabled }: Pr
                 </div>
             </Stack>
         )
+    }
+
+    if (variant === 'menuButton') {
+        const style = color === 'primary' ? ({ backgroundColor: 'rgba(217, 217, 217, 0.4)', padding: '12px 13px', borderRadius: 20, cursor: 'pointer' }) :
+            ({ backgroundColor: 'rgba(217, 217, 217, 0.4)', padding: '6px 13px', borderRadius: 16, cursor: 'pointer' })
+        return (
+            <Stack spacing={2} direction="row" alignItems="center" style={style} onClick={onClick}>
+                {color === 'primary' ? <div style={{ borderRadius: 12, backgroundColor: '#7139FF'}}>{icon}</div> : icon}
+                <Typography variant="Body-Bold" style={{ flexGrow: 1 }}>{children}</Typography>
+                <Icon name='right'/>
+            </Stack>
+        );
     }
 
     return (

@@ -10,9 +10,9 @@ export const useStyles = makeStyles(() => ({
                 }
             case "Subheader1":
                 return {
-                    fontSize: 13,
+                    fontSize: 14,
                     opacity: .4,
-                    fontWeight: 900,
+                    fontWeight: 400,
                     lineHeight: '18px',
                     letterSpacing: '0.36px',
                 }
@@ -58,7 +58,7 @@ interface TypographyProps{
     style?: CSSProperties
 }
 export function Typography({ variant, color, children, style }: TypographyProps) {
-    const classes = useStyles({ variant, color });
+    const classes = useStyles({ variant });
 
     return (
         <span className={classes.span} style={{ color: color === 'primary' ? '#7139FF' : '#070707', ...style }}>
