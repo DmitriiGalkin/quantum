@@ -7,7 +7,7 @@ import {
     useMeet,
 } from "../tools/service";
 import {Meet} from "../tools/dto";
-import {Button, DatePicker, DialogHeader, TimePicker,} from "../components";
+import {Button, DatePicker, DialogHeader, Icon, TimePicker,} from "../components";
 import {convertToMeetsGroupTime, getIsStart} from "../tools/date";
 import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
@@ -55,14 +55,11 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
         }
     };
 
-    const isStart = getIsStart(meet.datetime)
-
     return (
         <>
             <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Новая встреча'} onClick={onClose} isClose />
-            <DialogContent backgroundColor={'white'}>
-                <Stack spacing={5}>
-                    <Stack spacing={5}>
+            <DialogContent style={{ flexGrow: 0, backgroundColor: 'white' }}>
+                <Stack id="meetParams" spacing={5}>
                         <DatePicker
                             value={meet.datetime}
                             onChange={(datetime) => setMeet({ ...meet, datetime })}
@@ -81,27 +78,21 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
                             </div>
                         </Stack>
                         <PriceField
-                            value={meet.price}
-                            onChange={(price) => setMeet({...meet, price})}
+                            price={{ user: meet.price }}
+                            onChange={(price) => setMeet({...meet, price: price.user})}
                         />
                     </Stack>
+            </DialogContent>
+            <DialogContent style={{ flexGrow: 1 }}>
+                <Stack spacing={3}>
                     <div>
                         <Block title="Участники встречи">
                             <Stack spacing={1} direction="column">
-                                {meet.visits?.map((visit) => <VisitCard visit={visit} refetch={refetch} isStart={isStart} />)}
+                                {meet.visits?.map((visit) => <VisitCard visit={visit} refetch={refetch} meet={meet} />)}
                             </Stack>
                         </Block>
                     </div>
-                    <div style={{ color: 'black',
-                        textAlign: 'center',
-                        fontSize: 15,
-                        fontWeight: 500,
-                        lineHeight: '23.7px',
-                        letterSpacing: '0.15px', opacity: .4}}
-                         onClick={onDelete}
-                    >
-                        удалить встречу
-                    </div>
+                    <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить встречу</Button>
                 </Stack>
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultMeet) === JSON.stringify(meet) ? 'none' : 'block' }} >

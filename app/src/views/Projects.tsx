@@ -16,7 +16,7 @@ export default function Projects(): JSX.Element {
             height: '100vh'
         }}>
             <AppHeader/>
-            <div style={{ flex: '1 1 auto', overflowY: 'auto', padding: '8px 0 8px 8px' }}>
+            <div style={{ flex: '1 1 auto', overflowY: 'auto', padding: '8px 2px 8px 8px' }}>
                 <Masonry columns={2} spacing={1}>
                     {projects.map((project,index) =>
                         <ProjectCard key={project.id} project={project} />

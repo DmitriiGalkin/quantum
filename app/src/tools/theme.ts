@@ -3,6 +3,8 @@ import {createTheme} from '@mui/material/styles';
 export const DEFAULT_COLOR = 'white'
 export const BOX_SHADOW = '0px 2px 1px -1px rgba(0,0,0,0.05), 0px 1px 1px 0px rgba(0,0,0,0.04), 0px 1px 3px 0px rgba(0,0,0,0.03)'
 export const COLOR = "#FFA028"
+export const COLOR_SUCCESS = '#7139FF'
+export const COLOR_DEFAULT = '#e1e1e1'
 
 const theme = createTheme({
     typography: {
@@ -40,7 +42,8 @@ const theme = createTheme({
     spacing: 6,
     palette: {
         background: {
-            default: "white",
+            default: 'rgb(245,245,245)',
+            paper: 'rgb(245,245,245)',
         },
         primary: {
             main: '#FFA427',
@@ -50,9 +53,9 @@ const theme = createTheme({
             main: '#FFCE00',
             contrastText: '#674100',
         },
-        success: {
-            main: '#7139FF',
-        },
+        // success: {
+        //     // main: '#00ff00',
+        // },
         text: {
             primary: '#777777',
             secondary: '#A5A5A5',

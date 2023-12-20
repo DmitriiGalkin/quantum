@@ -9,6 +9,7 @@ import {useToggle} from "usehooks-ts";
 import CreateMeet from "../dialogs/CreateMeet";
 import {Button, Icon} from "../components";
 import {Parameter} from "../components/Parameter";
+import {COLOR, COLOR_DEFAULT, COLOR_SUCCESS} from "../tools/theme";
 
 interface MeetCardProps {
     meet: Meet
@@ -71,7 +72,7 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                                 <Box sx={{ display: 'flex' }}>
                                     <AvatarGroup max={4}>
                                         {meet.visits?.map((visitUser) => {
-                                            return user ? <Avatar key={visitUser.userId} alt={visitUser.title} src={visitUser.image} sx={{ width: 21, height: 21 }} /> : null
+                                            return user ? <Avatar key={visitUser.userId} alt={visitUser.title} src={visitUser.image} sx={{ width: 21, height: 21, borderColor: `${visitUser.started && !visitUser.stopped ? COLOR : COLOR_DEFAULT} !important` }} /> : null
                                         })}
                                     </AvatarGroup>
                                 </Box>

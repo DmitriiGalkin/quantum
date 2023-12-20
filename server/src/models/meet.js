@@ -21,7 +21,7 @@ Meet.create = function (data, result) {
 };
 
 Meet.update = function(id, meet, result){
-    dbConn.query("UPDATE meet SET title=?, description=?, datetime=?, image=?, latitude=?, longitude=?, projectId=?, price=?, ageFrom=?, ageTo=? WHERE id = ?", [meet.title, meet.description, meet.datetime, meet.image, meet.latitude, meet.longitude, meet.projectId, meet.price, meet.ageFrom, meet.ageTo, id], function (err, res) {
+    dbConn.query("UPDATE meet SET datetime=?, price=? WHERE id = ?", [meet.datetime, meet.price, id], function (err, res) {
         result(null, res);
     });
 };

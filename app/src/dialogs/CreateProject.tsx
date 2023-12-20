@@ -33,7 +33,7 @@ function CreateProject({ onClose }: CreateProjectProps) {
     return (
         <>
             <DialogHeader title={project.id ? 'Редактировать проект' : 'Новый проект'} onClick={onClose} isClose />
-            <DialogContent backgroundColor={'white'}>
+            <DialogContent>
                 <Stack spacing={5}>
                     <Stack spacing={1} direction="row">
                         <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>

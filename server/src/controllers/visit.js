@@ -58,13 +58,13 @@ exports.stopped = function(req, res) {
 };
 
 exports.paided = function(req, res) {
-    if (Number(req.params.userId) !== req.user.id) { return res.json({error:true, message: "Вы не тот участник"}); }
-    Meet.findById(req.params.meetId, function(err) {
-        if (err) { return res.json({error:true, message: "Встреча не найдена"}); }
-        Visit.findById(req.params.userId, req.params.meetId, function(err) {
-            if (err) { return res.json({ error:true, message: 'Участник не участвует во встрече' }); }
-            Visit.paided( req.params.userId, req.params.meetId, function() {
-                res.json({ error:false, message: 'Участник оплатил участие' });
+    Visit.findById(req.params.id, function(err, visit) {
+        if (err) res.json({error: true, message: 'Участник не участвует во встрече'});
+        Meet.findById(visit.meetId, function (err, meet) {
+            if (err) res.json({error: true, message: "Встреча не найдена"});
+            if (meet.passportId !== req.passport.id) res.json({error: true, message: "Вы не владелец встречи, чтобы принимать решение по оплате"});
+            Visit.paided(req.params.id, function () {
+                res.json({error: false, message: 'Участник оплатил участие'});
             });
         })
     })

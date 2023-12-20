@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {usePassport, useUpdatePassport} from "../tools/service";
 import {Passport} from "../tools/dto";
 import {Stack} from "@mui/material";
-import {Button, DialogHeader, Input} from "../components";
+import {Button, DialogHeader, Icon, Input} from "../components";
 import {useAuth} from "../tools/auth";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
@@ -52,7 +52,7 @@ function PassportDialog({ onLogout, onClose }: UserViewProps) {
                     <Button onClick={onClickSave} variant="outlined">
                         Сохранить
                     </Button>
-                    <Button onClick={onClickLogout} variant="gray">Выйти из профиля</Button>
+                    <Button onClick={onClickLogout} variant="gray" icon={<Icon name="logout"/>}>Выйти из профиля</Button>
                 </Stack>
             </DialogContent>
         </>

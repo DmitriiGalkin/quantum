@@ -4,29 +4,40 @@ import Switch from "./Switch";
 import {useToggle} from "usehooks-ts";
 import {useInputStyles} from "./helper";
 import {Input} from "./Input";
+import Typography from "./Typography";
 
-interface PriceFieldProps {
-    value?: number
-    onChange: (price: number) => void
+interface Price {
+    user?: number
+    meet?: number
 }
 
-export function PriceField({ value, onChange }: PriceFieldProps) {
+interface PriceFieldProps {
+    price?: Price
+    onChange: (price: Price) => void
+}
+
+export function PriceField({ price, onChange }: PriceFieldProps) {
     const [view, toggleView] = useToggle()
-    const classes = useInputStyles();
 
     return (
         <div>
             <Stack spacing={3} direction="row" alignItems="center" justifyContent="space-between">
-                <div>Стоимость</div>
+                <Typography variant="Body-Bold">Стоимость</Typography>
                 <Switch checked={view} onChange={toggleView}/>
             </Stack>
             {view && (
-                <Stack spacing={1} >
+                <Stack spacing={1} direction="row" >
                     <Input
                         name='price'
                         label="Стоимость с участника"
-                        value={value}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        value={price?.user}
+                        onChange={(e) => onChange({ ...price, user: Number(e.target.value) })}
+                    />
+                    <Input
+                        name='price'
+                        label="Стоимость с группы"
+                        value={price?.meet}
+                        onChange={(e) => onChange({ ...price, meet: Number(e.target.value) })}
                     />
                 </Stack>
             )}

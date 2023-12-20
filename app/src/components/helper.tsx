@@ -28,7 +28,7 @@ export const useInputStyles = makeStyles(() => ({
 }));
 
 export const withDialog = (WrappedComponent: any) => (props: any) => (
-    <Dialog onClose={props.onClose} open={props.open} fullScreen TransitionComponent={TransitionDialog}>
+    <Dialog onClose={props.onClose} open={props.open} fullScreen TransitionComponent={TransitionDialog} style={{ backgroundColor: 'rgb(245,245,245)'}}>
         <WrappedComponent {...props} />
     </Dialog>
 )

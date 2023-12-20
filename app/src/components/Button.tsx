@@ -60,7 +60,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
     if (variant === 'gray'){
         return (
             <Stack spacing={2} direction="row" onClick={() => onClick && !disabled && onClick()}  alignItems="center" justifyContent="center">
-                <Icon name="logout"/>
+                {icon}
                 <div style={{ color: 'black',
                     textAlign: 'center',
                     fontSize: 15,
