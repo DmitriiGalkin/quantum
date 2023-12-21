@@ -5,7 +5,7 @@ import {useProjects} from "../tools/service";
 import Masonry from '@mui/lab/Masonry';
 import {AppHeader} from "../components/AppHeader";
 
-export default function Projects(): JSX.Element {
+export default function ProjectsView(): JSX.Element {
     const { data: projects = [] } = useProjects();
 
     return (

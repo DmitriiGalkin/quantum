@@ -1,5 +1,5 @@
 import React from 'react';
-import {Meet, ParticipationUser, Visit, VisitUser} from "../tools/dto";
+import {Visit} from "../tools/dto";
 import {Avatar, Chip, Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {Button, Icon} from "../components";
@@ -7,30 +7,35 @@ import {useDeleteVisit, usePaidedVisit, useStartedVisit, useStoppedVisit} from "
 import clsx from "clsx";
 import {makeStyles} from "@mui/styles";
 import {COLOR_DEFAULT} from "../tools/theme";
-import {getIsStart} from "../tools/date";
-import CreditScore from '@mui/icons-material/CreditScore'; // CurrencyRuble
+import {convertToObject, getIsStart} from "../tools/date";
+import CreditScore from '@mui/icons-material/CreditScore';
+import {Parameter} from "../components/Parameter";
+import {useAuth} from "../tools/auth"; // CurrencyRuble
 
 const useStyles = makeStyles(() => ({
     card: {
-        borderRadius: 8, backgroundColor: 'white', padding: 9, border: '1px solid ' + COLOR_DEFAULT
+        borderRadius: 8, backgroundColor: 'white', border: '1px solid ' + COLOR_DEFAULT
     },
     isStarted: {
         border: '2px solid orange',
-        padding: 8
     },
     isMiss: {
         opacity: 0.5
+    },
+    isFinish: {
+        opacity: 0.1
     }
 }));
 
 
 interface VisitCardProps {
-    visit: VisitUser
+    visit: Visit
     refetch: () => void
-    meet: Partial<Meet>
 }
 
-export function VisitCard({ visit, refetch, meet }: VisitCardProps) {
+export function VisitCard({ visit, refetch }: VisitCardProps) {
+    const { passport } = useAuth();
+
     const startedVisit = useStartedVisit()
     const stoppedVisit= useStoppedVisit()
     const paidedVisit = usePaidedVisit()
@@ -42,29 +47,52 @@ export function VisitCard({ visit, refetch, meet }: VisitCardProps) {
     const classes = useStyles();
     const isStarted = visit.started && !visit.stopped
     const isMiss = !visit.started && visit.stopped
-    const isStart = getIsStart(meet.datetime) // true //
+    const isStart = getIsStart(visit.meet?.datetime) // true //
+    //
+    // // Полностью зав
+    // const isFinish = // getIsStart(visit.meet?.datetime) && getIsStart(visit.stopped) // true //
+
+    const { time, shortMonth, day } = convertToObject(visit.meet?.datetime)
 
     return (
-        <Stack className={clsx(classes.card, isStarted && classes.isStarted, isMiss && classes.isMiss)} spacing={3} direction="row" justifyContent="space-between" style={{  }}>
-            <Avatar key={visit.userId} alt={visit.title} src={visit.image} />
-            <Stack direction="column" spacing={1} style={{flexGrow:1}}>
-                <Stack direction="row" justifyContent="space-between" spacing={1}>
-                    <Typography variant="Body">{visit.title}, {visit.age} лет</Typography>
-                    {/*<Icon name="delete" onClick={onDeleteVisit}/>*/}
-                </Stack>
-                <Stack direction="row" justifyContent="space-between" spacing={1}>
-                    {meet.price && (
-                        <Chip
-                            label={visit.paided ? 'оплачено' : 'не оплачено'}
-                            color={visit.paided ? 'success' : (isStart ? 'warning' : undefined )}
-                            size="small"
-                            onDelete={!visit.paided ? onPaided : undefined}
-                            deleteIcon={!visit.paided ? <CreditScore /> : undefined}
-                        />
+        <Stack className={clsx(classes.card, isStarted && classes.isStarted, isMiss && classes.isMiss)} direction="row">
+            {visit.project && (
+                <div>
+                    <div style={{borderRadius: '8px 0 0 8px', height: '100%', display: 'flex', width: 60, backgroundImage: `url(${visit.project.image})`, backgroundSize: 'cover', backgroundPosition: 'center'}} />
+                </div>
+            )}
+            <Stack spacing={3} direction="row" style={{ padding: 9, width: '100%' }}>
+                {visit.user && <Avatar alt={visit.user?.title} src={visit.user?.image} />}
+                <Stack spacing={1} style={{flexGrow:1}}>
+                    {visit.project && (
+                        <Typography variant="Header2">{visit.project?.title}</Typography>
                     )}
-                    <Stack direction="row" spacing={1}>
-                        {!visit.started && <Button variant="small" onClick={onStarted}>Пришел</Button>}
-                        {isStarted && <Button variant="small2" onClick={onStopped}>Ушел</Button>}
+                    <Stack justifyContent="space-between" spacing={1}>
+                        {visit?.place && <Parameter name="place2" title={visit.place.title} />}
+                        {visit?.meet && (
+                            <Stack direction="row" alignContent="center" spacing={2}>
+                                {time && <Parameter name="time2" title={time} />}
+                                {visit.meet.duration && <Parameter name="timer" title={visit.meet.duration} />}
+                            </Stack>
+                        )}
+                        {visit.user && (<Typography variant="Body">{visit.user?.title}, {visit.user?.age} лет</Typography>)}
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between" spacing={1}>
+                        {visit.meet?.price ? (
+                            <Chip
+                                label={visit.paided ? 'оплачено' : 'не оплачено'}
+                                color={visit.paided ? 'success' : (isStart ? 'warning' : undefined )}
+                                size="small"
+                                onDelete={!visit.paided ? onPaided : undefined}
+                                deleteIcon={!visit.paided ? <CreditScore /> : undefined}
+                            />
+                        ) : (
+                            <Chip label="бесплатно" size="small"/>
+                        )}
+                        <Stack direction="row" spacing={1} style={{ width: '100%', justifyContent: 'end' }} >
+                            {visit.meet?.passportId === passport.id && !visit.started && <Button variant="small" onClick={onStarted}>Пришел</Button>}
+                            {visit.meet?.passportId === passport.id && isStarted && <Button variant="small2" onClick={onStopped}>Ушел</Button>}
+                        </Stack>
                     </Stack>
                 </Stack>
             </Stack>

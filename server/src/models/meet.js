@@ -8,8 +8,8 @@ var Meet = function(data){
     this.id = data.id;
     this.passportId = data.passportId; // Идентификатор наблюдателя
     this.datetime = data.datetime;
+    this.duration = data.duration; // Длительность
     this.projectId = data.projectId; // Идентификатор проекта
-    this.placeId = data.placeId; // Идентификатор пространства
     this.price = data.price;
 };
 
@@ -21,7 +21,7 @@ Meet.create = function (data, result) {
 };
 
 Meet.update = function(id, meet, result){
-    dbConn.query("UPDATE meet SET datetime=?, price=? WHERE id = ?", [meet.datetime, meet.price, id], function (err, res) {
+    dbConn.query("UPDATE meet SET datetime=?, duration=?, price=? WHERE id = ?", [meet.datetime, meet.duration, meet.price, id], function (err, res) {
         result(null, res);
     });
 };

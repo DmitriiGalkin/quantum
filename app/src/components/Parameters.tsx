@@ -14,7 +14,7 @@ interface ParametersProps {
 }
 export function Parameters({ items }: ParametersProps) {
     return (
-        <Stack direction="column">
+        <div>
             {items.map(({ name, title, value }) => (
                 <Grid container key={title} spacing={2} alignItems="center">
                     <Grid xs={5}>
@@ -28,6 +28,6 @@ export function Parameters({ items }: ParametersProps) {
                     </Grid>
                 </Grid>
             ))}
-        </Stack>
+        </div>
     );
 }

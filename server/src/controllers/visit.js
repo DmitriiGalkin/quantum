@@ -1,6 +1,10 @@
 'use strict';
+const async = require("async");
 const Meet = require('../models/meet');
+const User = require('../models/user');
 const Visit = require('../models/visit');
+const Project = require('../models/project');
+const Place = require('../models/place');
 
 exports.create = function(req, res) {
     Meet.findById(req.body.meetId, function(err) {
@@ -68,4 +72,22 @@ exports.paided = function(req, res) {
             });
         })
     })
+};
+
+exports.findAll = function(req, res) {
+    Visit.findByUserId(req.query.userId, function(err, visits) {
+        async.map(visits.map(v=>v.meetId), Meet.findById, function(err, meets) {
+            async.map(meets.map(m=>m.projectId), Project.findById, function(err, projects) {
+                async.map(projects.map(p=>p.placeId), Place.findById, function(err, places) {
+                    res.send(visits.map((visit, index) => ({
+                          ...visit,
+                          project: projects[index],
+                          meet: meets[index],
+                          place: places[index],
+                      })
+                    ));
+                });
+            });
+        });
+    });
 };

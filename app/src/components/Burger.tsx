@@ -61,52 +61,48 @@ export function Burger() {
                         </div>
                     </div>
                     {sub && (
-                        <div style={{ backgroundColor: '#FFB628', width: 54, padding: '24px 8px', height: '100%' }}>
-                            <Stack flexDirection="column" alignItems="center" spacing={2}>
+                        <div style={{ backgroundColor: '#FFB628', width: 60, padding: '24px 8px', height: '100%' }}>
+                            <Stack alignItems="center" spacing={2}>
                                 {passportAll && passportAll?.users.map((user) => (
-                                    <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 32, height: 32, border: '2px solid white' }} onClick={()=>setSelectedUserId(user.id)}/>
+                                    <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} onClick={()=>setSelectedUserId(user.id)}/>
                                 ))}
                             </Stack>
                         </div>
                     )}
                     <div style={{ padding: 15, color: 'black', height: '100%', width: 280 }}>
-                        <Stack direction="column" justifyContent="space-between" style={{ height: '100%' }}>
-                        <Stack spacing={2} direction="column">
-                            <Stack spacing={3} direction="column">
+                        <Stack justifyContent="space-between" style={{ height: '100%' }}>
+                            <Stack spacing={2}>
                                 <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }}>
                                     <div style={{ width: 72 }}>
                                         <div className={classes.blockImage}>
                                             <img alt={user.title} src={user.image} className={classes.image}/>
                                         </div>
                                     </div>
-                                    <Stack spacing={1} direction="column">
+                                    <Stack spacing={1}>
                                         <Typography variant="Caption">Ребенок</Typography>
                                         <Typography variant="Header3">{user.title}</Typography>
                                     </Stack>
                                 </Stack>
+                                <Stack spacing={1}>
+                                    {[
+                                        {
+                                            title: 'Новая заявка',
+                                            icon: (<Icon name='add'/>),
+                                            onClick: toggleProject,
+                                            variant: 'primary'
+                                        },
+                                        {
+                                            title: 'Посещения',
+                                            icon: <Icon name='visits'/>,
+                                            onClick: toggleVisits
+                                        },
+                                    ].map((item, index) => (
+                                        <Button variant="menuButton" key={index} icon={item.icon} onClick={item.onClick} color={item.variant}>{item.title}</Button>
+                                    ))}
+                                </Stack>
                             </Stack>
-                            <Stack spacing={1}>
-                                {[
-                                    {
-                                        title: 'Новая заявка',
-                                        icon: (<Icon name='add'/>),
-                                        onClick: toggleProject,
-                                        variant: 'primary'
-                                    },
-                                    {
-                                        title: 'Посещения',
-                                        icon: <Icon name='visits'/>,
-                                        onClick: toggleVisits
-                                    },
-                                ].map((item, index) => (
-                                    <Button variant="menuButton" key={index} icon={item.icon} onClick={item.onClick} color={item.variant}>{item.title}</Button>
-                                ))}
-                            </Stack>
-                        </Stack>
-                        <Stack>
                             <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassport}>Паспорт родителя</Button>
                         </Stack>
-                    </Stack>
                     </div>
                 </Stack>
             </SwipeableDrawer>

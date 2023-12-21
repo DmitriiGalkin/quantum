@@ -88,7 +88,7 @@ export function CalendarDay (f: CalendarDayProps): JSX.Element {
 
     const onClickDay = () => onClick && onClick(id)
     return (
-        <Stack key={day} spacing={1} direction="column" alignItems="center" onClick={onClickDay} style={{ width: '100%'}}>
+        <Stack key={day} spacing={1} alignItems="center" onClick={onClickDay} style={{ width: '100%'}}>
             <div className={clsx(classes.dayOfWeek, active && classes.dayOfWeekActive, map && classes.dayOfWeekMap)}>
                 {dayOfWeekValue}
             </div>

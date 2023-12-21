@@ -14,7 +14,7 @@ import {COLOR, COLOR_DEFAULT, COLOR_SUCCESS} from "../tools/theme";
 interface MeetCardProps {
     meet: Meet
     selected?: boolean
-    refetch?: () => void
+    refetch: () => void
     showDate?: boolean
 }
 
@@ -39,6 +39,10 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
     const onDeleteVisit = (visit: Visit) => {
         deleteVisit.mutateAsync(visit).then(refetch)
     }
+    const onCloseCreateMeet = () => {
+        toggleCreate()
+        refetch()
+    }
 
     return (
         <Stack direction="row" style={{ borderRadius: 8, backgroundColor: 'white', position: 'relative' }}>
@@ -54,25 +58,23 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                 </div>
             )}
             <div style={{ flexGrow: 1, padding: 12 }}>
-                <Stack direction="column" spacing={1}>
-                    {meet.project && (
-                        <Typography variant="Header2">{meet.project?.title}</Typography>
-                    )}
+                <Stack spacing={1}>
+                    {meet.project && <Typography variant="Header2">{meet.project?.title}</Typography>}
+                    {meet.project?.place && <Parameter name="place2" title={meet.project?.place.title} />}
                     <Stack direction="row" alignContent="center" spacing={1} justifyContent="space-between">
                         <Stack direction="row" alignContent="center" spacing={2}>
-                            {meet.project?.place && <Parameter name="place2" title={meet.project?.place?.title} />}
-                            <Parameter name="time2" title={time} />
+                            {time && <Parameter name="time2" title={time} />}
+                            {meet.duration && <Parameter name="timer" title={meet.duration} />}
                         </Stack>
                         {isOrganizer && <Icon name="edit" onClick={toggleCreate} />}
                     </Stack>
-
                     <div style={{ flex: '1 0 auto', display: 'flex' }}>
                         <div style={{ flexGrow: 1 }}>
                             {Boolean(meet.visits?.length) && (
                                 <Box sx={{ display: 'flex' }}>
                                     <AvatarGroup max={4}>
-                                        {meet.visits?.map((visitUser) => {
-                                            return user ? <Avatar key={visitUser.userId} alt={visitUser.title} src={visitUser.image} sx={{ width: 21, height: 21, borderColor: `${visitUser.started && !visitUser.stopped ? COLOR : COLOR_DEFAULT} !important` }} /> : null
+                                        {meet.visits?.map((visit) => {
+                                            return visit.user ? <Avatar key={visit.user.id} alt={visit.user.title} src={visit.user.image} sx={{ width: 21, height: 21, borderColor: `${visit.started && !visit.stopped ? COLOR : COLOR_DEFAULT} !important` }} /> : null
                                         })}
                                     </AvatarGroup>
                                 </Box>
@@ -84,7 +86,7 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                             <Button variant="small" onClick={onClickCreateVisit}>Участвовать</Button>
                         )}
                     </div>
-                    <CreateMeet meetId={meet.id} open={create} onClose={toggleCreate} />
+                    <CreateMeet meetId={meet.id} open={create} onClose={onCloseCreateMeet} />
                 </Stack>
             </div>
         </Stack>

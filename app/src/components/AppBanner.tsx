@@ -28,7 +28,7 @@ export function AppBanner({title}: AppBannerProps) {
 
     return (
         <div style={{ position: 'relative', borderRadius: 25, padding: 20, background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)' }}>
-            <Stack spacing={3} direction="column">
+            <Stack spacing={3}>
                 <Stack spacing={3} direction="row" alignItems="center">
                     <div>
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -23,16 +23,18 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
     return (
         <div onClick={() => navigate(`/project/${project.id}`)}>
-            <Stack spacing={1} direction="column">
-                {project.image && (
-                    <div style={{ minWidth: 150, position: "relative" }}>
-                        <Chip label={getAgeLabel(project)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
-                        <img alt={project.title} src={project.image} className={classes.image}/>
-                        <div style={{ padding: 4 }}>
-                            <Typography variant="Body-Bold">{project.title}</Typography>
-                        </div>
+            <Stack spacing={1}>
+                <div style={{ minWidth: 150, position: "relative" }}>
+                    {project.image && (
+                        <>
+                            <Chip label={getAgeLabel(project)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
+                            <img alt={project.title} src={project.image} className={classes.image}/>
+                        </>
+                        )}
+                    <div style={{ padding: 4 }}>
+                        <Typography variant="Body-Bold">{project.title}</Typography>
                     </div>
-                )}
+                </div>
             </Stack>
         </div>
     );

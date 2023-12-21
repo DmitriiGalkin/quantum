@@ -6,21 +6,21 @@ var Project = function(data){
     this.title = data.title;
     this.description = data.description;
     this.image = data.image;
-    this.latitude = data.latitude;
-    this.longitude = data.longitude;
-    this.userId = data.userId; // Создатель проекта
+    this.passportId = data.passportId; // Создатель проекта
     this.ageFrom = data.ageFrom;
     this.ageTo = data.ageTo;
+    this.placeId = data.placeId;
 };
 
 Project.create = function (data, result) {
     dbConn.query("INSERT INTO project set ?", data, function (err, res) {
+        if (err) {console.log(err,'err')}
         result(err, res.insertId);
     });
 };
 
 Project.update = function(id, obj, result){
-    dbConn.query("UPDATE project SET title=?, description=?, image=?, latitude=?, longitude=?, ageFrom=?, ageTo=? WHERE id = ?", [obj.title, obj.description, obj.image, obj.latitude, obj.longitude, obj.ageFrom, obj.ageTo, id], function (err, res) {
+    dbConn.query("UPDATE project SET title=?, description=?, image=?, ageFrom=?, ageTo=?, placeId=? WHERE id = ?", [obj.title, obj.description, obj.image, obj.ageFrom, obj.ageTo, obj.placeId, id], function (err, res) {
         result(null, res);
     });
 };
@@ -36,7 +36,6 @@ Project.findAll = () => function (result) {
     });
 };
 Project.findById = function (id, result) {
-    console.log(id,'id')
     dbConn.query("SELECT * FROM project WHERE id = ?", id, function (err, res) {
         result(null, res[0]);
     });

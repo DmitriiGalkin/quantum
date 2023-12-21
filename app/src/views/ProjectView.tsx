@@ -59,14 +59,14 @@ export default function ProjectPage() {
 
     const parameters = [
         { name: "place", title: 'Место', value: project?.place?.title },
-        { name: "age", title: 'Возраст', value: getAgeTitle(project?.ageFrom, project?.ageTo) },
+        { name: "age", title: 'Рек. возраст', value: getAgeTitle(project?.ageFrom, project?.ageTo) },
         {
-            name: "date",
+            name: "passport",
             title: 'Организатор',
             value: (
                 <span>
-                    {project.user?.title}
-                    {project.user?.id === user?.id && '(Вы)'}
+                    {project.passport?.title}
+                    {project.passportId === passport?.id && ' (Вы)'}
                 </span>
             ),
         }
@@ -121,7 +121,7 @@ export default function ProjectPage() {
                             <Parameters items={parameters}/>
                         </Stack>
                         <div className={classes.container3}>
-                            <Stack flexDirection="column" spacing={3}>
+                            <Stack spacing={3}>
                                 <Block title="Расписание">
                                     {Boolean(project.meets?.length) ? (
                                         <Stack flexDirection="column" spacing={1}>

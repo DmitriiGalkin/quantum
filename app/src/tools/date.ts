@@ -1,4 +1,4 @@
-import {DateTimeFormatter, LocalDateTime} from "@js-joda/core";
+import {DateTimeFormatter, LocalDate, LocalDateTime} from "@js-joda/core";
 
 // Форматирование даты, используемое для отправки на бек
 export const serverDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -26,6 +26,7 @@ const DAYS_OF_WEEK = new Map([
 ])
 export const getDayOfWeek = (day: string) => DAYS_OF_WEEK.get(day) as string
 const PATTERN = "yyyy-MM-dd HH:mm:ss"
+const PATTERN2 = "yyyy-MM-dd"
 
 /**
  * Server datetime to 'HH:mm'
@@ -36,16 +37,18 @@ export const convertToMeetTime = (datetime?: string): string => {
     return localDateTime.format(DateTimeFormatter.ofPattern('HH:mm'))
 }
 
+const getDayTitle = (localDateTime: LocalDateTime) => localDateTime.format(DateTimeFormatter.ofPattern('dd'))
+const getShortMonthTitle = (localDateTime: LocalDateTime) => getMonthShortTitle(Number(localDateTime.format(DateTimeFormatter.ofPattern('MM'))))
 /**
  * Server datetime в разные объекты
  */
-export const convertToObject = (datetime: string): { time: string; shortMonth?: string; day?: string } => {
-    //if (!datetime) return {};
+export const convertToObject = (datetime?: string): { time?: string; shortMonth?: string; day?: string } => {
+    if (!datetime) return {};
     const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN))
     return ({
         time: localDateTime.format(DateTimeFormatter.ofPattern('HH:mm')),
-        shortMonth: getMonthShortTitle(Number(localDateTime.format(DateTimeFormatter.ofPattern('MM')))),
-        day: localDateTime.format(DateTimeFormatter.ofPattern('dd'))
+        shortMonth: getShortMonthTitle(localDateTime),
+        day: getDayTitle(localDateTime)
     })
 }
 
@@ -82,7 +85,16 @@ export const convertToMeetsGroupTime = (datetime?: string): string => {
 export const getIsStart = (datetime?: string): boolean => {
     if (!datetime) return false;
     const localDateTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern(PATTERN))
-    const f = localDateTime.isBefore(LocalDateTime.now())
-    console.log(f,'f')
-    return f
+    return localDateTime.isBefore(LocalDateTime.now())
+}
+
+const getDayTitle2 = (localDate: LocalDate) => localDate.format(DateTimeFormatter.ofPattern('dd'))
+const getShortMonthTitle2 = (localDate: LocalDate) => getMonthLongTitle(Number(localDate.format(DateTimeFormatter.ofPattern('MM'))))
+/**
+ * Server datetime to 'yyyy-MM-dd'
+ */
+export const convertToMeetsGroupTime2 = (datetime?: string): string => {
+    if (!datetime) return '';
+    const localDate = LocalDate.parse(datetime, DateTimeFormatter.ofPattern(PATTERN2))
+    return `${getDayTitle2(localDate)} ${getShortMonthTitle2(localDate)}`
 }

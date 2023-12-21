@@ -46,20 +46,6 @@ exports.toggleUserMeet = function(req, res) {
     })
 };
 
-exports.findUserMeets = function(req, res) {
-    Meet.findUserMeet(req.user.id, function(err, meets) {
-        async.map(meets, Place.findByMeet, function(err, meetsPlaces) {
-            async.map(meets, User.findByMeet, function(err, userMeets) {
-                res.send(meets.map((p, index) => ({
-                    ...p,
-                    userMeets: userMeets[index],
-                    active: userMeets[index]?.some((user) => user.userId === req.user?.id),
-                    place: meetsPlaces[index] })));
-            });
-        });
-    });
-};
-
 exports.findAll = function(req, res) {
     Meet.findByUserId(req.query.userId, function(err, meets) {
         async.map(meets.map(m=>m.projectId), Project.findById, function(err, meetsProject) {
@@ -83,11 +69,13 @@ exports.findById = function(req, res) {
         } else {
             Project.findById(meet.projectId, function (err, project) {
                 Place.findById(project.placeId, function(err, place) {
-                    User.findByMeet(meet, function (err, userMeets) {
-                        res.send({
-                            ...meet,
-                            visits: userMeets,
-                            project: { ...project, place },
+                    Visit.findByMeet(meet, function (err, visits) {
+                        async.map(visits.map(v=>v.userId), User.findById, function(err, visitUsers) {
+                            res.send({
+                                ...meet,
+                                visits: visits.map((visit, index) => ({ ... visit, user: visitUsers[index] })),
+                                project: { ...project, place },
+                            });
                         });
                     });
                 })

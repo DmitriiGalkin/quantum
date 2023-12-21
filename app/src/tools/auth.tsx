@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     const access_token = localStorage.getItem(ACCESS_TOKEN) || tokenSearchParam
     const navigate = useNavigate();
     const [openLogin, toggleOpenLogin] = useToggle()
-    const [openPassport, toggleOpenPassport] = useToggle()
     const isAuth =  !!access_token
     const [selectedUserId, setSelectedUserId] = useLocalStorage('selectedUserId', 0)
 

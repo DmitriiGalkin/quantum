@@ -4,26 +4,26 @@ const MailStrategy = require('passport-mail');
 const YandexStrategy = require('passport-yandex').Strategy;
 const VKStrategy = require('passport-vkontakte').Strategy;
 
-const User = require('./models/user');
+const Passport = require('./models/passport');
 
 function findOrCreate(accessToken, refreshToken, profile, cb) {
     // Не все системы авторизации даруют мне почту
     const email = profile.emails && profile.emails.length ? profile.emails[0].value : profile.profileUrl
-    const image = profile?.photos?.length ? profile.photos[0].value : '22'
+    // const image = profile?.photos?.length ? profile.photos[0].value : '22'
 
-    User.findByEmail(email, function(err, user) {
+    Passport.findByEmail(email, function(err, user) {
         if (user) {
-            User.updateTokenById(accessToken, user.id, function() {
+          Passport.updateTokenById(accessToken, user.id, function() {
                 return cb(null, { username: accessToken });
             });
         } else {
-            const user = new User({
+            const user = new Passport({
                 accessToken,
                 title: profile.displayName,
-                image,
+                // image,
                 email
             });
-            User.create(user, function(err, data) {
+          Passport.create(user, function(err, data) {
                 return cb(null, { username: accessToken });
             });
         }

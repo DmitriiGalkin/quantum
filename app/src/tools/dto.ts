@@ -51,7 +51,7 @@ export interface Project {
      */
     participationUsers: ParticipationUser[] // Участия участников
     editable?: boolean // Право на редактирование/удаление
-    user?: User // Организатор (Участник)
+    passport?: Passport // Организатор (Родитель)
     place?: Place // Место проведения
     meets?: Meet[] // Встречи
 }
@@ -64,14 +64,13 @@ export interface Meet {
     passportId: number // Создатель
     projectId: number // По какому проекту
     datetime: string // Время проведения
-    // latitude?: string  // Широта, где проходит встреча
-    // longitude?: string  // Долгота, где проходит встреча
+    duration: string // Длительность
     price?: number  // Стоимость
 
     /**
      * Дополнительные поля
      */
-    visits?: VisitUser[] // Участия участников
+    visits?: Visit[] // Участия участников
     user?: User // Организатор встречи
     project?: Project // Проект
     editable?: boolean // Право на редактирование/удаление
@@ -88,11 +87,15 @@ export interface Visit {
     started?: string // Время начала участия во встрече
     stopped?: string // Время завершения участия во встрече
     paided?: string // Время оплаты участия во встрече
+
+    /**
+     * Дополнительные поля
+     */
+    meet?: Meet // Встреча
+    user?: User
+    project?: Project // Встреча
+    place?: Place
 }
-/**
- * Посещение участника
- */
-export interface VisitUser extends User, Visit {}
 
 /**
  * Участие

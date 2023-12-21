@@ -30,7 +30,7 @@ function Meets({ onClose }: MeetsProps) {
         <>
             <DialogHeader title="Календарь встреч" onClick={onClose}/>
             <DialogContent>
-                <Stack direction="column" spacing={2} style={{ height: '100%' }}>
+                <Stack spacing={3} style={{ height: '100%' }}>
                     <Calendar days={days} onChange={setDate} map={display} />
                     <div style={{ flex: '1 1 auto', overflowY: 'auto' }} ref={containerRef}>
                         <SwipeableViews

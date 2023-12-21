@@ -1,5 +1,5 @@
 import React from 'react';
-import {COLOR} from "../tools/theme";
+import {COLOR, COLOR_DEFAULT} from "../tools/theme";
 
 
 

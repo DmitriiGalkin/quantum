@@ -10,6 +10,9 @@ var User = function(user){
 // Создание участника
 User.create = function (user, result) {
     dbConn.query("INSERT INTO user set ?", user, function (err, res) {
+        if (err) {
+            console.log(err,'err')
+        }
         result(null, res.insertId);
     });
 };

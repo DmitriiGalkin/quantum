@@ -90,7 +90,7 @@ export const useDeleteUser = (): UseMutate<User> => useMutation((user) => servic
 /**
  * Пользователь
  */
-export const useVisits = (): UseQueryResult<Meet[]> => useQuery(['visits'], () => service.get(`/visits`))
+export const useVisits = (userId: number): UseQueryResult<Visit[]> => useQuery(['visits'], () => service.get(`/visits?userId=${userId}`))
 
 export interface EditVisit extends Omit<Visit, "id"> { id?: number; }
 export const useCreateVisit = (): UseMutate<EditVisit> => useMutation((visit) => service.post("/visit", visit))

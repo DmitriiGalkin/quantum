@@ -3,6 +3,7 @@ import {Stack} from "@mui/material";
 import {AppBanner, DialogHeader} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
+import Typography from "../components/Typography";
 
 export interface LoginProps {
     onClose: () => void
@@ -58,23 +59,15 @@ function Login({ onClose }: LoginProps) {
         <>
             <DialogHeader title="Вход" onClick={onClose} isClose />
             <DialogContent>
-                <Stack spacing={3} direction="column"  justifyContent="space-between" style={{ height: '100%' }}>
-                    <Stack spacing={6} alignItems="center">
-                        <div style={{ paddingTop: 24, lineHeight: '30px', fontWeight: 600, fontSize: 17, letterSpacing: '0.17px', color: 'black', display: 'flex',
-                            width: 259,
-                            flexDirection: 'column',
-                            flexShrink: 0 }}>
-                            <span>Пожалуйста, авторизуйтесь</span>
-                            <span>удобным для вас способом:</span>
-                        </div>
-                        <Stack justifyContent="center" alignItems="center" direction="row" spacing={4}>
-                            {STRATEGIES.map((strategie)=>(
-                                <a href={strategie.href} style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none', alignItems: 'center' }}>
-                                    <span>{strategie.icon}</span>
-                                    <span style={{ paddingTop: 8, lineHeight: '17.7px', color: 'black', opacity: .5 }}>{strategie.title}</span>
-                                </a>
-                            ))}
-                        </Stack>
+                <Stack spacing={6} alignItems="center" style={{ padding: 24 }}>
+                    <Typography variant="Header2" style={{ lineHeight: '30px', padding: 24 }}>Пожалуйста, авторизуйтесь удобным для вас способом:</Typography>
+                    <Stack justifyContent="center" alignItems="center" direction="row" spacing={4}>
+                        {STRATEGIES.map((strategie)=>(
+                            <a href={strategie.href} style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none', alignItems: 'center' }}>
+                                <span>{strategie.icon}</span>
+                                <span style={{ paddingTop: 8, lineHeight: '17.7px', color: 'black', opacity: .5 }}>{strategie.title}</span>
+                            </a>
+                        ))}
                     </Stack>
                 </Stack>
             </DialogContent>

@@ -21,19 +21,12 @@ passport.use(strategys.mailru);
 passport.use(strategys.yandex);
 passport.use(strategys.vkontakte);
 
-/**
- * Встречи
- */
-router.get('/meets', passportController.usePassport, meet.findAll);
-router.get('/meet/:id', passportController.usePassport, meet.findById);
-router.post('/meet', passportController.usePassport, helper.checkConstructor, meet.create);
-router.put('/meet/:id', passportController.usePassport, helper.checkConstructor, meet.update);
-router.delete('/meet/:id', passportController.usePassport, meet.delete );
 
 /**
- * Картинки
+ * Родитель
  */
-router.post('/image', image.upload);
+router.get('/passport', passportController.usePassport, passportController.all);
+router.put('/passport', passportController.usePassport, passportController.update);
 
 /**
  * Авторизация
@@ -42,6 +35,7 @@ router.post('/passport/login', passportController.login);
 router.post('/passport/googleLogin', passportController.googleLogin);
 router.get('/login/federated/google', passport.authenticate('google'));
 router.get('/oauth2/redirect/google', (req, res) => passport.authenticate('google', function(err, user) {
+    console.log(user,'user')
     if (!user) { return res.redirect('/login'); }
     res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
 })(req, res));
@@ -63,31 +57,10 @@ router.get('/oauth2/redirect/vkontakte', (req, res) => passport.authenticate('vk
 })(req, res));
 
 /**
- * Родитель
+ * Картинки
  */
-router.get('/passport', passportController.usePassport, passportController.all);
-router.put('/passport', passportController.usePassport, passportController.update);
+router.post('/image', image.upload);
 
-/**
- * Ребенок
- */
-router.delete('/user/:id', passportController.usePassport, user.delete );
-
-/**
- * Посещения
- */
-router.get('/userMeets', passportController.usePassport, meet.findUserMeets);
-router.post('/visit', passportController.usePassport, visit.create );
-router.post('/visit/:id/started', passportController.usePassport, visit.started );
-router.post('/visit/:id/stopped', passportController.usePassport, visit.stopped );
-router.post('/visit/:id/paided', passportController.usePassport, visit.paided );
-router.delete('/visit/:id', passportController.usePassport, visit.delete );
-
-/**
- * Места
- */
-router.get('/places', passportController.usePassport, place.findAll);
-router.post('/place', passportController.usePassport, place.create);
 
 /**
  * Проекты
@@ -98,9 +71,39 @@ router.post('/project', passportController.usePassport, helper.checkConstructor,
 router.put('/project/:id', passportController.usePassport, helper.checkConstructor, project.update);
 
 /**
+ * Места
+ */
+router.get('/places', passportController.usePassport, place.findAll);
+router.post('/place', passportController.usePassport, place.create);
+
+/**
  * Участие в проекте
  */
 router.post('/participation', passportController.usePassport, participation.create);
 router.delete('/participation/:id', passportController.usePassport, participation.delete );
+
+/**
+ * Встречи
+ */
+router.get('/meets', passportController.usePassport, meet.findAll);
+router.get('/meet/:id', passportController.usePassport, meet.findById);
+router.post('/meet', passportController.usePassport, helper.checkConstructor, meet.create);
+router.put('/meet/:id', passportController.usePassport, helper.checkConstructor, meet.update);
+router.delete('/meet/:id', passportController.usePassport, meet.delete );
+
+/**
+ * Посещения
+ */
+router.get('/visits', passportController.usePassport, visit.findAll);
+router.post('/visit', passportController.usePassport, visit.create );
+router.post('/visit/:id/started', passportController.usePassport, visit.started );
+router.post('/visit/:id/stopped', passportController.usePassport, visit.stopped );
+router.post('/visit/:id/paided', passportController.usePassport, visit.paided );
+router.delete('/visit/:id', passportController.usePassport, visit.delete );
+
+/**
+ * Ребенок
+ */
+router.delete('/user/:id', passportController.usePassport, user.delete );
 
 module.exports = router

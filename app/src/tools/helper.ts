@@ -1,5 +1,5 @@
-import {convertToMeetsGroupTime, getDayOfWeekTitle} from "./date";
-import {Meet, Project} from "./dto";
+import {convertToMeetsGroupTime, convertToMeetsGroupTime2, getDayOfWeekTitle} from "./date";
+import {Meet, Project, Visit} from "./dto";
 import {LocalDate} from "@js-joda/core";
 
 // @ts-ignore
@@ -27,6 +27,12 @@ export const getCalendarMeetsGroup = (days: Day[], meets: Meet[]) => {
     const groups = getMeetsGroup2(meets)
     return days.map(day => ({ id: day.id, meets: groups.find(group => group.id === day.id)?.meets || [] }))
 }
+
+interface VisitGroup {
+    title: string
+    visits?: Visit[]
+}
+export const getVisitGroups = (visits?: Visit[]): VisitGroup[] => [...Array.from(groupBy(visits || [], (visit) => convertToMeetsGroupTime(visit.meet?.datetime)))].map(([a,b])=> ({ title: convertToMeetsGroupTime2(a), visits: b}));
 
 /**
  * Подготовка данных для отображения встреч списком и на карте
@@ -86,7 +92,7 @@ export const getWeek = (selectedDate?: string, meets?: Meet[]): Day[] => Array.f
  * Формируем строку отображающую возрастное ограничение
  */
 export const getAgeTitle = (ageFrom?: number, ageTo?: number) => {
-    return (ageFrom || ageTo) ? ((ageFrom ? ` с ${ageFrom}` : '') + (ageTo ? ` до ${ageTo}` : '') + ' лет') : 'любой'
+    return (ageFrom || ageTo) ? ((ageFrom ? ` ${ageFrom}` : '') + (ageTo ? ` - ${ageTo}` : '') + ' лет') : 'любой'
 }
 
 /**

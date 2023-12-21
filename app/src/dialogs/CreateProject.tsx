@@ -33,7 +33,7 @@ function CreateProject({ onClose }: CreateProjectProps) {
     return (
         <>
             <DialogHeader title={project.id ? 'Редактировать проект' : 'Новый проект'} onClick={onClose} isClose />
-            <DialogContent>
+            <DialogContent style={{ backgroundColor: 'white' }}>
                 <Stack spacing={5}>
                     <Stack spacing={1} direction="row">
                         <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>
@@ -71,7 +71,7 @@ function CreateProject({ onClose }: CreateProjectProps) {
                     />
                 </Stack>
             </DialogContent>
-            <div style={{ padding: 15 }}>
+            <div style={{ padding: 15, display: JSON.stringify(defaultProject) === JSON.stringify(project) ? 'none' : 'block' }}>
                 <Button onClick={onClickSave}>
                     { project.id ? 'Сохранить' : "Создать проект" }
                 </Button>

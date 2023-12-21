@@ -16,22 +16,22 @@ export function AgeField({ ageFrom, ageTo, onChange }: PriceFieldProps) {
     return (
         <div>
             <Stack spacing={3} direction="row" alignItems="center" justifyContent="space-between">
-                <div>Возраст участников</div>
+                <div>Рекомендуемый возраст</div>
                 <Switch checked={view} onChange={toggleView}/>
             </Stack>
             {view && (
-                <Stack spacing={1} >
+                <Stack spacing={1} direction="row">
                     <Input
                         type="number"
                         name='price'
-                        label="Минимальный возраст"
+                        label="Мин. возраст"
                         value={ageFrom}
                         onChange={(e) => onChange({ ageFrom: Number(e.target.value), ageTo })}
                     />
                     <Input
                         type="number"
                         name='price'
-                        label="Максимальный возраст"
+                        label="Макс. возраст"
                         value={ageTo}
                         onChange={(e) => onChange({ ageTo: Number(e.target.value), ageFrom })}
                     />

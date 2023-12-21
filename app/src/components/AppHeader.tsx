@@ -14,21 +14,20 @@ export function AppHeader() {
 
     return (
         <Header>
+
+
             {isAuth && user ? (
-                <>
-                    <Burger />
-                    <div style={{ flexGrow: 1 }}>
-                        <Stack flexDirection="row" key={user.id} alignItems="center">
-                            <div style={{ height: 36, width: 36 }}>
-                                <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 36, height: 36, border: '2px solid white' }} />
-                            </div>
-                            <div style={{ height: 36, paddingLeft: 16 }}>
-                                <Typography variant="Body" style={{ color: 'white', opacity: 1 }}>{user.title}</Typography>
-                            </div>
-                        </Stack>
-                    </div>
+                <Stack direction="row" spacing={3} alignItems="center" justifyContent="space-between" style={{ width: '100%' }}>
+                    <Stack direction="row" spacing={3} alignItems="center">
+                        <Burger />
+                        <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} />
+                        <div>
+                            <Typography variant="Body-Bold" style={{ color: 'white' }}>{user.title}</Typography>
+                            <Typography variant="Body" style={{ color: 'white' }}>Актерское мастерство</Typography>
+                        </div>
+                    </Stack>
                     <Icon name="meets" onClick={toggleIsOpenMeets} />
-                </>
+                </Stack>
             ) : (
                 <>
                     <svg width="99" height="25" viewBox="0 0 99 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -44,6 +43,7 @@ export function AppHeader() {
                     <Icon name="login" onClick={openLogin} />
                 </>
             )}
+
             <Meets open={isOpenMeets} onClose={toggleIsOpenMeets} />
         </Header>
     );

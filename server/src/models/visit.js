@@ -38,13 +38,19 @@ Visit.findById = function(id, result){
         result(null, res.length ? res[0] : undefined);
     });
 };
+Visit.findByUserId = function(userId, result){
+    dbConn.query("SELECT visit.*, meet.datetime FROM visit LEFT JOIN meet ON meet.id = visit.meetId WHERE userId = ? ORDER BY meet.datetime DESC", [userId], function (err, res) {
+        if (err) console.log(err, 'Visit.findByUserId.err')
+        result(null, res.length ? res : []);
+    });
+};
 Visit.findByUserAndMeetIds = function(userId, meetId, result){
     dbConn.query("SELECT * FROM visit WHERE userId = ? AND meetId =?", [userId, meetId], function (err, res) {
         result(null, res.length ? res[0] : undefined);
     });
 };
 Visit.findByMeet = function(meet, result){
-    dbConn.query("SELECT user.*, visit.* FROM visit LEFT JOIN user ON visit.userId = user.id WHERE meetId = ?", [meet.id], function (err, res) {
+    dbConn.query("SELECT visit.* FROM visit WHERE meetId = ?", [meet.id], function (err, res) {
         result(null, res.length ? res : undefined);
     });
 };

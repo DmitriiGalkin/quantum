@@ -26,7 +26,7 @@ export function DatePickerDefault({ label, value, onChange }: DateFieldProps) {
     }
 
     return (
-        <Stack spacing={2} direction="column">
+        <Stack spacing={2}>
             {label && <label htmlFor="calendar">{label}</label>}
             <Calendar days={week} onChange={calendarPickerOnChange} />
         </Stack>

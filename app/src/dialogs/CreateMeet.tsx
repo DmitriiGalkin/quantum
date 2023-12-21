@@ -7,7 +7,7 @@ import {
     useMeet,
 } from "../tools/service";
 import {Meet} from "../tools/dto";
-import {Button, DatePicker, DialogHeader, Icon, TimePicker,} from "../components";
+import {Button, DatePicker, DialogHeader, Icon, Input, TimePicker,} from "../components";
 import {convertToMeetsGroupTime, getIsStart} from "../tools/date";
 import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
@@ -46,7 +46,7 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
 
     const onClickSave = () => {
         if (meet.id) {
-            editMeet.mutateAsync(meet).then(onClose)
+            editMeet.mutateAsync(meet) //.then(onClose)
         } else {
             addMeet.mutateAsync(meet).then(() => {
                 setSelectedDate(convertToMeetsGroupTime(meet.datetime))
@@ -58,8 +58,9 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
     return (
         <>
             <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Новая встреча'} onClick={onClose} isClose />
-            <DialogContent style={{ flexGrow: 0, backgroundColor: 'white' }}>
-                <Stack id="meetParams" spacing={5}>
+            <DialogContent>
+                <Stack spacing={5}>
+                    <Stack id="meetParams" spacing={5} style={{ backgroundColor: 'white', margin: '-16px -18px', padding: '16px 18px'}}>
                         <DatePicker
                             value={meet.datetime}
                             onChange={(datetime) => setMeet({ ...meet, datetime })}
@@ -76,23 +77,32 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
                                     }}
                                 />
                             </div>
+                            <div style={{ width: 80 }}>
+                                <Input
+                                    name='price'
+                                    label="Продолжительность"
+                                    value={meet.duration}
+                                    onChange={(e) => setMeet({ ...meet, duration: e.target.value })}
+                                />
+                            </div>
                         </Stack>
-                        <PriceField
-                            price={{ user: meet.price }}
-                            onChange={(price) => setMeet({...meet, price: price.user})}
+                        <Input
+                            name='price'
+                            label="Стоимость"
+                            value={meet.price}
+                            onChange={(e) => setMeet({ ...meet, price: Number(e.target.value) })}
                         />
                     </Stack>
-            </DialogContent>
-            <DialogContent style={{ flexGrow: 1 }}>
-                <Stack spacing={3}>
-                    <div>
-                        <Block title="Участники встречи">
-                            <Stack spacing={1} direction="column">
-                                {meet.visits?.map((visit) => <VisitCard visit={visit} refetch={refetch} meet={meet} />)}
-                            </Stack>
-                        </Block>
-                    </div>
-                    <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить встречу</Button>
+                    {meet.id && (
+                        <Stack spacing={3}>
+                            <Block title="Участники встречи">
+                                <Stack spacing={1}>
+                                    {meet.visits?.map((visit) => <VisitCard visit={visit} refetch={refetch} />)}
+                                </Stack>
+                            </Block>
+                            <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить встречу</Button>
+                        </Stack>
+                    )}
                 </Stack>
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultMeet) === JSON.stringify(meet) ? 'none' : 'block' }} >

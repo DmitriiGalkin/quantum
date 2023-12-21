@@ -21,7 +21,7 @@ server {
     }
 
       location /api/ {
-        proxy_pass          http://localhost:4000/;
+        proxy_pass          https://localhost:4000/;
         proxy_http_version 1.1;
         proxy_set_header    Host             $host;
         proxy_set_header    X-Real-IP        $remote_addr;
@@ -30,3 +30,12 @@ server {
         proxy_connect_timeout 1800;
       }
 }
+
+#server {
+#     listen 3001;
+#     server_name localhost;
+#
+#    location / {
+#        proxy_pass http://localhost:4000;
+#    }
+#}

@@ -19,7 +19,7 @@ export const useStyles = makeStyles(() => ({
             case "Header2":
                 return {
                     fontSize: 16,
-                    opacity: .4,
+                    // opacity: .4,
                     fontWeight: 700,
                     lineHeight: '16px',
                     letterSpacing: '0.36px',
@@ -32,7 +32,7 @@ export const useStyles = makeStyles(() => ({
             default:
                 return {
                     fontSize: 13,
-                    opacity: .6,
+                    // opacity: .6,
                 }
             case "Body-Bold":
                 return {
