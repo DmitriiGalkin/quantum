@@ -6,7 +6,7 @@ import Masonry from '@mui/lab/Masonry';
 import {AppHeader} from "../components/AppHeader";
 
 export default function ProjectsView(): JSX.Element {
-    const { data: projects = [] } = useProjects();
+    const { data: projects = [], refetch } = useProjects();
 
     return (
         <Box style={{
@@ -15,7 +15,7 @@ export default function ProjectsView(): JSX.Element {
             flexDirection: 'column',
             height: '100vh'
         }}>
-            <AppHeader/>
+            <AppHeader refetch={refetch} />
             <div style={{ flex: '1 1 auto', overflowY: 'auto', padding: '8px 2px 8px 8px' }}>
                 <Masonry columns={2} spacing={1}>
                     {projects.map((project,index) =>

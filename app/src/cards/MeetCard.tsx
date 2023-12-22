@@ -58,15 +58,17 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                 </div>
             )}
             <div style={{ flexGrow: 1, padding: 12 }}>
-                <Stack spacing={1}>
+                <Stack spacing={2}>
                     {meet.project && <Typography variant="Header2">{meet.project?.title}</Typography>}
-                    {meet.project?.place && <Parameter name="place2" title={meet.project?.place.title} />}
-                    <Stack direction="row" alignContent="center" spacing={1} justifyContent="space-between">
-                        <Stack direction="row" alignContent="center" spacing={2}>
-                            {time && <Parameter name="time2" title={time} />}
-                            {meet.duration && <Parameter name="timer" title={meet.duration} />}
+                    <Stack spacing={1}>
+                        {meet.project?.place && <Parameter name="place2" title={meet.project?.place.title} />}
+                        <Stack direction="row" alignContent="center" spacing={1} justifyContent="space-between">
+                            <Stack direction="row" alignContent="center" spacing={2}>
+                                {time && <Parameter name="time2" title={time} />}
+                                {meet.duration && <Parameter name="timer" title={meet.duration} />}
+                            </Stack>
+                            {/*{isOrganizer && <Icon name="edit" onClick={toggleCreate} />}*/}
                         </Stack>
-                        {isOrganizer && <Icon name="edit" onClick={toggleCreate} />}
                     </Stack>
                     <div style={{ flex: '1 0 auto', display: 'flex' }}>
                         <div style={{ flexGrow: 1 }}>

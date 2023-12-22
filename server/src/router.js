@@ -69,6 +69,7 @@ router.get('/projects', passportController.usePassport, project.findAll);
 router.get('/project/:id', passportController.usePassport, project.findById);
 router.post('/project', passportController.usePassport, helper.checkConstructor, project.create);
 router.put('/project/:id', passportController.usePassport, helper.checkConstructor, project.update);
+router.delete('/project/:id', passportController.usePassport, project.delete );
 
 /**
  * Места

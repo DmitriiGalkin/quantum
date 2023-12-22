@@ -50,12 +50,14 @@ exports.findAll = function(req, res) {
     Meet.findByUserId(req.query.userId, function(err, meets) {
         async.map(meets.map(m=>m.projectId), Project.findById, function(err, meetsProject) {
             async.map(meetsProject.map(p=>p.placeId), Place.findById, function(err, meetsPlace) {
-                async.map(meets, User.findByMeet, function(err, meetsUsers) {
-                    res.send(meets.map((p, index) => ({
-                        ...p,
-                        visits: meetsUsers[index],
-                        project: {...meetsProject[index], place: meetsPlace[index]}
-                    })));
+                async.map(meets, Visit.findByMeet, function(err, visits) {
+                    async.map(meets, User.findByMeet, function(err, users) {
+                        res.send(meets.map((p, index) => ({
+                            ...p,
+                            visits: visits[index].map((visit, index2) => ({...visit, user: users[index][index2]})),
+                            project: {...meetsProject[index], place: meetsPlace[index]}
+                        })));
+                    });
                 });
             });
         });

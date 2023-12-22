@@ -18,20 +18,18 @@ export interface MeetsProps {
 
 function Meets({ onClose }: MeetsProps) {
     const { user } = useAuth();
-    const [display, toggleDisplay] = useToggle()
     const containerRef = useRef<HTMLDivElement>(null)
     const containerHeight = containerRef.current?.offsetHeight
     const { data: meets = [], refetch } = useMeets(user.id)
     const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
-
-    const { index, days, meetsGroup, filteredMeets } = getOm(meets, date)
+    const { index, days, meetsGroup } = getOm(meets, date, user.id)
 
     return (
         <>
             <DialogHeader title="Календарь встреч" onClick={onClose}/>
             <DialogContent>
                 <Stack spacing={3} style={{ height: '100%' }}>
-                    <Calendar days={days} onChange={setDate} map={display} />
+                    <Calendar days={days} onChange={setDate} />
                     <div style={{ flex: '1 1 auto', overflowY: 'auto' }} ref={containerRef}>
                         <SwipeableViews
                             index={index}
@@ -50,9 +48,6 @@ function Meets({ onClose }: MeetsProps) {
                         </SwipeableViews>
                     </div>
                 </Stack>
-                {/*<div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>*/}
-                {/*    */}
-                {/*</div>*/}
             </DialogContent>
         </>
     )

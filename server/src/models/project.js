@@ -26,12 +26,13 @@ Project.update = function(id, obj, result){
 };
 
 Project.delete = function(id, result){
-    dbConn.query(`DELETE FROM project WHERE id = ?`, id, function (err, res) {
+    dbConn.query("UPDATE project SET deleted = CURRENT_TIMESTAMP() WHERE id = ?", [id], function (err, res) {
         result(null, res);
     });
 };
-Project.findAll = () => function (result) {
-    dbConn.query("SELECT * FROM project", function (err, res) {
+
+Project.findAll = function (result) {
+    dbConn.query("SELECT * FROM project WHERE deleted IS NULL", function (err, res) {
         result(null, res || []);
     });
 };

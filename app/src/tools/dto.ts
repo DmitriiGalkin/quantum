@@ -45,6 +45,7 @@ export interface Project {
     ageFrom?: number // Минимальный возраст
     ageTo?: number // Максимальный возраст
     placeId?: number  // По какому проекту
+    deleted?: string  // Дата удаления
 
     /**
      * Дополнительные поля
@@ -66,6 +67,7 @@ export interface Meet {
     datetime: string // Время проведения
     duration: string // Длительность
     price?: number  // Стоимость
+    deleted?: string  // Дата удаления
 
     /**
      * Дополнительные поля

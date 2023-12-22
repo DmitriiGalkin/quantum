@@ -31,12 +31,19 @@ Meet.delete = function(id, result){
         result(null, res);
     });
 };
+Meet.deleteByProjectId = function(id, result){
+    dbConn.query(`UPDATE meet SET deleted = CURRENT_TIMESTAMP() WHERE projectId = ?`, id, function (err, res) {
+        result(null, res);
+    });
+};
+
 // Встречи
 const RADIUS = 100000 // Количество метров между мной и местом встречи TODO: сократить радиус с ростом аудитории
 Meet.findAll = function (result) {
     dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet " +
         "WHERE DATE(datetime) >= CURDATE() " +
-        //"AND ST_Distance_Sphere(point(" + x + ", " + y + "), point(x, y)) < " + RADIUS + " " +
+        // "AND deleted IS NULL " +
+        // "AND ST_Distance_Sphere(point(" + x + ", " + y + "), point(x, y)) < " + RADIUS + " " +
         "ORDER BY datetime", function (err, res) {
         result(null, res || []);
     });
@@ -53,7 +60,7 @@ Meet.findByProjectId = function (id, result) {
     });
 };
 Meet.findByUserId = function (id, result) {
-    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet LEFT JOIN participation ON participation.projectId = meet.projectId WHERE participation.userId = ?", id, function (err, res) {
+    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet LEFT JOIN participation ON participation.projectId = meet.projectId WHERE participation.userId = ? AND deleted IS NULL AND DATE(datetime) >= CURDATE()", id, function (err, res) {
         result(null, res || []);
     });
 };

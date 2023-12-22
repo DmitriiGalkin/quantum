@@ -37,8 +37,8 @@ export const getVisitGroups = (visits?: Visit[]): VisitGroup[] => [...Array.from
 /**
  * Подготовка данных для отображения встреч списком и на карте
  */
-export const getOm = (meets: Meet[], date: string) => {
-    const days = getWeek(date, meets)
+export const getOm = (meets: Meet[], date: string, userId: number) => {
+    const days = getWeek(date, meets, userId)
     const meetsGroup = getCalendarMeetsGroup(days, meets)
 
     return {
@@ -47,11 +47,6 @@ export const getOm = (meets: Meet[], date: string) => {
         filteredMeets: meetsGroup.find(({ id }) => id === date)?.meets || [],
         index: days.find(({ id }) => id === date)?.index || 0
     }
-}
-
-export const getFilteredMeetsByDate = (meets: Meet[], date: string, selectedMeet?: Meet): Meet[] => {
-    const groups = getMeetsGroup2(meets)
-    return groups.find((group) => group.id === date)?.meets || []
 }
 
 export const DAYS_COUNT = 7
@@ -68,7 +63,7 @@ export interface Day {
 /**
  * Подготавливаем неделю
  */
-export const getWeek = (selectedDate?: string, meets?: Meet[]): Day[] => Array.from(Array(DAYS_COUNT).keys()).map((day, index) => {
+export const getWeek = (selectedDate?: string, meets?: Meet[], userId?: number): Day[] => Array.from(Array(DAYS_COUNT).keys()).map((day, index) => {
     const meetsGroup = getMeetsGroup2(meets)
 
     const localDate = LocalDate.now()
@@ -82,7 +77,7 @@ export const getWeek = (selectedDate?: string, meets?: Meet[]): Day[] => Array.f
         dayOfWeekValue: getDayOfWeekTitle(targetDay.dayOfWeek().value() - 1),
         day: targetDay.dayOfMonth(),
         active: selectedDate === re,
-        activeMeetsLength: meets3?.filter((meet) => meet.visits).length || 0,
+        activeMeetsLength: meets3?.filter((meet) => meet.visits?.some((visit) => visit.userId === userId)).length || 0,
         meets: meets3 || [],
     }
 })

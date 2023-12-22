@@ -29,7 +29,7 @@ export function TimePickerDefault({ label, name, value, onChange }: TimeFieldPro
             <ReactIosTimePicker
                 id={name}
                 onChange={onChangeReactIosTimePicker}
-                value={value ? convertToMeetTime(value) : undefined}
+                value={convertToMeetTime(value)}
                 controllers={false}
                 inputClassName={classes.input}
                 placeHolder=''

@@ -8,23 +8,21 @@ import {useAuth} from "../tools/auth";
 import {useToggle} from "usehooks-ts";
 import Meets from "../dialogs/Meets";
 
-export function AppHeader() {
+export function AppHeader({refetch}: {refetch:() => void}) {
     const { isAuth, openLogin, user } = useAuth();
     const [isOpenMeets, toggleIsOpenMeets] = useToggle()
 
     return (
         <Header>
-
-
             {isAuth && user ? (
                 <Stack direction="row" spacing={3} alignItems="center" justifyContent="space-between" style={{ width: '100%' }}>
                     <Stack direction="row" spacing={3} alignItems="center">
-                        <Burger />
+                        <Burger refetch={refetch}/>
                         <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} />
-                        <div>
+                        <Stack>
                             <Typography variant="Body-Bold" style={{ color: 'white' }}>{user.title}</Typography>
                             <Typography variant="Body" style={{ color: 'white' }}>Актерское мастерство</Typography>
-                        </div>
+                        </Stack>
                     </Stack>
                     <Icon name="meets" onClick={toggleIsOpenMeets} />
                 </Stack>
@@ -43,7 +41,6 @@ export function AppHeader() {
                     <Icon name="login" onClick={openLogin} />
                 </>
             )}
-
             <Meets open={isOpenMeets} onClose={toggleIsOpenMeets} />
         </Header>
     );

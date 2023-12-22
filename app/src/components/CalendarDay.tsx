@@ -14,9 +14,6 @@ const useStyles = makeStyles(() => ({
     dayOfWeekActive: {
         opacity: 0.8
     },
-    dayOfWeekMap: {
-        color: 'white'
-    },
     day: {
         position: 'relative',
         paddingTop: '100%',
@@ -26,9 +23,6 @@ const useStyles = makeStyles(() => ({
         color: '#394F63',
         border: '1px solid rgba(57, 79, 99, 0.1)',
         boxShadow: '0px 2.769230604171753px 12.923076629638672px 0px rgba(0, 0, 0, 0.05)'
-    },
-    dayMap: {
-        backgroundColor: '#909CA6'
     },
     dayActive: {
         backgroundColor: '#1D2B38',
@@ -79,20 +73,18 @@ const useStyles = makeStyles(() => ({
 
 interface CalendarDayProps extends Day {
     onClick?: (id: string) => void
-    map?: boolean
 }
 
-export function CalendarDay (f: CalendarDayProps): JSX.Element {
-    const {id, dayOfWeekValue, day, active, activeMeetsLength, onClick, map} = f
+export function CalendarDay ({id, dayOfWeekValue, day, active, activeMeetsLength, onClick}: CalendarDayProps): JSX.Element {
     const classes = useStyles();
 
     const onClickDay = () => onClick && onClick(id)
     return (
         <Stack key={day} spacing={1} alignItems="center" onClick={onClickDay} style={{ width: '100%'}}>
-            <div className={clsx(classes.dayOfWeek, active && classes.dayOfWeekActive, map && classes.dayOfWeekMap)}>
+            <div className={clsx(classes.dayOfWeek, active && classes.dayOfWeekActive)}>
                 {dayOfWeekValue}
             </div>
-            <div className={clsx(classes.day, active && classes.dayActive, map && classes.dayMap)}>
+            <div className={clsx(classes.day, active && classes.dayActive)}>
                 <div className={classes.dayAbsolute}>
                     <div className={classes.daySquare}>
                         <p className={classes.dayP}>{day}</p>

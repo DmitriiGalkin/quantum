@@ -1,6 +1,12 @@
 import React from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import {useCreateParticipation, useDeleteMeet, useDeleteParticipation, useProject} from "../tools/service";
+import {
+    useCreateParticipation,
+    useDeleteMeet,
+    useDeleteParticipation,
+    useDeleteProject,
+    useProject
+} from "../tools/service";
 import {Back, Button, Icon, MeetCard} from "../components";
 import {useToggle} from "usehooks-ts";
 import CreateProject from "../dialogs/CreateProject";
@@ -47,7 +53,7 @@ export default function ProjectPage() {
     const [create, toggleCreate] = useToggle()
     const [createMeet, toggleCreateMeet] = useToggle()
 
-    const deleteMeet = useDeleteMeet()
+    const deleteProject = useDeleteProject()
     const createParticipation = useCreateParticipation()
     const deleteParticipation = useDeleteParticipation()
 
@@ -72,7 +78,7 @@ export default function ProjectPage() {
         }
     ] as Parameter[]
 
-    const onDelete =  () => deleteMeet.mutateAsync(project.id).then(() => navigate(`/`))
+    const onDelete =  () => deleteProject.mutateAsync(project.id).then(() => navigate(`/`))
     const onCreateParticipation =  () => createParticipation.mutateAsync({ projectId: project.id, userId: user.id }).then(() => refetch())
     const onDeleteParticipation =  () => participation && deleteParticipation.mutateAsync(participation).then(() => refetch())
 

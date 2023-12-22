@@ -13,10 +13,8 @@ import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
 import dayjs from "dayjs";
 import {useNavigate} from "react-router-dom";
-import {PlaceSelect} from "../components/PlaceSelect";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
-import {PriceField} from "../components/PriceField";
 import {Block} from "../components/Block";
 import {VisitCard} from "../cards/VisitCard";
 
@@ -27,7 +25,6 @@ export interface CreateMeetDialogProps {
 }
 function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps) {
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
-    const [isSetTime, setIsSetTime] = useState(false)
     const [meet, setMeet] = useState<Partial<Meet>>({ datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'), projectId: defaultProjectId })
     const navigate = useNavigate();
 
@@ -40,7 +37,6 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
 
 
     useEffect(() => defaultMeet && setMeet(defaultMeet), [defaultMeet])
-    const onChangePlace = useCallback((place: { latitude: string, longitude: string }) => setMeet({ ...meet, ...place}), [meet, setMeet])
 
     if (!meet) return null;
 
@@ -54,6 +50,7 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
             })
         }
     };
+    console.log(meet,'meet')
 
     return (
         <>
@@ -70,11 +67,8 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
                                 <TimePicker
                                     name='time'
                                     label="Время"
-                                    value={isSetTime ? meet.datetime : undefined}
-                                    onChange={(datetime) => {
-                                        setMeet({ ...meet, datetime })
-                                        setIsSetTime(true)
-                                    }}
+                                    value={meet.datetime}
+                                    onChange={(datetime) => setMeet({ ...meet, datetime })}
                                 />
                             </div>
                             <div style={{ width: 80 }}>

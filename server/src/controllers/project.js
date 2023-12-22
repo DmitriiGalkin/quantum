@@ -21,14 +21,20 @@ exports.update = function(req, res) {
     });
 };
 exports.delete = function(req, res) {
-    Project.delete(req.params.id, function() {
-        res.json({ error:false, message: 'Удаление проекта' });
-    });
+    Project.findById(req.params.id, function(err, project) {
+        if (err) res.json({error: true, message: 'Проект с данным номером не существует'});
+        if (project.passportId !== req.passport.id) res.json({error: true, message: "Вы не владелец проекта, чтобы принимать решение по удалению"});
+        Project.delete(project.id, function () {
+            Meet.deleteByProjectId(project.id, function () {
+                res.json({error: false, message: 'Проект удален'});
+            });
+        });
+    })
 };
 
 // Встречи для пользователя
 exports.findAll = function(req, res) {
-    Project.findAll()(function(err, projects) {
+    Project.findAll(function(err, projects) {
         res.send(projects);
     });
 };
@@ -42,12 +48,12 @@ exports.findById = function(req, res) {
                     User.findParticipationUsersByProjectId(project.id, function (err, participationUsers) {
                         Meet.findByProjectId(project.id, function (err, meets) {
                             async.map(meets, Visit.findByMeet, function(err, visits) {
-                                async.map(visits.map(v=>v.userId), User.findById, function(err, visitUsers) {
+                                async.map(meets, User.findByMeet, function(err, visitUsers) {
                                     res.send({
                                         ...project,
                                         passport,
                                         place,
-                                        meets: meets?.map((m, index) => ({ ...m, visits: visits[index].map(v=>({...v, user: visitUsers[index] })) })),
+                                        meets: meets?.map((m, index) => ({ ...m, visits: visits[index].map((v, index2)=>({...v, user: visitUsers[index][index2] })) })),
                                         participationUsers,
                                     });
                                 })

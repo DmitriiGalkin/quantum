@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, AvatarGroup, Stack, SwipeableDrawer} from "@mui/material";
+import {Avatar, Stack, SwipeableDrawer} from "@mui/material";
 import Passport from "../dialogs/Passport";
 import Visits from "../dialogs/Visits";
 import {useToggle} from "usehooks-ts";
@@ -31,13 +31,12 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-export function Burger() {
+export function Burger({refetch}: {refetch:() => void}) {
     const classes = useStyles();
 
     const { user, passport: passportAll, setSelectedUserId } = useAuth();
 
     const [passport, togglePassport] = useToggle()
-    const [menu2, toggleMenu2] = useToggle()
     const [menu, toggleMenu] = useToggle()
     const [visits, toggleVisits] = useToggle()
     const [project, toggleProject] = useToggle()
@@ -108,7 +107,7 @@ export function Burger() {
             </SwipeableDrawer>
             <Passport open={passport} onClose={togglePassport} onLogout={toggleMenu} />
             <Visits open={visits} onClose={toggleVisits} />
-            <CreateProject open={project} onClose={toggleProject} />
+            <CreateProject open={project} onClose={() => { toggleProject(); refetch() }} />
         </div>
     )
 }

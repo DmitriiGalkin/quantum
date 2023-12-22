@@ -25,8 +25,8 @@ export const createService = (): AxiosInstance => {
         return response;
     }, error => {
         if (error.response.status === 401) {
-            // localStorage.removeItem(ACCESS_TOKEN);
-            // window.location.reload();
+            localStorage.removeItem(ACCESS_TOKEN);
+            window.location.reload();
         }
         return error;
     });
@@ -122,6 +122,7 @@ export const useProject = (id?: number): UseQueryResult<Project> => useQuery(['p
 
 export const useAddProject = (): UseMutate<Partial<Project>> => useMutation((project) => service.post("/project", project))
 export const useEditProject = (id?: number): UseMutate<Partial<Project>> => useMutation((project) => service.put(`/project/${id}`, project))
+export const useDeleteProject = (): UseMutate<number> => useMutation((projectId) => service.delete("/project/" + projectId))
 
 /**
  * Подписка на проект
