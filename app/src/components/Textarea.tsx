@@ -2,7 +2,7 @@ import React, {TextareaHTMLAttributes} from 'react';
 import {useInputStyles} from "./helper";
 
 interface TextareaFieldProps extends TextareaHTMLAttributes<HTMLTextAreaElement>{
-    label: string
+    label?: string
     name: string
 }
 export function Textarea({ label, name, ...rest }: TextareaFieldProps) {
@@ -10,7 +10,7 @@ export function Textarea({ label, name, ...rest }: TextareaFieldProps) {
 
     return (
         <div>
-            <label htmlFor={name}>{label}</label>
+            {label && <label htmlFor={name}>{label}</label>}
             <textarea id={name} rows={3} className={classes.input} {...rest} />
         </div>
     );

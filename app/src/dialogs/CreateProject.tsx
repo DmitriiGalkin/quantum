@@ -34,29 +34,25 @@ function CreateProject({ onClose }: CreateProjectProps) {
         <>
             <DialogHeader title={project.id ? 'Редактировать проект' : 'Новый проект'} onClick={onClose} isClose />
             <DialogContent style={{ backgroundColor: 'white' }}>
-                <Stack spacing={5}>
-                    <Stack spacing={1} direction="row">
-                        <div style={{ paddingRight: 8, flexGrow: 1, width: '100%' }}>
-                            <Input
-                                name='title'
-                                label="Название"
-                                value={project.title}
-                                onChange={(e) => setProject({ ...project, title: e.target.value})}
-                                placeholder="Введите название проекта"
-                                autoFocus
-                            />
-                        </div>
-                    </Stack>
+                <Stack spacing={3}>
+                    <Input
+                        name='title'
+                        label="Название"
+                        value={project.title}
+                        onChange={(e) => setProject({ ...project, title: e.target.value})}
+                        // placeholder="Название"
+                        autoFocus
+                    />
                     <Textarea
                         name='title'
                         label="Описание"
                         value={project.description}
                         onChange={(e) => setProject({ ...project, description: e.target.value})}
-                        placeholder="Кратко опишите проект"
+                        // placeholder="Описание проекта"
                     />
                     <ImageField
                         name="meetImage"
-                        label="Загрузите обложку"
+                        label="Обложка"
                         value={project.image}
                         onChange={(image) => setProject({ ...project, image })}
                     />

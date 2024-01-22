@@ -7,8 +7,8 @@ import {
     useMeet,
 } from "../tools/service";
 import {Meet} from "../tools/dto";
-import {Button, DatePicker, DialogHeader, Icon, Input, TimePicker,} from "../components";
-import {convertToMeetsGroupTime, getIsStart} from "../tools/date";
+import {Button, DatePicker, DialogHeader, Icon, Input} from "../components";
+import {convertToMeetsGroupTime, convertToMeetTime, getIsStart} from "../tools/date";
 import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
 import dayjs from "dayjs";
@@ -18,12 +18,12 @@ import {withDialog} from "../components/helper";
 import {Block} from "../components/Block";
 import {VisitCard} from "../cards/VisitCard";
 
-export interface CreateMeetDialogProps {
+export interface MeetDialogProps {
     meetId: number
     defaultProjectId: number
     onClose: () => void
 }
-function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps) {
+function MeetDialog({ meetId, defaultProjectId, onClose }: MeetDialogProps) {
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
     const [meet, setMeet] = useState<Partial<Meet>>({ datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'), projectId: defaultProjectId })
     const navigate = useNavigate();
@@ -42,7 +42,7 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
 
     const onClickSave = () => {
         if (meet.id) {
-            editMeet.mutateAsync(meet) //.then(onClose)
+            editMeet.mutateAsync(meet).then(onClose)
         } else {
             addMeet.mutateAsync(meet).then(() => {
                 setSelectedDate(convertToMeetsGroupTime(meet.datetime))
@@ -52,26 +52,40 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
     };
     console.log(meet,'meet')
 
+    const onChangeReactIosTimePicker = (timeValue: string) => {
+        const date = timeValue.split(':');
+
+        return (dayjs(meet.datetime)
+            .startOf('date')
+            .add(Number(date[0]), 'hour')
+            .add(Number(date[1]), 'minute')
+            .format('YYYY-MM-DD HH:mm:ss'))
+    }
+
     return (
         <>
-            <DialogHeader title={meet.id ? 'Редактировать встречу' : 'Новая встреча'} onClick={onClose} isClose />
+            <DialogHeader title="Встреча" onClick={onClose} isClose />
             <DialogContent>
-                <Stack spacing={5}>
-                    <Stack id="meetParams" spacing={5} style={{ backgroundColor: 'white', margin: '-16px -18px', padding: '16px 18px'}}>
+                <Stack spacing={8}>
+                    <Stack id="meetParams" spacing={5} style={{ backgroundColor: 'white', margin: '-16px -18px', padding: '16px 18px', borderRadius: '0 0 28px 28px'}}>
                         <DatePicker
                             value={meet.datetime}
                             onChange={(datetime) => setMeet({ ...meet, datetime })}
                         />
                         <Stack spacing={1} direction="row">
-                            <div style={{ width: 80 }}>
-                                <TimePicker
+                            <div style={{ width: 90 }}>
+                                <Input
                                     name='time'
                                     label="Время"
-                                    value={meet.datetime}
-                                    onChange={(datetime) => setMeet({ ...meet, datetime })}
+                                    type="time"
+                                    step={60}
+                                    value={convertToMeetTime(meet.datetime)}
+                                    min={'09:00'}
+                                    max={'16:00'}
+                                    onChange={(e) => setMeet({ ...meet, datetime: onChangeReactIosTimePicker(e.target.value) })}
                                 />
                             </div>
-                            <div style={{ width: 80 }}>
+                            <div style={{ width: 90 }}>
                                 <Input
                                     name='price'
                                     label="Продолжительность"
@@ -87,16 +101,18 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
                             onChange={(e) => setMeet({ ...meet, price: Number(e.target.value) })}
                         />
                     </Stack>
-                    {meet.id && (
-                        <Stack spacing={3}>
-                            <Block title="Участники встречи">
-                                <Stack spacing={1}>
-                                    {meet.visits?.map((visit) => <VisitCard visit={visit} refetch={refetch} />)}
-                                </Stack>
-                            </Block>
-                            <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить встречу</Button>
-                        </Stack>
-                    )}
+                    <div id="secondary">
+                        {meet.id && (
+                            <Stack spacing={3}>
+                                <Block title="Участники встречи">
+                                    <Stack spacing={1}>
+                                        {meet.visits?.map((visit) => <VisitCard visit={visit} refetch={refetch} />)}
+                                    </Stack>
+                                </Block>
+                                <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить встречу</Button>
+                            </Stack>
+                        )}
+                    </div>
                 </Stack>
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultMeet) === JSON.stringify(meet) ? 'none' : 'block' }} >
@@ -106,5 +122,5 @@ function CreateMeet({ meetId, defaultProjectId, onClose }: CreateMeetDialogProps
     );
 }
 
-export default withDialog(CreateMeet)
+export default withDialog(MeetDialog)
 

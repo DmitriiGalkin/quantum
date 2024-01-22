@@ -25,8 +25,8 @@ export const createService = (): AxiosInstance => {
         return response;
     }, error => {
         if (error.response.status === 401) {
-            localStorage.removeItem(ACCESS_TOKEN);
-            window.location.reload();
+            // localStorage.removeItem(ACCESS_TOKEN);
+            //window.location.reload();
         }
         return error;
     });

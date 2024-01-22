@@ -43,6 +43,7 @@ export const useStyles = makeStyles(() => ({
             case "Caption":
                 return {
                     fontSize: 9,
+                    opacity: .4,
                     fontWeight: 500,
                     letterSpacing: '0.18px'
                 }

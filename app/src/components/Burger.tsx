@@ -100,7 +100,7 @@ export function Burger({refetch}: {refetch:() => void}) {
                                     ))}
                                 </Stack>
                             </Stack>
-                            <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassport}>Паспорт родителя</Button>
+                            <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassport}>Профиль родителя</Button>
                         </Stack>
                     </div>
                 </Stack>

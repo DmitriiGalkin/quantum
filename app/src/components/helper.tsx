@@ -14,6 +14,8 @@ export const useInputStyles = makeStyles(() => ({
         backgroundClip: 'padding-box',
         border: 0,
         borderRadius: 8,
+        //border: 'none !important',
+        //borderColor: 'transparent !important',
     },
     timePicker: {
         display: 'block',

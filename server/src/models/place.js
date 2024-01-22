@@ -2,7 +2,7 @@
 var dbConn = require('../db');
 
 var Place = function(data){
-    this.id = data.id;
+    // this.id = data.id;
     this.title = data.title;
     this.image = data.image;
     this.latitude = data.latitude;
@@ -11,6 +11,7 @@ var Place = function(data){
 
 Place.create = function (data, result) {
     dbConn.query("INSERT INTO place SET ?", data, function (err, res) {
+        console.log(err, "err");
         result(err, res.insertId);
     });
 };

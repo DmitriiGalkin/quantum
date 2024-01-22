@@ -19,7 +19,7 @@ import {Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {ParticipationCard} from "../cards/ParticipationCard";
 import {Block} from "../components/Block";
-import CreateMeet from "../dialogs/CreateMeet";
+import CreateMeet from "../dialogs/Meet";
 
 const useStyles = makeStyles(() => ({
     container: {

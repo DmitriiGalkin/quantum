@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
     }}>
         {children}
         <Login open={openLogin} onClose={toggleOpenLogin} />
-        <PassportDialog open={isAuth && !passport?.users[0]} onClose={refetch} />
+        {/*<PassportDialog open={isAuth && !passport?.users[0]} onClose={refetch} />*/}
     </AuthContext.Provider>;
 };
 

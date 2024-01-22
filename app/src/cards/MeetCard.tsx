@@ -6,7 +6,7 @@ import {useCreateVisit, useDeleteVisit} from "../tools/service";
 import {useAuth} from "../tools/auth";
 import Typography from "../components/Typography";
 import {useToggle} from "usehooks-ts";
-import CreateMeet from "../dialogs/CreateMeet";
+import CreateMeet from "../dialogs/Meet";
 import {Button, Icon} from "../components";
 import {Parameter} from "../components/Parameter";
 import {COLOR, COLOR_DEFAULT, COLOR_SUCCESS} from "../tools/theme";
@@ -58,7 +58,7 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                 </div>
             )}
             <div style={{ flexGrow: 1, padding: 12 }}>
-                <Stack spacing={2}>
+                <Stack spacing={1}>
                     {meet.project && <Typography variant="Header2">{meet.project?.title}</Typography>}
                     <Stack spacing={1}>
                         {meet.project?.place && <Parameter name="place2" title={meet.project?.place.title} />}
@@ -67,7 +67,7 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                                 {time && <Parameter name="time2" title={time} />}
                                 {meet.duration && <Parameter name="timer" title={meet.duration} />}
                             </Stack>
-                            {/*{isOrganizer && <Icon name="edit" onClick={toggleCreate} />}*/}
+                            {isOrganizer && <Icon name="edit" onClick={toggleCreate} />}
                         </Stack>
                     </Stack>
                     <div style={{ flex: '1 0 auto', display: 'flex' }}>

@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 
 interface ImageFieldProps {
     name?: string
-    label: string
+    label?: string
     value?: string
     onChange: (image: string) => void
 }
@@ -46,7 +46,7 @@ export function ImageField({ name, label, onChange, value }: ImageFieldProps) {
 
     return (
         <div style={{  }}>
-            <label htmlFor={name}>{label}</label>
+            {label && <label htmlFor={name}>{label}</label>}
             <div style={{
                 display: 'block',
                 width: '100%',

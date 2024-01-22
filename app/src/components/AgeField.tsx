@@ -11,32 +11,29 @@ interface PriceFieldProps {
 }
 
 export function AgeField({ ageFrom, ageTo, onChange }: PriceFieldProps) {
-    const [view, toggleView] = useToggle()
-
     return (
         <div>
-            <Stack spacing={3} direction="row" alignItems="center" justifyContent="space-between">
-                <div>Рекомендуемый возраст</div>
-                <Switch checked={view} onChange={toggleView}/>
+            <label>Возраст</label>
+            <Stack spacing={2} direction="row" alignItems="center">
+                <Input
+                    type="number"
+                    name='price'
+                    // label="Возраст (лет)"
+                    value={ageFrom}
+                    onChange={(e) => onChange({ ageFrom: Number(e.target.value), ageTo })}
+                    placeholder="c"
+                />
+                <span>—</span>
+                <Input
+                    type="number"
+                    name='price'
+                    // label="Макс. возраст"
+                    value={ageTo}
+                    onChange={(e) => onChange({ ageTo: Number(e.target.value), ageFrom })}
+                    placeholder="по"
+                />
+                <span>лет</span>
             </Stack>
-            {view && (
-                <Stack spacing={1} direction="row">
-                    <Input
-                        type="number"
-                        name='price'
-                        label="Мин. возраст"
-                        value={ageFrom}
-                        onChange={(e) => onChange({ ageFrom: Number(e.target.value), ageTo })}
-                    />
-                    <Input
-                        type="number"
-                        name='price'
-                        label="Макс. возраст"
-                        value={ageTo}
-                        onChange={(e) => onChange({ ageTo: Number(e.target.value), ageFrom })}
-                    />
-                </Stack>
-            )}
         </div>
     );
 }

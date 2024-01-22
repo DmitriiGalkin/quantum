@@ -15,7 +15,7 @@ export function UserCard({ user, refetch }: UserCardProps) {
     const onDeleteUser =  () => deleteUser.mutateAsync(user).then(() => refetch())
 
     return (
-        <Stack spacing={2} direction="row" justifyContent="space-between" alignContent="center">
+        <Stack spacing={2} direction="row" justifyContent="space-between" alignContent="center" style={{ borderRadius: 8, backgroundColor: 'white', padding: 8 }}>
             <Stack direction="row" spacing={1} alignContent="center">
                 <Avatar key={user.id} alt={user.title} src={user.image} />
                 <Typography variant="Body">{user.title}, {user.age} лет</Typography>
