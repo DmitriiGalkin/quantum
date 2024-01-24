@@ -7,12 +7,12 @@ var Invite = function(data){
     this.ideaId = data.ideaId;
 };
 
-// Participation.create = function (data, result) {
-//     dbConn.query("INSERT INTO participation set ?", data, function (err, res) {
-//         result(err, res.insertId);
-//     });
-// };
-//
+Invite.create = function (data, result) {
+    dbConn.query("INSERT INTO invite set ?", data, function (err, res) {
+        result(err, res.insertId);
+    });
+};
+
 // Participation.delete = function(id, result){
 //     dbConn.query(`DELETE FROM participation WHERE id = ?`, id, function (err, res) {
 //         result(null, res);

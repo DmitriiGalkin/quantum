@@ -11,6 +11,7 @@ const place =   require('./controllers/place');
 const project =   require('./controllers/project');
 const idea = require('./controllers/idea');
 const participation =   require('./controllers/participation');
+const invite =   require('./controllers/invite');
 const strategys =   require('./strategys');
 const helper =   require('./helper');
 
@@ -114,5 +115,10 @@ router.delete('/user/:id', passportController.usePassport, user.delete );
 router.get('/ideas', passportController.usePassport, idea.findAll);
 router.get('/idea/:id', passportController.usePassport, idea.findById);
 router.put('/idea/:id', passportController.usePassport, helper.checkConstructor, idea.update);
+
+/**
+ * Приглашения
+ */
+router.post('/invite', passportController.usePassport, invite.create);
 
 module.exports = router

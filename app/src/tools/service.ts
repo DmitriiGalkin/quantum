@@ -45,11 +45,6 @@ export type UseMutate<TVariables, TData = unknown, TError = AxiosError, TContext
     TContext
     >
 
-interface GetMeets {
-    latitude?: number
-    longitude?: number
-}
-
 /**
  * Встречи
  */
@@ -125,7 +120,7 @@ export const useEditProject = (id?: number): UseMutate<Partial<Project>> => useM
 export const useDeleteProject = (): UseMutate<number> => useMutation((projectId) => service.delete("/project/" + projectId))
 
 /**
- * Подписка / / приглашение на проект
+ * Подписка
  */
 export const useCreateParticipation = (): UseMutate<{ projectId: number, userId: number }> => useMutation((params) => service.post("/participation", params))
 export const useDeleteParticipation = (): UseMutate<Participation> => useMutation((participation) => service.delete("/participation/" + participation.id))
@@ -145,5 +140,12 @@ export const useEditIdea = (id?: number): UseMutate<Partial<Idea>> => {
         },
     })
 }
+
+/**
+ * Приглашение
+ */
+export const useCreateInvite = (): UseMutate<{ projectId: number, userId: number, ideaId: number }> => useMutation((params) => service.post("/invite", params))
+// export const useDeleteParticipation = (): UseMutate<Participation> => useMutation((participation) => service.delete("/participation/" + participation.id))
+
 
 export default service
