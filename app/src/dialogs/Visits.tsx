@@ -6,7 +6,7 @@ import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {useAuth} from "../tools/auth";
 import {VisitCard} from "../cards/VisitCard";
-import {getOm, getVisitGroups} from "../tools/helper";
+import {getVisitGroups} from "../tools/helper";
 import Typography from "../components/Typography";
 
 export interface UserMeetsProps {

@@ -56,19 +56,19 @@ export function VisitCard({ visit, refetch }: VisitCardProps) {
 
     return (
         <Stack className={clsx(classes.card, isStarted && classes.isStarted, isMiss && classes.isMiss)} direction="row">
-            {visit.project && (
+            {visit.meet?.project && (
                 <div>
-                    <div style={{borderRadius: '8px 0 0 8px', height: '100%', display: 'flex', width: 60, backgroundImage: `url(${visit.project.image})`, backgroundSize: 'cover', backgroundPosition: 'center'}} />
+                    <div style={{borderRadius: '8px 0 0 8px', height: '100%', display: 'flex', width: 60, backgroundImage: `url(${visit.meet?.project.image})`, backgroundSize: 'cover', backgroundPosition: 'center'}} />
                 </div>
             )}
             <Stack spacing={3} direction="row" style={{ padding: 9, width: '100%' }}>
                 {visit.user && <Avatar alt={visit.user?.title} src={visit.user?.image} />}
                 <Stack spacing={1} style={{flexGrow:1}}>
-                    {visit.project && (
-                        <Typography variant="Header2">{visit.project?.title}</Typography>
+                    {visit.meet?.project && (
+                        <Typography variant="Header2">{visit.meet?.project?.title}</Typography>
                     )}
                     <Stack justifyContent="space-between" spacing={1}>
-                        {visit?.place && <Parameter name="place2" title={visit.place.title} />}
+                        {visit?.meet?.project?.place && <Parameter name="place2" title={visit?.meet?.project?.place.title} />}
                         {visit?.meet && (
                             <Stack direction="row" alignContent="center" spacing={2}>
                                 {time && <Parameter name="time2" title={time} />}

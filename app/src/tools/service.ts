@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios'
 import {useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import {Meet, Participation, Passport, Place, Project, User, Visit} from "./dto";
+import {Idea, Meet, Participation, Passport, Place, Project, User, Visit} from "./dto";
 import {ACCESS_TOKEN} from "./auth";
 
 // При разработки хост может быть разным
@@ -125,9 +125,25 @@ export const useEditProject = (id?: number): UseMutate<Partial<Project>> => useM
 export const useDeleteProject = (): UseMutate<number> => useMutation((projectId) => service.delete("/project/" + projectId))
 
 /**
- * Подписка на проект
+ * Подписка / / приглашение на проект
  */
 export const useCreateParticipation = (): UseMutate<{ projectId: number, userId: number }> => useMutation((params) => service.post("/participation", params))
 export const useDeleteParticipation = (): UseMutate<Participation> => useMutation((participation) => service.delete("/participation/" + participation.id))
+
+/**
+ * Идея
+ */
+export const useIdeas = (): UseQueryResult<Idea[]> => useQuery(['ideas'], () => service.get(`/ideas`))
+export const useIdea = (id?: number): UseQueryResult<Idea> => useQuery(['idea', id], () => service.get(`/idea/${id}`), {
+    enabled: Boolean(id),
+})
+export const useEditIdea = (id?: number): UseMutate<Partial<Idea>> => {
+    const queryClient = useQueryClient()
+    return useMutation((meet) => service.put(`/idea/${id}`, meet), {
+        onSuccess() {
+            queryClient.invalidateQueries({ queryKey: ['idea', id] })
+        },
+    })
+}
 
 export default service

@@ -93,10 +93,10 @@ export interface Visit {
     /**
      * Дополнительные поля
      */
-    meet?: Meet // Встреча
     user?: User
-    project?: Project // Встреча
-    place?: Place
+    meet?: Meet // Встреча
+    // project?: Project // Встреча
+    // place?: Place
 }
 
 /**
@@ -106,6 +106,15 @@ export interface Participation {
     id: number // Идентификатор
     userId: number // Идентификатор участника
     projectId: number // Идентификатор проекта
+    created?: string // Время создания приглашения/заявки на вступление
+    started?: string // Время начала участия в проекте
+    stopped?: string // Время завершения участия в проекте
+
+    /**
+     * Дополнительные поля
+     */
+    user?: User
+    project?: Project
 }
 
 /**
@@ -113,3 +122,38 @@ export interface Participation {
  */
 export interface ParticipationUser extends User, Participation {}
 
+/**
+ * Идея
+ */
+export interface Idea {
+    id: number // Идентификатор
+    title: string // Название
+    description?: string // Описание
+    userId: number // Инициатор
+    latitude: string // Широта
+    longitude: string // Долгота
+    deleted?: string  // Дата удаления
+
+    /**
+     * Дополнительные поля
+     */
+    user?: User
+    invites?: Invite[] // Приглашения
+}
+
+/**
+ * Приглашение
+ */
+export interface Invite {
+    id: number // Идентификатор
+    userId: number // Идентификатор участника
+    projectId: number // Идентификатор проекта
+    ideaId?: number // Время создания приглашения/заявки на вступление
+
+    /**
+     * Дополнительные поля
+     */
+    user?: User
+    project?: Project
+    idea?: Idea
+}

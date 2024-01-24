@@ -1,0 +1,67 @@
+'use strict';
+const async = require("async");
+const Idea = require('../models/idea');
+const User = require('../models/user');
+const Passport = require('../models/passport');
+const Visit = require('../models/visit');
+const Meet = require('../models/meet');
+const Place = require('../models/place');
+const Participation = require('../models/participation');
+const Invite = require('../models/invite');
+
+// exports.create = function(req, res) {
+//     const project = new Project({...req.body, passportId: req.passport?.id });
+//     Project.create(project, function(err, projectId) {
+//         res.json(projectId);
+//     });
+// };
+//
+exports.update = function(req, res) {
+    const obj = new Idea(req.body)
+    Idea.update(req.params.id, obj, function() {
+        res.json({ error:false, message: 'Идея обновлена' });
+    });
+};
+// exports.delete = function(req, res) {
+//     Project.findById(req.params.id, function(err, project) {
+//         if (err) res.json({error: true, message: 'Проект с данным номером не существует'});
+//         if (project.passportId !== req.passport.id) res.json({error: true, message: "Вы не владелец проекта, чтобы принимать решение по удалению"});
+//         Project.delete(project.id, function () {
+//             Meet.deleteByProjectId(project.id, function () {
+//                 res.json({error: false, message: 'Проект удален'});
+//             });
+//         });
+//     })
+// };
+
+exports.findAll = function(req, res) {
+    Idea.findAll(function(err, ideas) {
+        const userIds = [...new Set(ideas.map(m=>m.userId))]
+
+        async.map(userIds, User.findById, function(err, users) {
+            const usersMap = new Map(users.map((user, index) => [userIds[index], user]));
+
+            res.send(ideas.map((idea)=>({
+                ...idea,
+                user: usersMap.get(idea.userId)
+            })));
+        });
+    });
+};
+exports.findById = function(req, res) {
+    Idea.findById(req.params.id, function(err, idea) {
+        if (!idea) {
+            res.status(400).send({ error:true, message: 'Идея с таким номером не найден' });
+        } else {
+            Invite.findByIdeaId(idea.id, function(err, invites) {
+                async.map(invites.map(m => m.projectId), Visit.findByMeet, function(err, projects) {
+                    res.send({
+                        ...idea,
+                        invites: invites?.map((m, index) => ({ ...m, project: projects[index] })),
+                    });
+                })
+            })
+        }
+    });
+};
+

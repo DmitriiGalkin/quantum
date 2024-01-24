@@ -6,7 +6,7 @@ import Typography from "./Typography";
 interface Props {
     variant?: 'outlined' | 'small' | 'small2' | 'gray' | 'menuButton'
     children: string | JSX.Element | JSX.Element[]
-    onClick?: () => void
+    onClick?: (e: React.MouseEvent<HTMLElement>) => void
     href?: string
     color?: string
     disabled?: boolean
@@ -17,7 +17,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
         return (
             <div
                 style={{ cursor: 'pointer', fontSize: 11, fontWeight: 500, padding: '3px 9px', color: '#7139FF', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
-                onClick={() => onClick && !disabled && onClick()}
+                onClick={(e) => onClick && !disabled && onClick(e)}
             >
                 {children}
             </div>
@@ -27,7 +27,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
         return (
             <div
                 style={{ backgroundColor: '#7139FF', fontSize: 11, fontWeight: 500, padding: '3px 9px', color: 'white', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
-                onClick={() => onClick && !disabled && onClick()}
+                onClick={(e) => onClick && !disabled && onClick(e)}
             >
                 <Stack spacing={1} direction="row" justifyContent="space-between" alignItems="center">
                     <Icon name="ok"/>
@@ -51,7 +51,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
                 textAlign: 'center',
                 lineHeight: '22px',
                 opacity: disabled ? 0.5 : 1
-            }} onClick={() => onClick && !disabled && onClick()}>
+            }} onClick={(e) => onClick && !disabled && onClick(e)}>
                 {children}
             </a>
         )
@@ -59,7 +59,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
 
     if (variant === 'gray'){
         return (
-            <Stack spacing={2} direction="row" onClick={() => onClick && !disabled && onClick()}  alignItems="center" justifyContent="center">
+            <Stack spacing={2} direction="row" onClick={(e) => onClick && !disabled && onClick(e)}  alignItems="center" justifyContent="center">
                 {icon}
                 <div style={{ color: 'black',
                     textAlign: 'center',
@@ -101,7 +101,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
             boxShadow: color === 'black' ? '15px 0px 30px 0px rgba(211, 212, 226, 0.25)' : undefined,
             opacity: disabled ? 0.5 : 1,
 
-        }} onClick={() => onClick && !disabled && onClick()}>
+        }} onClick={(e) => onClick && !disabled && onClick(e)}>
             {children}
         </a>
     )

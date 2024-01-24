@@ -77,14 +77,20 @@ exports.paided = function(req, res) {
 exports.findAll = function(req, res) {
     Visit.findByUserId(req.query.userId, function(err, visits) {
         async.map(visits.map(v=>v.meetId), Meet.findById, function(err, meets) {
-            async.map(meets.map(m=>m.projectId), Project.findById, function(err, projects) {
+            const projectIds = [...new Set(meets.map(m=>m.projectId))]
+
+            async.map(projectIds, Project.findById, function(err, projects) {
+                const projectsMap = new Map(projects.map((project, index) => [projectIds[index], project]));
+                const placeIds = [...new Set(projects.map(m=>m.placeId))]
+
                 async.map(projects.map(p=>p.placeId), Place.findById, function(err, places) {
-                    res.send(visits.map((visit, index) => ({
-                          ...visit,
-                          project: projects[index],
-                          meet: meets[index],
-                          place: places[index],
-                      })
+                    const placesMap = new Map(places.map((place, index) => [placeIds[index], place]));
+
+                    res.send(visits.map((visit, index) => {
+                        const project = projectsMap.get(meets[index].projectId)
+
+                        return ({ ...visit, meet: { ...meets[index], project: { ...project, place: placesMap.get(project.placeId)}}})
+                      }
                     ));
                 });
             });

@@ -73,33 +73,29 @@ function MeetDialog({ meetId, defaultProjectId, onClose }: MeetDialogProps) {
                             onChange={(datetime) => setMeet({ ...meet, datetime })}
                         />
                         <Stack spacing={1} direction="row">
-                            <div style={{ width: 90 }}>
-                                <Input
-                                    name='time'
-                                    label="Время"
-                                    type="time"
-                                    step={60}
-                                    value={convertToMeetTime(meet.datetime)}
-                                    min={'09:00'}
-                                    max={'16:00'}
-                                    onChange={(e) => setMeet({ ...meet, datetime: onChangeReactIosTimePicker(e.target.value) })}
-                                />
-                            </div>
-                            <div style={{ width: 90 }}>
-                                <Input
-                                    name='price'
-                                    label="Продолжительность"
-                                    value={meet.duration}
-                                    onChange={(e) => setMeet({ ...meet, duration: e.target.value })}
-                                />
-                            </div>
+                            <Input
+                                name='time'
+                                label="Время"
+                                type="time"
+                                step={60}
+                                value={convertToMeetTime(meet.datetime)}
+                                min={'09:00'}
+                                max={'16:00'}
+                                onChange={(e) => setMeet({ ...meet, datetime: onChangeReactIosTimePicker(e.target.value) })}
+                            />
+                            <Input
+                                name='price'
+                                label="Длительность"
+                                value={meet.duration}
+                                onChange={(e) => setMeet({ ...meet, duration: e.target.value })}
+                            />
+                            <Input
+                                name='price'
+                                label="Стоимость"
+                                value={meet.price}
+                                onChange={(e) => setMeet({ ...meet, price: Number(e.target.value) })}
+                            />
                         </Stack>
-                        <Input
-                            name='price'
-                            label="Стоимость"
-                            value={meet.price}
-                            onChange={(e) => setMeet({ ...meet, price: Number(e.target.value) })}
-                        />
                     </Stack>
                     <div id="secondary">
                         {meet.id && (

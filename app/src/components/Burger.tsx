@@ -6,9 +6,12 @@ import {useToggle} from "usehooks-ts";
 import {makeStyles} from "@mui/styles";
 import {useAuth} from "../tools/auth";
 import CreateProject from "../dialogs/CreateProject";
+import Idea from "../dialogs/Idea";
 import Typography from "./Typography";
 import {Icon} from "./Icon";
 import {Button} from "./Button";
+import {useNavigate} from "react-router-dom";
+import Ideas from "../views/IdeasView";
 
 const useStyles = makeStyles(() => ({
     blockImage: {
@@ -33,6 +36,7 @@ const useStyles = makeStyles(() => ({
 
 export function Burger({refetch}: {refetch:() => void}) {
     const classes = useStyles();
+    const navigate = useNavigate();
 
     const { user, passport: passportAll, setSelectedUserId } = useAuth();
 
@@ -40,6 +44,8 @@ export function Burger({refetch}: {refetch:() => void}) {
     const [menu, toggleMenu] = useToggle()
     const [visits, toggleVisits] = useToggle()
     const [project, toggleProject] = useToggle()
+    const [idea, toggleIdea] = useToggle()
+    const [ideas, toggleIdeas] = useToggle()
     const [sub, toggleSub] = useToggle()
 
     if (!user) return null
@@ -85,10 +91,21 @@ export function Burger({refetch}: {refetch:() => void}) {
                                 <Stack spacing={1}>
                                     {[
                                         {
-                                            title: 'Новая заявка',
+                                            title: 'Новый проект',
                                             icon: (<Icon name='add'/>),
                                             onClick: toggleProject,
                                             variant: 'primary'
+                                        },
+                                        {
+                                            title: 'Новая идея',
+                                            icon: (<Icon name='add'/>),
+                                            onClick: toggleIdea,
+                                            variant: 'primary'
+                                        },
+                                        {
+                                            title: 'Идеи',
+                                            icon: (<Icon name='idea'/>),
+                                            onClick: toggleIdeas,
                                         },
                                         {
                                             title: 'Посещения',
@@ -108,6 +125,8 @@ export function Burger({refetch}: {refetch:() => void}) {
             <Passport open={passport} onClose={togglePassport} onLogout={toggleMenu} />
             <Visits open={visits} onClose={toggleVisits} />
             <CreateProject open={project} onClose={() => { toggleProject(); refetch() }} />
+            <Idea open={idea} onClose={() => { toggleIdea(); refetch() }} />
+            <Ideas open={ideas} onClose={() => { toggleIdeas(); refetch() }} />
         </div>
     )
 }

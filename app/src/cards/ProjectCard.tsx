@@ -8,7 +8,8 @@ import Typography from "../components/Typography";
 
 interface ProjectCardProps {
     project: Project
-    selected?: boolean
+    // selected?: boolean
+    onClick?: (project: Project) => void
 }
 const useStyles = makeStyles(() => ({
     image: {
@@ -17,12 +18,12 @@ const useStyles = makeStyles(() => ({
         display: 'block',
     },
 }));
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, onClick }: ProjectCardProps) {
     const classes = useStyles();
     const navigate = useNavigate();
 
     return (
-        <div onClick={() => navigate(`/project/${project.id}`)}>
+        <div onClick={onClick ? () => onClick && onClick(project) : () => navigate(`/project/${project.id}`)}>
             <Stack spacing={1}>
                 <div style={{ minWidth: 150, position: "relative" }}>
                     {project.image && (

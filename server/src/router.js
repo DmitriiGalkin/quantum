@@ -9,6 +9,7 @@ const visit =   require('./controllers/visit');
 const image =   require('./controllers/image');
 const place =   require('./controllers/place');
 const project =   require('./controllers/project');
+const idea = require('./controllers/idea');
 const participation =   require('./controllers/participation');
 const strategys =   require('./strategys');
 const helper =   require('./helper');
@@ -106,5 +107,12 @@ router.delete('/visit/:id', passportController.usePassport, visit.delete );
  * Ребенок
  */
 router.delete('/user/:id', passportController.usePassport, user.delete );
+
+/**
+ * Идеи
+ */
+router.get('/ideas', passportController.usePassport, idea.findAll);
+router.get('/idea/:id', passportController.usePassport, idea.findById);
+router.put('/idea/:id', passportController.usePassport, helper.checkConstructor, idea.update);
 
 module.exports = router

@@ -9,6 +9,7 @@ interface ParticipationCardProps {
     participationUser: ParticipationUser
     isOrganizer?: boolean
     refetch: () => void
+    variant?: 'idea' | 'project'
 }
 
 export function ParticipationCard({ participationUser, isOrganizer, refetch }: ParticipationCardProps) {
