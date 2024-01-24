@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
 import {
+    useAddIdea,
     useAddMeet,
     useDeleteMeet, useEditIdea,
     useEditMeet, useIdea,
@@ -19,6 +20,7 @@ import {Block} from "../components/Block";
 import {VisitCard} from "../cards/VisitCard";
 import {ParticipationCard} from "../cards/ParticipationCard";
 import {InviteCard} from "../cards/InviteCard";
+import {useAuth} from "../tools/auth";
 
 export interface IdeaDialogProps {
     ideaId: number
@@ -30,14 +32,16 @@ function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
     // const navigate = useNavigate();
     //
     // const { data: defaultIdea, refetch } = useMeet(meetId)
-    // const addMeet = useAddMeet()
+    const { user, passport } = useAuth();
+
+    const addIdea = useAddIdea()
     const editIdea = useEditIdea(ideaId)
     // const deleteMeet = useDeleteMeet()
     //
     // const onDelete =  () => deleteMeet.mutateAsync(meet.id).then(() => navigate(`/`))
     //
     //
-    const [idea, setIdea] = useState<Partial<Idea>>({ title: '' })
+    const [idea, setIdea] = useState<Partial<Idea>>({ title: '', userId: user.id })
     const { data: defaultIdea, refetch } = useIdea(ideaId)
 
 
@@ -45,10 +49,9 @@ function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
         if (idea.id) {
             editIdea.mutateAsync(idea).then(onClose)
         } else {
-            // addMeet.mutateAsync(meet).then(() => {
-            //     setSelectedDate(convertToMeetsGroupTime(meet.datetime))
-            //     onClose()
-            // })
+            addIdea.mutateAsync(idea).then(() => {
+                onClose()
+            })
         }
     };
 
@@ -74,17 +77,19 @@ function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
                             onChange={(e) => setIdea({ ...idea, description: e.target.value})}
                         />
                     </Stack>
-                    <div id="secondary">
-                        <Block title="Приглашения в проекты">
-                            <Stack spacing={1}>
-                                {idea.invites?.map((invite) => <InviteCard key={invite.id} invite={invite} refetch={refetch} />)}
-                            </Stack>
-                        </Block>
-                    </div>
+                    {idea.id && (
+                        <div id="secondary">
+                            <Block title="Приглашения в проекты">
+                                <Stack spacing={1}>
+                                    {idea.invites?.map((invite) => <InviteCard key={invite.id} invite={invite} refetch={refetch} />)}
+                                </Stack>
+                            </Block>
+                        </div>
+                    )}
                 </Stack>
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultIdea) === JSON.stringify(idea) ? 'none' : 'block' }} >
-                <Button onClick={onClickSave}>{idea.id ? 'Сохранить' : "Создать идею"}</Button>
+                <Button onClick={onClickSave}>{idea.id ? 'Сохранить' : "Создать"}</Button>
             </div>
         </>
     );

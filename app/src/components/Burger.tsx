@@ -11,7 +11,7 @@ import Typography from "./Typography";
 import {Icon} from "./Icon";
 import {Button} from "./Button";
 import {useNavigate} from "react-router-dom";
-import Ideas from "../views/IdeasView";
+import Ideas from "../dialogs/IdeasView";
 
 const useStyles = makeStyles(() => ({
     blockImage: {

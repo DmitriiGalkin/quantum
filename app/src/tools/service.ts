@@ -132,6 +132,14 @@ export const useIdeas = (): UseQueryResult<Idea[]> => useQuery(['ideas'], () => 
 export const useIdea = (id?: number): UseQueryResult<Idea> => useQuery(['idea', id], () => service.get(`/idea/${id}`), {
     enabled: Boolean(id),
 })
+export const useAddIdea = (): UseMutate<Partial<Idea>> => {
+    const queryClient = useQueryClient()
+    return useMutation((data) => service.post("/idea", data), {
+        onSuccess() {
+            queryClient.invalidateQueries({ queryKey: ['ideas'] })
+        },
+    })
+}
 export const useEditIdea = (id?: number): UseMutate<Partial<Idea>> => {
     const queryClient = useQueryClient()
     return useMutation((meet) => service.put(`/idea/${id}`, meet), {

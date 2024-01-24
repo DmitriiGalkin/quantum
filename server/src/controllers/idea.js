@@ -10,13 +10,13 @@ const Participation = require('../models/participation');
 const Invite = require('../models/invite');
 const Project = require('../models/project');
 
-// exports.create = function(req, res) {
-//     const project = new Project({...req.body, passportId: req.passport?.id });
-//     Project.create(project, function(err, projectId) {
-//         res.json(projectId);
-//     });
-// };
-//
+exports.create = function(req, res) {
+    const idea = new Idea({...req.body, passportId: req.passport?.id });
+    Idea.create(idea, function(err, ideaId) {
+        res.json(ideaId);
+    });
+};
+
 exports.update = function(req, res) {
     const obj = new Idea(req.body)
     Idea.update(req.params.id, obj, function() {

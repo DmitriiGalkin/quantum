@@ -114,6 +114,7 @@ router.delete('/user/:id', passportController.usePassport, user.delete );
  */
 router.get('/ideas', passportController.usePassport, idea.findAll);
 router.get('/idea/:id', passportController.usePassport, idea.findById);
+router.post('/idea', passportController.usePassport, helper.checkConstructor, idea.create);
 router.put('/idea/:id', passportController.usePassport, helper.checkConstructor, idea.update);
 
 /**

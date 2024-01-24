@@ -69,7 +69,7 @@ function CreateProject({ onClose }: CreateProjectProps) {
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultProject) === JSON.stringify(project) ? 'none' : 'block' }}>
                 <Button onClick={onClickSave}>
-                    { project.id ? 'Сохранить' : "Создать проект" }
+                    { project.id ? 'Сохранить' : "Создать" }
                 </Button>
             </div>
         </>

@@ -8,13 +8,13 @@ var Idea = function(data){
     this.latitude = data.latitude;
     this.longitude = data.longitude;
 };
-//
-// Project.create = function (data, result) {
-//     dbConn.query("INSERT INTO project set ?", data, function (err, res) {
-//         if (err) {console.log(err,'err')}
-//         result(err, res.insertId);
-//     });
-// };
+
+Idea.create = function (data, result) {
+    dbConn.query("INSERT INTO idea set ?", data, function (err, res) {
+        if (err) {console.log(err,'err')}
+        result(err, res.insertId);
+    });
+};
 
 Idea.update = function(id, data, result){
     dbConn.query("UPDATE idea SET title=?, description=? WHERE id = ?", [data.title, data.description, id], function (err, res) {

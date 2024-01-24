@@ -97,8 +97,8 @@ function MeetDialog({ meetId, defaultProjectId, onClose }: MeetDialogProps) {
                             />
                         </Stack>
                     </Stack>
-                    <div id="secondary">
-                        {meet.id && (
+                    {meet.id && (
+                        <div id="secondary">
                             <Stack spacing={3}>
                                 <Block title="Участники встречи">
                                     <Stack spacing={1}>
@@ -107,12 +107,12 @@ function MeetDialog({ meetId, defaultProjectId, onClose }: MeetDialogProps) {
                                 </Block>
                                 <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить встречу</Button>
                             </Stack>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </Stack>
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultMeet) === JSON.stringify(meet) ? 'none' : 'block' }} >
-                <Button onClick={onClickSave}>{meet.id ? 'Сохранить' : "Создать встречу"}</Button>
+                <Button onClick={onClickSave}>{meet.id ? 'Сохранить' : "Создать"}</Button>
             </div>
         </>
     );
