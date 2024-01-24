@@ -29,16 +29,17 @@ export function IdeaCard({ idea, refetch }: IdeaCardProps) {
     const onSelectProject = (project: Project) => {
         idea && createInvite.mutateAsync({ projectId: project.id, userId: idea.userId, ideaId: idea.id }).then(() => refetch())
     }
+
     return (
         <div style={{ borderRadius: 8, backgroundColor: 'white', padding: 8 }}>
             <Stack spacing={2}>
-                <Stack spacing={1}  justifyContent="space-between" direction="row">
+                <Stack spacing={1} justifyContent="space-between" direction="row">
                     <Typography variant="Body-Bold">{idea.title}</Typography>
                     {true && <Icon name="edit" onClick={toggleCreate} />}
                 </Stack>
                 <>
                     <Typography variant="Body">{idea.description}</Typography>
-                    <Typography variant="Body">{idea.latitude} {idea.longitude}</Typography>
+                    {idea.latitude && idea.longitude && <Parameter name="place2" title="Москва, Северодвинская 11" />}
                     <Stack spacing={1}  justifyContent="space-between" alignItems="center" direction="row">
                         <Stack spacing={1} direction="row" alignItems="center">
                             <Avatar alt={idea.user?.title} src={idea.user?.image} sx={{ width: 21, height: 21}} />
