@@ -18,6 +18,7 @@ import {withDialog} from "../components/helper";
 import {Block} from "../components/Block";
 import {VisitCard} from "../cards/VisitCard";
 import {ParticipationCard} from "../cards/ParticipationCard";
+import {InviteCard} from "../cards/InviteCard";
 
 export interface IdeaDialogProps {
     ideaId: number
@@ -75,15 +76,15 @@ function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
                     </Stack>
                     <div id="secondary">
                         <Block title="Приглашения в проекты">
-                            {/*<Stack spacing={1}>*/}
-                            {/*    {idea.participations?.map((participationUser) => <ParticipationCard key={participationUser.id} participationUser={participationUser} isOrganizer={editable} refetch={refetch} />)}*/}
-                            {/*</Stack>*/}
+                            <Stack spacing={1}>
+                                {idea.invites?.map((invite) => <InviteCard key={invite.id} invite={invite} refetch={refetch} />)}
+                            </Stack>
                         </Block>
                     </div>
                 </Stack>
             </DialogContent>
-            <div style={{ padding: 15, display: false ? 'none' : 'block' }} >
-                <Button onClick={onClickSave}>{false ? 'Сохранить' : "Создать идею"}</Button>
+            <div style={{ padding: 15, display: JSON.stringify(defaultIdea) === JSON.stringify(idea) ? 'none' : 'block' }} >
+                <Button onClick={onClickSave}>{idea.id ? 'Сохранить' : "Создать идею"}</Button>
             </div>
         </>
     );

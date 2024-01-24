@@ -8,6 +8,7 @@ const Meet = require('../models/meet');
 const Place = require('../models/place');
 const Participation = require('../models/participation');
 const Invite = require('../models/invite');
+const Project = require('../models/project');
 
 // exports.create = function(req, res) {
 //     const project = new Project({...req.body, passportId: req.passport?.id });
@@ -54,11 +55,17 @@ exports.findById = function(req, res) {
             res.status(400).send({ error:true, message: 'Идея с таким номером не найден' });
         } else {
             Invite.findByIdeaId(idea.id, function(err, invites) {
-                async.map(invites.map(m => m.projectId), Visit.findByMeet, function(err, projects) {
-                    res.send({
-                        ...idea,
-                        invites: invites?.map((m, index) => ({ ...m, project: projects[index] })),
-                    });
+                async.map(invites.map(m => m.projectId), Project.findById, function(err, projects) {
+                    const placeIds = [...new Set(projects.map(m=>m.placeId))]
+
+                    async.map(placeIds, Place.findById, function(err, places) {
+                        const placesMap = new Map(places.map((place, index) => [placeIds[index], place]));
+
+                        res.send({
+                            ...idea,
+                            invites: invites?.map((m, index) => ({ ...m, project: { ...projects[index], place: placesMap.get(projects[index].placeId)} })),
+                        });
+                    })
                 })
             })
         }

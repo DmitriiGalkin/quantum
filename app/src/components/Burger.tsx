@@ -6,7 +6,7 @@ import {useToggle} from "usehooks-ts";
 import {makeStyles} from "@mui/styles";
 import {useAuth} from "../tools/auth";
 import CreateProject from "../dialogs/CreateProject";
-import Idea from "../dialogs/Idea";
+import CreateIdea from "../dialogs/CreateIdea";
 import Typography from "./Typography";
 import {Icon} from "./Icon";
 import {Button} from "./Button";
@@ -125,7 +125,7 @@ export function Burger({refetch}: {refetch:() => void}) {
             <Passport open={passport} onClose={togglePassport} onLogout={toggleMenu} />
             <Visits open={visits} onClose={toggleVisits} />
             <CreateProject open={project} onClose={() => { toggleProject(); refetch() }} />
-            <Idea open={idea} onClose={() => { toggleIdea(); refetch() }} />
+            <CreateIdea open={idea} onClose={() => { toggleIdea(); refetch() }} />
             <Ideas open={ideas} onClose={() => { toggleIdeas(); refetch() }} />
         </div>
     )

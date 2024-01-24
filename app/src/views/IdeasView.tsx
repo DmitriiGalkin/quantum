@@ -5,7 +5,6 @@ import {DialogHeader} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {IdeaCard} from "../cards/IdeaCard";
-import IdeaDialog from "../dialogs/Idea";
 import {Idea} from "../tools/dto";
 
 export interface UserMeetsProps {
@@ -13,7 +12,6 @@ export interface UserMeetsProps {
 }
 function Visits({ onClose }: UserMeetsProps) {
     const { data, refetch } = useIdeas();
-    const [idea, setIdea] = useState<Idea>()
 
     return (
         <>
@@ -21,11 +19,10 @@ function Visits({ onClose }: UserMeetsProps) {
             <DialogContent>
                 <Stack spacing={1}>
                     {data?.map((idea,index) =>
-                        <IdeaCard key={idea.id} idea={idea} refetch={refetch} onClick={setIdea} />
+                        <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
                     )}
                 </Stack>
             </DialogContent>
-            <IdeaDialog ideaId={idea?.id} open={idea} onClose={() => { setIdea(undefined); refetch() }} />
         </>
     );
 }

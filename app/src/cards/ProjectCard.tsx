@@ -5,6 +5,9 @@ import {makeStyles} from '@mui/styles';
 import {useNavigate} from "react-router-dom";
 import {getAgeLabel} from "../tools/helper";
 import Typography from "../components/Typography";
+import CreateMeet from "../dialogs/Meet";
+import ProjectPage from "../dialogs/ProjectView";
+import {useToggle} from "usehooks-ts";
 
 interface ProjectCardProps {
     project: Project
@@ -20,23 +23,27 @@ const useStyles = makeStyles(() => ({
 }));
 export function ProjectCard({ project, onClick }: ProjectCardProps) {
     const classes = useStyles();
-    const navigate = useNavigate();
+    const [open, toggleOpen] = useToggle()
 
     return (
-        <div onClick={onClick ? () => onClick && onClick(project) : () => navigate(`/project/${project.id}`)}>
-            <Stack spacing={1}>
-                <div style={{ minWidth: 150, position: "relative" }}>
-                    {project.image && (
-                        <>
-                            <Chip label={getAgeLabel(project)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
-                            <img alt={project.title} src={project.image} className={classes.image}/>
-                        </>
+        <>
+            <div onClick={onClick ? () => onClick && onClick(project) : toggleOpen}>
+                <Stack spacing={1}>
+                    <div style={{ minWidth: 150, position: "relative" }}>
+                        {project.image && (
+                            <>
+                                <Chip label={getAgeLabel(project)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
+                                <img alt={project.title} src={project.image} className={classes.image}/>
+                            </>
                         )}
-                    <div style={{ padding: 4 }}>
-                        <Typography variant="Body-Bold">{project.title}</Typography>
+                        <div style={{ padding: 4 }}>
+                            <Typography variant="Body-Bold">{project.title}</Typography>
+                        </div>
                     </div>
-                </div>
-            </Stack>
-        </div>
+                </Stack>
+            </div>
+            <ProjectPage projectId={project.id} open={open} onClose={toggleOpen} />
+        </>
+
     );
 }

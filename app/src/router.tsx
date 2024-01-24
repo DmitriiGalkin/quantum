@@ -2,7 +2,7 @@ import React from "react";
 import {createBrowserRouter, createRoutesFromElements, useOutlet} from "react-router-dom";
 import {Route} from "react-router";
 import ProjectsView from "./views/ProjectsView";
-import ProjectView from "./views/ProjectView";
+import ProjectView from "./dialogs/ProjectView";
 import {AuthProvider} from "./tools/auth";
 
 export default function AuthLayout(): JSX.Element {

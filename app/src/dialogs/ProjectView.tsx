@@ -9,7 +9,7 @@ import {
 } from "../tools/service";
 import {Back, Button, Icon, MeetCard} from "../components";
 import {useToggle} from "usehooks-ts";
-import CreateProject from "../dialogs/CreateProject";
+import CreateProject from "./CreateProject";
 import {getOnShare} from "../tools/pwa";
 import {makeStyles} from "@mui/styles";
 import {Parameter, Parameters} from "../components/Parameters";
@@ -19,7 +19,8 @@ import {Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {ParticipationCard} from "../cards/ParticipationCard";
 import {Block} from "../components/Block";
-import CreateMeet from "../dialogs/Meet";
+import CreateMeet from "./Meet";
+import {withDialog} from "../components/helper";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -43,12 +44,15 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-export default function ProjectPage() {
+export interface ProjectPageProps {
+    projectId: number
+    onClose: () => void
+}
+function ProjectPage({ projectId, onClose }: ProjectPageProps) {
     const navigate = useNavigate();
     const { user, passport } = useAuth();
     const classes = useStyles();
 
-    const { id: projectId } = useParams();
     const { data: project, refetch } = useProject(Number(projectId))
     const [create, toggleCreate] = useToggle()
     const [createMeet, toggleCreateMeet] = useToggle()
@@ -110,7 +114,7 @@ export default function ProjectPage() {
         <>
             <div style={{ position: "relative", backgroundColor: 'rgb(245, 245, 245)'}}>
                 <div style={{ position: "absolute", top: 18, left: 16, right: 16 }}>
-                    <Back menuItems={menuItems} />
+                    <Back menuItems={menuItems} onClick={onClose} />
                 </div>
                 <div style={{ height: 230 }}>
                     {project.image && <img alt={project.title} src={project.image} className={classes.image}/>}
@@ -158,3 +162,5 @@ export default function ProjectPage() {
         </>
     );
 }
+
+export default withDialog(ProjectPage)
