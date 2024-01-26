@@ -30,7 +30,7 @@ function MeetDialog({ meetId, defaultProjectId, onClose }: MeetDialogProps) {
 
     const { data: defaultMeet, refetch } = useMeet(meetId)
     const addMeet = useAddMeet()
-    const editMeet = useEditMeet(meet.id)
+    const editMeet = useEditMeet(meetId)
     const deleteMeet = useDeleteMeet()
 
     const onDelete =  () => deleteMeet.mutateAsync(meet.id).then(() => navigate(`/`))
@@ -64,7 +64,7 @@ function MeetDialog({ meetId, defaultProjectId, onClose }: MeetDialogProps) {
 
     return (
         <>
-            <DialogHeader title="Встреча" onClick={onClose} isClose />
+            <DialogHeader title="Встреча" onClick={onClose} />
             <DialogContent>
                 <Stack spacing={8}>
                     <Stack id="meetParams" spacing={5} style={{ backgroundColor: 'white', margin: '-16px -18px', padding: '16px 18px', borderRadius: '0 0 28px 28px'}}>

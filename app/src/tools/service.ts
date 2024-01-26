@@ -79,14 +79,37 @@ export const useUploadImage = (): UseMutate<FormData, string> => {
 
 export const usePassport = (): UseQueryResult<Passport> => useQuery(['passport'], () => service.get(`/passport`))
 export const useUpdatePassport = (): UseMutate<Passport> => useMutation((passport) => service.put(`/passport`, passport))
-//export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
-export const useDeleteUser = (): UseMutate<User> => useMutation((user) => service.delete("/user/" + user.id))
+// //export const useUpdateUser = (): UseMutate<User> => useMutation((user) => service.put(`/user`, user))
+// export const useDeleteUser = (): UseMutate<User> => useMutation((user) => service.delete("/user/" + user.id))
 
 /**
- * Пользователь
+ * Ребенок
+ */
+export const useUser = (id?: number): UseQueryResult<User> => useQuery(['user', id], () => service.get(`/user/${id}`), {
+    enabled: Boolean(id),
+})
+export const useAddUser = (): UseMutate<Partial<User>> => {
+    const queryClient = useQueryClient()
+    return useMutation((user) => service.post("/user", user), {
+        onSuccess() {
+            queryClient.invalidateQueries({ queryKey: ['passport'] })
+        },
+    })
+}
+export const useEditUser = (id?: number): UseMutate<Partial<User>> => {
+    const queryClient = useQueryClient()
+    return useMutation((user) => service.put(`/user/${id}`, user), {
+        onSuccess() {
+            queryClient.invalidateQueries({ queryKey: ['passport', id] })
+        },
+    })
+}
+export const useDeleteUser = (): UseMutate<number | undefined> => useMutation((userId) => service.delete(`/user/${userId}`))
+
+/**
+ * Посещение
  */
 export const useVisits = (userId: number): UseQueryResult<Visit[]> => useQuery(['visits'], () => service.get(`/visits?userId=${userId}`))
-
 export interface EditVisit extends Omit<Visit, "id"> { id?: number; }
 export const useCreateVisit = (): UseMutate<EditVisit> => useMutation((visit) => service.post("/visit", visit))
 export const useStartedVisit = (): UseMutate<Visit> => useMutation((visit) => service.post("/visit/" + visit.id + "/started"))
@@ -128,7 +151,11 @@ export const useDeleteParticipation = (): UseMutate<Participation> => useMutatio
 /**
  * Идея
  */
-export const useIdeas = (): UseQueryResult<Idea[]> => useQuery(['ideas'], () => service.get(`/ideas`))
+export interface IdeaFilter {
+    ageFrom?: number
+    ageTo?: number
+}
+export const useIdeas = (params?: IdeaFilter): UseQueryResult<Idea[]> => useQuery(['ideas', params?.ageFrom, params?.ageTo], () => service.get(`/ideas`, { params }))
 export const useIdea = (id?: number): UseQueryResult<Idea> => useQuery(['idea', id], () => service.get(`/idea/${id}`), {
     enabled: Boolean(id),
 })

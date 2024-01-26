@@ -8,6 +8,9 @@ import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {Block} from "../components/Block";
 import {UserCard} from "../cards/UserCard";
+import CreateMeet from "./Meet";
+import EditUser from "./User";
+import {useToggle} from "usehooks-ts";
 
 export interface UserViewProps {
     onLogout: () => void
@@ -17,6 +20,7 @@ function PassportDialog({ onLogout, onClose }: UserViewProps) {
     const { data: defaultPassport, refetch } = usePassport();
     const { logout } = useAuth();
     const [passport, setPassport] = useState<Passport>()
+    const [createUser, onClickCreateUser] = useToggle()
     const updateUser = useUpdatePassport()
 
     const onClickSave = () => {
@@ -36,25 +40,31 @@ function PassportDialog({ onLogout, onClose }: UserViewProps) {
     return (
         <>
             <DialogHeader title="Профиль" onClick={onClose}/>
-            <DialogContent backgroundColor={'white'}>
+            <DialogContent style={{ padding: 0 }}>
                 <Stack spacing={5}>
-                    <Input
-                        name='title'
-                        label="Имя и фамилия"
-                        value={passport.title}
-                        onChange={(e) => passport && setPassport({ ...passport, title: e.target.value})}
-                    />
-                    <Block title="Дети">
-                        <Stack spacing={1}>
-                            {passport.users?.map((user) => <UserCard key={user.id} user={user} refetch={refetch} />)}
-                        </Stack>
-                    </Block>
-                    <Button onClick={onClickSave} variant="outlined">
-                        Сохранить
-                    </Button>
+                    <Stack spacing={1} style={{ padding: 16, backgroundColor: 'white' }}>
+                        <Input
+                            name='title'
+                            label="Имя и фамилия"
+                            value={passport.title}
+                            onChange={(e) => passport && setPassport({ ...passport, title: e.target.value})}
+                        />
+                    </Stack>
+                    <Stack spacing={1} style={{ padding: 16 }}>
+                        <Block title="Дети">
+                            <Stack spacing={1}>
+                                {passport.users?.map((user) => <UserCard key={user.id} user={user} refetch={refetch} />)}
+                                <Button onClick={onClickCreateUser}>Добавить ребенка</Button>
+                            </Stack>
+                        </Block>
+                    </Stack>
                     <Button onClick={onClickLogout} variant="gray" icon={<Icon name="logout"/>}>Выйти из профиля</Button>
                 </Stack>
             </DialogContent>
+            <div style={{ padding: 15, display: JSON.stringify(defaultPassport) === JSON.stringify(passport) ? 'none' : 'block' }} >
+                <Button onClick={onClickSave}>Сохранить</Button>
+            </div>
+            <EditUser open={createUser} onClose={() => { onClickCreateUser(); refetch() }} />
         </>
     );
 }

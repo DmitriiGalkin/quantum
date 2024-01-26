@@ -36,7 +36,7 @@ exports.update = function(req, res) {
 // };
 
 exports.findAll = function(req, res) {
-    Idea.findAll(function(err, ideas) {
+    Idea.findAll(req.query, function(err, ideas) {
         const userIds = [...new Set(ideas.map(m=>m.userId))]
 
         async.map(userIds, User.findById, function(err, users) {

@@ -107,6 +107,9 @@ router.delete('/visit/:id', passportController.usePassport, visit.delete );
 /**
  * Ребенок
  */
+router.get('/user/:id', passportController.usePassport, user.findById);
+router.post('/user', passportController.usePassport, helper.checkConstructor, user.create);
+router.put('/user/:id', passportController.usePassport, helper.checkConstructor, user.update);
 router.delete('/user/:id', passportController.usePassport, user.delete );
 
 /**

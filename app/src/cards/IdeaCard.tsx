@@ -23,7 +23,6 @@ interface IdeaCardProps {
 export function IdeaCard({ idea, refetch }: IdeaCardProps) {
     const [project, toggleProject] = useToggle()
     const [create, toggleCreate] = useToggle()
-
     const createInvite = useCreateInvite()
 
     const onSelectProject = (project: Project) => {

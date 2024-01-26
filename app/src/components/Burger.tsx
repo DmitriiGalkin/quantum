@@ -3,41 +3,15 @@ import {Avatar, Stack, SwipeableDrawer} from "@mui/material";
 import Passport from "../dialogs/Passport";
 import Visits from "../dialogs/Visits";
 import {useToggle} from "usehooks-ts";
-import {makeStyles} from "@mui/styles";
 import {useAuth} from "../tools/auth";
 import CreateProject from "../dialogs/CreateProject";
 import CreateIdea from "../dialogs/CreateIdea";
 import Typography from "./Typography";
 import {Icon} from "./Icon";
 import {Button} from "./Button";
-import {useNavigate} from "react-router-dom";
-import Ideas from "../dialogs/IdeasView";
-
-const useStyles = makeStyles(() => ({
-    blockImage: {
-        width: '100%',
-        paddingTop: '100%',
-        position: 'relative',
-    },
-    image: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        borderRadius: 100
-    },
-    ani: {
-        animationDuration: '3s',
-        animationName: 'slidein'
-    }
-}));
+import Ideas from "../dialogs/Ideas";
 
 export function Burger({refetch}: {refetch:() => void}) {
-    const classes = useStyles();
-    const navigate = useNavigate();
-
     const { user, passport: passportAll, setSelectedUserId } = useAuth();
 
     const [passport, togglePassport] = useToggle()
@@ -74,16 +48,12 @@ export function Burger({refetch}: {refetch:() => void}) {
                             </Stack>
                         </div>
                     )}
-                    <div style={{ padding: 15, color: 'black', height: '100%', width: 280 }}>
+                    <div style={{ color: 'black', height: '100%', width: 280 }}>
                         <Stack justifyContent="space-between" style={{ height: '100%' }}>
-                            <Stack spacing={2}>
+                            <Stack spacing={2} style={{ backgroundColor: 'white', padding: 16 }}>
                                 <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }}>
-                                    <div style={{ width: 72 }}>
-                                        <div className={classes.blockImage}>
-                                            <img alt={user.title} src={user.image} className={classes.image}/>
-                                        </div>
-                                    </div>
-                                    <Stack spacing={1}>
+                                    <Avatar alt={user.title} src={user.image} sx={{ width: 72, height: 72}} />
+                                    <Stack>
                                         <Typography variant="Caption">Ребенок</Typography>
                                         <Typography variant="Header3">{user.title}</Typography>
                                     </Stack>
@@ -91,19 +61,13 @@ export function Burger({refetch}: {refetch:() => void}) {
                                 <Stack spacing={1}>
                                     {[
                                         {
-                                            title: 'Новый проект',
-                                            icon: (<Icon name='add'/>),
-                                            onClick: toggleProject,
-                                            variant: 'primary'
-                                        },
-                                        {
-                                            title: 'Новая идея',
+                                            title: 'Новая идея проекта',
                                             icon: (<Icon name='add'/>),
                                             onClick: toggleIdea,
                                             variant: 'primary'
                                         },
                                         {
-                                            title: 'Идеи',
+                                            title: 'Мои идеи',
                                             icon: (<Icon name='idea'/>),
                                             onClick: toggleIdeas,
                                         },
@@ -117,7 +81,15 @@ export function Burger({refetch}: {refetch:() => void}) {
                                     ))}
                                 </Stack>
                             </Stack>
-                            <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassport}>Профиль родителя</Button>
+                            <Stack spacing={1} style={{ padding: 16 }}>
+                                <Stack style={{ padding: '14px 40px' }}>
+                                    <Typography variant="Caption">Взрослый</Typography>
+                                    <Typography variant="Header3">{passportAll.title}</Typography>
+                                </Stack>
+                                <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleProject} color='primary'>Организовать проект</Button>
+                                <Button variant="menuButton" icon={<Icon name='project'/>} onClick={togglePassport}>Мои проекты</Button>
+                                <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassport}>Профиль родителя</Button>
+                            </Stack>
                         </Stack>
                     </div>
                 </Stack>

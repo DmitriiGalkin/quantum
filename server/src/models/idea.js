@@ -28,8 +28,21 @@ Idea.update = function(id, data, result){
 //     });
 // };
 
-Idea.findAll = function (result) {
-    dbConn.query("SELECT * FROM idea", function (err, res) {
+Idea.findAll = function (params, result) {
+    let where = ''
+    if (params.ageFrom || params.ageTo) {
+        where +=' LEFT JOIN user ON user.id = idea.userId WHERE'
+        if (params.ageFrom) {
+            where += ' user.age > ' + params.ageFrom
+        }
+        if (params.ageTo && params.ageTo) {
+            where += ' AND '
+        }
+        if (params.ageTo) {
+            where += ' user.age < '+ params.ageTo
+        }
+    }
+    dbConn.query(`SELECT idea.* FROM idea ${where}`, function (err, res) {
         result(null, res || []);
     });
 };
