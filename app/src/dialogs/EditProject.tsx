@@ -1,20 +1,21 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
 import {useAddProject, useEditProject, useProject} from "../tools/service";
-import {Button, DialogHeader, ImageField, Input, Textarea} from "../components";
-import {useParams} from "react-router-dom";
+import {Button, DialogHeader, Icon, ImageField, Input, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {PlaceSelect} from "../components/PlaceSelect";
 import {AgeField} from "../components/AgeField";
 import {Place, Project} from "../tools/dto";
+import {Block} from "../components/Block";
+import {ParticipationCard} from "../cards/ParticipationCard";
 
-export interface CreateProjectProps {
+export interface EditProjectProps {
+    projectId?: number
     onClose: () => void
 }
-function CreateProject({ onClose }: CreateProjectProps) {
-    const { id: projectId } = useParams();
-    const { data: defaultProject } = useProject(Number(projectId))
+function EditProject({ projectId, onClose }: EditProjectProps) {
+    const { data: defaultProject, refetch } = useProject(projectId)
     const [project, setProject] = useState<Partial<Project>>({ title: '' })
     const addProject = useAddProject()
     const editProject = useEditProject(project.id)
@@ -33,14 +34,13 @@ function CreateProject({ onClose }: CreateProjectProps) {
     return (
         <>
             <DialogHeader title={project.id ? 'Редактировать проект' : 'Новый проект'} onClick={onClose} isClose />
-            <DialogContent style={{ backgroundColor: 'white' }}>
-                <Stack spacing={3}>
+            <DialogContent>
+                <Block variant="primary">
                     <Input
                         name='title'
                         label="Название"
                         value={project.title}
                         onChange={(e) => setProject({ ...project, title: e.target.value})}
-                        // placeholder="Название"
                         autoFocus
                     />
                     <Textarea
@@ -48,7 +48,6 @@ function CreateProject({ onClose }: CreateProjectProps) {
                         label="Описание"
                         value={project.description}
                         onChange={(e) => setProject({ ...project, description: e.target.value})}
-                        // placeholder="Описание проекта"
                     />
                     <ImageField
                         name="meetImage"
@@ -65,7 +64,16 @@ function CreateProject({ onClose }: CreateProjectProps) {
                         ageTo={project.ageTo}
                         onChange={({ ageFrom, ageTo }) => setProject({...project, ageFrom, ageTo})}
                     />
-                </Stack>
+                </Block>
+                {project.id && (
+                    <Block variant="secondary">
+                        <Block title="Участники проекта">
+                            <Stack spacing={1}>
+                                {project.participations?.map((participation) => <ParticipationCard key={participation.id} participation={participation} isOrganizer refetch={refetch} />)}
+                            </Stack>
+                        </Block>
+                    </Block>
+                )}
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultProject) === JSON.stringify(project) ? 'none' : 'block' }}>
                 <Button onClick={onClickSave}>
@@ -75,4 +83,4 @@ function CreateProject({ onClose }: CreateProjectProps) {
         </>
     );
 }
-export default withDialog(CreateProject)
+export default withDialog(EditProject)

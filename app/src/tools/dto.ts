@@ -50,7 +50,7 @@ export interface Project {
     /**
      * Дополнительные поля
      */
-    participationUsers: ParticipationUser[] // Участия участников
+    participations: Participation[] // Участия участников
     editable?: boolean // Право на редактирование/удаление
     passport?: Passport // Организатор (Родитель)
     place?: Place // Место проведения
@@ -116,11 +116,6 @@ export interface Participation {
     user?: User
     project?: Project
 }
-
-/**
- * Участие участника
- */
-export interface ParticipationUser extends User, Participation {}
 
 /**
  * Идея

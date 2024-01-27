@@ -8,6 +8,7 @@ import {IdeaCard} from "../cards/IdeaCard";
 import {Idea} from "../tools/dto";
 import {useToggle} from "usehooks-ts";
 import {AgeField} from "../components/AgeField";
+import {Block} from "../components/Block";
 
 export interface IdeasProps {
     onClose: () => void
@@ -20,24 +21,25 @@ function Ideas({ onClose }: IdeasProps) {
     return (
         <>
             <DialogHeader title="Идеи" onClick={onClose} onClickOption={toggleOptions}/>
-            <DialogContent style={{ padding: 0 }}>
+            <DialogContent>
                 {options && (
-                    <Stack spacing={1} style={{ padding: 16, backgroundColor: 'white' }}>
+                    <Block variant="primary">
                         <AgeField
                             ageFrom={filter?.ageFrom}
                             ageTo={filter?.ageTo}
                             onChange={({ ageFrom, ageTo }) => {
-                                console.log(filter, ageFrom, ageTo, "Age filter")
                                 setFilter({...filter, ageFrom, ageTo})
                             }}
                         />
-                    </Stack>
+                    </Block>
                 )}
-                <Stack spacing={1} style={{ padding: 16 }}>
-                    {data?.map((idea,index) =>
-                        <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
-                    )}
-                </Stack>
+                <Block variant="secondary">
+                    <Stack spacing={1}>
+                        {data?.map((idea,index) =>
+                            <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
+                        )}
+                    </Stack>
+                </Block>
             </DialogContent>
         </>
     );

@@ -9,18 +9,19 @@ import {
 } from "../tools/service";
 import {Back, Button, Icon, MeetCard} from "../components";
 import {useToggle} from "usehooks-ts";
-import CreateProject from "./CreateProject";
+import EditProject from "./EditProject";
 import {getOnShare} from "../tools/pwa";
 import {makeStyles} from "@mui/styles";
 import {Parameter, Parameters} from "../components/Parameters";
 import {getAgeTitle} from "../tools/helper";
 import {useAuth} from "../tools/auth";
-import {Stack} from "@mui/material";
+import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {ParticipationCard} from "../cards/ParticipationCard";
 import {Block} from "../components/Block";
-import CreateMeet from "./Meet";
+import CreateMeet from "./EditMeet";
 import {withDialog} from "../components/helper";
+import {COLOR, COLOR_DEFAULT} from "../tools/theme";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -54,7 +55,7 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
     const classes = useStyles();
 
     const { data: project, refetch } = useProject(Number(projectId))
-    const [create, toggleCreate] = useToggle()
+    const [edit, toggleCreate] = useToggle()
     const [createMeet, toggleCreateMeet] = useToggle()
 
     const deleteProject = useDeleteProject()
@@ -63,7 +64,7 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
 
     if (!project) return null;
 
-    const participation = project.participationUsers?.find(({ userId }) => userId === user?.id)
+    const participation = project.participations?.find(({ userId }) => userId === user?.id)
     const editable = project.passportId === passport?.id
 
 
@@ -101,7 +102,7 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
         url: `/project/${project?.id}`
     })
 
-    const onCloseCreateProject = () => {
+    const onCloseEditProject = () => {
         toggleCreate()
         refetch()
     }
@@ -127,6 +128,12 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
                                 <Icon name="share" onClick={onShare} />
                             </Stack>
                             <Typography variant="Subheader1">{project.description}</Typography>
+
+                            <Block title="Участники">
+                                <AvatarGroup max={4}>
+                                    {project.participations?.map((participation) => <Avatar key={participation.user?.id} alt={participation.user?.title} src={participation.user?.image} sx={{ width: 40, height: 40 }} />)}
+                                </AvatarGroup>
+                            </Block>
                             {!participation && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
                             <Parameters items={parameters}/>
                         </Stack>
@@ -147,17 +154,12 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
                                         </div>
                                     )}
                                 </Block>
-                                <Block title="Участники проекта">
-                                    <Stack spacing={1}>
-                                        {project.participationUsers?.map((participationUser) => <ParticipationCard key={participationUser.id} participationUser={participationUser} isOrganizer={editable} refetch={refetch} />)}
-                                    </Stack>
-                                </Block>
                             </Stack>
                         </div>
                     </Stack>
                 </div>
             </div>
-            <CreateProject open={create} onClose={onCloseCreateProject} />
+            <EditProject projectId={project.id} open={edit} onClose={onCloseEditProject} />
             <CreateMeet defaultProjectId={project.id} open={createMeet} onClose={onCloseCreateMeet} />
         </>
     );

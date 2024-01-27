@@ -1,11 +1,9 @@
 import React from 'react';
-import {ParticipationUser, User} from "../tools/dto";
+import {User} from "../tools/dto";
 import {Avatar, Stack} from "@mui/material";
 import Typography from "../components/Typography";
-import {useDeleteUser, useDeleteVisit} from "../tools/service";
 import {Icon} from "../components";
 import {useToggle} from "usehooks-ts";
-import CreateMeet from "../dialogs/Meet";
 import EditMeet from "../dialogs/User";
 
 interface UserCardProps {

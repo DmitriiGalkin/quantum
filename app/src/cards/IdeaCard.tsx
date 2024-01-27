@@ -7,13 +7,13 @@ import {getAgeLabel} from "../tools/helper";
 import Typography from "../components/Typography";
 import {useToggle} from "usehooks-ts";
 import {Button, Icon} from "../components";
-import CreateProject from "../dialogs/CreateProject";
+import CreateProject from "../dialogs/EditProject";
 import SelectProject from "../dialogs/SelectProject";
 import {useCreateInvite, useCreateParticipation} from "../tools/service";
 import {DialogContent} from "../components/DialogContent";
 import {COLOR, COLOR_DEFAULT} from "../tools/theme";
 import {Parameter} from "../components/Parameter";
-import CreateMeet from "../dialogs/Meet";
+import CreateMeet from "../dialogs/EditMeet";
 import CreateIdea from "../dialogs/CreateIdea";
 
 interface IdeaCardProps {

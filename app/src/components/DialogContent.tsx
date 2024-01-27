@@ -1,8 +1,11 @@
-import React, {CSSProperties} from 'react';
+import React from 'react';
 
-export function DialogContent({ children, backgroundColor, style }: { children: React.ReactNode, backgroundColor?: string, style?: CSSProperties }) {
+interface DialogContentProps {
+    children: React.ReactNode
+}
+export function DialogContent({ children }: DialogContentProps) {
     return (
-        <div style={{ padding: 16, flex: '1 1 auto', overflowY: 'auto', backgroundColor: backgroundColor ?? 'rgb(245, 245, 245);', ...style }}>{children}</div>
+        <div style={{ flex: '1 1 auto', overflowY: 'auto' }}>{children}</div>
     );
 }
 

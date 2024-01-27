@@ -1,9 +1,7 @@
 import React from 'react';
-import {Invite, ParticipationUser} from "../tools/dto";
+import {Invite} from "../tools/dto";
 import {Avatar, Stack} from "@mui/material";
 import Typography from "../components/Typography";
-import {Icon} from "../components";
-import {useDeleteParticipation} from "../tools/service";
 import {Parameter} from "../components/Parameter";
 import ProjectPage from "../dialogs/ProjectView";
 import {useToggle} from "usehooks-ts";

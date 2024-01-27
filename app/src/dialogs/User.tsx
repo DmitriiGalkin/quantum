@@ -46,34 +46,32 @@ function EditUser({ userId, onClose }: EditUserProps) {
         <>
             <DialogHeader title="Ребенок" onClick={onClose} />
             <DialogContent>
-                <Stack spacing={8}>
-                    <Stack className="primary" spacing={5} style={{ backgroundColor: 'white', margin: '-16px -18px', padding: '16px 18px', borderRadius: '0 0 28px 28px'}}>
-                        <Input
-                            name='price'
-                            label="Имя и Фамилия"
-                            value={user.title}
-                            onChange={(e) => setUser({ ...user, title: e.target.value })}
-                        />
-                        <Input
-                            name='age'
-                            label="Возраст"
-                            type="number"
-                            value={user.age}
-                            onChange={(e) => setUser({ ...user, age: Number(e.target.value) })}
-                        />
-                        <ImageField
-                            name="meetImage"
-                            label="Обложка"
-                            value={user.image}
-                            onChange={(image) => setUser({ ...user, image })}
-                        />
+                <Block variant="primary">
+                    <Input
+                        name='price'
+                        label="Имя"
+                        value={user.title}
+                        onChange={(e) => setUser({ ...user, title: e.target.value })}
+                    />
+                    <Input
+                        name='age'
+                        label="Возраст"
+                        type="number"
+                        value={user.age}
+                        onChange={(e) => setUser({ ...user, age: Number(e.target.value) })}
+                    />
+                    <ImageField
+                        name="meetImage"
+                        label="Обложка"
+                        value={user.image}
+                        onChange={(image) => setUser({ ...user, image })}
+                    />
+                </Block>
+                <Block variant="secondary">
+                    <Stack spacing={3}>
+                        {user.id && <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить участника</Button>}
                     </Stack>
-                    <div className="secondary">
-                        <Stack spacing={3}>
-                            {user.id && <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить участника</Button>}
-                        </Stack>
-                    </div>
-                </Stack>
+                </Block>
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultUser) === JSON.stringify(user) ? 'none' : 'block' }} >
                 <Button onClick={onClickSave}>{user.id ? 'Сохранить' : "Создать"}</Button>

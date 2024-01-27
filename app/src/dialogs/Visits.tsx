@@ -8,6 +8,7 @@ import {useAuth} from "../tools/auth";
 import {VisitCard} from "../cards/VisitCard";
 import {getVisitGroups} from "../tools/helper";
 import Typography from "../components/Typography";
+import {Block} from "../components/Block";
 
 export interface UserMeetsProps {
     onClose: () => void
@@ -21,16 +22,18 @@ function Visits({ onClose }: UserMeetsProps) {
         <>
             <DialogHeader title="Посещения" onClick={onClose}/>
             <DialogContent>
-                <Stack spacing={4}>
-                    {visitGroups.map(group => (
-                        <Stack spacing={2}>
-                            <Typography variant="Header2">{group.title}</Typography>
-                            <Stack spacing={1}>
-                                {group.visits?.map((visit) => <VisitCard key={visit.id} refetch={refetch} visit={visit}/> )}
+                <Block variant="primary">
+                    <Stack spacing={4}>
+                        {visitGroups.map(group => (
+                            <Stack spacing={2}>
+                                <Typography variant="Header2">{group.title}</Typography>
+                                <Stack spacing={1}>
+                                    {group.visits?.map((visit) => <VisitCard key={visit.id} refetch={refetch} visit={visit}/> )}
+                                </Stack>
                             </Stack>
-                        </Stack>
-                    ))}
-                </Stack>
+                        ))}
+                    </Stack>
+                </Block>
             </DialogContent>
         </>
     );

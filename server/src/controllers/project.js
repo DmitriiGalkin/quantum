@@ -6,6 +6,7 @@ const Passport = require('../models/passport');
 const Visit = require('../models/visit');
 const Meet = require('../models/meet');
 const Place = require('../models/place');
+const Participation = require('../models/participation');
 
 exports.create = function(req, res) {
     const project = new Project({...req.body, passportId: req.passport?.id });
@@ -45,17 +46,19 @@ exports.findById = function(req, res) {
         } else {
             Place.findById(project.placeId, function(err, place) {
                 Passport.findById(project.passportId, function (err, passport) {
-                    User.findParticipationUsersByProjectId(project.id, function (err, participationUsers) {
+                    Participation.findByProjectId(project.id, function (err, participations) {
                         Meet.findByProjectId(project.id, function (err, meets) {
-                            async.map(meets, Visit.findByMeet, function(err, visits) {
-                                async.map(meets, User.findByMeet, function(err, visitUsers) {
-                                    res.send({
-                                        ...project,
-                                        passport,
-                                        place,
-                                        meets: meets?.map((m, index) => ({ ...m, visits: visits[index].map((v, index2)=>({...v, user: visitUsers[index][index2] })) })),
-                                        participationUsers,
-                                    });
+                            async.map(participations.map(p=>p.userId), User.findById, function(err, users) {
+                                async.map(meets, Visit.findByMeet, function(err, visits) {
+                                    async.map(meets, User.findByMeet, function(err, visitUsers) {
+                                        res.send({
+                                            ...project,
+                                            passport,
+                                            place,
+                                            meets: meets?.map((m, index) => ({ ...m, visits: visits[index].map((v, index2)=>({...v, user: visitUsers[index][index2] })) })),
+                                            participations: participations.map((m, index) => ({...m, user: users[index]}))
+                                        });
+                                    })
                                 })
                             })
                         })

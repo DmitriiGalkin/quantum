@@ -50,12 +50,6 @@ User.findByEmail = function (email, result) {
         result(null, res?.length ? res[0] : undefined);
     });
 };
-// Участия участников
-User.findParticipationUsersByProjectId = function (id, result) {
-    dbConn.query("SELECT user.*, participation.* FROM participation LEFT JOIN user ON user.id = participation.userId WHERE projectId = ? ", id, function (err, res) {
-        result(null, res);
-    });
-};
 
 const parse = (res) => {
     return res

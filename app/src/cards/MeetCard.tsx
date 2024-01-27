@@ -6,7 +6,7 @@ import {useCreateVisit, useDeleteVisit} from "../tools/service";
 import {useAuth} from "../tools/auth";
 import Typography from "../components/Typography";
 import {useToggle} from "usehooks-ts";
-import CreateMeet from "../dialogs/Meet";
+import CreateMeet from "../dialogs/EditMeet";
 import {Button, Icon} from "../components";
 import {Parameter} from "../components/Parameter";
 import {COLOR, COLOR_DEFAULT, COLOR_SUCCESS} from "../tools/theme";

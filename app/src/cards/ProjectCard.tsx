@@ -5,7 +5,7 @@ import {makeStyles} from '@mui/styles';
 import {useNavigate} from "react-router-dom";
 import {getAgeLabel} from "../tools/helper";
 import Typography from "../components/Typography";
-import CreateMeet from "../dialogs/Meet";
+import CreateMeet from "../dialogs/EditMeet";
 import ProjectPage from "../dialogs/ProjectView";
 import {useToggle} from "usehooks-ts";
 

@@ -4,7 +4,7 @@ import Passport from "../dialogs/Passport";
 import Visits from "../dialogs/Visits";
 import {useToggle} from "usehooks-ts";
 import {useAuth} from "../tools/auth";
-import CreateProject from "../dialogs/CreateProject";
+import CreateProject from "../dialogs/EditProject";
 import CreateIdea from "../dialogs/CreateIdea";
 import Typography from "./Typography";
 import {Icon} from "./Icon";

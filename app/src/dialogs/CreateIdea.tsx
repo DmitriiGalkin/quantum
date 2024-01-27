@@ -61,32 +61,28 @@ function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
         <>
             <DialogHeader title="Идея" onClick={onClose} />
             <DialogContent>
-                <Stack spacing={8}>
-                    <Stack id="meetParams" spacing={5} style={{ backgroundColor: 'white', margin: '-16px -18px', padding: '16px 18px', borderRadius: '0 0 28px 28px'}}>
-                        <Input
-                            name='title'
-                            label="Название"
-                            value={idea.title}
-                            onChange={(e) => setIdea({ ...idea, title: e.target.value})}
-                            autoFocus
-                        />
-                        <Textarea
-                            name='title'
-                            label="Описание"
-                            value={idea.description}
-                            onChange={(e) => setIdea({ ...idea, description: e.target.value})}
-                        />
-                    </Stack>
-                    {idea.id && (
-                        <div id="secondary">
-                            <Block title="Приглашения в проекты">
-                                <Stack spacing={1}>
-                                    {idea.invites?.map((invite) => <InviteCard key={invite.id} invite={invite} refetch={refetch} />)}
-                                </Stack>
-                            </Block>
-                        </div>
-                    )}
-                </Stack>
+                <Block variant="primary">
+                    <Input
+                        name='title'
+                        label="Название"
+                        value={idea.title}
+                        onChange={(e) => setIdea({ ...idea, title: e.target.value})}
+                        autoFocus
+                    />
+                    <Textarea
+                        name='title'
+                        label="Описание"
+                        value={idea.description}
+                        onChange={(e) => setIdea({ ...idea, description: e.target.value})}
+                    />
+                </Block>
+                <Block variant="secondary">
+                    <Block title="Приглашения в проекты">
+                        <Stack spacing={1}>
+                            {idea.invites?.map((invite) => <InviteCard key={invite.id} invite={invite} refetch={refetch} />)}
+                        </Stack>
+                    </Block>
+                </Block>
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultIdea) === JSON.stringify(idea) ? 'none' : 'block' }} >
                 <Button onClick={onClickSave}>{idea.id ? 'Сохранить' : "Создать"}</Button>

@@ -18,12 +18,12 @@ import {withDialog} from "../components/helper";
 import {Block} from "../components/Block";
 import {VisitCard} from "../cards/VisitCard";
 
-export interface MeetDialogProps {
+export interface EditMeetProps {
     meetId: number
     defaultProjectId: number
     onClose: () => void
 }
-function MeetDialog({ meetId, defaultProjectId, onClose }: MeetDialogProps) {
+function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
     const [meet, setMeet] = useState<Partial<Meet>>({ datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'), projectId: defaultProjectId })
     const navigate = useNavigate();
@@ -66,50 +66,50 @@ function MeetDialog({ meetId, defaultProjectId, onClose }: MeetDialogProps) {
         <>
             <DialogHeader title="Встреча" onClick={onClose} />
             <DialogContent>
-                <Stack spacing={8}>
-                    <Stack id="meetParams" spacing={5} style={{ backgroundColor: 'white', margin: '-16px -18px', padding: '16px 18px', borderRadius: '0 0 28px 28px'}}>
-                        <DatePicker
-                            value={meet.datetime}
-                            onChange={(datetime) => setMeet({ ...meet, datetime })}
+                <Block variant="primary">
+                    <DatePicker
+                        value={meet.datetime}
+                        onChange={(datetime) => setMeet({ ...meet, datetime })}
+                    />
+                    <Stack spacing={1} direction="row">
+                        <Input
+                            name='time'
+                            label="Время"
+                            type="time"
+                            step={60}
+                            value={convertToMeetTime(meet.datetime)}
+                            min={'09:00'}
+                            max={'16:00'}
+                            onChange={(e) => setMeet({ ...meet, datetime: onChangeReactIosTimePicker(e.target.value) })}
                         />
-                        <Stack spacing={1} direction="row">
-                            <Input
-                                name='time'
-                                label="Время"
-                                type="time"
-                                step={60}
-                                value={convertToMeetTime(meet.datetime)}
-                                min={'09:00'}
-                                max={'16:00'}
-                                onChange={(e) => setMeet({ ...meet, datetime: onChangeReactIosTimePicker(e.target.value) })}
-                            />
-                            <Input
-                                name='price'
-                                label="Длительность"
-                                value={meet.duration}
-                                onChange={(e) => setMeet({ ...meet, duration: e.target.value })}
-                            />
-                            <Input
-                                name='price'
-                                label="Стоимость"
-                                value={meet.price}
-                                onChange={(e) => setMeet({ ...meet, price: Number(e.target.value) })}
-                            />
-                        </Stack>
+                        <Input
+                            name='price'
+                            label="Длительность"
+                            value={meet.duration}
+                            onChange={(e) => setMeet({ ...meet, duration: e.target.value })}
+                        />
+                        <Input
+                            name='price'
+                            label="Стоимость"
+                            value={meet.price}
+                            onChange={(e) => setMeet({ ...meet, price: Number(e.target.value) })}
+                        />
                     </Stack>
-                    {meet.id && (
-                        <div id="secondary">
-                            <Stack spacing={3}>
+                </Block>
+                {meet.id && (
+                    <Block variant="secondary">
+                        <Stack spacing={3}>
+                            {Boolean(meet.visits?.length) && (
                                 <Block title="Участники встречи">
                                     <Stack spacing={1}>
                                         {meet.visits?.map((visit) => <VisitCard visit={visit} refetch={refetch} />)}
                                     </Stack>
                                 </Block>
-                                <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить встречу</Button>
-                            </Stack>
-                        </div>
-                    )}
-                </Stack>
+                            )}
+                            <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить встречу</Button>
+                        </Stack>
+                    </Block>
+                )}
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultMeet) === JSON.stringify(meet) ? 'none' : 'block' }} >
                 <Button onClick={onClickSave}>{meet.id ? 'Сохранить' : "Создать"}</Button>
@@ -118,5 +118,5 @@ function MeetDialog({ meetId, defaultProjectId, onClose }: MeetDialogProps) {
     );
 }
 
-export default withDialog(MeetDialog)
+export default withDialog(EditMeet)
 
