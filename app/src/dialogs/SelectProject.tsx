@@ -1,13 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Stack} from "@mui/material";
-import {useAddProject, useEditProject, useProject, useProjects} from "../tools/service";
-import {Button, DialogHeader, ImageField, Input, ProjectCard, Textarea} from "../components";
-import {useParams} from "react-router-dom";
-import {DialogContent} from "../components/DialogContent";
+import React from 'react';
+import {useProjects} from "../tools/service";
+import {DialogHeader, ProjectCard} from "../components";
 import {withDialog} from "../components/helper";
-import {PlaceSelect} from "../components/PlaceSelect";
-import {AgeField} from "../components/AgeField";
-import {Place, Project} from "../tools/dto";
+import {Project} from "../tools/dto";
 import Masonry from "@mui/lab/Masonry";
 
 export interface SelectProjectProps {

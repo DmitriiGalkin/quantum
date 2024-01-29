@@ -1,19 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Idea, Project} from "../tools/dto";
-import {Avatar, AvatarGroup, Box, Chip, Stack} from "@mui/material";
-import {makeStyles} from '@mui/styles';
-import {useNavigate} from "react-router-dom";
-import {getAgeLabel} from "../tools/helper";
+import {Avatar, Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {useToggle} from "usehooks-ts";
 import {Button, Icon} from "../components";
-import CreateProject from "../dialogs/EditProject";
 import SelectProject from "../dialogs/SelectProject";
-import {useCreateInvite, useCreateParticipation} from "../tools/service";
-import {DialogContent} from "../components/DialogContent";
-import {COLOR, COLOR_DEFAULT} from "../tools/theme";
+import {useCreateInvite} from "../tools/service";
 import {Parameter} from "../components/Parameter";
-import CreateMeet from "../dialogs/EditMeet";
 import CreateIdea from "../dialogs/CreateIdea";
 
 interface IdeaCardProps {

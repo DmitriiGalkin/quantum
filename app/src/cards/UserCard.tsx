@@ -2,7 +2,6 @@ import React from 'react';
 import {User} from "../tools/dto";
 import {Avatar, Stack} from "@mui/material";
 import Typography from "../components/Typography";
-import {Icon} from "../components";
 import {useToggle} from "usehooks-ts";
 import EditMeet from "../dialogs/EditUser";
 

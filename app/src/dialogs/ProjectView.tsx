@@ -1,12 +1,6 @@
 import React from 'react';
-import {useNavigate, useParams} from "react-router-dom";
-import {
-    useCreateParticipation,
-    useDeleteMeet,
-    useDeleteParticipation,
-    useDeleteProject,
-    useProject
-} from "../tools/service";
+import {useNavigate} from "react-router-dom";
+import {useCreateParticipation, useDeleteParticipation, useDeleteProject, useProject} from "../tools/service";
 import {Back, Button, Icon, MeetCard} from "../components";
 import {useToggle} from "usehooks-ts";
 import EditProject from "./EditProject";
@@ -17,11 +11,9 @@ import {getAgeTitle} from "../tools/helper";
 import {useAuth} from "../tools/auth";
 import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
 import Typography from "../components/Typography";
-import {ParticipationCard} from "../cards/ParticipationCard";
 import {Block} from "../components/Block";
 import CreateMeet from "./EditMeet";
 import {withDialog} from "../components/helper";
-import {COLOR, COLOR_DEFAULT} from "../tools/theme";
 
 const useStyles = makeStyles(() => ({
     container: {

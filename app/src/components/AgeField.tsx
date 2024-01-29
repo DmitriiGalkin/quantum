@@ -1,7 +1,5 @@
 import React from 'react';
 import {Stack} from "@mui/material";
-import Switch from "./Switch";
-import {useToggle} from "usehooks-ts";
 import {Input} from "./Input";
 
 interface PriceFieldProps {

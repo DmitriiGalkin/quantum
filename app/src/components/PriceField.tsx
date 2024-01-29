@@ -2,7 +2,6 @@ import React from 'react';
 import {Stack} from "@mui/material";
 import Switch from "./Switch";
 import {useToggle} from "usehooks-ts";
-import {useInputStyles} from "./helper";
 import {Input} from "./Input";
 import Typography from "./Typography";
 

@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
 import {useAddProject, useEditProject, useProject} from "../tools/service";
-import {Button, DialogHeader, Icon, ImageField, Input, Textarea} from "../components";
+import {Button, DialogHeader, ImageField, Input, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {PlaceSelect} from "../components/PlaceSelect";

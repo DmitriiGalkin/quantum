@@ -1,5 +1,5 @@
 import React from 'react';
-import {Meet, Place, Project, Visit} from "../tools/dto";
+import {Meet, Visit} from "../tools/dto";
 import {convertToObject} from "../tools/date";
 import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
 import {useCreateVisit, useDeleteVisit} from "../tools/service";
@@ -7,9 +7,9 @@ import {useAuth} from "../tools/auth";
 import Typography from "../components/Typography";
 import {useToggle} from "usehooks-ts";
 import CreateMeet from "../dialogs/EditMeet";
-import {Button, Icon} from "../components";
+import {Button} from "../components";
 import {Parameter} from "../components/Parameter";
-import {COLOR, COLOR_DEFAULT, COLOR_SUCCESS} from "../tools/theme";
+import {COLOR, COLOR_DEFAULT} from "../tools/theme";
 
 interface MeetCardProps {
     meet: Meet

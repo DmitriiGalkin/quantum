@@ -1,6 +1,6 @@
 import React from 'react';
 import {Stack} from "@mui/material";
-import {AppBanner, DialogHeader} from "../components";
+import {DialogHeader} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import Typography from "../components/Typography";

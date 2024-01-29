@@ -2,7 +2,7 @@ import React from 'react';
 import {Visit} from "../tools/dto";
 import {Avatar, Chip, Stack} from "@mui/material";
 import Typography from "../components/Typography";
-import {Button, Icon} from "../components";
+import {Button} from "../components";
 import {useDeleteVisit, usePaidedVisit, useStartedVisit, useStoppedVisit} from "../tools/service";
 import clsx from "clsx";
 import {makeStyles} from "@mui/styles";

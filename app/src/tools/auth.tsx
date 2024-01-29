@@ -1,10 +1,9 @@
-import React, {createContext, useContext, useMemo} from "react";
+import React, {createContext, useContext} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import service, {usePassport} from "./service";
 import Login from "../dialogs/Login";
 import {useLocalStorage, useToggle} from "usehooks-ts";
-import {User, Passport} from "./dto";
-import PassportDialog from "../dialogs/Passport";
+import {Passport, User} from "./dto";
 
 export const ACCESS_TOKEN = 'access_token'
 export const AuthContext = createContext('auth' as any);

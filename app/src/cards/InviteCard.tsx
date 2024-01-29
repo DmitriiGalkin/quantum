@@ -1,6 +1,6 @@
 import React from 'react';
 import {Invite} from "../tools/dto";
-import {Avatar, Stack} from "@mui/material";
+import {Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {Parameter} from "../components/Parameter";
 import ProjectPage from "../dialogs/ProjectView";

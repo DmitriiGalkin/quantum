@@ -1,7 +1,7 @@
 import React from 'react';
 import {useVisits} from "../tools/service";
 import {Stack} from "@mui/material";
-import {DialogHeader, MeetCard} from "../components";
+import {DialogHeader} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {useAuth} from "../tools/auth";

@@ -5,7 +5,6 @@ import {DialogHeader} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {IdeaCard} from "../cards/IdeaCard";
-import {Idea} from "../tools/dto";
 import {useToggle} from "usehooks-ts";
 import {AgeField} from "../components/AgeField";
 import {Block} from "../components/Block";

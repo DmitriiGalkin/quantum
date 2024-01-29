@@ -1,24 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {
-    useAddIdea,
-    useAddMeet,
-    useDeleteMeet, useEditIdea,
-    useEditMeet, useIdea,
-    useMeet,
-} from "../tools/service";
-import {Idea, Meet, Project} from "../tools/dto";
-import {Button, DatePicker, DialogHeader, Icon, Input, Textarea} from "../components";
-import {convertToMeetsGroupTime, convertToMeetTime, getIsStart} from "../tools/date";
-import {useLocalStorage} from "usehooks-ts";
-import {LocalDate} from "@js-joda/core";
-import dayjs from "dayjs";
-import {useNavigate} from "react-router-dom";
+import {useAddIdea, useEditIdea, useIdea,} from "../tools/service";
+import {Idea} from "../tools/dto";
+import {Button, DialogHeader, Input, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {Block} from "../components/Block";
-import {VisitCard} from "../cards/VisitCard";
-import {ParticipationCard} from "../cards/ParticipationCard";
 import {InviteCard} from "../cards/InviteCard";
 import {useAuth} from "../tools/auth";
 

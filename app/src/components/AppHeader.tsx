@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {Avatar, Stack} from "@mui/material";
 import {Burger} from "./Burger";
 import Typography from "./Typography";
