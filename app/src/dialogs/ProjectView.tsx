@@ -130,9 +130,11 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
                             <Typography variant="Subheader1">{project.description}</Typography>
 
                             <Block title="Участники">
-                                <AvatarGroup max={4}>
-                                    {project.participations?.map((participation) => <Avatar key={participation.user?.id} alt={participation.user?.title} src={participation.user?.image} sx={{ width: 40, height: 40 }} />)}
-                                </AvatarGroup>
+                                <Box sx={{ display: 'flex' }}>
+                                    <AvatarGroup max={4}>
+                                        {project.participations?.map((participation) => <Avatar key={participation.user?.id} alt={participation.user?.title} src={participation.user?.image} sx={{ width: 40, height: 40 }} />)}
+                                    </AvatarGroup>
+                                </Box>
                             </Block>
                             {!participation && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
                             <Parameters items={parameters}/>

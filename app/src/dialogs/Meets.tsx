@@ -11,7 +11,6 @@ import {Calendar, DialogHeader} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {useAuth} from "../tools/auth";
-import {Block} from "../components/Block";
 
 export interface MeetsProps {
     onClose: () => void
@@ -29,7 +28,7 @@ function Meets({ onClose }: MeetsProps) {
         <>
             <DialogHeader title="Календарь встреч" onClick={onClose}/>
             <DialogContent>
-                <Block variant="secondary">
+                <Stack spacing={3} style={{ height: '100%', padding: 16 }}>
                     <Calendar days={days} onChange={setDate} />
                     <div style={{ flex: '1 1 auto', overflowY: 'auto' }} ref={containerRef}>
                         <SwipeableViews
@@ -48,7 +47,7 @@ function Meets({ onClose }: MeetsProps) {
                             ))}
                         </SwipeableViews>
                     </div>
-                </Block>
+                </Stack>
             </DialogContent>
         </>
     )

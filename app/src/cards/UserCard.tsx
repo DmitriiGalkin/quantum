@@ -4,7 +4,7 @@ import {Avatar, Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {Icon} from "../components";
 import {useToggle} from "usehooks-ts";
-import EditMeet from "../dialogs/User";
+import EditMeet from "../dialogs/EditUser";
 
 interface UserCardProps {
     user: User
@@ -16,14 +16,13 @@ export function UserCard({ user, refetch }: UserCardProps) {
 
     return (
         <>
-            <Stack spacing={2} direction="row" justifyContent="space-between" alignContent="center" style={{ borderRadius: 8, backgroundColor: 'white', padding: 8 }}>
+            <Stack onClick={onClickEdit} spacing={2} direction="row" justifyContent="space-between" alignContent="center" style={{ borderRadius: 8, backgroundColor: 'white', padding: 8 }}>
                 <Stack direction="row" alignContent="center">
                     <Avatar key={user.id} alt={user.title} src={user.image} sx={{ width: 72, height: 72}} />
                     <Stack spacing={1} style={{ padding: 12 }}>
                         <Typography variant="Header2">{user.title}</Typography>
                         <Typography variant="Body">{user.age} лет</Typography>
                     </Stack>
-                    {true && <Icon name="edit" onClick={onClickEdit} />}
                 </Stack>
             </Stack>
             <EditMeet userId={user.id} open={edit} onClose={() => { onClickEdit(); refetch() }} />

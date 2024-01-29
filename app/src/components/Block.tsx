@@ -17,7 +17,7 @@ export function Block({ title, children, variant = 'default' }: BlockProps) {
     }
     if (variant === 'secondary') {
         return (
-            <Stack spacing={3} style={{ padding: 16, backgroundColor: 'rgb(245, 245, 245)', height: '100%' }}>
+            <Stack spacing={3} style={{ padding: 16, backgroundColor: 'rgb(245, 245, 245)' }}>
                 {children}
             </Stack>
         )

@@ -73,6 +73,7 @@ export function VisitCard({ visit, refetch }: VisitCardProps) {
                             <Stack direction="row" alignContent="center" spacing={2}>
                                 {time && <Parameter name="time2" title={time} />}
                                 {visit.meet.duration && <Parameter name="timer" title={visit.meet.duration} />}
+                                {visit.meet.price && <Parameter name="ruble" title={visit.meet.price} />}
                             </Stack>
                         )}
                         {visit.user && (<Typography variant="Body">{visit.user?.title}, {visit.user?.age} лет</Typography>)}

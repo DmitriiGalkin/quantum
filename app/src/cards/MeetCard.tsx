@@ -46,7 +46,7 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
 
     return (
         <>
-            <Stack direction="row" style={{ borderRadius: 8, backgroundColor: 'white', position: 'relative' }}>
+            <Stack direction="row" style={{ borderRadius: 8, backgroundColor: 'white', position: 'relative' }} onClick={isOrganizer ? toggleCreate : undefined}>
                 {meet.project && (
                     <div>
                         <div style={{borderRadius: '8px 0 0 8px', height: '100%', display: 'flex', width: 60, backgroundImage: `url(${meet.project.image})`, backgroundSize: 'cover', backgroundPosition: 'center'}} />
@@ -67,8 +67,8 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                                 <Stack direction="row" alignContent="center" spacing={2}>
                                     {time && <Parameter name="time2" title={time} />}
                                     {meet.duration && <Parameter name="timer" title={meet.duration} />}
+                                    {meet.price && <Parameter name="ruble" title={meet.price} />}
                                 </Stack>
-                                {isOrganizer && <Icon name="edit" onClick={toggleCreate} />}
                             </Stack>
                         </Stack>
                         <div style={{ flex: '1 0 auto', display: 'flex' }}>
@@ -84,9 +84,9 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                                 )}
                             </div>
                             {visit ? (
-                                <Button variant="small2" onClick={() => visit && onDeleteVisit(visit)}>Участвую</Button>
+                                <Button variant="small2" onClick={(e) => { visit && onDeleteVisit(visit); e.stopPropagation()} }>Участвую</Button>
                             ) : (
-                                <Button variant="small" onClick={onClickCreateVisit}>Участвовать</Button>
+                                <Button variant="small" onClick={e=> {onClickCreateVisit(); e.stopPropagation()}}>Участвовать</Button>
                             )}
                         </div>
 

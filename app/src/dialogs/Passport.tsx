@@ -9,7 +9,7 @@ import {withDialog} from "../components/helper";
 import {Block} from "../components/Block";
 import {UserCard} from "../cards/UserCard";
 import CreateMeet from "./EditMeet";
-import EditUser from "./User";
+import EditUser from "./EditUser";
 import {useToggle} from "usehooks-ts";
 
 export interface UserViewProps {

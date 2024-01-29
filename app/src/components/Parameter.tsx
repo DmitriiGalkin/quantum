@@ -6,7 +6,7 @@ import Typography from "./Typography";
 
 interface ParameterProps {
     name: IconName
-    title: string
+    title: string | number
 }
 export function Parameter({ title, name }: ParameterProps) {
     return (
