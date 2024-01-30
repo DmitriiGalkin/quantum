@@ -135,8 +135,9 @@ export const useAddPlace = (): UseMutate<Place> => {
  */
 export interface ProjectFilter {
     self?: boolean
+    deleted?: boolean
 }
-export const useProjects = (params?: ProjectFilter): UseQueryResult<Project[]> => useQuery(['projects', params?.self], () => service.get(`/projects`, { params }))
+export const useProjects = (params?: ProjectFilter): UseQueryResult<Project[]> => useQuery(['projects', params?.self, params?.deleted], () => service.get(`/projects`, { params }))
 export const useProject = (id?: number): UseQueryResult<Project> => useQuery(['project', id], () => service.get(`/project/${id}`), {
     enabled: Boolean(id),
 })
@@ -185,7 +186,7 @@ export const useDeleteIdea = (): UseMutate<number | undefined> => useMutation((i
  * Приглашение
  */
 export const useCreateInvite = (): UseMutate<{ projectId: number, userId: number, ideaId: number }> => useMutation((params) => service.post("/invite", params))
-// export const useDeleteParticipation = (): UseMutate<Participation> => useMutation((participation) => service.delete("/participation/" + participation.id))
+export const useDeleteInvite = (): UseMutate<number | undefined> => useMutation((inviteId) => service.delete("/invite/" + inviteId))
 
 
 export default service

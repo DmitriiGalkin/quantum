@@ -27,7 +27,7 @@ export function ProjectCard({ project, onClick, refetchParent }: ProjectCardProp
     return (
         <>
             <div onClick={onClick ? () => onClick && onClick(project) : toggleOpen}>
-                <Stack spacing={1}>
+                <Stack spacing={1} style={{ opacity: project.deleted ? 0.5 : 1}}>
                     <div style={{ minWidth: 150, position: "relative" }}>
                         {project.image && (
                             <>

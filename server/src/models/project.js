@@ -32,12 +32,17 @@ Project.delete = function(id, result){
 };
 
 Project.findAll = function (params, result) {
-    let where = ''
-    if (params.self) {
-        where +=' AND passportId = ' + params.passportId
-    }
-    const l = `SELECT * FROM project WHERE deleted IS NULL ${where}`
+    console.log(params,'params')
+
+    let where = 'WHERE '
+    where = where + (params.deleted === 'true' ? 'deleted IS NOT NULL OR deleted IS NULL' : 'deleted IS NULL')
+    where = where + ' AND passportId = ' + (params.self ? params.passportId : 'passportId')
+
+    const l = `SELECT * FROM project ${where}`
+    console.log(l,'l')
     dbConn.query(l, function (err, res) {
+        console.log(res,'res')
+
         result(null, res || []);
     });
 };

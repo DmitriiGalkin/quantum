@@ -67,9 +67,6 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
                             {idea.invites?.map((invite) => <InviteCard key={invite.id} invite={invite} refetch={refetch} />)}
                         </Stack>
                     </Block>
-                    <Stack spacing={3}>
-                        {user.id && <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить идею</Button>}
-                    </Stack>
                 </Block>
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultIdea) === JSON.stringify(idea) ? 'none' : 'block' }} >

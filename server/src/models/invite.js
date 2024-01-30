@@ -13,17 +13,23 @@ Invite.create = function (data, result) {
     });
 };
 
-// Participation.delete = function(id, result){
-//     dbConn.query(`DELETE FROM participation WHERE id = ?`, id, function (err, res) {
-//         result(null, res);
-//     });
-// };
-//
-// Participation.findById = function(id, result){
-//     dbConn.query("SELECT * FROM participation WHERE id = ?", [id], function (err, res) {
-//         result(null, res.length ? res[0] : undefined);
-//     });
-// };
+Invite.delete = function(id, result){
+    dbConn.query(`UPDATE invite SET deleted = NOW() WHERE id = ?`, id, function (err, res) {
+        result(null, res);
+    });
+};
+
+Invite.deleteByProjectId = function(id, result){
+    dbConn.query(`DELETE FROM invite WHERE projectId = ?`, id, function (err, res) {
+        result(null, res);
+    });
+};
+
+Invite.findById = function(id, result){
+    dbConn.query("SELECT * FROM invite WHERE id = ?", [id], function (err, res) {
+        result(null, res.length ? res[0] : undefined);
+    });
+};
 
 Invite.findByIdeaId = function(id, result){
     dbConn.query("SELECT * FROM invite WHERE ideaId = ?", [id], function (err, res) {

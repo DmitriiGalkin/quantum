@@ -7,6 +7,7 @@ const Visit = require('../models/visit');
 const Meet = require('../models/meet');
 const Place = require('../models/place');
 const Participation = require('../models/participation');
+const Invite = require('../models/invite');
 
 exports.create = function(req, res) {
     const project = new Project({...req.body, passportId: req.passport?.id });
@@ -28,8 +29,10 @@ exports.delete = function(req, res) {
 
         Meet.findByProjectId(project.id, function (err, meets) {
             async.map(meets.map(m=>m.id), Meet.delete, function(err, deletedMeets) {
-                Project.delete(project.id, function () {
-                    res.json({error: false, message: 'Проект удален'});
+                Invite.deleteByProjectId(project.id, function () {
+                    Project.delete(project.id, function () {
+                        res.json({error: false, message: 'Проект удален'});
+                    });
                 });
             })
         });

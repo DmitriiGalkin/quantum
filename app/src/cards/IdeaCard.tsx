@@ -20,6 +20,7 @@ export function IdeaCard({ idea, refetch }: IdeaCardProps) {
     const [project, toggleProject] = useToggle()
     const [create, toggleCreate] = useToggle()
     const createInvite = useCreateInvite()
+    const deleteInvite = useDeleteInvite()
 
     const onSelectProject = (project: Project) => {
         idea && createInvite.mutateAsync({ projectId: project.id, userId: idea.userId, ideaId: idea.id }).then(() => refetch())
@@ -28,7 +29,7 @@ export function IdeaCard({ idea, refetch }: IdeaCardProps) {
     return (
         <>
             <Card onClick={ user.id === idea.userId ? toggleCreate : undefined}>
-                <Stack spacing={2}>
+                <Stack spacing={2} style={{ padding: 16}}>
                     <Typography variant="Body-Bold">{idea.title}</Typography>
                     <Typography variant="Body">{idea.description}</Typography>
                     {idea.latitude && idea.longitude && <Parameter name="place2" title="Москва, Северодвинская 11" />}
