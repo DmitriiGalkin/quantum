@@ -36,7 +36,7 @@ function EditUser({ userId, onClose }: EditUserProps) {
 
     return (
         <>
-            <DialogHeader title="Ребенок" onClick={onClose} />
+            <DialogHeader title="Ребенок" onClick={onClose} menuItems={user.id ? [{ title: 'Удалить', onClick: onDelete}] : undefined} />
             <DialogContent>
                 <Block variant="primary">
                     <Input
@@ -58,11 +58,6 @@ function EditUser({ userId, onClose }: EditUserProps) {
                         value={user.image}
                         onChange={(image) => setUser({ ...user, image })}
                     />
-                </Block>
-                <Block variant="secondary">
-                    <Stack spacing={3}>
-                        {user.id && <Button onClick={toggleOpenDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить участника</Button>}
-                    </Stack>
                 </Block>
             </DialogContent>
             {showSave && <DialogFooter onClick={onClickSave} />}

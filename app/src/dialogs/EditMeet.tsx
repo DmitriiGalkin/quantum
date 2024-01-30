@@ -82,6 +82,7 @@ function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
                             onChange={(e) => setMeet({ ...meet, duration: e.target.value })}
                         />
                         <Input
+                            type="number"
                             name='price'
                             label="Стоимость"
                             value={meet.price}

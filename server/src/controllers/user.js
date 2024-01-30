@@ -1,6 +1,7 @@
 'use strict';
 const User = require('../models/user');
 const Passport = require('../models/passport');
+const Participation = require('../models/participation');
 
 exports.create = function(req, res) {
     const user = new User({...req.body, passportId: req.passport.id });
@@ -18,11 +19,13 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
     User.findById(req.params.id, function(err, user) {
-        if (err) { return res.json({error:true,message:"Ребенок не существует"}); }
+        if (err) { return res.json({error:true,message: "Ребенок не существует"}); }
         if (user.passportId !== req.passport.id) { return res.json({ error: true, message: "Нет прав на удаление" }); }
 
-        User.delete( req.params.id, function() {
-            res.json({ error:false, message: 'Удаление участника' });
+        Participation.deleteByUserId(user.id, function () {
+            User.delete( req.params.id, function() {
+                res.json({ error:false, message: 'Удаление участника и его участий в проектах' });
+            });
         });
     })
 };

@@ -11,6 +11,7 @@ import {Icon} from "./Icon";
 import {Button} from "./Button";
 import Ideas from "../dialogs/Ideas";
 import Projects from "../dialogs/Projects";
+import EditUser from "../dialogs/EditUser";
 
 export function Burger({refetch}: {refetch:() => void}) {
     const { user, passport: passportAll, setSelectedUserId } = useAuth();
@@ -24,6 +25,7 @@ export function Burger({refetch}: {refetch:() => void}) {
     const [selfIdeas, toggleSelfIdeas] = useToggle()
     const [projects, toggleProjects] = useToggle()
     const [sub, toggleSub] = useToggle()
+    const [createUser, onClickCreateUser] = useToggle()
 
     if (!user) return null
 
@@ -54,7 +56,7 @@ export function Burger({refetch}: {refetch:() => void}) {
                     <div style={{ color: 'black', height: '100%', width: 280 }}>
                         <Stack justifyContent="space-between" style={{ height: '100%' }}>
                             <Stack spacing={2} style={{ backgroundColor: 'white', padding: 16 }}>
-                                <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }}>
+                                <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }} onClick={onClickCreateUser}>
                                     <Avatar alt={user.title} src={user.image} sx={{ width: 72, height: 72}} />
                                     <Stack>
                                         <Typography variant="Caption">Ребенок</Typography>
@@ -92,6 +94,7 @@ export function Burger({refetch}: {refetch:() => void}) {
             <Ideas open={ideas} onClose={() => { toggleIdeas(); refetch() }} />
             <Ideas userId={user.id} open={selfIdeas} onClose={() => { toggleSelfIdeas(); refetch() }} />
             <Projects open={projects} onClose={toggleProjects} />
+            <EditUser userId={user.id} open={createUser} onClose={() => { onClickCreateUser(); refetch() }} />
         </div>
     )
 }

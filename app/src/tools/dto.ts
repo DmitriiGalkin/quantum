@@ -144,6 +144,8 @@ export interface Invite {
     userId: number // Идентификатор участника
     projectId: number // Идентификатор проекта
     ideaId?: number // Время создания приглашения/заявки на вступление
+    accepted?: string // Время принятия приглашения
+    deleted?: string // Время отказа от приглашения
 
     /**
      * Дополнительные поля

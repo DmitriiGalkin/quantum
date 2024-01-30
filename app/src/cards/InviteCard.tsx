@@ -1,11 +1,12 @@
 import React from 'react';
 import {Invite} from "../tools/dto";
-import {Stack} from "@mui/material";
+import {Chip, Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {Parameter} from "../components/Parameter";
 import ProjectPage from "../dialogs/Project";
 import {useToggle} from "usehooks-ts";
-import {Card} from "../components";
+import {Button, Card} from "../components";
+import {useDeleteInvite} from "../tools/service";
 
 interface InviteCardProps {
     invite: Invite
@@ -14,6 +15,8 @@ interface InviteCardProps {
 
 export function InviteCard({ invite, refetch }: InviteCardProps) {
     const [open, toggleOpen] = useToggle()
+    const deleteInvite = useDeleteInvite()
+    const onDelete =  () => invite.id && deleteInvite.mutateAsync(invite.id).then(refetch)
 
     return (
         <>
@@ -30,6 +33,25 @@ export function InviteCard({ invite, refetch }: InviteCardProps) {
                                 <Typography variant="Header2">{invite.project.title}</Typography>
                             )}
                             {invite.project?.place && <Parameter name="place2" title={invite.project?.place.title} />}
+                            <Stack direction="row" justifyContent="space-between" spacing={1}>
+                                {invite.accepted && (
+                                    <Chip
+                                        label={'Принято'}
+                                        color={'success'}
+                                        size="small"
+                                    />
+                                )}
+                                {invite.deleted && (
+                                    <Chip
+                                        label={'Отклонено'}
+                                        color={'error'}
+                                        size="small"
+                                    />
+                                )}
+                                <Stack direction="row" spacing={1} style={{ width: '100%', justifyContent: 'end' }} >
+                                    {!invite.deleted && <Button variant="small" onClick={(e) => {onDelete(); e.stopPropagation()}}>Удалить</Button>}
+                                </Stack>
+                            </Stack>
                         </Stack>
                     </Stack>
                 </Stack>

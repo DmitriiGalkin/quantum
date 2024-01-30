@@ -18,6 +18,12 @@ Participation.delete = function(id, result){
     });
 };
 
+Participation.deleteByUserId = function(id, result){
+    dbConn.query(`DELETE FROM participation WHERE userId = ?`, id, function (err, res) {
+        result(null, res);
+    });
+};
+
 Participation.findById = function(id, result){
     dbConn.query("SELECT * FROM participation WHERE id = ?", [id], function (err, res) {
         result(null, res.length ? res[0] : undefined);

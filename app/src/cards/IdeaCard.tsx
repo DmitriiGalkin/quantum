@@ -20,7 +20,6 @@ export function IdeaCard({ idea, refetch }: IdeaCardProps) {
     const [project, toggleProject] = useToggle()
     const [create, toggleCreate] = useToggle()
     const createInvite = useCreateInvite()
-    const deleteInvite = useDeleteInvite()
 
     const onSelectProject = (project: Project) => {
         idea && createInvite.mutateAsync({ projectId: project.id, userId: idea.userId, ideaId: idea.id }).then(() => refetch())
