@@ -1,6 +1,8 @@
 import React from "react";
 
 export { DialogHeader } from './DialogHeader'
+export { DialogFooter } from './DialogFooter'
+
 export { Back } from './Back'
 export { Button } from './Button'
 export { Calendar } from './Calendar'
@@ -14,3 +16,4 @@ export { Textarea } from './Textarea'
 export { TransitionDialog } from './TransitionDialog'
 export { AppBanner } from './AppBanner'
 export { Icon } from './Icon'
+export { Card } from './Card'

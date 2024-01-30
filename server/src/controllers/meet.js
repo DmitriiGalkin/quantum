@@ -25,9 +25,14 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-    Meet.delete(req.params.id, function() {
-        res.json({ error:false, message: 'Удаление встречи' });
-    });
+    Meet.findById(req.params.id, function(err, meet) {
+        if (err) { return res.json({error:true,message: "Встреча не существует"}); }
+        if (meet.passportId !== req.passport.id) { return res.json({error:true,message: "Нет прав на удаление"}); }
+
+        Meet.delete(req.params.id, function() {
+            res.json({ error:false, message: 'Удаление встречи' });
+        });
+    })
 };
 
 // Добавление или удаление участника встречи

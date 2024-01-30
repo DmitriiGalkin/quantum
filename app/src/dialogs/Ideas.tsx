@@ -10,10 +10,11 @@ import {AgeField} from "../components/AgeField";
 import {Block} from "../components/Block";
 
 export interface IdeasProps {
+    userId?: string
     onClose: () => void
 }
-function Ideas({ onClose }: IdeasProps) {
-    const [filter, setFilter] = useState<IdeaFilter>()
+function Ideas({ onClose, userId }: IdeasProps) {
+    const [filter, setFilter] = useState<IdeaFilter>({ userId })
     const { data, refetch } = useIdeas(filter);
     const [options, toggleOptions] = useToggle()
 

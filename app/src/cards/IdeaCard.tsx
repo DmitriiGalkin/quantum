@@ -3,17 +3,20 @@ import {Idea, Project} from "../tools/dto";
 import {Avatar, Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {useToggle} from "usehooks-ts";
-import {Button, Icon} from "../components";
+import {Button, Card} from "../components";
 import SelectProject from "../dialogs/SelectProject";
 import {useCreateInvite} from "../tools/service";
 import {Parameter} from "../components/Parameter";
-import CreateIdea from "../dialogs/CreateIdea";
+import CreateIdea from "../dialogs/EditIdea";
+import {useAuth} from "../tools/auth";
 
 interface IdeaCardProps {
     idea: Idea
     refetch: () => void
 }
 export function IdeaCard({ idea, refetch }: IdeaCardProps) {
+    const { user } = useAuth();
+
     const [project, toggleProject] = useToggle()
     const [create, toggleCreate] = useToggle()
     const createInvite = useCreateInvite()
@@ -23,13 +26,10 @@ export function IdeaCard({ idea, refetch }: IdeaCardProps) {
     }
 
     return (
-        <div style={{ borderRadius: 8, backgroundColor: 'white', padding: 8 }}>
-            <Stack spacing={2}>
-                <Stack spacing={1} justifyContent="space-between" direction="row">
+        <>
+            <Card onClick={ user.id === idea.userId ? toggleCreate : undefined}>
+                <Stack spacing={2}>
                     <Typography variant="Body-Bold">{idea.title}</Typography>
-                    {true && <Icon name="edit" onClick={toggleCreate} />}
-                </Stack>
-                <>
                     <Typography variant="Body">{idea.description}</Typography>
                     {idea.latitude && idea.longitude && <Parameter name="place2" title="Москва, Северодвинская 11" />}
                     <Stack spacing={1}  justifyContent="space-between" alignItems="center" direction="row">
@@ -39,13 +39,14 @@ export function IdeaCard({ idea, refetch }: IdeaCardProps) {
                         </Stack>
                         {true && <Button variant="small" onClick={(e) => {toggleProject(); e.stopPropagation() }}>Пригласить в проект</Button>}
                     </Stack>
-                </>
-            </Stack>
+                </Stack>
+            </Card>
             <SelectProject open={project} onClose={() => { toggleProject() }} onChange={(p: Project)=>{onSelectProject(p); toggleProject()}} />
             <CreateIdea ideaId={idea.id} open={create} onClose={() => {
                 toggleCreate()
                 refetch()
             }} />
-        </div>
+        </>
+
     );
 }

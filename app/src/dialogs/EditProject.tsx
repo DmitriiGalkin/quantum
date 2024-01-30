@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {useAddProject, useEditProject, useProject} from "../tools/service";
+import {useAddProject, useDeleteProject, useEditProject, useProject} from "../tools/service";
 import {Button, DialogHeader, ImageField, Input, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
@@ -13,8 +13,9 @@ import {ParticipationCard} from "../cards/ParticipationCard";
 export interface EditProjectProps {
     projectId?: number
     onClose: () => void
+    onDeleteProject: () => void
 }
-function EditProject({ projectId, onClose }: EditProjectProps) {
+function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) {
     const { data: defaultProject, refetch } = useProject(projectId)
     const [project, setProject] = useState<Partial<Project>>({ title: '' })
     const addProject = useAddProject()
@@ -31,9 +32,12 @@ function EditProject({ projectId, onClose }: EditProjectProps) {
         }
     };
 
+    const deleteProject = useDeleteProject()
+    const onDelete =  () => deleteProject.mutateAsync(project.id).then(onDeleteProject)
+
     return (
         <>
-            <DialogHeader title={project.id ? 'Редактировать проект' : 'Новый проект'} onClick={onClose} isClose />
+            <DialogHeader title={project.id ? 'Редактировать проект' : 'Новый проект'} onClick={onClose} isClose={!project.id} menuItems={project.id ? [{ title: 'Удалить', onClick: onDelete}] : undefined} />
             <DialogContent>
                 <Block variant="primary">
                     <Input

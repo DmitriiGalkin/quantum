@@ -5,7 +5,7 @@ import Typography from "./Typography";
 
 interface Props {
     variant?: 'outlined' | 'small' | 'small2' | 'gray' | 'menuButton'
-    children: string | JSX.Element | JSX.Element[]
+    children?: string | JSX.Element | JSX.Element[]
     onClick?: (e: React.MouseEvent<HTMLElement>) => void
     href?: string
     color?: string
@@ -79,8 +79,8 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
         return (
             <Stack spacing={2} direction="row" alignItems="center" style={style} onClick={onClick}>
                 {color === 'primary' ? <div style={{ borderRadius: 12, backgroundColor: '#7139FF'}}>{icon}</div> : icon}
-                <Typography variant="Body-Bold" style={{ flexGrow: 1 }}>{children}</Typography>
-                <Icon name='right'/>
+                {children && <Typography variant="Body-Bold" style={{ flexGrow: 1 }}>{children}</Typography>}
+                {children && <Icon name='right'/>}
             </Stack>
         );
     }

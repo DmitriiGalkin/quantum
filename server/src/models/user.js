@@ -27,20 +27,20 @@ User.update = function(user, result){
 };
 
 User.delete = function(id, result){
-    dbConn.query(`DELETE FROM user WHERE id = ?`, id, function (err, res) {
+    dbConn.query(`UPDATE user SET deleted = NOW() WHERE id = ?`, id, function (err, res) {
         result(null, res);
     });
 };
 
 // Участник
 User.findById = function (id, result) {
-    dbConn.query("SELECT * from `user` where id = ? ", id, function (err, res) {
+    dbConn.query("SELECT * from `user` where id = ?", id, function (err, res) {
         result(null, res?.length ? res[0] : undefined);
     });
 };
 // Участники по паспорту
 User.findByPassportId = function (id, result) {
-    dbConn.query("SELECT * from user where passportId = ? ", id, function (err, res) {
+    dbConn.query("SELECT * from user where passportId = ? AND deleted IS NULL", id, function (err, res) {
         result(null, res);
     });
 };

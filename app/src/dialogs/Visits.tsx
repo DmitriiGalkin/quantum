@@ -22,7 +22,7 @@ function Visits({ onClose }: UserMeetsProps) {
         <>
             <DialogHeader title="Посещения" onClick={onClose}/>
             <DialogContent>
-                <Block variant="primary">
+                <Block variant="secondary">
                     <Stack spacing={4}>
                         {visitGroups.map(group => (
                             <Stack spacing={2}>

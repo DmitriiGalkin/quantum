@@ -25,17 +25,19 @@ exports.delete = function(req, res) {
     Project.findById(req.params.id, function(err, project) {
         if (err) res.json({error: true, message: 'Проект с данным номером не существует'});
         if (project.passportId !== req.passport.id) res.json({error: true, message: "Вы не владелец проекта, чтобы принимать решение по удалению"});
-        Project.delete(project.id, function () {
-            Meet.deleteByProjectId(project.id, function () {
-                res.json({error: false, message: 'Проект удален'});
-            });
+
+        Meet.findByProjectId(project.id, function (err, meets) {
+            async.map(meets.map(m=>m.id), Meet.delete, function(err, deletedMeets) {
+                Project.delete(project.id, function () {
+                    res.json({error: false, message: 'Проект удален'});
+                });
+            })
         });
     })
 };
 
-// Встречи для пользователя
 exports.findAll = function(req, res) {
-    Project.findAll(function(err, projects) {
+    Project.findAll({...req.query, passportId: req.passport.id }, function(err, projects) {
         res.send(projects);
     });
 };

@@ -4,13 +4,14 @@ import {Chip, Stack} from "@mui/material";
 import {makeStyles} from '@mui/styles';
 import {getAgeLabel} from "../tools/helper";
 import Typography from "../components/Typography";
-import ProjectPage from "../dialogs/ProjectView";
+import ProjectPage from "../dialogs/Project";
 import {useToggle} from "usehooks-ts";
 
 interface ProjectCardProps {
     project: Project
     // selected?: boolean
     onClick?: (project: Project) => void
+    refetchParent?: () => void
 }
 const useStyles = makeStyles(() => ({
     image: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles(() => ({
         display: 'block',
     },
 }));
-export function ProjectCard({ project, onClick }: ProjectCardProps) {
+export function ProjectCard({ project, onClick, refetchParent }: ProjectCardProps) {
     const classes = useStyles();
     const [open, toggleOpen] = useToggle()
 
@@ -40,7 +41,7 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
                     </div>
                 </Stack>
             </div>
-            <ProjectPage projectId={project.id} open={open} onClose={toggleOpen} />
+            <ProjectPage projectId={project.id} open={open} onClose={() => { toggleOpen(); refetchParent && refetchParent() }} />
         </>
 
     );

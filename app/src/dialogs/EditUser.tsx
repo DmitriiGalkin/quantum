@@ -1,19 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {Stack} from "@mui/material";
+import {Dialog, DialogActions, Stack} from "@mui/material";
 import {useAddUser, useDeleteUser, useEditUser, useUser,} from "../tools/service";
 import {User} from "../tools/dto";
-import {Button, DialogHeader, Icon, ImageField, Input} from "../components";
+import {Button, DialogHeader, Icon, ImageField, Input, DialogFooter} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {Block} from "../components/Block";
+import {useToggle} from "usehooks-ts";
 
 export interface EditUserProps {
     userId?: number
     onClose: () => void
 }
 function EditUser({ userId, onClose }: EditUserProps) {
-    const [user, setUser] = useState<Partial<User>>({})
-    const { data: defaultUser } = useUser(userId)
+    const [user, setUser] = useState<Partial<User>>()
+    const { data: defaultUser, isFetching } = useUser(userId)
+    const [openDelete, toggleOpenDelete] = useToggle()
 
     const addUser = useAddUser()
     const editUser = useEditUser(userId)
@@ -29,7 +31,8 @@ function EditUser({ userId, onClose }: EditUserProps) {
             addUser.mutateAsync(user).then(onClose)
         }
     };
-    console.log(user,'user')
+
+    const showSave = user && !isFetching && JSON.stringify(defaultUser) !== JSON.stringify(user)
 
     return (
         <>
@@ -58,13 +61,23 @@ function EditUser({ userId, onClose }: EditUserProps) {
                 </Block>
                 <Block variant="secondary">
                     <Stack spacing={3}>
-                        {user.id && <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить участника</Button>}
+                        {user.id && <Button onClick={toggleOpenDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить участника</Button>}
                     </Stack>
                 </Block>
             </DialogContent>
-            <div style={{ padding: 15, display: JSON.stringify(defaultUser) === JSON.stringify(user) ? 'none' : 'block' }} >
-                <Button onClick={onClickSave}>{user.id ? 'Сохранить' : "Создать"}</Button>
-            </div>
+            {showSave && <DialogFooter onClick={onClickSave} />}
+            <Dialog
+                open={openDelete}
+                onClose={toggleOpenDelete}
+            >
+                <div style={{ padding: 16 }}>Вы уверены?</div>
+                <DialogActions>
+                    <Button onClick={toggleOpenDelete}>Нет</Button>
+                    <Button onClick={onDelete}>
+                        Да
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }

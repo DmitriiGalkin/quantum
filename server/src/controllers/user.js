@@ -19,15 +19,11 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return res.json({error:true,message:"Ребенок не существует"}); }
+        if (user.passportId !== req.passport.id) { return res.json({ error: true, message: "Нет прав на удаление" }); }
 
-        Passport.findById(user.passportId, function(err, passport) {
-            if (err) { return res.json({ error: true, message: "Родитель не найден" }); }
-            if (passport.id !== req.passport.id) { return res.json({ error: true, message: "Нет прав на удаление" }); }
-
-            User.delete( req.params.id, function() {
-                res.json({ error:false, message: 'Удаление участника из паспорта' });
-            });
-        })
+        User.delete( req.params.id, function() {
+            res.json({ error:false, message: 'Удаление участника' });
+        });
     })
 };
 

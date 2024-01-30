@@ -7,7 +7,7 @@ import {useAuth} from "../tools/auth";
 import Typography from "../components/Typography";
 import {useToggle} from "usehooks-ts";
 import CreateMeet from "../dialogs/EditMeet";
-import {Button} from "../components";
+import {Button, Card} from "../components";
 import {Parameter} from "../components/Parameter";
 import {COLOR, COLOR_DEFAULT} from "../tools/theme";
 
@@ -46,53 +46,55 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
 
     return (
         <>
-            <Stack direction="row" style={{ borderRadius: 8, backgroundColor: 'white', position: 'relative' }} onClick={isOrganizer ? toggleCreate : undefined}>
-                {meet.project && (
-                    <div>
-                        <div style={{borderRadius: '8px 0 0 8px', height: '100%', display: 'flex', width: 60, backgroundImage: `url(${meet.project.image})`, backgroundSize: 'cover', backgroundPosition: 'center'}} />
-                    </div>
-                )}
-                {showDate && (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 60, justifyContent: 'center' }}>
-                        <div style={{ fontSize: 33, lineHeight: '33px' }}>{day}</div>
-                        <div style={{ fontSize: 13, paddingTop: 4 }}>{shortMonth}</div>
-                    </div>
-                )}
-                <div style={{ flexGrow: 1, padding: 12 }}>
-                    <Stack spacing={1}>
-                        {meet.project && <Typography variant="Header2">{meet.project?.title}</Typography>}
+            <Card onClick={isOrganizer ? toggleCreate : undefined}>
+                <Stack direction="row">
+                    {meet.project && (
+                        <div>
+                            <div style={{borderRadius: '8px 0 0 8px', height: '100%', display: 'flex', width: 60, backgroundImage: `url(${meet.project.image})`, backgroundSize: 'cover', backgroundPosition: 'center'}} />
+                        </div>
+                    )}
+                    {showDate && (
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 60, justifyContent: 'center' }}>
+                            <div style={{ fontSize: 33, lineHeight: '33px' }}>{day}</div>
+                            <div style={{ fontSize: 13, paddingTop: 4 }}>{shortMonth}</div>
+                        </div>
+                    )}
+                    <div style={{ flexGrow: 1, padding: 12 }}>
                         <Stack spacing={1}>
-                            {meet.project?.place && <Parameter name="place2" title={meet.project?.place.title} />}
-                            <Stack direction="row" alignContent="center" spacing={1} justifyContent="space-between">
-                                <Stack direction="row" alignContent="center" spacing={2}>
-                                    {time && <Parameter name="time2" title={time} />}
-                                    {meet.duration && <Parameter name="timer" title={meet.duration} />}
-                                    {meet.price && <Parameter name="ruble" title={meet.price} />}
+                            {meet.project && <Typography variant="Header2">{meet.project?.title}</Typography>}
+                            <Stack spacing={1}>
+                                {meet.project?.place && <Parameter name="place2" title={meet.project?.place.title} />}
+                                <Stack direction="row" alignContent="center" spacing={1} justifyContent="space-between">
+                                    <Stack direction="row" alignContent="center" spacing={2}>
+                                        {time && <Parameter name="time2" title={time} />}
+                                        {meet.duration && <Parameter name="timer" title={meet.duration} />}
+                                        {meet.price && <Parameter name="ruble" title={meet.price} />}
+                                    </Stack>
                                 </Stack>
                             </Stack>
-                        </Stack>
-                        <div style={{ flex: '1 0 auto', display: 'flex' }}>
-                            <div style={{ flexGrow: 1 }}>
-                                {Boolean(meet.visits?.length) && (
-                                    <Box sx={{ display: 'flex' }}>
-                                        <AvatarGroup max={4}>
-                                            {meet.visits?.map((visit) => {
-                                                return visit.user ? <Avatar key={visit.user.id} alt={visit.user.title} src={visit.user.image} sx={{ width: 21, height: 21, borderColor: `${visit.started && !visit.stopped ? COLOR : COLOR_DEFAULT} !important` }} /> : null
-                                            })}
-                                        </AvatarGroup>
-                                    </Box>
+                            <div style={{ flex: '1 0 auto', display: 'flex' }}>
+                                <div style={{ flexGrow: 1 }}>
+                                    {Boolean(meet.visits?.length) && (
+                                        <Box sx={{ display: 'flex' }}>
+                                            <AvatarGroup max={4}>
+                                                {meet.visits?.map((visit) => {
+                                                    return visit.user ? <Avatar key={visit.user.id} alt={visit.user.title} src={visit.user.image} sx={{ width: 21, height: 21, borderColor: `${visit.started && !visit.stopped ? COLOR : COLOR_DEFAULT} !important` }} /> : null
+                                                })}
+                                            </AvatarGroup>
+                                        </Box>
+                                    )}
+                                </div>
+                                {visit ? (
+                                    <Button variant="small2" onClick={(e) => { visit && onDeleteVisit(visit); e.stopPropagation()} }>Участвую</Button>
+                                ) : (
+                                    <Button variant="small" onClick={e=> {onClickCreateVisit(); e.stopPropagation()}}>Участвовать</Button>
                                 )}
                             </div>
-                            {visit ? (
-                                <Button variant="small2" onClick={(e) => { visit && onDeleteVisit(visit); e.stopPropagation()} }>Участвую</Button>
-                            ) : (
-                                <Button variant="small" onClick={e=> {onClickCreateVisit(); e.stopPropagation()}}>Участвовать</Button>
-                            )}
-                        </div>
 
-                    </Stack>
-                </div>
-            </Stack>
+                        </Stack>
+                    </div>
+                </Stack>
+            </Card>
             <CreateMeet meetId={meet.id} open={create} onClose={onCloseCreateMeet} />
         </>
     );

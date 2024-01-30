@@ -23,17 +23,16 @@ exports.update = function(req, res) {
         res.json({ error:false, message: 'Идея обновлена' });
     });
 };
-// exports.delete = function(req, res) {
-//     Project.findById(req.params.id, function(err, project) {
-//         if (err) res.json({error: true, message: 'Проект с данным номером не существует'});
-//         if (project.passportId !== req.passport.id) res.json({error: true, message: "Вы не владелец проекта, чтобы принимать решение по удалению"});
-//         Project.delete(project.id, function () {
-//             Meet.deleteByProjectId(project.id, function () {
-//                 res.json({error: false, message: 'Проект удален'});
-//             });
-//         });
-//     })
-// };
+exports.delete = function(req, res) {
+    Idea.findById(req.params.id, function(err, idea) {
+        if (err) return res.json({error: true, message: 'Идея с данным номером не существует'});
+        if (req.passport.id !== idea.passportId) return res.json({error: true, message: "Вы не родитель, чтобы принимать решение по удалению идеи ребенка"});
+
+        Idea.delete(req.params.id, function () {
+            res.json({error: false, message: 'Идея удалена'});
+        });
+    })
+};
 
 exports.findAll = function(req, res) {
     Idea.findAll(req.query, function(err, ideas) {

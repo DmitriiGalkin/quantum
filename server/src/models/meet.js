@@ -27,12 +27,12 @@ Meet.update = function(id, meet, result){
 };
 
 Meet.delete = function(id, result){
-    dbConn.query(`DELETE FROM meet WHERE id = ?`, id, function (err, res) {
+    dbConn.query(`UPDATE meet SET deleted = NOW() WHERE id = ?`, id, function (err, res) {
         result(null, res);
     });
 };
 Meet.deleteByProjectId = function(id, result){
-    dbConn.query(`UPDATE meet SET deleted = CURRENT_TIMESTAMP() WHERE projectId = ?`, id, function (err, res) {
+    dbConn.query(`UPDATE meet SET deleted = NOW() WHERE projectId = ?`, id, function (err, res) {
         result(null, res);
     });
 };
@@ -55,7 +55,7 @@ Meet.findById = function (id, result) {
     });
 };
 Meet.findByProjectId = function (id, result) {
-    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE projectId = ? AND DATE(datetime) >= CURDATE()", id, function (err, res) {
+    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE projectId = ? AND DATE(datetime) >= CURDATE() AND deleted IS NULL", id, function (err, res) {
         result(null, res);
     });
 };

@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {useAddIdea, useEditIdea, useIdea,} from "../tools/service";
+import {useAddIdea, useDeleteIdea, useEditIdea, useIdea,} from "../tools/service";
 import {Idea} from "../tools/dto";
-import {Button, DialogHeader, Input, Textarea} from "../components";
+import {Button, DialogHeader, Icon, Input, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {Block} from "../components/Block";
 import {InviteCard} from "../cards/InviteCard";
 import {useAuth} from "../tools/auth";
 
-export interface IdeaDialogProps {
+export interface EditIdeaProps {
     ideaId: number
     onClose: () => void
 }
-function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
+function EditIdea({ ideaId, onClose }: EditIdeaProps) {
     // const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
     // const [meet, setMeet] = useState<Partial<Meet>>({ datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'), projectId: defaultProjectId })
     // const navigate = useNavigate();
@@ -23,14 +23,12 @@ function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
 
     const addIdea = useAddIdea()
     const editIdea = useEditIdea(ideaId)
-    // const deleteMeet = useDeleteMeet()
-    //
-    // const onDelete =  () => deleteMeet.mutateAsync(meet.id).then(() => navigate(`/`))
-    //
-    //
+    const deleteIdea = useDeleteIdea()
+
     const [idea, setIdea] = useState<Partial<Idea>>({ title: '', userId: user.id })
     const { data: defaultIdea, refetch } = useIdea(ideaId)
 
+    const onDelete =  () => deleteIdea.mutateAsync(idea.id).then(onClose)
 
     const onClickSave = () => {
         if (idea.id) {
@@ -46,7 +44,7 @@ function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
 
     return (
         <>
-            <DialogHeader title="Идея" onClick={onClose} />
+            <DialogHeader title="Идея" onClick={onClose} menuItems={idea.id ? [{ title: 'Удалить', onClick: onDelete}] : undefined} isClose={!idea.id} />
             <DialogContent>
                 <Block variant="primary">
                     <Input
@@ -69,6 +67,9 @@ function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
                             {idea.invites?.map((invite) => <InviteCard key={invite.id} invite={invite} refetch={refetch} />)}
                         </Stack>
                     </Block>
+                    <Stack spacing={3}>
+                        {user.id && <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить идею</Button>}
+                    </Stack>
                 </Block>
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultIdea) === JSON.stringify(idea) ? 'none' : 'block' }} >
@@ -78,5 +79,5 @@ function CrateIdeaDialog({ ideaId, onClose }: IdeaDialogProps) {
     );
 }
 
-export default withDialog(CrateIdeaDialog)
+export default withDialog(EditIdea)
 

@@ -5,11 +5,12 @@ import Visits from "../dialogs/Visits";
 import {useToggle} from "usehooks-ts";
 import {useAuth} from "../tools/auth";
 import CreateProject from "../dialogs/EditProject";
-import CreateIdea from "../dialogs/CreateIdea";
+import CreateIdea from "../dialogs/EditIdea";
 import Typography from "./Typography";
 import {Icon} from "./Icon";
 import {Button} from "./Button";
 import Ideas from "../dialogs/Ideas";
+import Projects from "../dialogs/Projects";
 
 export function Burger({refetch}: {refetch:() => void}) {
     const { user, passport: passportAll, setSelectedUserId } = useAuth();
@@ -20,6 +21,8 @@ export function Burger({refetch}: {refetch:() => void}) {
     const [project, toggleProject] = useToggle()
     const [idea, toggleIdea] = useToggle()
     const [ideas, toggleIdeas] = useToggle()
+    const [selfIdeas, toggleSelfIdeas] = useToggle()
+    const [projects, toggleProjects] = useToggle()
     const [sub, toggleSub] = useToggle()
 
     if (!user) return null
@@ -59,26 +62,11 @@ export function Burger({refetch}: {refetch:() => void}) {
                                     </Stack>
                                 </Stack>
                                 <Stack spacing={1}>
-                                    {[
-                                        {
-                                            title: 'Новая идея проекта',
-                                            icon: (<Icon name='add'/>),
-                                            onClick: toggleIdea,
-                                            variant: 'primary'
-                                        },
-                                        {
-                                            title: 'Мои идеи',
-                                            icon: (<Icon name='idea'/>),
-                                            onClick: toggleIdeas,
-                                        },
-                                        {
-                                            title: 'Посещения',
-                                            icon: <Icon name='visits'/>,
-                                            onClick: toggleVisits
-                                        },
-                                    ].map((item, index) => (
-                                        <Button variant="menuButton" key={index} icon={item.icon} onClick={item.onClick} color={item.variant}>{item.title}</Button>
-                                    ))}
+                                    <Stack spacing={1} direction="row" justifyContent="space-between">
+                                        <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={toggleSelfIdeas}>Мои идеи</Button>
+                                        <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleIdea} color='primary'/>
+                                    </Stack>
+                                    <Button variant="menuButton" icon={<Icon name='visits'/>} onClick={toggleVisits}>Посещения</Button>
                                 </Stack>
                             </Stack>
                             <Stack spacing={1} style={{ padding: 16 }}>
@@ -86,8 +74,11 @@ export function Burger({refetch}: {refetch:() => void}) {
                                     <Typography variant="Caption">Взрослый</Typography>
                                     <Typography variant="Header3">{passportAll.title}</Typography>
                                 </Stack>
-                                <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleProject} color='primary'>Организовать проект</Button>
-                                <Button variant="menuButton" icon={<Icon name='project'/>} onClick={togglePassport}>Мои проекты</Button>
+                                <Stack spacing={1} direction="row" justifyContent="space-between">
+                                    <Button variant="menuButton" icon={<Icon name='project'/>} onClick={toggleProjects}>Мои проекты</Button>
+                                    <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleProject} color='primary'/>
+                                </Stack>
+                                <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={toggleIdeas}>Поиск идей</Button>
                                 <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassport}>Профиль родителя</Button>
                             </Stack>
                         </Stack>
@@ -99,6 +90,8 @@ export function Burger({refetch}: {refetch:() => void}) {
             <CreateProject open={project} onClose={() => { toggleProject(); refetch() }} />
             <CreateIdea open={idea} onClose={() => { toggleIdea(); refetch() }} />
             <Ideas open={ideas} onClose={() => { toggleIdeas(); refetch() }} />
+            <Ideas userId={user.id} open={selfIdeas} onClose={() => { toggleSelfIdeas(); refetch() }} />
+            <Projects open={projects} onClose={toggleProjects} />
         </div>
     )
 }

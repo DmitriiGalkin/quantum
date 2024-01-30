@@ -31,8 +31,13 @@ Project.delete = function(id, result){
     });
 };
 
-Project.findAll = function (result) {
-    dbConn.query("SELECT * FROM project WHERE deleted IS NULL", function (err, res) {
+Project.findAll = function (params, result) {
+    let where = ''
+    if (params.self) {
+        where +=' AND passportId = ' + params.passportId
+    }
+    const l = `SELECT * FROM project WHERE deleted IS NULL ${where}`
+    dbConn.query(l, function (err, res) {
         result(null, res || []);
     });
 };

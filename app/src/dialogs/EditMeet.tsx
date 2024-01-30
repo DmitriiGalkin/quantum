@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
 import {useAddMeet, useDeleteMeet, useEditMeet, useMeet,} from "../tools/service";
 import {Meet} from "../tools/dto";
-import {Button, DatePicker, DialogHeader, Icon, Input} from "../components";
+import {Back, Button, DatePicker, DialogFooter, DialogHeader, Icon, Input} from "../components";
 import {convertToMeetsGroupTime, convertToMeetTime} from "../tools/date";
 import {useLocalStorage} from "usehooks-ts";
 import {LocalDate} from "@js-joda/core";
@@ -21,14 +21,13 @@ export interface EditMeetProps {
 function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
     const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
     const [meet, setMeet] = useState<Partial<Meet>>({ datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'), projectId: defaultProjectId })
-    const navigate = useNavigate();
 
-    const { data: defaultMeet, refetch } = useMeet(meetId)
+    const { data: defaultMeet, refetch, isFetching } = useMeet(meetId)
     const addMeet = useAddMeet()
     const editMeet = useEditMeet(meetId)
     const deleteMeet = useDeleteMeet()
 
-    const onDelete =  () => deleteMeet.mutateAsync(meet.id).then(() => navigate(`/`))
+    const onDelete =  () => deleteMeet.mutateAsync(meet.id).then(onClose)
 
 
     useEffect(() => defaultMeet && setMeet(defaultMeet), [defaultMeet])
@@ -45,7 +44,6 @@ function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
             })
         }
     };
-    console.log(meet,'meet')
 
     const onChangeReactIosTimePicker = (timeValue: string) => {
         const date = timeValue.split(':');
@@ -59,7 +57,7 @@ function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
 
     return (
         <>
-            <DialogHeader title="Встреча" onClick={onClose} />
+            <DialogHeader title="Встреча" onClick={onClose} menuItems={meet.id ? [{ title: 'Удалить', onClick: onDelete}] : undefined} />
             <DialogContent>
                 <Block variant="primary">
                     <DatePicker
@@ -101,14 +99,11 @@ function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
                                     </Stack>
                                 </Block>
                             )}
-                            <Button onClick={onDelete} variant="gray" icon={<Icon name="delete"/>}>Удалить встречу</Button>
                         </Stack>
                     </Block>
                 )}
             </DialogContent>
-            <div style={{ padding: 15, display: JSON.stringify(defaultMeet) === JSON.stringify(meet) ? 'none' : 'block' }} >
-                <Button onClick={onClickSave}>{meet.id ? 'Сохранить' : "Создать"}</Button>
-            </div>
+            {meet && JSON.stringify(defaultMeet) !== JSON.stringify(meet) && !isFetching && <DialogFooter onClick={onClickSave} />}
         </>
     );
 }

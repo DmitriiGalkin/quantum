@@ -4,6 +4,7 @@ import {ProjectCard} from "../cards/ProjectCard";
 import {useProjects} from "../tools/service";
 import Masonry from '@mui/lab/Masonry';
 import {AppHeader} from "../components/AppHeader";
+import {DialogContent} from "../components/DialogContent";
 
 export default function ProjectsView(): JSX.Element {
     const { data: projects = [], refetch } = useProjects();
@@ -16,13 +17,15 @@ export default function ProjectsView(): JSX.Element {
             height: '100vh'
         }}>
             <AppHeader refetch={refetch} />
-            <div style={{ flex: '1 1 auto', overflowY: 'auto', padding: '8px 2px 8px 8px' }}>
-                <Masonry columns={2} spacing={1}>
-                    {projects.map((project,index) =>
-                        <ProjectCard key={project.id} project={project} />
-                    )}
-                </Masonry>
-            </div>
+            <DialogContent>
+                <div style={{ padding: '8px 2px 8px 8px' }}>
+                    <Masonry columns={2} spacing={1}>
+                        {projects.map((project,index) =>
+                            <ProjectCard key={project.id} project={project} />
+                        )}
+                    </Masonry>
+                </div>
+            </DialogContent>
         </Box>
     )
 }

@@ -4,7 +4,7 @@ import {getCenter} from "../tools/map";
 import {usePlaces} from "../tools/service";
 import {Place} from "../tools/dto";
 import {DialogHeader} from "../components";
-import CreatePlace from "./CreatePlace";
+import CreatePlace from "./EditPlace";
 import {useToggle} from "usehooks-ts";
 import {withDialog} from "../components/helper";
 

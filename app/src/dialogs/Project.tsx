@@ -12,7 +12,7 @@ import {useAuth} from "../tools/auth";
 import {Avatar, AvatarGroup, Box, Stack} from "@mui/material";
 import Typography from "../components/Typography";
 import {Block} from "../components/Block";
-import CreateMeet from "./EditMeet";
+import EditMeet from "./EditMeet";
 import {withDialog} from "../components/helper";
 
 const useStyles = makeStyles(() => ({
@@ -37,12 +37,11 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-export interface ProjectPageProps {
+export interface ProjectDialogProps {
     projectId: number
     onClose: () => void
 }
-function ProjectPage({ projectId, onClose }: ProjectPageProps) {
-    const navigate = useNavigate();
+function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
     const { user, passport } = useAuth();
     const classes = useStyles();
 
@@ -50,7 +49,6 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
     const [edit, toggleCreate] = useToggle()
     const [createMeet, toggleCreateMeet] = useToggle()
 
-    const deleteProject = useDeleteProject()
     const createParticipation = useCreateParticipation()
     const deleteParticipation = useDeleteParticipation()
 
@@ -75,7 +73,6 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
         }
     ] as Parameter[]
 
-    const onDelete =  () => deleteProject.mutateAsync(project.id).then(() => navigate(`/`))
     const onCreateParticipation =  () => createParticipation.mutateAsync({ projectId: project.id, userId: user.id }).then(() => refetch())
     const onDeleteParticipation =  () => participation && deleteParticipation.mutateAsync(participation).then(() => refetch())
 
@@ -84,7 +81,6 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
     if (editable) {
         menuItems.push({ title: 'Новая встреча', onClick: toggleCreateMeet})
         menuItems.push({ title: 'Редактировать', onClick: toggleCreate})
-        menuItems.push({ title: 'Удалить', onClick: onDelete})
     }
     if (participation) {
         menuItems.push({ title: 'Выйти из проекта', onClick: onDeleteParticipation})
@@ -153,10 +149,10 @@ function ProjectPage({ projectId, onClose }: ProjectPageProps) {
                     </Stack>
                 </div>
             </div>
-            <EditProject projectId={project.id} open={edit} onClose={onCloseEditProject} />
-            <CreateMeet defaultProjectId={project.id} open={createMeet} onClose={onCloseCreateMeet} />
+            <EditProject projectId={project.id} open={edit} onClose={onCloseEditProject} onDeleteProject={onClose} />
+            <EditMeet defaultProjectId={project.id} open={createMeet} onClose={onCloseCreateMeet} />
         </>
     );
 }
 
-export default withDialog(ProjectPage)
+export default withDialog(ProjectDialog)

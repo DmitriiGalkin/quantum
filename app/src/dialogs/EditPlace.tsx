@@ -29,13 +29,13 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-interface CreatePlaceProps {
+interface EditPlaceProps {
     state: { center: number[], zoom: number }
     onClose: () => void
     onSuccess: (place: Place) => void
 }
 const drawerBleeding = 25;
-function CreatePlace({ state, onSuccess, onClose }: CreatePlaceProps) {
+function EditPlace({ state, onSuccess, onClose }: EditPlaceProps) {
     const classes = useStyles();
     const map = useRef();
     const addPlace = useAddPlace()
@@ -125,4 +125,4 @@ function CreatePlace({ state, onSuccess, onClose }: CreatePlaceProps) {
     );
 }
 
-export default withDialog(CreatePlace)
+export default withDialog(EditPlace)

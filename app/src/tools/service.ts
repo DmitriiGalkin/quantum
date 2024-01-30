@@ -133,14 +133,17 @@ export const useAddPlace = (): UseMutate<Place> => {
 /**
  * Проект
  */
-export const useProjects = (): UseQueryResult<Project[]> => useQuery(['projects'], () => service.get(`/projects`))
+export interface ProjectFilter {
+    self?: boolean
+}
+export const useProjects = (params?: ProjectFilter): UseQueryResult<Project[]> => useQuery(['projects', params?.self], () => service.get(`/projects`, { params }))
 export const useProject = (id?: number): UseQueryResult<Project> => useQuery(['project', id], () => service.get(`/project/${id}`), {
     enabled: Boolean(id),
 })
 
 export const useAddProject = (): UseMutate<Partial<Project>> => useMutation((project) => service.post("/project", project))
 export const useEditProject = (id?: number): UseMutate<Partial<Project>> => useMutation((project) => service.put(`/project/${id}`, project))
-export const useDeleteProject = (): UseMutate<number> => useMutation((projectId) => service.delete("/project/" + projectId))
+export const useDeleteProject = (): UseMutate<number | undefined> => useMutation((projectId) => service.delete("/project/" + projectId))
 
 /**
  * Подписка
@@ -152,10 +155,11 @@ export const useDeleteParticipation = (): UseMutate<Participation> => useMutatio
  * Идея
  */
 export interface IdeaFilter {
+    userId?: string
     ageFrom?: number
     ageTo?: number
 }
-export const useIdeas = (params?: IdeaFilter): UseQueryResult<Idea[]> => useQuery(['ideas', params?.ageFrom, params?.ageTo], () => service.get(`/ideas`, { params }))
+export const useIdeas = (params?: IdeaFilter): UseQueryResult<Idea[]> => useQuery(['ideas', params?.ageFrom, params?.ageTo, params?.userId], () => service.get(`/ideas`, { params }))
 export const useIdea = (id?: number): UseQueryResult<Idea> => useQuery(['idea', id], () => service.get(`/idea/${id}`), {
     enabled: Boolean(id),
 })
@@ -175,6 +179,7 @@ export const useEditIdea = (id?: number): UseMutate<Partial<Idea>> => {
         },
     })
 }
+export const useDeleteIdea = (): UseMutate<number | undefined> => useMutation((ideaId) => service.delete(`/idea/${ideaId}`))
 
 /**
  * Приглашение

@@ -22,16 +22,16 @@ Idea.update = function(id, data, result){
     });
 };
 
-// Project.delete = function(id, result){
-//     dbConn.query("UPDATE project SET deleted = CURRENT_TIMESTAMP() WHERE id = ?", [id], function (err, res) {
-//         result(null, res);
-//     });
-// };
+Idea.delete = function(id, result){
+    dbConn.query(`UPDATE idea SET deleted = NOW() WHERE id = ?`, id, function (err, res) {
+        result(null, res);
+    });
+};
 
 Idea.findAll = function (params, result) {
-    let where = ''
-    if (params.ageFrom || params.ageTo) {
-        where +=' LEFT JOIN user ON user.id = idea.userId WHERE'
+    let where = 'WHERE idea.deleted IS NULL'
+    if (params.ageFrom || params.ageTo || params.userId) {
+        where =' LEFT JOIN user ON user.id = idea.userId ' + where + ' AND'
         if (params.ageFrom) {
             where += ' user.age > ' + params.ageFrom
         }
@@ -41,8 +41,12 @@ Idea.findAll = function (params, result) {
         if (params.ageTo) {
             where += ' user.age < '+ params.ageTo
         }
+        if (params.userId) {
+            where += ' idea.userId = '+ params.userId
+        }
     }
-    dbConn.query(`SELECT idea.* FROM idea ${where}`, function (err, res) {
+    const f = `SELECT idea.* FROM idea ${where}`
+    dbConn.query(f, function (err, res) {
         result(null, res || []);
     });
 };
