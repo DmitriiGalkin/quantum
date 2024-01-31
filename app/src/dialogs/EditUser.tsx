@@ -41,19 +41,21 @@ function EditUser({ userId, onClose }: EditUserProps) {
             <DialogHeader title="Ребенок" onClick={onClose} menuItems={user?.id ? [{ title: 'Удалить', onClick: onDelete}] : undefined} />
             <DialogContent>
                 <Block variant="primary">
-                    <Input
-                        name='price'
-                        label="Имя"
-                        value={user?.title}
-                        onChange={(e) => setUser({ ...user, title: e.target.value })}
-                    />
-                    <Input
-                        name='age'
-                        label="Возраст"
-                        type="number"
-                        value={user?.age}
-                        onChange={(e) => setUser({ ...user, age: Number(e.target.value) })}
-                    />
+                    <Stack spacing={1} direction="row">
+                        <Input
+                            name='price'
+                            label="Имя"
+                            value={user?.title}
+                            onChange={(e) => setUser({ ...user, title: e.target.value })}
+                        />
+                        <Input
+                            name='age'
+                            label="Возраст"
+                            type="number"
+                            value={user?.age}
+                            onChange={(e) => setUser({ ...user, age: Number(e.target.value) })}
+                        />
+                    </Stack>
                     <ImageField
                         name="meetImage"
                         label="Обложка"

@@ -38,7 +38,7 @@ function PassportDialog({ onLogout, onClose }: UserViewProps) {
 
     return (
         <>
-            <DialogHeader title="Профиль" onClick={onClose}/>
+            <DialogHeader title="Профиль" onClick={onClose} menuItems={[{ title: 'Выйти', onClick: onClickLogout}]}/>
             <DialogContent>
                 <Block variant="primary">
                     <Input

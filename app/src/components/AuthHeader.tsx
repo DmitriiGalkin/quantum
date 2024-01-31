@@ -12,8 +12,10 @@ import {Button} from "./Button";
 import Ideas from "../dialogs/Ideas";
 import Projects from "../dialogs/Projects";
 import EditUser from "../dialogs/EditUser";
+import Meets from "../dialogs/Meets";
+import {Header} from "./Header";
 
-export function Burger({refetch}: {refetch:() => void}) {
+export function AuthHeader({refetch}: {refetch:() => void}) {
     const { user, passport: passportAll, setSelectedUserId } = useAuth();
 
     const [passport, togglePassport] = useToggle()
@@ -26,12 +28,22 @@ export function Burger({refetch}: {refetch:() => void}) {
     const [projects, toggleProjects] = useToggle()
     const [sub, toggleSub] = useToggle()
     const [createUser, onClickCreateUser] = useToggle()
+    const [isOpenMeets, toggleIsOpenMeets] = useToggle()
 
     if (!user) return null
 
     return (
-        <div>
-            <Icon name="burger" onClick={toggleMenu}/>
+        <>
+            <Header>
+                <Stack direction="row" spacing={2} alignItems="center">
+                    <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} onClick={toggleMenu} />
+                    <Stack>
+                        <Typography variant="Body-Bold" style={{ color: 'white' }}>{user.title}</Typography>
+                        <Typography variant="Body" style={{ color: 'white' }}>Актерское мастерство</Typography>
+                    </Stack>
+                </Stack>
+                <Icon name="meets" onClick={toggleIsOpenMeets} />
+            </Header>
             <SwipeableDrawer
                 anchor="left"
                 open={menu}
@@ -95,6 +107,7 @@ export function Burger({refetch}: {refetch:() => void}) {
             <Ideas userId={user.id} open={selfIdeas} onClose={() => { toggleSelfIdeas(); refetch() }} />
             <Projects open={projects} onClose={toggleProjects} />
             <EditUser userId={user.id} open={createUser} onClose={() => { onClickCreateUser(); refetch() }} />
-        </div>
+            <Meets open={isOpenMeets} onClose={toggleIsOpenMeets} />
+        </>
     )
 }
