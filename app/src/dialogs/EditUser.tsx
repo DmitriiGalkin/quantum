@@ -22,13 +22,15 @@ function EditUser({ userId, onClose }: EditUserProps) {
     const deleteUser = useDeleteUser()
     useEffect(() => defaultUser && setUser(defaultUser), [defaultUser])
 
-    if (!user) return null;
-    const onDelete =  () => user.id && deleteUser.mutateAsync(user.id).then(onClose)
+    // if (!user) return null;
+    const onDelete =  () => user?.id && deleteUser.mutateAsync(user.id).then(onClose)
     const onClickSave = () => {
-        if (user.id) {
-            editUser.mutateAsync(user).then(onClose)
-        } else {
-            addUser.mutateAsync(user).then(onClose)
+        if (user) {
+            if (user.id) {
+                editUser.mutateAsync(user).then(onClose)
+            } else {
+                addUser.mutateAsync(user).then(onClose)
+            }
         }
     };
 
@@ -36,26 +38,26 @@ function EditUser({ userId, onClose }: EditUserProps) {
 
     return (
         <>
-            <DialogHeader title="Ребенок" onClick={onClose} menuItems={user.id ? [{ title: 'Удалить', onClick: onDelete}] : undefined} />
+            <DialogHeader title="Ребенок" onClick={onClose} menuItems={user?.id ? [{ title: 'Удалить', onClick: onDelete}] : undefined} />
             <DialogContent>
                 <Block variant="primary">
                     <Input
                         name='price'
                         label="Имя"
-                        value={user.title}
+                        value={user?.title}
                         onChange={(e) => setUser({ ...user, title: e.target.value })}
                     />
                     <Input
                         name='age'
                         label="Возраст"
                         type="number"
-                        value={user.age}
+                        value={user?.age}
                         onChange={(e) => setUser({ ...user, age: Number(e.target.value) })}
                     />
                     <ImageField
                         name="meetImage"
                         label="Обложка"
-                        value={user.image}
+                        value={user?.image}
                         onChange={(image) => setUser({ ...user, image })}
                     />
                 </Block>

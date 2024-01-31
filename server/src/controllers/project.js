@@ -40,7 +40,7 @@ exports.delete = function(req, res) {
 };
 
 exports.findAll = function(req, res) {
-    Project.findAll({...req.query, passportId: req.passport.id }, function(err, projects) {
+    Project.findAll({...req.query, passportId: req.passport?.id }, function(err, projects) {
         res.send(projects);
     });
 };

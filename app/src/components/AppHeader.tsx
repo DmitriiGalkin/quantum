@@ -7,22 +7,29 @@ import {Header} from "./Header";
 import {useAuth} from "../tools/auth";
 import {useToggle} from "usehooks-ts";
 import Meets from "../dialogs/Meets";
+import EditUser from "../dialogs/EditUser";
 
 export function AppHeader({refetch}: {refetch:() => void}) {
-    const { isAuth, openLogin, user } = useAuth();
+    const { isAuth, openLogin, user, logout } = useAuth();
     const [isOpenMeets, toggleIsOpenMeets] = useToggle()
 
     return (
         <Header>
-            {isAuth && user ? (
+            {isAuth ? (
                 <Stack direction="row" spacing={3} alignItems="center" justifyContent="space-between" style={{ width: '100%' }}>
                     <Stack direction="row" spacing={3} alignItems="center">
                         <Burger refetch={refetch}/>
-                        <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} />
-                        <Stack>
-                            <Typography variant="Body-Bold" style={{ color: 'white' }}>{user.title}</Typography>
-                            <Typography variant="Body" style={{ color: 'white' }}>Актерское мастерство</Typography>
-                        </Stack>
+                        {user ? (
+                            <>
+                                <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} />
+                                <Stack>
+                                    <Typography variant="Body-Bold" style={{ color: 'white' }}>{user.title}</Typography>
+                                    <Typography variant="Body" style={{ color: 'white' }}>Актерское мастерство</Typography>
+                                </Stack>
+                            </>
+                        ) : (
+                            <EditUser open={true} onClose={() => console.log('1')} />
+                        )}
                     </Stack>
                     <Icon name="meets" onClick={toggleIsOpenMeets} />
                 </Stack>
