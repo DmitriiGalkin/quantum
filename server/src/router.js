@@ -35,23 +35,23 @@ router.put('/passport', passportController.usePassport, passportController.updat
  */
 router.post('/passport/login', passportController.login);
 router.post('/passport/googleLogin', passportController.googleLogin);
-router.get('/login/federated/google', passport.authenticate('google'));
+router.get('/login/google', passport.authenticate('google'));
 router.get('/oauth2/redirect/google', (req, res) => passport.authenticate('google', function(err, user) {
     console.log(user,'user')
     if (!user) { return res.redirect('/login'); }
     res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
 })(req, res));
-router.get('/login/federated/mailru', passport.authenticate('mailru'));
+router.get('/login/mailru', passport.authenticate('mailru'));
 router.get('/oauth2/redirect/mailru', (req, res) => passport.authenticate('mailru', function(err, user) {
     if (!user) { return res.redirect('/login'); }
     res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
 })(req, res));
-router.get('/login/federated/yandex', passport.authenticate('yandex'));
+router.get('/login/yandex', passport.authenticate('yandex'));
 router.get('/oauth2/redirect/yandex', (req, res) => passport.authenticate('yandex', function(err, user) {
     if (!user) { return res.redirect('/login'); }
     res.redirect(process.env.FRONTEND_SERVER + '/?access_token=' + user.username);
 })(req, res));
-router.get('/login/federated/vkontakte', passport.authenticate('vkontakte'));
+router.get('/login/vkontakte', passport.authenticate('vkontakte'));
 router.get('/oauth2/redirect/vkontakte', (req, res) => passport.authenticate('vkontakte', function(err, user) {
     if (!user) { return res.redirect('/login'); }
     console.log(user,'user')

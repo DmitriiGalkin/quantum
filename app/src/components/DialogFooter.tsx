@@ -1,8 +1,4 @@
 import React from 'react';
-import {useNavigate} from "react-router-dom";
-import {Header} from "./Header";
-import {Icon} from "./Icon";
-import Typography from "./Typography";
 import {Button} from "./Button";
 
 interface DialogFooterProps {

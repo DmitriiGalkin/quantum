@@ -8,14 +8,17 @@ import {Header} from "../components/Header";
 import {AuthHeader} from "../components/AuthHeader";
 import Typography from "../components/Typography";
 import EditUser from "../dialogs/EditUser";
-import {Icon} from "../components";
+import {Button, Icon} from "../components";
 import Meets from "../dialogs/Meets";
 import {useAuth} from "../tools/auth";
 import {useToggle} from "usehooks-ts";
+import Projects from "../dialogs/Projects";
+import IdeaStepper from "../dialogs/IdeaStepper";
 
 export default function ProjectsView(): JSX.Element {
     const { data: projects = [], refetch } = useProjects();
     const { isAuth, openLogin, user, logout } = useAuth();
+    const [ideaStepper, toggleIdeaStepper] = useToggle()
 
     return (
         <Box style={{
@@ -44,6 +47,8 @@ export default function ProjectsView(): JSX.Element {
             )}
             <DialogContent>
                 <div style={{ padding: '8px 2px 8px 8px' }}>
+                    <Button onClick={toggleIdeaStepper}>Создать идею</Button>
+
                     <Masonry columns={2} spacing={1}>
                         {projects.map((project,index) =>
                             <ProjectCard key={project.id} project={project} />
@@ -51,6 +56,7 @@ export default function ProjectsView(): JSX.Element {
                     </Masonry>
                 </div>
             </DialogContent>
+            <IdeaStepper open={ideaStepper} onClose={toggleIdeaStepper} />
         </Box>
     )
 }
