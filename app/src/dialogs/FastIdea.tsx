@@ -5,7 +5,7 @@ import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {Idea, Passport, User} from "../tools/dto";
 import {Block} from "../components/Block";
-import {ACCESS_TOKEN, useAuth} from "../tools/auth";
+import {useAuth} from "../tools/auth";
 
 
 interface IdeaStepperData {
