@@ -1,9 +1,10 @@
-import React, {createContext, useContext} from "react";
+import React, {createContext, useContext, useEffect} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import service, {usePassport} from "./service";
+import service, {useAddIdea, useAddUser, usePassport} from "./service";
 import Login from "../dialogs/Login";
 import {useLocalStorage, useToggle} from "usehooks-ts";
 import {Passport, User} from "./dto";
+import {FAST_IDEA} from "../dialogs/FastIdea";
 
 export const ACCESS_TOKEN = 'access_token'
 export const AuthContext = createContext('auth' as any);
@@ -39,13 +40,12 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
      */
     const authFn = (fn: () => void) => isAuth ? fn : toggleOpenLogin
 
+    const user = passport?.users.length ? passport?.users.find((u) => u.id === selectedUserId) || passport?.users[0] : undefined
 
-    // const value = useMemo(
-    //     () => (),
-    //     [access_token, passport]
-    // );
+
+
     return <AuthContext.Provider value={{
-        user: passport?.users.length ? passport?.users.find((u) => u.id === selectedUserId) || passport?.users[0] : undefined,
+        user,
         passport,
         isAuth,
         openLogin: toggleOpenLogin,

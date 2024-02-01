@@ -5,7 +5,7 @@ import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {Idea, Passport, User} from "../tools/dto";
 import {Block} from "../components/Block";
-import {useAuth} from "../tools/auth";
+import {ACCESS_TOKEN, useAuth} from "../tools/auth";
 
 
 interface IdeaStepperData {
@@ -14,12 +14,18 @@ interface IdeaStepperData {
     passport: Partial<Passport>
 }
 
-export interface IdeaStepperProps {
+export const FAST_IDEA = 'fastIdea'
+
+export interface FastIdeaProps {
     onClose: () => void
 }
-function IdeaStepper({ onClose }: IdeaStepperProps) {
-    const { authFn } = useAuth();
+function FastIdea({ onClose }: FastIdeaProps) {
+    const { openLogin } = useAuth();
     const [data, setData] = useState<IdeaStepperData>({idea:{}, user:{}, passport:{}});
+    const onSubmit = () => {
+        localStorage.setItem(FAST_IDEA, JSON.stringify(data));
+        openLogin()
+    }
 
     return (
         <>
@@ -29,35 +35,35 @@ function IdeaStepper({ onClose }: IdeaStepperProps) {
                     <Input
                         name='title'
                         label="Название"
-                        value={data?.idea.title}
+                        value={data?.idea.title || ''}
                         onChange={(e) => setData({ ...data, idea: { ...data.idea, title: e.target.value }})}
                         autoFocus
                     />
                     <Textarea
                         name='description'
                         label="Описание"
-                        value={data?.idea.description}
+                        value={data?.idea.description || ''}
                         onChange={(e) => setData({ ...data, idea: { ...data.idea, description: e.target.value }})}
                     />
                     <Stack spacing={1} direction="row">
                         <Input
                             name='price'
                             label="Имя"
-                            value={data?.user?.title}
+                            value={data?.user?.title || ''}
                             onChange={(e) => setData({ ...data, user: { ...data.user, title: e.target.value }})}
                         />
                         <Input
                             name='age'
                             label="Возраст"
                             type="number"
-                            value={data?.user?.age}
+                            value={data?.user?.age || ''}
                             onChange={(e) => setData({ ...data, user: { ...data.user, age: Number(e.target.value) }})}
                         />
                     </Stack>
-                    <Button onClick={authFn(() => console.log('111'))}>Создать идею</Button>
+                    <Button onClick={onSubmit}>Создать идею</Button>
                 </Block>
             </DialogContent>
         </>
     );
 }
-export default withDialog(IdeaStepper)
+export default withDialog(FastIdea)

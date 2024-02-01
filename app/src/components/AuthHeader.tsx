@@ -30,19 +30,23 @@ export function AuthHeader({refetch}: {refetch:() => void}) {
     const [createUser, onClickCreateUser] = useToggle()
     const [isOpenMeets, toggleIsOpenMeets] = useToggle()
 
-    if (!user) return null
-
     return (
         <>
             <Header>
-                <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} onClick={toggleMenu} />
-                    <Stack>
-                        <Typography variant="Body-Bold" style={{ color: 'white' }}>{user.title}</Typography>
-                        <Typography variant="Body" style={{ color: 'white' }}>Актерское мастерство</Typography>
-                    </Stack>
-                </Stack>
-                <Icon name="meets" onClick={toggleIsOpenMeets} />
+                {user ? (
+                    <>
+                        <Stack direction="row" spacing={2} alignItems="center">
+                            <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} onClick={toggleMenu} />
+                            <Stack>
+                                <Typography variant="Body-Bold" style={{ color: 'white' }}>{user.title}</Typography>
+                                <Typography variant="Body" style={{ color: 'white' }}>Актерское мастерство</Typography>
+                            </Stack>
+                        </Stack>
+                        <Icon name="meets" onClick={toggleIsOpenMeets} />
+                    </>
+                ) : (
+                    <Icon name="burger" onClick={toggleMenu} />
+                )}
             </Header>
             <SwipeableDrawer
                 anchor="left"
@@ -52,8 +56,8 @@ export function AuthHeader({refetch}: {refetch:() => void}) {
             >
                 <Stack direction="row" style={{ height: '100%' }}>
                     <div style={{ position: 'absolute', top: 16, left: sub ? 54 : 0 }}>
-                        <div onClick={toggleSub} style={{ backgroundColor: '#FFB628', padding: 4, borderRadius: '0 8px 8px 0', display: 'inline-flex'}}>
-                            <Icon name="users"/>
+                        <div onClick={user ? toggleSub : onClickCreateUser} style={{ backgroundColor: '#FFB628', padding: 4, borderRadius: '0 8px 8px 0', display: 'inline-flex'}}>
+                            <Icon name={user ? 'users' : 'addUser'}/>
                         </div>
                     </div>
                     {sub && (
@@ -67,22 +71,24 @@ export function AuthHeader({refetch}: {refetch:() => void}) {
                     )}
                     <div style={{ color: 'black', height: '100%', width: 280 }}>
                         <Stack justifyContent="space-between" style={{ height: '100%' }}>
-                            <Stack spacing={2} style={{ backgroundColor: 'white', padding: 16 }}>
-                                <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }} onClick={onClickCreateUser}>
-                                    <Avatar alt={user.title} src={user.image} sx={{ width: 72, height: 72}} />
-                                    <Stack>
-                                        <Typography variant="Caption">Ребенок</Typography>
-                                        <Typography variant="Header3">{user.title}</Typography>
+                            {user && (
+                                <Stack spacing={2} style={{ backgroundColor: 'white', padding: 16 }}>
+                                    <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }} onClick={onClickCreateUser}>
+                                        <Avatar alt={user.title} src={user.image} sx={{ width: 72, height: 72}} />
+                                        <Stack>
+                                            <Typography variant="Caption">Ребенок</Typography>
+                                            <Typography variant="Header3">{user.title}</Typography>
+                                        </Stack>
+                                    </Stack>
+                                    <Stack spacing={1}>
+                                        <Stack spacing={1} direction="row" justifyContent="space-between">
+                                            <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={toggleSelfIdeas}>Мои идеи</Button>
+                                            <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleIdea} color='primary'/>
+                                        </Stack>
+                                        <Button variant="menuButton" icon={<Icon name='visits'/>} onClick={toggleVisits}>Посещения</Button>
                                     </Stack>
                                 </Stack>
-                                <Stack spacing={1}>
-                                    <Stack spacing={1} direction="row" justifyContent="space-between">
-                                        <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={toggleSelfIdeas}>Мои идеи</Button>
-                                        <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleIdea} color='primary'/>
-                                    </Stack>
-                                    <Button variant="menuButton" icon={<Icon name='visits'/>} onClick={toggleVisits}>Посещения</Button>
-                                </Stack>
-                            </Stack>
+                            )}
                             <Stack spacing={1} style={{ padding: 16 }}>
                                 <Stack style={{ padding: '14px 40px' }}>
                                     <Typography variant="Caption">Взрослый</Typography>
@@ -104,9 +110,9 @@ export function AuthHeader({refetch}: {refetch:() => void}) {
             <CreateProject open={project} onClose={() => { toggleProject(); refetch() }} />
             <CreateIdea open={idea} onClose={() => { toggleIdea(); refetch() }} />
             <Ideas open={ideas} onClose={() => { toggleIdeas(); refetch() }} />
-            <Ideas userId={user.id} open={selfIdeas} onClose={() => { toggleSelfIdeas(); refetch() }} />
+            <Ideas userId={user?.id} open={selfIdeas} onClose={() => { toggleSelfIdeas(); refetch() }} />
+            <EditUser userId={user?.id} open={createUser} onClose={() => { onClickCreateUser(); refetch() }} />
             <Projects open={projects} onClose={toggleProjects} />
-            <EditUser userId={user.id} open={createUser} onClose={() => { onClickCreateUser(); refetch() }} />
             <Meets open={isOpenMeets} onClose={toggleIsOpenMeets} />
         </>
     )

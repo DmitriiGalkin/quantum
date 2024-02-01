@@ -41,7 +41,7 @@ User.findById = function (id, result) {
 // Участники по паспорту
 User.findByPassportId = function (id, result) {
     dbConn.query("SELECT * from user where passportId = ? AND deleted IS NULL", id, function (err, res) {
-        result(null, res);
+        result(null, res || []);
     });
 };
 // Участник
