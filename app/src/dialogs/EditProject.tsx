@@ -9,6 +9,7 @@ import {AgeField} from "../components/AgeField";
 import {Place, Project} from "../tools/dto";
 import {Block} from "../components/Block";
 import {ParticipationCard} from "../cards/ParticipationCard";
+import ProjectForm from "../components/ProjectForm";
 
 export interface EditProjectProps {
     projectId?: number
@@ -22,7 +23,6 @@ function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) 
     const editProject = useEditProject(project.id)
 
     useEffect(() => defaultProject && setProject(defaultProject), [defaultProject])
-    const onChangePlace = useCallback((place: Place) => setProject({ ...project, placeId: place.id}), [project, setProject])
 
     const onClickSave = () => {
         if (project.id) {
@@ -40,34 +40,7 @@ function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) 
             <DialogHeader title={project.id ? 'Редактировать проект' : 'Новый проект'} onClick={onClose} isClose={!project.id} menuItems={project.id ? [{ title: 'Удалить', onClick: onDelete}] : undefined} />
             <DialogContent>
                 <Block variant="primary">
-                    <Input
-                        name='title'
-                        label="Название"
-                        value={project.title}
-                        onChange={(e) => setProject({ ...project, title: e.target.value})}
-                        autoFocus
-                    />
-                    <Textarea
-                        name='title'
-                        label="Описание"
-                        value={project.description}
-                        onChange={(e) => setProject({ ...project, description: e.target.value})}
-                    />
-                    <ImageField
-                        name="meetImage"
-                        label="Обложка"
-                        value={project.image}
-                        onChange={(image) => setProject({ ...project, image })}
-                    />
-                    <PlaceSelect
-                        onChange={onChangePlace}
-                        value={project.placeId}
-                    />
-                    <AgeField
-                        ageFrom={project.ageFrom}
-                        ageTo={project.ageTo}
-                        onChange={({ ageFrom, ageTo }) => setProject({...project, ageFrom, ageTo})}
-                    />
+                    <ProjectForm project={project} onChange={setProject}/>
                 </Block>
                 {project.id && (
                     <Block variant="secondary">

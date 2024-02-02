@@ -8,10 +8,9 @@ import {Block} from "../components/Block";
 import {useAuth} from "../tools/auth";
 
 
-interface IdeaStepperData {
+interface FastIdeaData {
     idea: Partial<Idea>
     user: Partial<User>
-    passport: Partial<Passport>
 }
 
 export const FAST_IDEA = 'fastIdea'
@@ -21,7 +20,7 @@ export interface FastIdeaProps {
 }
 function FastIdea({ onClose }: FastIdeaProps) {
     const { openLogin } = useAuth();
-    const [data, setData] = useState<IdeaStepperData>({idea:{}, user:{}, passport:{}});
+    const [data, setData] = useState<FastIdeaData>({idea:{}, user:{}});
     const onSubmit = () => {
         localStorage.setItem(FAST_IDEA, JSON.stringify(data));
         openLogin()

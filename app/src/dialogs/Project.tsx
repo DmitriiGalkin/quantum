@@ -42,7 +42,7 @@ export interface ProjectDialogProps {
     onClose: () => void
 }
 function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
-    const { user, passport } = useAuth();
+    const { user, isAuth, passport } = useAuth();
     const classes = useStyles();
 
     const { data: project, refetch } = useProject(Number(projectId))
@@ -117,14 +117,16 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
                             </Stack>
                             <Typography variant="Subheader1">{project.description}</Typography>
 
-                            <Block title="Участники">
-                                <Box sx={{ display: 'flex' }}>
-                                    <AvatarGroup max={4}>
-                                        {project.participations?.map((participation) => <Avatar key={participation.user?.id} alt={participation.user?.title} src={participation.user?.image} sx={{ width: 40, height: 40 }} />)}
-                                    </AvatarGroup>
-                                </Box>
-                            </Block>
-                            {!participation && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
+                            {Boolean(project.participations.length) && (
+                                <Block title="Участники">
+                                    <Box sx={{ display: 'flex' }}>
+                                        <AvatarGroup max={4}>
+                                            {project.participations?.map((participation) => <Avatar key={participation.user?.id} alt={participation.user?.title} src={participation.user?.image} sx={{ width: 40, height: 40 }} />)}
+                                        </AvatarGroup>
+                                    </Box>
+                                </Block>
+                            )}
+                            {!participation && isAuth && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
                             <Parameters items={parameters}/>
                         </Stack>
                         <div className={classes.container3}>

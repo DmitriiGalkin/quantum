@@ -4,8 +4,8 @@ import Passport from "../dialogs/Passport";
 import Visits from "../dialogs/Visits";
 import {useToggle} from "usehooks-ts";
 import {useAuth} from "../tools/auth";
-import CreateProject from "../dialogs/EditProject";
-import CreateIdea from "../dialogs/EditIdea";
+import EditProject from "../dialogs/EditProject";
+import EditIdea from "../dialogs/EditIdea";
 import Typography from "./Typography";
 import {Icon} from "./Icon";
 import {Button} from "./Button";
@@ -107,8 +107,8 @@ export function AuthHeader({refetch}: {refetch:() => void}) {
             </SwipeableDrawer>
             <Passport open={passport} onClose={togglePassport} onLogout={toggleMenu} />
             <Visits open={visits} onClose={toggleVisits} />
-            <CreateProject open={project} onClose={() => { toggleProject(); refetch() }} />
-            <CreateIdea open={idea} onClose={() => { toggleIdea(); refetch() }} />
+            <EditProject open={project} onClose={() => { toggleProject(); refetch() }} />
+            <EditIdea open={idea} onClose={() => { toggleIdea(); refetch() }} />
             <Ideas open={ideas} onClose={() => { toggleIdeas(); refetch() }} />
             <Ideas userId={user?.id} open={selfIdeas} onClose={() => { toggleSelfIdeas(); refetch() }} />
             <EditUser userId={user?.id} open={createUser} onClose={() => { onClickCreateUser(); refetch() }} />

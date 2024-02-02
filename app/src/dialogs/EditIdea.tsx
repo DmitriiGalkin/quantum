@@ -4,10 +4,10 @@ import {useAddIdea, useDeleteIdea, useEditIdea, useIdea,} from "../tools/service
 import {Idea} from "../tools/dto";
 import {Button, DialogHeader, Icon, Input, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
-import {withDialog} from "../components/helper";
 import {Block} from "../components/Block";
 import {InviteCard} from "../cards/InviteCard";
 import {useAuth} from "../tools/auth";
+import {withDialog} from "../components/helper";
 
 export interface EditIdeaProps {
     ideaId: number
@@ -61,13 +61,15 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
                         onChange={(e) => setIdea({ ...idea, description: e.target.value})}
                     />
                 </Block>
-                <Block variant="secondary">
-                    <Block title="Приглашения в проекты">
-                        <Stack spacing={1}>
-                            {idea.invites?.map((invite) => <InviteCard key={invite.id} invite={invite} refetch={refetch} />)}
-                        </Stack>
+                {idea.id && (
+                    <Block variant="secondary">
+                        <Block title="Приглашения в проекты">
+                            <Stack spacing={1}>
+                                {idea.invites?.map((invite) => <InviteCard key={invite.id} invite={invite} refetch={refetch} />)}
+                            </Stack>
+                        </Block>
                     </Block>
-                </Block>
+                )}
             </DialogContent>
             <div style={{ padding: 15, display: JSON.stringify(defaultIdea) === JSON.stringify(idea) ? 'none' : 'block' }} >
                 <Button onClick={onClickSave}>{idea.id ? 'Сохранить' : "Создать"}</Button>
