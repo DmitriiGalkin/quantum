@@ -13,14 +13,17 @@ import {useAuth} from "../tools/auth";
 interface IdeaCardProps {
     idea: Idea
     refetch: () => void
+    onAdd?: (idea: Idea) => void
+    invited?: boolean
 }
-export function IdeaCard({ idea, refetch }: IdeaCardProps) {
+export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps) {
     const { user, isAuth } = useAuth();
 
     const [project, toggleProject] = useToggle()
     const [create, toggleCreate] = useToggle()
     const createInvite = useCreateInvite()
 
+    const onInvite = (e: React.MouseEvent<HTMLElement>) => {!onAdd ? toggleProject() : onAdd(idea); e.stopPropagation() }
     const onSelectProject = (project: Project) => {
         idea && createInvite.mutateAsync({ projectId: project.id, userId: idea.userId, ideaId: idea.id }).then(() => refetch())
     }
@@ -40,7 +43,15 @@ export function IdeaCard({ idea, refetch }: IdeaCardProps) {
                                 <Typography variant="Body">{idea.user?.title}, {idea.user?.age} лет</Typography>
                             </Stack>
                             {idea.latitude && idea.longitude && <Parameter name="place2" title="Москва, Северодвинская 11" />}
-                            {isAuth && <Button variant="small" onClick={(e) => {toggleProject(); e.stopPropagation() }}>Пригласить</Button>}
+                            {(isAuth || onAdd) && (
+                                <>
+                                    {invited ? (
+                                        <Button variant="small2" onClick={onInvite}>Приглашен</Button>
+                                    ) : (
+                                        <Button variant="small" onClick={onInvite}>Пригласить</Button>
+                                    )}
+                                </>
+                            )}
                         </Stack>
                     )}
                 </Stack>

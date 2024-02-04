@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button, MobileStepper, Stack} from "@mui/material";
-import {DialogHeader, Input, ProjectCard, Textarea} from "../components";
+import {DialogFooter, DialogHeader, Input, ProjectCard, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {Idea, Passport, User} from "../tools/dto";
@@ -59,9 +59,9 @@ function FastIdea({ onClose }: FastIdeaProps) {
                             onChange={(e) => setData({ ...data, user: { ...data.user, age: Number(e.target.value) }})}
                         />
                     </Stack>
-                    <Button onClick={onSubmit}>Создать идею</Button>
                 </Block>
             </DialogContent>
+            {data?.idea.title && data?.user?.title && data?.user?.age && <DialogFooter onClick={onSubmit} />}
         </>
     );
 }

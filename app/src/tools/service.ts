@@ -8,6 +8,7 @@ const developmentServer = window.location.protocol + '//' + window.location.host
 
 const BASE_URL = process.env.NODE_ENV === 'development' ? developmentServer : 'https://selfproject.ru/api'
 
+
 export const createService = (): AxiosInstance => {
     const service = axios.create()
     service.interceptors.request.use((config: AxiosRequestConfig) => ({

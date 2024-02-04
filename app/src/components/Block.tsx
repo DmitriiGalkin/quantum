@@ -10,7 +10,7 @@ interface BlockProps {
 export function Block({ title, children, variant = 'default' }: BlockProps) {
     if (variant === 'primary') {
         return (
-            <Stack spacing={3} style={{ padding: 16, backgroundColor: 'white', borderRadius: '0 0 28px 28px' }}>
+            <Stack spacing={3} style={{ padding: 16, backgroundColor: 'white', borderRadius: '0 0 28px 0' }}>
                 {children}
             </Stack>
         )

@@ -10,9 +10,9 @@ interface PriceFieldProps {
 
 export function AgeField({ ageFrom, ageTo, onChange }: PriceFieldProps) {
     return (
-        <div>
-            <label>Возраст</label>
-            <Stack spacing={2} direction="row" alignItems="center">
+        <div style={{ width: 100 }}>
+            <label>Возраст, лет</label>
+            <Stack spacing={1} direction="row" alignItems="center">
                 <Input
                     type="number"
                     name='price'
@@ -30,7 +30,6 @@ export function AgeField({ ageFrom, ageTo, onChange }: PriceFieldProps) {
                     onChange={(e) => onChange({ ageTo: Number(e.target.value), ageFrom })}
                     placeholder="по"
                 />
-                <span>лет</span>
             </Stack>
         </div>
     );

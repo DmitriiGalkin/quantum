@@ -54,6 +54,7 @@
     "typescript": "^4.4.2",
     "usehooks-ts": "^2.9.1",
     "web-vitals": "^2.1.0",
+    "xml-js": "^1.6.11",
     "yandex-map-react": "^1.1.1",
     "yup": "^1.0.0"
   },

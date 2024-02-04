@@ -62,7 +62,7 @@ export function ImageSelect<T extends Prop>({ label, selected, items, onChange, 
                             <div className={classes.blockInner}>
                                 <img alt="Выбранная картинка" src={item?.image} className={classes.image} style={{ outline: `3px solid ${selected?.id === item?.id ? '#7139FF' : 'transparent' }`}}/>
                             </div>
-                            <div style={{ paddingTop: 11, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center' }}>{item.title}</div>
+                            <div style={{ paddingTop: 11, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center', maxHeight: 50 }}>{item.title}</div>
                         </div>
                     </Grid>
                 ))}

@@ -17,13 +17,22 @@ export interface ProjectFormProps {
 function ProjectForm({ project, onChange }: ProjectFormProps) {
     return (
         <>
-            <Input
-                name='title'
-                label="Название"
-                value={project.title}
-                onChange={(e) => onChange({ ...project, title: e.target.value})}
-                autoFocus
-            />
+            <Stack spacing={1} direction="row">
+                <div style={{ flexGrow: 1 }}>
+                    <Input
+                        name='title'
+                        label="Название"
+                        value={project.title}
+                        onChange={(e) => onChange({ ...project, title: e.target.value})}
+                        autoFocus
+                    />
+                </div>
+                <AgeField
+                    ageFrom={project.ageFrom}
+                    ageTo={project.ageTo}
+                    onChange={({ ageFrom, ageTo }) => onChange({...project, ageFrom, ageTo})}
+                />
+            </Stack>
             <Textarea
                 name='title'
                 label="Описание"
@@ -39,11 +48,6 @@ function ProjectForm({ project, onChange }: ProjectFormProps) {
             <PlaceSelect
                 onChange={(place: Place) => onChange({ ...project, placeId: place.id})}
                 value={project.placeId}
-            />
-            <AgeField
-                ageFrom={project.ageFrom}
-                ageTo={project.ageTo}
-                onChange={({ ageFrom, ageTo }) => onChange({...project, ageFrom, ageTo})}
             />
         </>
     );

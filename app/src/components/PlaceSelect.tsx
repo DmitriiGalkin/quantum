@@ -20,7 +20,7 @@ export function PlaceSelectDefault({ onChange, value }: PlaceSelectProps) {
             <ImageSelect<Place>
                 label="Место"
                 selected={selected}
-                items={places}
+                items={places.slice(2)}
                 onChange={onChange}
                 onAdd={toggleFindPlace}
             />
