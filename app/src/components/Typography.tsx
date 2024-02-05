@@ -1,5 +1,6 @@
 import React, {CSSProperties} from 'react';
 import {makeStyles} from "@mui/styles";
+import {COLOR_BLACK, COLOR_PRIMARY} from "../tools/theme";
 
 export const useStyles = makeStyles(() => ({
     span: ({ variant }: { variant?: Variant }) => {
@@ -62,7 +63,7 @@ export function Typography({ variant, color, children, style }: TypographyProps)
     const classes = useStyles({ variant });
 
     return (
-        <span className={classes.span} style={{ color: color === 'primary' ? '#7139FF' : '#070707', ...style }}>
+        <span className={classes.span} style={{ color: color === 'primary' ? COLOR_PRIMARY : COLOR_BLACK, ...style }}>
             {children}
         </span>
     );

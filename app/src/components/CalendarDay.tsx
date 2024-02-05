@@ -3,6 +3,7 @@ import {Stack} from "@mui/material";
 import {Day} from "../tools/helper";
 import {makeStyles} from "@mui/styles";
 import clsx from 'clsx'
+import {COLOR_DEFAULT, COLOR_PAPER} from "../tools/theme";
 
 const useStyles = makeStyles(() => ({
     dayOfWeek: {
@@ -19,14 +20,14 @@ const useStyles = makeStyles(() => ({
         paddingTop: '100%',
         width: '100%',
         borderRadius: 100,
-        backgroundColor: '#F5F5F5',
+        backgroundColor: COLOR_PAPER,
         color: '#394F63',
         border: '1px solid rgba(57, 79, 99, 0.1)',
         boxShadow: '0px 2.769230604171753px 12.923076629638672px 0px rgba(0, 0, 0, 0.05)'
     },
     dayActive: {
         backgroundColor: '#1D2B38',
-        color: '#ffffff',
+        color: COLOR_DEFAULT,
     },
     dayAbsolute: {
         position: 'absolute',

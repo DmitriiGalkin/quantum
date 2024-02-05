@@ -6,7 +6,7 @@ import {useCreateVisit, useDeleteVisit} from "../tools/service";
 import {useAuth} from "../tools/auth";
 import Typography from "../components/Typography";
 import {useToggle} from "usehooks-ts";
-import CreateMeet from "../dialogs/EditMeet";
+import EditMeet from "../dialogs/EditMeet";
 import {Button, Card} from "../components";
 import {Parameter} from "../components/Parameter";
 import {COLOR, COLOR_DEFAULT} from "../tools/theme";
@@ -95,7 +95,7 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                     </div>
                 </Stack>
             </Card>
-            <CreateMeet meetId={meet.id} open={create} onClose={onCloseCreateMeet} />
+            <EditMeet meetId={meet.id} open={create} onClose={onCloseCreateMeet} />
         </>
     );
 }

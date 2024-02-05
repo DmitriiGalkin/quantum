@@ -4,9 +4,10 @@ import {getCenter} from "../tools/map";
 import {usePlaces} from "../tools/service";
 import {Place} from "../tools/dto";
 import {DialogHeader} from "../components";
-import CreatePlace from "./EditPlace";
+import EditPlace from "./EditPlace";
 import {useToggle} from "usehooks-ts";
 import {withDialog} from "../components/helper";
+import {COLOR, COLOR_PRIMARY} from "../tools/theme";
 
 interface PlacesProps {
     onClose: () => void
@@ -35,7 +36,7 @@ function Places({onSuccess, onClose}: PlacesProps) {
                                 defaultGeometry={[place.latitude, place.longitude]}
                                 options={{
                                     preset: 'islands#icon',
-                                    iconColor: '#FFA427',
+                                    iconColor: COLOR,
                                 }}
                                 onClick={() => onSuccess(place)}
                             />
@@ -47,13 +48,13 @@ function Places({onSuccess, onClose}: PlacesProps) {
                 <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.39px', paddingRight: 15, color: 'black' }}>Добавить Место</div>
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 54 54" fill="none">
-                        <rect width="54" height="54" rx="23.4" fill="#7139FF"/>
+                        <rect width="54" height="54" rx="23.4" fill={COLOR_PRIMARY}/>
                         <path d="M27.0002 16.875L27.0002 37.125" stroke="white" strokeWidth="2.745" strokeLinecap="round"/>
                         <path d="M16.875 27.0005L37.125 27.0005" stroke="white" strokeWidth="2.745" strokeLinecap="round"/>
                     </svg>
                 </div>
             </div>
-            <CreatePlace state={state} onSuccess={onSuccess} open={openCreatePlace} onClose={toggleOpenCreatePlace}  />
+            <EditPlace state={state} onSuccess={onSuccess} open={openCreatePlace} onClose={toggleOpenCreatePlace}  />
         </>
     );
 }

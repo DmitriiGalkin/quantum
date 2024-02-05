@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from "@mui/material/Unstable_Grid2";
 import {makeStyles} from "@mui/styles";
+import {COLOR_PRIMARY} from "../tools/theme";
 
 const useStyles = makeStyles(() => ({
     blockInner: {
@@ -60,7 +61,7 @@ export function ImageSelect<T extends Prop>({ label, selected, items, onChange, 
                     <Grid xs={3} key={item?.id}>
                         <div onClick={() => {onChange(item)}}>
                             <div className={classes.blockInner}>
-                                <img alt="Выбранная картинка" src={item?.image} className={classes.image} style={{ outline: `3px solid ${selected?.id === item?.id ? '#7139FF' : 'transparent' }`}}/>
+                                <img alt="Выбранная картинка" src={item?.image} className={classes.image} style={{ outline: `3px solid ${selected?.id === item?.id ? COLOR_PRIMARY : 'transparent' }`}}/>
                             </div>
                             <div style={{ paddingTop: 11, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'center', maxHeight: 50 }}>{item.title}</div>
                         </div>

@@ -6,6 +6,7 @@ import {getAgeLabel} from "../tools/helper";
 import Typography from "../components/Typography";
 import ProjectPage from "../dialogs/Project";
 import {useToggle} from "usehooks-ts";
+import {COLOR_DEFAULT} from "../tools/theme";
 
 interface ProjectCardProps {
     project: Project
@@ -31,7 +32,7 @@ export function ProjectCard({ project, onClick, refetchParent }: ProjectCardProp
                     <div style={{ minWidth: 150, position: "relative" }}>
                         {project.image && (
                             <>
-                                <Chip label={getAgeLabel(project)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: '#e3e3e3' }}/>
+                                <Chip label={getAgeLabel(project)} size="small" style={{position: "absolute", top: 5, left: 5, backgroundColor: 'rgba(0, 0, 0, 0.6)', color: COLOR_DEFAULT }}/>
                                 <img alt={project.title} src={project.image} className={classes.image}/>
                             </>
                         )}

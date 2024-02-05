@@ -5,6 +5,7 @@ import {useLocalStorage} from "usehooks-ts";
 import dayjs from "dayjs";
 import {usePWA} from "../tools/pwa";
 import {Icon} from "./Icon";
+import {COLOR_LOW} from "../tools/theme";
 
 const TIMEOUT_DAYS = 3 // После отказа устанавливать банер мы запоминаем волеизъявление пользователя на 3 дня
 
@@ -27,7 +28,7 @@ export function AppBanner({title}: AppBannerProps) {
     }
 
     return (
-        <div style={{ position: 'relative', borderRadius: 25, padding: 20, background: 'linear-gradient(180deg, #FFB628 0%, #FF8F28 100%)' }}>
+        <div style={{ position: 'relative', borderRadius: 25, padding: 20, background: `linear-gradient(180deg, ${COLOR_LOW} 0%, #FF8F28 100%)` }}>
             <Stack spacing={3}>
                 <Stack spacing={3} direction="row" alignItems="center">
                     <div>

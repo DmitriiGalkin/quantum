@@ -2,6 +2,7 @@ import {makeStyles} from "@mui/styles";
 import Dialog from "@mui/material/Dialog";
 import {TransitionDialog} from "./TransitionDialog";
 import React from "react";
+import {COLOR_PAPER} from "../tools/theme";
 
 export const useInputStyles = makeStyles(() => ({
     input: {
@@ -10,7 +11,7 @@ export const useInputStyles = makeStyles(() => ({
         padding: '11px 12px 10px',
         fontFamily: 'inherit',
         color: '#212529',
-        backgroundColor: '#F5F5F5',
+        backgroundColor: COLOR_PAPER,
         backgroundClip: 'padding-box',
         border: 0,
         borderRadius: 8,

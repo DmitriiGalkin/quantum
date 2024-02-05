@@ -2,6 +2,7 @@ import React from 'react';
 import {Stack} from "@mui/material";
 import {Icon} from "./Icon";
 import Typography from "./Typography";
+import {COLOR_PRIMARY} from "../tools/theme";
 
 interface Props {
     variant?: 'outlined' | 'small' | 'small2' | 'gray' | 'menuButton'
@@ -16,7 +17,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
     if (variant === 'small') {
         return (
             <div
-                style={{ cursor: 'pointer', fontSize: 11, fontWeight: 500, padding: '3px 9px', color: '#7139FF', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
+                style={{ cursor: 'pointer', fontSize: 11, fontWeight: 500, padding: '3px 9px', color: COLOR_PRIMARY, border: `1px solid ${COLOR_PRIMARY}`, borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
                 onClick={(e) => onClick && !disabled && onClick(e)}
             >
                 {children}
@@ -26,7 +27,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
     if (variant === 'small2') {
         return (
             <div
-                style={{ backgroundColor: '#7139FF', fontSize: 11, fontWeight: 500, padding: '3px 9px', color: 'white', border: '1px solid #7139FF', borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
+                style={{ backgroundColor: COLOR_PRIMARY, fontSize: 11, fontWeight: 500, padding: '3px 9px', color: 'white', border: `1px solid ${COLOR_PRIMARY}`, borderRadius: 8, alignItems: 'center', justifyContent: 'center', textTransform: 'uppercase' }}
                 onClick={(e) => onClick && !disabled && onClick(e)}
             >
                 <Stack spacing={1} direction="row" justifyContent="space-between" alignItems="center">
@@ -45,8 +46,8 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
                 fontSize: 19,
                 fontWeight: 500,
                 padding: 15.5,
-                color: '#7139FF',
-                border: `1px solid ${color ? color : '#7139FF'}`,
+                color: COLOR_PRIMARY,
+                border: `1px solid ${color ? color : COLOR_PRIMARY}`,
                 borderRadius: 16,
                 textAlign: 'center',
                 lineHeight: '22px',
@@ -78,7 +79,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
             ({ backgroundColor: 'rgba(217, 217, 217, 0.4)', padding: '6px 13px', borderRadius: 16, cursor: 'pointer' })
         return (
             <Stack spacing={2} direction="row" alignItems="center" style={style} onClick={onClick}>
-                {color === 'primary' ? <div style={{ borderRadius: 12, backgroundColor: '#7139FF'}}>{icon}</div> : icon}
+                {color === 'primary' ? <div style={{ borderRadius: 12, backgroundColor: COLOR_PRIMARY}}>{icon}</div> : icon}
                 {children && <Typography variant="Body-Bold" style={{ flexGrow: 1 }}>{children}</Typography>}
                 {children && <Icon name='right'/>}
             </Stack>
@@ -89,12 +90,12 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
         <a href={href} style={{
             display: 'block',
             height:'100%',
-            backgroundColor: color ? color : '#7139FF',
+            backgroundColor: color ? color : COLOR_PRIMARY,
             fontSize: 19,
             fontWeight: 500,
             padding: 15.5,
             color: 'white',
-            border: `1px solid ${color ? color : '#7139FF'}`,
+            border: `1px solid ${color ? color : COLOR_PRIMARY}`,
             borderRadius: 16,
             textAlign: 'center',
             lineHeight: '22px',

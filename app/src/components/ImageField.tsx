@@ -2,6 +2,7 @@ import React, {ChangeEvent} from 'react';
 import {compress} from "../tools/image";
 import {useUploadImage} from "../tools/service";
 import {makeStyles} from "@mui/styles";
+import {COLOR_PAPER} from "../tools/theme";
 
 const useStyles = makeStyles(() => ({
     blockImage: {
@@ -54,7 +55,7 @@ export function ImageField({ name, label, onChange, value }: ImageFieldProps) {
                 fontSize: '13px',
                 lineHeight: 1.5,
                 color: '#212529',
-                backgroundColor: '#F5F5F5',
+                backgroundColor: COLOR_PAPER,
                 backgroundClip: 'padding-box',
                 borderRadius: 10,
                 position: 'relative'
