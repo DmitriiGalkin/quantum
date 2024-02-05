@@ -142,7 +142,7 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
                                         </Stack>
                                     ) : (
                                         <div style={{ height: 60, alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
-                                            <Typography variant="Caption">Ближайших встреч нет</Typography>
+                                            <Typography variant="Body">Ближайших встреч нет</Typography>
                                         </div>
                                     )}
                                 </Block>

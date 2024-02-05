@@ -1,7 +1,7 @@
 import {Avatar, Box, Stack, SwipeableDrawer} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {ProjectCard} from "../cards/ProjectCard";
-import {useAddIdea, useAddUser, useIdeas, useProjects} from "../tools/service";
+import {useAddIdea, useAddProject, useAddUser, useCreateInvite, useIdeas, useProjects} from "../tools/service";
 import Masonry from '@mui/lab/Masonry';
 import {DialogContent} from "../components/DialogContent";
 import {Header} from "../components/Header";
@@ -14,8 +14,7 @@ import Ideas from "../dialogs/Ideas";
 import Projects from "../dialogs/Projects";
 import EditProject from "../dialogs/EditProject";
 import EditIdea from "../dialogs/EditIdea";
-import FastProject from "../dialogs/FastProject";
-import {Block} from "../components/Block";
+import FastProject, {FAST_PROJECT} from "../dialogs/FastProject";
 import {RecommendationProjects} from "../components/RecommendationProjects";
 import Typography from "../components/Typography";
 import Visits from "../dialogs/Visits";
@@ -23,6 +22,7 @@ import EditUser from "../dialogs/EditUser";
 import Meets from "../dialogs/Meets";
 import PassportDialog from "../dialogs/Passport";
 import {RecommendationIdeas} from "../components/RecommendationIdeas";
+import {Invite} from "../tools/dto";
 
 
 export default function MainView(): JSX.Element {
@@ -46,17 +46,16 @@ export default function MainView(): JSX.Element {
     const { data: recommendationIdeas = [] } = useIdeas();
     const { data: userProjects = [] } = useProjects({ userId: user?.id });
     const { data: projects = [] } = useProjects();
+    const { data: selfProjects = [] } = useProjects({self: true});
 
     const filteredRecommendationIdeas = recommendationIdeas.filter(i=>i.userId!==user?.id)
 
+    const [bottomNavigationValue, setBottomNavigationValue] = useState(1)
 
 
     const fastIdeaJSON = localStorage.getItem(FAST_IDEA)
     const addUser = useAddUser()
     const addIdea = useAddIdea()
-
-    const [bottomNavigationValue, setBottomNavigationValue] = useState(1)
-
     useEffect(() => {
         if (isAuth && fastIdeaJSON) {
             const fastIdea = JSON.parse(fastIdeaJSON)
@@ -68,18 +67,20 @@ export default function MainView(): JSX.Element {
         }
     }, [isAuth, fastIdeaJSON])
 
-    const R2 = (
-        <Stack spacing={2}>
-            {Boolean(filteredRecommendationIdeas.length) && (
-                <Block title="Идеи для вдохновения">
-                    {filteredRecommendationIdeas?.map((idea) =>
-                        <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
-                    )}
-                </Block>
-            )}
-            <Button onClick={toggleIdeas} variant="outlined">Банк идеи</Button>
-        </Stack>
-    )
+    const fastProjectJSON = localStorage.getItem(FAST_PROJECT)
+    const addProject = useAddProject()
+    const addInvite = useCreateInvite()
+    useEffect(() => {
+        if (isAuth && fastProjectJSON) {
+            const fastProject = JSON.parse(fastProjectJSON)
+            addProject.mutateAsync(fastProject.project).then((projectId)=>{
+                fastProject.invites?.forEach((i: Partial<Invite>) => {
+                    addInvite.mutate({ ideaId: i.ideaId as number, projectId: projectId as number, userId: i.userId as number })
+                })
+                localStorage.removeItem(FAST_PROJECT)
+            })
+        }
+    }, [isAuth, fastProjectJSON])
 
     return (
         <Box style={{
@@ -165,7 +166,7 @@ export default function MainView(): JSX.Element {
                     </SwipeableDrawer>
                     <DialogContent>
                         {bottomNavigationValue === 1 && (
-                            <Stack spacing={3} style={{ padding: 16 }}>
+                            <Stack spacing={4} style={{ padding: 16 }}>
                                 {Boolean(userProjects.length) && (
                                     <Masonry columns={2} spacing={1}>
                                         {userProjects.map((project) =>
@@ -173,11 +174,24 @@ export default function MainView(): JSX.Element {
                                         )}
                                     </Masonry>
                                 )}
+                                <Stack spacing={2}>
+                                    {Boolean(selfProjects.length) && (
+                                        <>
+                                            <Typography variant="Header2">Организую проекты</Typography>
+                                            <Masonry columns={2} spacing={1}>
+                                                {selfProjects.map((project) =>
+                                                    <ProjectCard key={project.id} project={project} refetchParent={refetch} />
+                                                )}
+                                            </Masonry>
+                                        </>
+                                    )}
+                                    <Button onClick={toggleProject} variant="outlined">Создать проект</Button>
+                                </Stack>
                                 <RecommendationProjects projects={projects} toggleProjectsC={toggleModalProjects}/>
                             </Stack>
                         )}
                         {bottomNavigationValue === 0 && (
-                            <Stack spacing={3} style={{ padding: 16 }}>
+                            <Stack spacing={4} style={{ padding: 16 }}>
                                 <Stack spacing={2}>
                                     <Stack spacing={2}>
                                         {selfIdeas?.map((idea) =>
@@ -228,16 +242,7 @@ export default function MainView(): JSX.Element {
                                 <Button onClick={toggleFastProject}>Быстрый проект</Button>
                                 <Button onClick={toggleIdeaStepper}>Быстрая идея</Button>
                             </Stack>
-                            <Stack spacing={2}>
-                                {Boolean(projects.length) && (
-                                    <Masonry columns={2} spacing={1}>
-                                        {projects.map((project) =>
-                                            <ProjectCard key={project.id} project={project} />
-                                        )}
-                                    </Masonry>
-                                )}
-                                <Button onClick={toggleModalProjects} variant="outlined">Банк проектов</Button>
-                            </Stack>
+                            <RecommendationProjects projects={projects} toggleProjectsC={toggleModalProjects}/>
                             <RecommendationIdeas ideas={filteredRecommendationIdeas} toggleIdeasC={toggleIdeas}/>
                         </Stack>
                     </DialogContent>

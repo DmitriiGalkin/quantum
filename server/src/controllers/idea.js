@@ -38,13 +38,16 @@ exports.findAll = function(req, res) {
     Idea.findAll(req.query, function(err, ideas) {
         const userIds = [...new Set(ideas.map(m=>m.userId))]
 
-        async.map(userIds, User.findById, function(err, users) {
-            const usersMap = new Map(users.map((user, index) => [userIds[index], user]));
+        async.map(ideas.map(i=>i.id), Invite.findByIdeaId, function(err, invites) {
+            async.map(userIds, User.findById, function(err, users) {
+                const usersMap = new Map(users.map((user, index) => [userIds[index], user]));
 
-            res.send(ideas.map((idea)=>({
-                ...idea,
-                user: usersMap.get(idea.userId)
-            })));
+                res.send(ideas.map((idea, index)=>({
+                    ...idea,
+                    user: usersMap.get(idea.userId),
+                    invites: invites[index]
+                })));
+            });
         });
     });
 };

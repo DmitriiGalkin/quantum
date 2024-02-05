@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {DialogFooter, DialogHeader, Input, ProjectCard, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
-import {Idea, Passport, Place, Project, User} from "../tools/dto";
+import {Idea, Invite, Passport, Place, Project, User} from "../tools/dto";
 import {Block} from "../components/Block";
 import {useAuth} from "../tools/auth";
 import ProjectForm from "../components/ProjectForm";
@@ -15,7 +15,7 @@ import {useIdeas} from "../tools/service";
 interface FastProjectData {
     project: Partial<Project>
     place: Partial<Place>
-    ideas?: Idea[]
+    invites?: Partial<Invite>[]
 }
 
 export const FAST_PROJECT = 'fastProject'
@@ -26,19 +26,19 @@ export interface FastProjectProps {
 
 function FastProject({ onClose }: FastProjectProps) {
     const { openLogin } = useAuth();
-    const [data, setData] = useState<FastProjectData>({project:{}, place:{}, ideas: []});
+    const [data, setData] = useState<FastProjectData>({project:{}, place:{}, invites: []});
     const { data: ideas = [], refetch } = useIdeas();
 
     const onSubmit = () => {
         localStorage.setItem(FAST_PROJECT, JSON.stringify(data));
         openLogin()
     }
-    const t = (ideas: Idea[] | undefined, idea: Idea): Idea[] => {
-        if (ideas?.map(i=>i.id).includes(idea.id)) {
-            const filtered = ideas?.filter((i)=>(i.id !== idea.id)) || []
+    const t = (invites: Partial<Invite>[] | undefined, invite: Partial<Invite>): Partial<Invite>[] => {
+        if (invites?.map(i=>i.ideaId).includes(invite.ideaId)) {
+            const filtered = invites?.filter((i)=>(i.id !== invite.id)) || []
             return filtered
         } else {
-            return [...data.ideas || [], idea]
+            return [...data.invites || [], invite]
         }
     }
 
@@ -54,8 +54,11 @@ function FastProject({ onClose }: FastProjectProps) {
                     <Typography variant="Header2">Рекомендуем пригласить участников</Typography>
                         <Stack spacing={1}>
                             {ideas?.map((idea) => {
-                                const invited = data.ideas?.map(i=>i.id).includes(idea.id)
-                                const onAdd = (idea: Idea) => setData({...data, ideas: t(data.ideas, idea)})
+                                const invited = data.invites?.map(i=>i.ideaId).includes(idea.id)
+                                const onAdd = (idea: Idea) => setData({...data, invites: t(data.invites, {
+                                    ideaId: idea.id,
+                                    userId: idea.userId,
+                                })})
                                 return <IdeaCard invited={invited} key={idea.id} idea={idea} refetch={refetch} onAdd={onAdd}/>
                             })}
                         </Stack>

@@ -7,7 +7,7 @@ interface DialogFooterProps {
 }
 export function DialogFooterDefault({ onClick, children }: DialogFooterProps) {
     return (
-        <div style={{ padding: 15, backgroundColor: 'white', minHeight: 54, boxShadow: '0 3px 5px black', zIndex: 1 }} >
+        <div style={{ padding: 15, backgroundColor: 'white', boxShadow: '0 3px 5px black', zIndex: 1 }} >
             {onClick && <Button onClick={onClick}>Сохранить</Button>}
             {children}
         </div>
