@@ -5,6 +5,7 @@ import {Button, DialogHeader, ImageField, Input, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
 import {PlaceSelect} from "../components/PlaceSelect";
+import {PlaceSelect2} from "../components/PlaceSelect2";
 import {AgeField} from "../components/AgeField";
 import {Place, Project} from "../tools/dto";
 import {Block} from "../components/Block";
@@ -45,7 +46,11 @@ function ProjectForm({ project, onChange }: ProjectFormProps) {
                 value={project.image}
                 onChange={(image) => onChange({ ...project, image })}
             />
-            <PlaceSelect
+            {/*<PlaceSelect*/}
+            {/*    onChange={(place: Place) => onChange({ ...project, placeId: place.id})}*/}
+            {/*    value={project.placeId}*/}
+            {/*/>*/}
+            <PlaceSelect2
                 onChange={(place: Place) => onChange({ ...project, placeId: place.id})}
                 value={project.placeId}
             />

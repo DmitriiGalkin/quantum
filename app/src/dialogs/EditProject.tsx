@@ -44,11 +44,13 @@ function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) 
                 </Block>
                 {project.id && (
                     <Block variant="secondary">
-                        <Block title="Участники проекта">
-                            <Stack spacing={1}>
-                                {project.participations?.map((participation) => <ParticipationCard key={participation.id} participation={participation} isOrganizer refetch={refetch} />)}
-                            </Stack>
-                        </Block>
+                        {Boolean(project.participations?.length) && (
+                            <Block title="Участники проекта">
+                                <Stack spacing={1}>
+                                    {project.participations?.map((participation) => <ParticipationCard key={participation.id} participation={participation} isOrganizer refetch={refetch} />)}
+                                </Stack>
+                            </Block>
+                        )}
                     </Block>
                 )}
             </DialogContent>

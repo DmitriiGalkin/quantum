@@ -4,7 +4,7 @@ import {Chip, Stack} from "@mui/material";
 import {makeStyles} from '@mui/styles';
 import {getAgeLabel} from "../tools/helper";
 import Typography from "../components/Typography";
-import ProjectPage from "../dialogs/Project";
+import ProjectDialog from "../dialogs/Project";
 import {useToggle} from "usehooks-ts";
 import {COLOR_DEFAULT} from "../tools/theme";
 
@@ -12,7 +12,7 @@ interface ProjectCardProps {
     project: Project
     // selected?: boolean
     onClick?: (project: Project) => void
-    refetchParent?: () => void
+    refetchParent?: () => void // функция которую необходимо дернуть в случае изменений/удаления
 }
 const useStyles = makeStyles(() => ({
     image: {
@@ -42,7 +42,7 @@ export function ProjectCard({ project, onClick, refetchParent }: ProjectCardProp
                     </div>
                 </Stack>
             </div>
-            <ProjectPage projectId={project.id} open={open} onClose={() => { toggleOpen(); refetchParent && refetchParent() }} />
+            <ProjectDialog projectId={project.id} open={open} onClose={() => { toggleOpen(); refetchParent && refetchParent() }} />
         </>
 
     );

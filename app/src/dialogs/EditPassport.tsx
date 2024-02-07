@@ -15,9 +15,9 @@ export interface UserViewProps {
     onLogout: () => void
     onClose: () => void
 }
-function PassportDialog({ onLogout, onClose }: UserViewProps) {
-    const { data: defaultPassport, refetch } = usePassport();
-    const { logout } = useAuth();
+function EditPassport({ onLogout, onClose }: UserViewProps) {
+    // const { data: defaultPassport } = usePassport();
+    const { logout, refetch, passport: defaultPassport } = useAuth();
     const [passport, setPassport] = useState<Passport>()
     const [createUser, onClickCreateUser] = useToggle()
     const updateUser = useUpdatePassport()
@@ -64,4 +64,4 @@ function PassportDialog({ onLogout, onClose }: UserViewProps) {
         </>
     );
 }
-export default withDialog(PassportDialog)
+export default withDialog(EditPassport)

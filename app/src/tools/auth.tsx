@@ -53,6 +53,7 @@ export const AuthProvider = ({ children }: {children: JSX.Element}) => {
         logout,
         authFn,
         setSelectedUserId,
+        refetch
     }}>
         {children}
         <Login open={openLogin} onClose={toggleOpenLogin} />
@@ -66,6 +67,7 @@ export interface Auth {
     isAuth: boolean
     openLogin: () => void
     logout: () => void
+    refetch: () => void
     authFn: (fn: () => void) => () => void
     setSelectedUserId: (userId: number) => void
 }

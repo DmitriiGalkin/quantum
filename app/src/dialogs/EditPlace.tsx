@@ -1,56 +1,36 @@
 import React, {useRef, useState} from 'react';
-import {Map, YMaps} from '@pbe/react-yandex-maps';
-import {useAddPlace} from "../tools/service";
+import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
+import {useAddPlace, usePlaces} from "../tools/service";
 import {Place} from "../tools/dto";
-import {Button, DialogHeader, ImageField, Input} from "../components";
+import {Button, DialogFooter, DialogHeader, ImageField, Input} from "../components";
 import {Box, Stack, SwipeableDrawer} from "@mui/material";
 import {useToggle} from "usehooks-ts";
 import {styled} from '@mui/material/styles';
 import {makeStyles} from "@mui/styles";
 import {withDialog} from "../components/helper";
-
-const Puller = styled(Box)(() => ({
-    width: 41,
-    height: 4,
-    backgroundColor: '#D9D9D9',
-    borderRadius: 3,
-    position: 'absolute',
-    top: 8,
-    left: 'calc(50% - 15px)',
-}));
-
-const useStyles = makeStyles(() => ({
-    drawer: {
-        zIndex: '1300 !important',
-        '& > .MuiPaper-root': {
-            height: 'calc(50% - 56px)',
-            overflow: 'visible',
-        }
-    },
-}));
+import {BOX_SHADOW, COLOR} from "../tools/theme";
+import {DialogContent} from "../components/DialogContent";
 
 interface EditPlaceProps {
     state: { center: number[], zoom: number }
     onClose: () => void
     onSuccess: (place: Place) => void
 }
-const drawerBleeding = 25;
 function EditPlace({ state, onSuccess, onClose }: EditPlaceProps) {
-    const classes = useStyles();
     const map = useRef();
     const addPlace = useAddPlace()
 
-    const [drawer, toggleDrawer] = useToggle(true)
-    const container = window !== undefined ? () => window.document.body : undefined;
     const [place, setPlace] = useState<Place>({ id: 0, title: '', latitude: '1', longitude: '2', image: '' })
     const onSave = () => {
         if(place){
-            addPlace.mutateAsync(place).then(() => {
-                onSuccess(place)
+            addPlace.mutateAsync(place).then((placeId) => {
+                onSuccess({ ...place, id: placeId as number })
                 onClose()
             })
         }
     }
+
+    const { data: places = [] } = usePlaces()
 
     return (
         <>
@@ -62,65 +42,48 @@ function EditPlace({ state, onSuccess, onClose }: EditPlaceProps) {
                         <path d="M13 25L13 45" stroke="#394F63" strokeWidth="2" strokeLinecap="round"/>
                     </svg>
                 </div>
+            </div>
+            <DialogContent>
                 <YMaps>
                     <Map
                         instanceRef={map}
                         onBoundsChange={(xx: any)=>{
                             const [[x1,y1], [x2,y2]] = xx.originalEvent.newBounds
-                            const latitude = x1 + (x2 - x1)/3*2
+                            const latitude = x1 + (x2 - x1)/2
                             const longitude = y1 + (y2 - y1)/2
                             setPlace({...place, latitude, longitude})
                         }}
                         defaultState={state}
                         width="100%" height="100%"
-                    />
+                    >
+                        {places.map((place) => (
+                            <Placemark
+                                key={place.id}
+                                modules={["geoObject.addon.balloon"]}
+                                defaultGeometry={[place.latitude, place.longitude]}
+                                options={{
+                                    preset: 'islands#icon',
+                                    iconColor: COLOR,
+                                }}
+                                onClick={() => onSuccess(place)}
+                            />
+                        ))}
+                    </Map>
                 </YMaps>
+            </DialogContent>
+
+            <div style={{ padding: 15, backgroundColor: 'white', boxShadow: BOX_SHADOW, zIndex: 1 }} >
+                <Stack spacing={3}>
+                    <Input
+                        name='title'
+                        label="Название"
+                        value={place?.title}
+                        onChange={(e) => setPlace({ ...place, title: e.target.value} as Place)}
+                        placeholder="Название места"
+                    />
+                    <Button onClick={onSave}>Добавить</Button>
+                </Stack>
             </div>
-            <SwipeableDrawer
-                className={classes.drawer}
-                container={container}
-                anchor="bottom"
-                open={drawer}
-                onClose={toggleDrawer}
-                onOpen={toggleDrawer}
-                swipeAreaWidth={drawerBleeding}
-                ModalProps={{
-                    keepMounted: true,
-                }}
-                BackdropProps={{ invisible: true }}
-            >
-                <div style={{
-                    position: 'absolute',
-                    top: -drawerBleeding,
-                    borderTopLeftRadius: 28,
-                    borderTopRightRadius: 28,
-                    visibility: 'visible',
-                    right: 0,
-                    left: 0,
-                    backgroundColor: 'white',
-                }}
-                >
-                    <Puller />
-                    <Stack spacing={2} style={{padding: '25px 18px 18px'}}>
-                        <Stack spacing={4}>
-                            <Input
-                                name='title'
-                                label="Название"
-                                value={place?.title}
-                                onChange={(e) => setPlace({ ...place, title: e.target.value} as Place)}
-                                placeholder="Введите название встречи"
-                            />
-                            <ImageField
-                                name="placeImage"
-                                label="Загрузите обложку"
-                                value={place?.image}
-                                onChange={(image) => setPlace({...place, image} as Place)}
-                            />
-                        </Stack>
-                        <Button onClick={onSave}>Добавить</Button>
-                    </Stack>
-                </div>
-            </SwipeableDrawer>
         </>
     );
 }

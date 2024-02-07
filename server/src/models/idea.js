@@ -30,7 +30,7 @@ Idea.delete = function(id, result){
 
 Idea.findAll = function (params, result) {
     let where = 'WHERE idea.deleted IS NULL'
-    if (params.ageFrom || params.ageTo || params.userId) {
+    if (params.ageFrom || params.ageTo || params.userId || (params.latitude && params.longitude)) {
         where =' LEFT JOIN user ON user.id = idea.userId ' + where + ' AND'
         if (params.ageFrom) {
             where += ' user.age > ' + params.ageFrom
@@ -44,8 +44,12 @@ Idea.findAll = function (params, result) {
         if (params.userId) {
             where += ' idea.userId = '+ params.userId
         }
+        if (params.latitude && params.longitude) {
+            where += ' idea.userId = '+ params.userId
+        }
     }
     const f = `SELECT idea.* FROM idea ${where}`
+    console.log(f,'f')
     dbConn.query(f, function (err, res) {
         result(null, res || []);
     });

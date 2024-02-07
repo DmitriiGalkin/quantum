@@ -161,8 +161,10 @@ export interface IdeaFilter {
     userId?: string | number
     ageFrom?: number
     ageTo?: number
+    latitude?: string
+    longitude?: string
 }
-export const useIdeas = (params?: IdeaFilter): UseQueryResult<Idea[]> => useQuery(['ideas', params?.ageFrom, params?.ageTo, params?.userId], () => service.get(`/ideas`, { params }))
+export const useIdeas = (params?: IdeaFilter): UseQueryResult<Idea[]> => useQuery(['ideas', params?.ageFrom, params?.ageTo, params?.userId, params?.latitude, params?.longitude], () => service.get(`/ideas`, { params }))
 export const useIdea = (id?: number): UseQueryResult<Idea> => useQuery(['idea', id], () => service.get(`/idea/${id}`), {
     enabled: Boolean(id),
 })

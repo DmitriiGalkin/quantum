@@ -14,6 +14,7 @@ import Typography from "../components/Typography";
 import {Block} from "../components/Block";
 import EditMeet from "./EditMeet";
 import {withDialog} from "../components/helper";
+import {ParticipationCard} from "../cards/ParticipationCard";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -25,10 +26,6 @@ const useStyles = makeStyles(() => ({
         backgroundColor: 'white',
         borderRadius: 28,
         padding: '24px 26px'
-    },
-    container3: {
-        padding: '24px 11px',
-        backgroundColor: 'rgb(245, 245, 245)'
     },
     image: {
         width: '100%',
@@ -116,7 +113,6 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
                                 <Icon name="share" onClick={onShare} />
                             </Stack>
                             <Typography variant="Subheader1">{project.description}</Typography>
-
                             {Boolean(project.participations.length) && (
                                 <Block title="Участники">
                                     <Box sx={{ display: 'flex' }}>
@@ -129,25 +125,19 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
                             {!participation && isAuth && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
                             <Parameters items={parameters}/>
                         </Stack>
-                        <div className={classes.container3}>
-                            <Stack spacing={3}>
+                        <Block variant="secondary">
+                            {Boolean(project.meets?.length) && (
                                 <Block title="Расписание">
-                                    {Boolean(project.meets?.length) ? (
-                                        <Stack flexDirection="column" spacing={1}>
-                                            {project.meets?.map((meet, index, meets) => {
-                                                return (
-                                                    <MeetCard key={index} meet={meet} refetch={refetch} showDate />
-                                                )
-                                            })}
-                                        </Stack>
-                                    ) : (
-                                        <div style={{ height: 60, alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
-                                            <Typography variant="Body">Ближайших встреч нет</Typography>
-                                        </div>
-                                    )}
+                                    <Stack flexDirection="column" spacing={1}>
+                                        {project.meets?.map((meet, index, meets) => {
+                                            return (
+                                                <MeetCard key={index} meet={meet} refetch={refetch} showDate />
+                                            )
+                                        })}
+                                    </Stack>
                                 </Block>
-                            </Stack>
-                        </div>
+                            )}
+                        </Block>
                     </Stack>
                 </div>
             </div>

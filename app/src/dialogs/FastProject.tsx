@@ -27,7 +27,12 @@ export interface FastProjectProps {
 function FastProject({ onClose }: FastProjectProps) {
     const { openLogin } = useAuth();
     const [data, setData] = useState<FastProjectData>({project:{}, place:{}, invites: []});
-    const { data: ideas = [], refetch } = useIdeas();
+    const { data: ideas = [], refetch } = useIdeas({
+        ageFrom: data.project.ageFrom,
+        ageTo: data.project.ageTo,
+        latitude: data.place.latitude,
+        longitude: data.place.longitude
+    });
 
     const onSubmit = () => {
         localStorage.setItem(FAST_PROJECT, JSON.stringify(data));
@@ -50,19 +55,21 @@ function FastProject({ onClose }: FastProjectProps) {
                     <ProjectForm project={data.project} onChange={(project) => setData({ ...data, project })}/>
                 </Block>
                 <Block variant="secondary">
-                    <Stack spacing={2}>
-                    <Typography variant="Header2">Рекомендуем пригласить участников</Typography>
-                        <Stack spacing={1}>
-                            {ideas?.map((idea) => {
-                                const invited = data.invites?.map(i=>i.ideaId).includes(idea.id)
-                                const onAdd = (idea: Idea) => setData({...data, invites: t(data.invites, {
-                                    ideaId: idea.id,
-                                    userId: idea.userId,
-                                })})
-                                return <IdeaCard invited={invited} key={idea.id} idea={idea} refetch={refetch} onAdd={onAdd}/>
-                            })}
+                    {Boolean(ideas.length) && (
+                        <Stack spacing={2}>
+                            <Typography variant="Header2">Рекомендуем пригласить участников</Typography>
+                            <Stack spacing={1}>
+                                {ideas?.map((idea) => {
+                                    const invited = data.invites?.map(i=>i.ideaId).includes(idea.id)
+                                    const onAdd = (idea: Idea) => setData({...data, invites: t(data.invites, {
+                                            ideaId: idea.id,
+                                            userId: idea.userId,
+                                        })})
+                                    return <IdeaCard invited={invited} key={idea.id} idea={idea} refetch={refetch} onAdd={onAdd}/>
+                                })}
+                            </Stack>
                         </Stack>
-                    </Stack>
+                    )}
                 </Block>
             </DialogContent>
             {data?.project.title && <DialogFooter onClick={onSubmit} />}

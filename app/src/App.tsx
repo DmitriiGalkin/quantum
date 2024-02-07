@@ -1,7 +1,15 @@
 import {Avatar, Box, Stack, SwipeableDrawer} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {ProjectCard} from "./cards/ProjectCard";
-import {useAddIdea, useAddProject, useAddUser, useCreateInvite, useIdeas, useProjects} from "./tools/service";
+import {
+    IdeaFilter,
+    useAddIdea,
+    useAddProject,
+    useAddUser,
+    useCreateInvite,
+    useIdeas,
+    useProjects
+} from "./tools/service";
 import Masonry from '@mui/lab/Masonry';
 import {DialogContent} from "./components/DialogContent";
 import {Header} from "./components/Header";
@@ -20,17 +28,17 @@ import Typography from "./components/Typography";
 import Visits from "./dialogs/Visits";
 import EditUser from "./dialogs/EditUser";
 import Meets from "./dialogs/Meets";
-import PassportDialog from "./dialogs/Passport";
 import {RecommendationIdeas} from "./components/RecommendationIdeas";
 import {Invite} from "./tools/dto";
 import {COLOR, COLOR_GRAY, COLOR_LOW, COLOR_PAPER} from "./tools/theme";
+import EditPassport from "./dialogs/EditPassport";
 
 
 export default function App(): JSX.Element {
-    const { isAuth, openLogin, user, setSelectedUserId, passport: passport } = useAuth();
+    const { isAuth, openLogin, user, setSelectedUserId, passport: passport, refetch: refetchPassport } = useAuth();
 
     const [idea, toggleIdea] = useToggle()
-    const [ideas, toggleIdeas] = useToggle()
+    const [ideaFilter, setIdeaFilter] = useState<IdeaFilter>()
     const [ideaStepper, toggleIdeaStepper] = useToggle()
     const [fastProject, toggleFastProject] = useToggle()
     const [modalProjects, toggleModalProjects] = useToggle()
@@ -38,16 +46,16 @@ export default function App(): JSX.Element {
     const [passportC, togglePassportC] = useToggle()
     const [menu, toggleMenu] = useToggle()
     const [visits, toggleVisits] = useToggle()
-    const [selfIdeasC, toggleSelfIdeasC] = useToggle()
     const [sub, toggleSub] = useToggle()
     const [createUser, onClickCreateUser] = useToggle()
     const [isOpenMeets, toggleIsOpenMeets] = useToggle()
 
     const { data: selfIdeas = [], refetch } = useIdeas({ userId: user?.id });
     const { data: recommendationIdeas = [] } = useIdeas();
+
     const { data: userProjects = [] } = useProjects({ userId: user?.id });
     const { data: projects = [] } = useProjects();
-    const { data: selfProjects = [] } = useProjects({self: true});
+    const { data: selfProjects = [], refetch: refetchSelfProjects } = useProjects({self: true});
 
     const filteredRecommendationIdeas = recommendationIdeas.filter(i=>i.userId!==user?.id)
 
@@ -94,7 +102,7 @@ export default function App(): JSX.Element {
                                     <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} onClick={toggleMenu} />
                                     <Stack>
                                         <Typography variant="Body-Bold" style={{ color: 'white' }}>{user.title}</Typography>
-                                        <Typography variant="Body" style={{ color: 'white' }}>Актерское мастерство</Typography>
+                                        {false && <Typography variant="Body" style={{ color: 'white' }}>{user.age} лет</Typography>}
                                     </Stack>
                                 </Stack>
                                 <Icon name="meets" onClick={toggleIsOpenMeets} />
@@ -137,7 +145,7 @@ export default function App(): JSX.Element {
                                             </Stack>
                                             <Stack spacing={1}>
                                                 <Stack spacing={1} direction="row" justifyContent="space-between">
-                                                    <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={toggleSelfIdeasC}>Мои идеи</Button>
+                                                    <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={() => setIdeaFilter({ userId: user.id })}>Мои идеи</Button>
                                                     <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleIdea} color='primary'/>
                                                 </Stack>
                                                 <Button variant="menuButton" icon={<Icon name='visits'/>} onClick={toggleVisits}>Посещения</Button>
@@ -153,7 +161,7 @@ export default function App(): JSX.Element {
                                             <Button variant="menuButton" icon={<Icon name='project'/>} onClick={toggleModalProjects}>Мои проекты</Button>
                                             <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleProject} color='primary'/>
                                         </Stack>
-                                        <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={toggleIdeas}>Поиск идей</Button>
+                                        <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={() => setIdeaFilter({})}>Банк идей</Button>
                                         <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassportC}>Профиль родителя</Button>
                                     </Stack>
                                 </Stack>
@@ -166,7 +174,7 @@ export default function App(): JSX.Element {
                                 {Boolean(userProjects.length) && (
                                     <Masonry columns={2} spacing={1}>
                                         {userProjects.map((project) =>
-                                            <ProjectCard key={project.id} project={project} refetchParent={refetch} />
+                                            <ProjectCard key={project.id} project={project} refetchParent={refetchSelfProjects} />
                                         )}
                                     </Masonry>
                                 )}
@@ -176,7 +184,7 @@ export default function App(): JSX.Element {
                                             <Typography variant="Header2">Организую проекты</Typography>
                                             <Masonry columns={2} spacing={1}>
                                                 {selfProjects.map((project) =>
-                                                    <ProjectCard key={project.id} project={project} refetchParent={refetch} />
+                                                    <ProjectCard key={project.id} project={project} refetchParent={refetchSelfProjects} />
                                                 )}
                                             </Masonry>
                                         </>
@@ -196,7 +204,7 @@ export default function App(): JSX.Element {
                                     </Stack>
                                     <Button onClick={toggleIdea}>Создать идею</Button>
                                 </Stack>
-                                <RecommendationIdeas ideas={filteredRecommendationIdeas} toggleIdeasC={toggleIdeas}/>
+                                <RecommendationIdeas ideas={filteredRecommendationIdeas} toggleIdeasC={() => setIdeaFilter({})}/>
                             </Stack>
                         )}
                     </DialogContent>
@@ -239,7 +247,7 @@ export default function App(): JSX.Element {
                                 <Button onClick={toggleIdeaStepper}>Быстрая идея</Button>
                             </Stack>
                             <RecommendationProjects projects={projects} toggleProjectsC={toggleModalProjects}/>
-                            <RecommendationIdeas ideas={filteredRecommendationIdeas} toggleIdeasC={toggleIdeas}/>
+                            <RecommendationIdeas ideas={filteredRecommendationIdeas} toggleIdeasC={() => setIdeaFilter({})}/>
                         </Stack>
                     </DialogContent>
                 </>
@@ -249,12 +257,12 @@ export default function App(): JSX.Element {
             <FastProject open={fastProject} onClose={toggleFastProject} />
             <EditIdea open={idea} onClose={() => { toggleIdea(); }} />
             <EditProject open={project} onClose={() => { toggleProject(); }} />
-            <Ideas open={ideas} onClose={() => { toggleIdeas(); }} />
+            <EditPassport open={passportC} onClose={() => { togglePassportC(); refetchPassport() }} onLogout={toggleMenu} />
+            <EditUser userId={user?.id} open={createUser} onClose={() => { onClickCreateUser(); refetchPassport() }} />
             <Projects open={modalProjects} onClose={toggleModalProjects} />
-            <PassportDialog open={passportC} onClose={togglePassportC} onLogout={toggleMenu} />
+            <Ideas open={ideaFilter} ideaFilter={ideaFilter} onClose={() => { setIdeaFilter(undefined); }} />
+            {/*<Ideas userId={user?.id} open={selfIdeasC} onClose={() => { toggleSelfIdeasC(); refetch() }} />*/}
             <Visits open={visits} onClose={toggleVisits} />
-            <Ideas userId={user?.id} open={selfIdeasC} onClose={() => { toggleSelfIdeasC(); refetch() }} />
-            <EditUser userId={user?.id} open={createUser} onClose={() => { onClickCreateUser(); refetch() }} />
             <Meets open={isOpenMeets} onClose={toggleIsOpenMeets} />
         </Box>
     )

@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react';
 import {Button} from "./Button";
+import {BOX_SHADOW} from "../tools/theme";
 
 interface DialogFooterProps {
     onClick?: () => void
@@ -7,11 +8,11 @@ interface DialogFooterProps {
 }
 export function DialogFooterDefault({ onClick, children }: DialogFooterProps) {
     return (
-        <div style={{ padding: 15, backgroundColor: 'white', boxShadow: '0 3px 5px black', zIndex: 1 }} >
+        <div style={{ padding: 15, backgroundColor: 'white', boxShadow: BOX_SHADOW, zIndex: 1 }} >
             {onClick && <Button onClick={onClick}>Сохранить</Button>}
             {children}
         </div>
     );
 }
 
-export const DialogFooter = React.memo(DialogFooterDefault);
+export const DialogFooter = DialogFooterDefault;
