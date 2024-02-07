@@ -8,6 +8,7 @@ import {Block} from "../components/Block";
 import {InviteCard} from "../cards/InviteCard";
 import {useAuth} from "../tools/auth";
 import {withDialog} from "../components/helper";
+import {useGeolocation} from "../tools/geolocation";
 
 export interface EditIdeaProps {
     ideaId: number
@@ -20,12 +21,13 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
     //
     // const { data: defaultIdea, refetch } = useMeet(meetId)
     const { user, passport } = useAuth();
+    const { latitude, longitude } = useGeolocation()
 
     const addIdea = useAddIdea()
     const editIdea = useEditIdea(ideaId)
     const deleteIdea = useDeleteIdea()
 
-    const [idea, setIdea] = useState<Partial<Idea>>({ title: '', userId: user.id })
+    const [idea, setIdea] = useState<Partial<Idea>>({ title: '', userId: user.id, passportId: passport.id })
     const { data: defaultIdea, refetch } = useIdea(ideaId)
 
     const onDelete =  () => deleteIdea.mutateAsync(idea.id).then(onClose)
@@ -39,8 +41,10 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
             })
         }
     };
+    console.log(idea,'idea')
 
     useEffect(() => defaultIdea && setIdea(defaultIdea), [defaultIdea])
+    useEffect(() => longitude && latitude && setIdea({...idea, longitude, latitude}), [longitude, latitude])
 
     return (
         <>

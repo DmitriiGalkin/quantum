@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {ProjectCard} from "./cards/ProjectCard";
 import {
     IdeaFilter,
-    useAddIdea,
+    useAddIdea, useAddPlace,
     useAddProject,
     useAddUser,
     useCreateInvite,
@@ -77,16 +77,19 @@ export default function App(): JSX.Element {
     }, [isAuth, fastIdeaJSON])
 
     const fastProjectJSON = localStorage.getItem(FAST_PROJECT)
+    const addPlace = useAddPlace()
     const addProject = useAddProject()
     const addInvite = useCreateInvite()
     useEffect(() => {
         if (isAuth && fastProjectJSON) {
             const fastProject = JSON.parse(fastProjectJSON)
-            addProject.mutateAsync(fastProject.project).then((projectId)=>{
-                fastProject.invites?.forEach((i: Partial<Invite>) => {
-                    addInvite.mutate({ ideaId: i.ideaId as number, projectId: projectId as number, userId: i.userId as number })
+            addPlace.mutateAsync(fastProject.place).then((placeId)=>{
+                addProject.mutateAsync({...fastProject.project, placeId}).then((projectId)=>{
+                    fastProject.invites?.forEach((i: Partial<Invite>) => {
+                        addInvite.mutate({ ideaId: i.ideaId as number, projectId: projectId as number, userId: i.userId as number })
+                    })
+                    localStorage.removeItem(FAST_PROJECT)
                 })
-                localStorage.removeItem(FAST_PROJECT)
             })
         }
     }, [isAuth, fastProjectJSON])

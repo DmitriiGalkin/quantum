@@ -10,27 +10,29 @@ import {makeStyles} from "@mui/styles";
 import {withDialog} from "../components/helper";
 import {BOX_SHADOW, COLOR} from "../tools/theme";
 import {DialogContent} from "../components/DialogContent";
+import {getCenter} from "../tools/map";
+import {useGeolocation} from "../tools/geolocation";
 
 interface EditPlaceProps {
-    state: { center: number[], zoom: number }
+    places: Place[]
     onClose: () => void
     onSuccess: (place: Place) => void
 }
-function EditPlace({ state, onSuccess, onClose }: EditPlaceProps) {
+function EditPlace({ places, onSuccess, onClose }: EditPlaceProps) {
+    const { defaultState } = useGeolocation()
     const map = useRef();
-    const addPlace = useAddPlace()
 
     const [place, setPlace] = useState<Place>({ id: 0, title: '', latitude: '1', longitude: '2', image: '' })
-    const onSave = () => {
-        if(place){
-            addPlace.mutateAsync(place).then((placeId) => {
-                onSuccess({ ...place, id: placeId as number })
-                onClose()
-            })
-        }
-    }
+    // const onSave = () => {
+    //     if(place){
+    //         addPlace.mutateAsync(place).then((placeId) => {
+    //             onSuccess({ ...place, id: placeId as number })
+    //             onClose()
+    //         })
+    //     }
+    // }
 
-    const { data: places = [] } = usePlaces()
+    if (!defaultState) return null;
 
     return (
         <>
@@ -53,7 +55,7 @@ function EditPlace({ state, onSuccess, onClose }: EditPlaceProps) {
                             const longitude = y1 + (y2 - y1)/2
                             setPlace({...place, latitude, longitude})
                         }}
-                        defaultState={state}
+                        defaultState={defaultState}
                         width="100%" height="100%"
                     >
                         {places.map((place) => (
@@ -65,7 +67,7 @@ function EditPlace({ state, onSuccess, onClose }: EditPlaceProps) {
                                     preset: 'islands#icon',
                                     iconColor: COLOR,
                                 }}
-                                onClick={() => onSuccess(place)}
+                                onClick={() => {onSuccess(place); onClose()}}
                             />
                         ))}
                     </Map>
@@ -81,7 +83,7 @@ function EditPlace({ state, onSuccess, onClose }: EditPlaceProps) {
                         onChange={(e) => setPlace({ ...place, title: e.target.value} as Place)}
                         placeholder="Название места"
                     />
-                    <Button onClick={onSave}>Добавить</Button>
+                    <Button onClick={() => {onSuccess(place); onClose()}}>Добавить</Button>
                 </Stack>
             </div>
         </>

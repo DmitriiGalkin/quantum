@@ -40,9 +40,9 @@ Project.findAll = function (params, result) {
     where = where + ' AND passportId = ' + (params.self ? params.passportId : 'passportId')
 
     const l = `SELECT project.* FROM project ${where}`
-    console.log(l,'l')
+    // console.log(l,'l')
     dbConn.query(l, function (err, res) {
-        console.log(res,'res')
+        //console.log(res,'res')
 
         result(null, res || []);
     });

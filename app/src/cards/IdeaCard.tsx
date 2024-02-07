@@ -42,7 +42,7 @@ export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps) {
                                 <Avatar alt={idea.user?.title} src={idea.user?.image} sx={{ width: 21, height: 21}} />
                                 <Typography variant="Body">{idea.user?.title}, {idea.user?.age} лет</Typography>
                             </Stack>
-                            {idea.latitude && idea.longitude && <Parameter name="place2" title="Москва, Северодвинская 11" />}
+                            {(idea.distance || idea.distance === 0) && <Parameter name="distanceSmall" iconColor="secondary" title={Math.round(idea.distance) + 'м.'} />}
                             {(isAuth || onAdd) && (
                                 <>
                                     {invited ? (

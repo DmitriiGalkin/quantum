@@ -125,9 +125,11 @@ export interface Idea {
     title: string // Название
     description?: string // Описание
     userId: number // Инициатор
+    passportId: number // Паспорт Инициатора
     latitude: string // Широта
     longitude: string // Долгота
     deleted?: string  // Дата удаления
+    distance?: number // Дистанция до объекта
 
     /**
      * Дополнительные поля

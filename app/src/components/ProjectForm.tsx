@@ -46,14 +46,6 @@ function ProjectForm({ project, onChange }: ProjectFormProps) {
                 value={project.image}
                 onChange={(image) => onChange({ ...project, image })}
             />
-            {/*<PlaceSelect*/}
-            {/*    onChange={(place: Place) => onChange({ ...project, placeId: place.id})}*/}
-            {/*    value={project.placeId}*/}
-            {/*/>*/}
-            <PlaceSelect2
-                onChange={(place: Place) => onChange({ ...project, placeId: place.id})}
-                value={project.placeId}
-            />
         </>
     );
 }

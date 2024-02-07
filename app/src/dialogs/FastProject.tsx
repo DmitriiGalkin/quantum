@@ -10,6 +10,7 @@ import {Stack} from "@mui/material";
 import {IdeaCard} from "../cards/IdeaCard";
 import Typography from "../components/Typography";
 import {useIdeas} from "../tools/service";
+import {PlaceSelect2} from "../components/PlaceSelect2";
 
 
 interface FastProjectData {
@@ -27,6 +28,7 @@ export interface FastProjectProps {
 function FastProject({ onClose }: FastProjectProps) {
     const { openLogin } = useAuth();
     const [data, setData] = useState<FastProjectData>({project:{}, place:{}, invites: []});
+
     const { data: ideas = [], refetch } = useIdeas({
         ageFrom: data.project.ageFrom,
         ageTo: data.project.ageTo,
@@ -53,6 +55,10 @@ function FastProject({ onClose }: FastProjectProps) {
             <DialogContent>
                 <Block variant="primary">
                     <ProjectForm project={data.project} onChange={(project) => setData({ ...data, project })}/>
+                    <PlaceSelect2
+                        onChange={(place: Place) => setData({ ...data, place })}
+                        place={data.place}
+                    />
                 </Block>
                 <Block variant="secondary">
                     {Boolean(ideas.length) && (

@@ -5,6 +5,7 @@ var Idea = function(data){
     this.title = data.title;
     this.description = data.description;
     this.userId = data.userId; // Создатель идеи
+    this.passportId = data.passportId; // Паспорт создателя идеи
     this.latitude = data.latitude;
     this.longitude = data.longitude;
 };
@@ -29,26 +30,29 @@ Idea.delete = function(id, result){
 };
 
 Idea.findAll = function (params, result) {
+    const dist = params.latitude && params.longitude && "ST_Distance_Sphere(point(" + params.latitude + ", " + params.longitude + "), point(latitude, longitude))"
+
     let where = 'WHERE idea.deleted IS NULL'
     if (params.ageFrom || params.ageTo || params.userId || (params.latitude && params.longitude)) {
-        where =' LEFT JOIN user ON user.id = idea.userId ' + where + ' AND'
+        where =' LEFT JOIN user ON user.id = idea.userId ' + where
         if (params.ageFrom) {
-            where += ' user.age > ' + params.ageFrom
+            where += ' AND user.age > ' + params.ageFrom
         }
-        if (params.ageTo && params.ageTo) {
-            where += ' AND '
-        }
+        // if (params.ageTo && params.ageTo) {
+        //     where += ' AND '
+        // }
         if (params.ageTo) {
-            where += ' user.age < '+ params.ageTo
+            where += ' AND user.age < '+ params.ageTo
         }
         if (params.userId) {
-            where += ' idea.userId = '+ params.userId
+            where += ' AND idea.userId = '+ params.userId
         }
         if (params.latitude && params.longitude) {
-            where += ' idea.userId = '+ params.userId
+            const RADIUS = 100000
+            where += ` AND ${dist} < ` + RADIUS
         }
     }
-    const f = `SELECT idea.* FROM idea ${where}`
+    const f = `SELECT idea.* ${dist ? `, ${dist} AS distance` : ''} FROM idea ${where}`
     console.log(f,'f')
     dbConn.query(f, function (err, res) {
         result(null, res || []);
