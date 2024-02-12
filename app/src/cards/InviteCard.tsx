@@ -6,7 +6,7 @@ import {Parameter} from "../components/Parameter";
 import ProjectPage from "../dialogs/Project";
 import {useToggle} from "usehooks-ts";
 import {Button, Card} from "../components";
-import {useDeleteInvite} from "../tools/service";
+import {useAcceptInvite, useDeleteInvite} from "../tools/service";
 
 interface InviteCardProps {
     invite: Invite
@@ -15,7 +15,9 @@ interface InviteCardProps {
 
 export function InviteCard({ invite, refetch }: InviteCardProps) {
     const [open, toggleOpen] = useToggle()
+    const acceptInvite = useAcceptInvite()
     const deleteInvite = useDeleteInvite()
+    const onAccept =  () => invite.id && acceptInvite.mutateAsync(invite.id).then(refetch)
     const onDelete =  () => invite.id && deleteInvite.mutateAsync(invite.id).then(refetch)
 
     return (
@@ -48,9 +50,12 @@ export function InviteCard({ invite, refetch }: InviteCardProps) {
                                         size="small"
                                     />
                                 )}
-                                <Stack direction="row" spacing={1} style={{ width: '100%', justifyContent: 'end' }} >
-                                    {!invite.deleted && <Button variant="small" onClick={(e) => {onDelete(); e.stopPropagation()}}>Удалить</Button>}
-                                </Stack>
+                                {!(invite.deleted || invite.accepted) && (
+                                    <Stack direction="row" spacing={1} style={{ width: '100%', justifyContent: 'end' }} >
+                                        <Button variant="small" onClick={(e) => {onDelete(); e.stopPropagation()}}>Отклонить</Button>
+                                        <Button variant="small" onClick={(e) => {onAccept(); e.stopPropagation()}}>Присоединиться</Button>
+                                    </Stack>
+                                )}
                             </Stack>
                         </Stack>
                     </Stack>

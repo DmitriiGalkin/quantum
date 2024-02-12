@@ -52,7 +52,7 @@ exports.toggleUserMeet = function(req, res) {
 };
 
 exports.findAll = function(req, res) {
-    Meet.findByUserId(req.query.userId, function(err, meets) {
+    const cb = function(err, meets) {
         async.map(meets.map(m=>m.projectId), Project.findById, function(err, meetsProject) {
             async.map(meetsProject.map(p=>p.placeId), Place.findById, function(err, meetsPlace) {
                 async.map(meets, Visit.findByMeet, function(err, visits) {
@@ -66,7 +66,14 @@ exports.findAll = function(req, res) {
                 });
             });
         });
-    });
+    }
+    console.log(req.query, 'req.query')
+    if (req.query.isForPassport === 'true') {
+        console.log('req.query.isForPassport true')
+        Meet.findByPassportId(req.passport.id, cb);
+    } else {
+        Meet.findByUserId(req.query.userId, cb);
+    }
 };
 
 exports.findById = function(req, res) {

@@ -13,10 +13,11 @@ import Ideas from "../dialogs/Ideas";
 import {useToggle} from "usehooks-ts";
 
 interface RecommendationIdeasProps {
-    ideas: Idea[]
     toggleIdeasC: () => void
 }
-export function RecommendationIdeas({ ideas, toggleIdeasC }: RecommendationIdeasProps) {
+export function RecommendationIdeas({ toggleIdeasC }: RecommendationIdeasProps) {
+    const { data: ideas = [] } = useIdeas();
+
     return (
         <Stack spacing={2}>
             {Boolean(ideas.length) && (

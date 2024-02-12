@@ -4,8 +4,6 @@ import {useAddProject, useDeleteProject, useEditProject, useProject} from "../to
 import {Button, DialogHeader, ImageField, Input, Textarea} from "../components";
 import {DialogContent} from "../components/DialogContent";
 import {withDialog} from "../components/helper";
-import {PlaceSelect} from "../components/PlaceSelect";
-import {AgeField} from "../components/AgeField";
 import {Place, Project} from "../tools/dto";
 import {Block} from "../components/Block";
 import {ParticipationCard} from "../cards/ParticipationCard";

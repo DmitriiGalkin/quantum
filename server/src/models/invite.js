@@ -13,6 +13,12 @@ Invite.create = function (data, result) {
     });
 };
 
+Invite.accept = function(id, result){
+    dbConn.query(`UPDATE invite SET accepted = NOW() WHERE id = ?`, id, function (err, res) {
+        result(null, res);
+    });
+};
+
 Invite.delete = function(id, result){
     dbConn.query(`UPDATE invite SET deleted = NOW() WHERE id = ?`, id, function (err, res) {
         result(null, res);

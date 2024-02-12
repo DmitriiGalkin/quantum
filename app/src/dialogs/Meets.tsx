@@ -13,19 +13,20 @@ import {useAuth} from "../tools/auth";
 
 export interface MeetsProps {
     onClose: () => void
+    isForPassport?: boolean
 }
 
-function Meets({ onClose }: MeetsProps) {
+function Meets({ onClose, isForPassport }: MeetsProps) {
     const { user } = useAuth();
     const containerRef = useRef<HTMLDivElement>(null)
     const containerHeight = containerRef.current?.offsetHeight
-    const { data: meets = [], refetch } = useMeets(user.id)
+    const { data: meets = [], refetch } = useMeets(user?.id, isForPassport)
     const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
-    const { index, days, meetsGroup } = getOm(meets, date, user.id)
+    const { index, days, meetsGroup } = getOm(meets, date, user?.id)
 
     return (
         <>
-            <DialogHeader title="Календарь встреч" onClick={onClose}/>
+            <DialogHeader title={`Календарь ${isForPassport ? 'организатора' : 'участника'}`} onClick={onClose} isForPassport={isForPassport} />
             <DialogContent>
                 <Stack spacing={3} style={{ height: '100%', padding: 16 }}>
                     <Calendar days={days} onChange={setDate} />

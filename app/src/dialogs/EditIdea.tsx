@@ -43,8 +43,12 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
     };
     console.log(idea,'idea')
 
-    useEffect(() => defaultIdea && setIdea(defaultIdea), [defaultIdea])
-    useEffect(() => longitude && latitude && setIdea({...idea, longitude, latitude}), [longitude, latitude])
+    useEffect(() => {if (defaultIdea) {
+        setIdea(defaultIdea)
+    } else { return () => {} }}, [defaultIdea])
+    useEffect(() => {if (longitude && latitude && (!idea.longitude)) {
+        setIdea({...idea, longitude, latitude})
+    } else { return () => {} }}, [idea, longitude, latitude])
 
     return (
         <>

@@ -14,7 +14,6 @@ import Typography from "../components/Typography";
 import {Block} from "../components/Block";
 import EditMeet from "./EditMeet";
 import {withDialog} from "../components/helper";
-import {ParticipationCard} from "../cards/ParticipationCard";
 
 const useStyles = makeStyles(() => ({
     container: {

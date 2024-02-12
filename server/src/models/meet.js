@@ -64,6 +64,14 @@ Meet.findByUserId = function (id, result) {
         result(null, res || []);
     });
 };
+Meet.findByPassportId = function (id, result) {
+    const l = "SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE passportId = ? AND deleted IS NULL AND DATE(datetime) >= CURDATE()"
+    console.log(l,'l')
+    dbConn.query(l, id, function (err, res) {
+        console.log(res,'res')
+        result(null, res || []);
+    });
+};
 
 // Встречи участника
 Meet.findAllByUserId2 = (id) => function (result) {

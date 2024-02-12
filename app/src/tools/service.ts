@@ -49,7 +49,7 @@ export type UseMutate<TVariables, TData = unknown, TError = AxiosError, TContext
 /**
  * Встречи
  */
-export const useMeets = (userId: number): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets?userId=${userId}`))
+export const useMeets = (userId?: number, isForPassport?: boolean): UseQueryResult<Meet[]> => useQuery(['meets'], () => service.get(`/meets?userId=${userId}&isForPassport=${isForPassport}`))
 export const useMeet = (id?: number): UseQueryResult<Meet> => useQuery(['meet', id], () => service.get(`/meet/${id}`), {
     enabled: Boolean(id),
 })
@@ -190,6 +190,7 @@ export const useDeleteIdea = (): UseMutate<number | undefined> => useMutation((i
  * Приглашение
  */
 export const useCreateInvite = (): UseMutate<{ projectId: number, userId: number, ideaId: number }> => useMutation((params) => service.post("/invite", params))
+export const useAcceptInvite = (): UseMutate<number | undefined> => useMutation((inviteId) => service.post("/invite/" + inviteId + "/accept"))
 export const useDeleteInvite = (): UseMutate<number | undefined> => useMutation((inviteId) => service.delete("/invite/" + inviteId))
 
 

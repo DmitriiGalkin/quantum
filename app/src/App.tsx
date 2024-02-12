@@ -32,14 +32,17 @@ import {RecommendationIdeas} from "./components/RecommendationIdeas";
 import {Invite} from "./tools/dto";
 import {COLOR, COLOR_GRAY, COLOR_LOW, COLOR_PAPER} from "./tools/theme";
 import EditPassport from "./dialogs/EditPassport";
+import DialogProvider, {useDialog} from "./components/DialogProvider";
 
-
-export default function App(): JSX.Element {
+interface AppProps {
+    action?: 'fastIdea' | 'fastProject'
+}
+export default function App({ action }: AppProps): JSX.Element {
     const { isAuth, openLogin, user, setSelectedUserId, passport: passport, refetch: refetchPassport } = useAuth();
 
     const [idea, toggleIdea] = useToggle()
     const [ideaFilter, setIdeaFilter] = useState<IdeaFilter>()
-    const [ideaStepper, toggleIdeaStepper] = useToggle()
+    const [ideaStepper, toggleIdeaStepper] = useToggle(action === 'fastIdea')
     const [fastProject, toggleFastProject] = useToggle()
     const [modalProjects, toggleModalProjects] = useToggle()
     const [project, toggleProject] = useToggle()
@@ -49,15 +52,14 @@ export default function App(): JSX.Element {
     const [sub, toggleSub] = useToggle()
     const [createUser, onClickCreateUser] = useToggle()
     const [isOpenMeets, toggleIsOpenMeets] = useToggle()
+    const [isOpenPassportMeets, toggleIsOpenPassportMeets] = useToggle()
+
 
     const { data: selfIdeas = [], refetch } = useIdeas({ userId: user?.id });
-    const { data: recommendationIdeas = [] } = useIdeas();
 
     const { data: userProjects = [] } = useProjects({ userId: user?.id });
-    const { data: projects = [] } = useProjects();
     const { data: selfProjects = [], refetch: refetchSelfProjects } = useProjects({self: true});
 
-    const filteredRecommendationIdeas = recommendationIdeas.filter(i=>i.userId!==user?.id)
 
     const [bottomNavigationValue, setBottomNavigationValue] = useState(1)
 
@@ -93,13 +95,25 @@ export default function App(): JSX.Element {
             })
         }
     }, [isAuth, fastProjectJSON])
+    const [openDialog, closeDialog] = useDialog();
 
+    const onOpenDialog = () => {
+        console.log("onOpenDialog")
+        openDialog({
+            children: (
+                <>
+                    <div onClick={() => closeDialog()}>2342342342342</div>
+                </>
+            )
+        });
+    };
     return (
+        <DialogProvider>
         <Box style={{ backgroundColor: COLOR_PAPER, display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            {passport ? (
+            {isAuth ? (
                 <>
                     <Header>
-                        {user ? (
+                        {user && (
                             <>
                                 <Stack direction="row" spacing={2} alignItems="center">
                                     <Avatar key={user.id} alt={user.title} src={user.image} sx={{ border: '2px solid white' }} onClick={toggleMenu} />
@@ -110,8 +124,16 @@ export default function App(): JSX.Element {
                                 </Stack>
                                 <Icon name="meets" onClick={toggleIsOpenMeets} />
                             </>
-                        ) : (
-                            <Icon name="burger" onClick={toggleMenu} />
+                        )}
+                        {passport && !user && (
+                            <>
+                                <Stack direction="row" spacing={2} alignItems="center">
+                                    <Stack>
+                                        <Typography variant="Body-Bold" style={{ color: 'white' }}>{passport.title}</Typography>
+                                    </Stack>
+                                </Stack>
+                                <Icon name="meets" onClick={toggleIsOpenPassportMeets} />
+                            </>
                         )}
                     </Header>
                     <SwipeableDrawer
@@ -155,59 +177,72 @@ export default function App(): JSX.Element {
                                             </Stack>
                                         </Stack>
                                     )}
-                                    <Stack spacing={1} style={{ padding: 16 }}>
-                                        <Stack style={{ padding: '14px 40px' }}>
-                                            <Typography variant="Caption">Взрослый</Typography>
-                                            <Typography variant="Header3">{passport.title}</Typography>
+                                    {passport && (
+                                        <Stack spacing={1} style={{ padding: 16 }}>
+                                            <Stack style={{ padding: '14px 40px' }}>
+                                                <Typography variant="Caption">Взрослый</Typography>
+                                                <Typography variant="Header3">{passport.title}</Typography>
+                                            </Stack>
+                                            <Stack spacing={1} direction="row" justifyContent="space-between">
+                                                <Button variant="menuButton" icon={<Icon name='project'/>} onClick={toggleModalProjects}>Мои проекты</Button>
+                                                <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleProject} color='primary'/>
+                                            </Stack>
+                                            <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={() => setIdeaFilter({})}>Банк идей</Button>
+                                            <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassportC}>Профиль родителя</Button>
+                                            <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={toggleIsOpenPassportMeets}>Календарь организатора</Button>
                                         </Stack>
-                                        <Stack spacing={1} direction="row" justifyContent="space-between">
-                                            <Button variant="menuButton" icon={<Icon name='project'/>} onClick={toggleModalProjects}>Мои проекты</Button>
-                                            <Button variant="menuButton" icon={<Icon name='add'/>} onClick={toggleProject} color='primary'/>
-                                        </Stack>
-                                        <Button variant="menuButton" icon={<Icon name='idea'/>} onClick={() => setIdeaFilter({})}>Банк идей</Button>
-                                        <Button variant="menuButton" icon={<Icon name='passport'/>} onClick={togglePassportC}>Профиль родителя</Button>
-                                    </Stack>
+                                    )}
                                 </Stack>
                             </div>
                         </Stack>
                     </SwipeableDrawer>
                     <DialogContent>
+                        <div onClick={onOpenDialog}>open</div>
                         {bottomNavigationValue === 1 && (
                             <Stack spacing={4} style={{ padding: 16 }}>
-                                {Boolean(userProjects.length) && (
-                                    <Masonry columns={2} spacing={1}>
-                                        {userProjects.map((project) =>
-                                            <ProjectCard key={project.id} project={project} refetchParent={refetchSelfProjects} />
-                                        )}
-                                    </Masonry>
-                                )}
                                 <Stack spacing={2}>
                                     {Boolean(selfProjects.length) && (
                                         <>
                                             <Typography variant="Header2">Организую проекты</Typography>
-                                            <Masonry columns={2} spacing={1}>
+                                            <Stack spacing={1}>
                                                 {selfProjects.map((project) =>
-                                                    <ProjectCard key={project.id} project={project} refetchParent={refetchSelfProjects} />
+                                                    <ProjectCard key={project.id} project={project} refetchParent={refetchSelfProjects} variant="admin" />
                                                 )}
-                                            </Masonry>
+                                            </Stack>
                                         </>
                                     )}
-                                    <Button onClick={toggleProject} variant="outlined">Создать проект</Button>
+                                    <Button onClick={toggleProject}>Создать проект</Button>
                                 </Stack>
-                                <RecommendationProjects projects={projects} toggleProjectsC={toggleModalProjects}/>
+                                <Stack spacing={2}>
+                                    {Boolean(userProjects.length) && (
+                                        <>
+                                            <Typography variant="Header2">Участвую в проектах</Typography>
+                                            <Stack spacing={1}>
+                                                {userProjects.map((project) =>
+                                                    <ProjectCard key={project.id} project={project} refetchParent={refetchSelfProjects} variant="admin" />
+                                                )}
+                                            </Stack>
+                                        </>
+                                    )}
+                                </Stack>
+                                <RecommendationProjects toggleProjectsC={toggleModalProjects}/>
                             </Stack>
                         )}
                         {bottomNavigationValue === 0 && (
                             <Stack spacing={4} style={{ padding: 16 }}>
-                                <Stack spacing={2}>
+                                {user ? (
                                     <Stack spacing={2}>
-                                        {selfIdeas?.map((idea) =>
-                                            <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
-                                        )}
+                                        <Stack spacing={2}>
+                                            {selfIdeas?.map((idea) =>
+                                                <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
+                                            )}
+                                        </Stack>
+                                        <Button onClick={toggleIdea}>Создать идею</Button>
                                     </Stack>
-                                    <Button onClick={toggleIdea}>Создать идею</Button>
-                                </Stack>
-                                <RecommendationIdeas ideas={filteredRecommendationIdeas} toggleIdeasC={() => setIdeaFilter({})}/>
+                                ) : (
+                                    <Button onClick={toggleIdeaStepper}>Быстрая идея</Button>
+                                )}
+                                <RecommendationIdeas toggleIdeasC={() => setIdeaFilter({})}/>
                             </Stack>
                         )}
                     </DialogContent>
@@ -249,8 +284,8 @@ export default function App(): JSX.Element {
                                 <Button onClick={toggleFastProject}>Быстрый проект</Button>
                                 <Button onClick={toggleIdeaStepper}>Быстрая идея</Button>
                             </Stack>
-                            <RecommendationProjects projects={projects} toggleProjectsC={toggleModalProjects}/>
-                            <RecommendationIdeas ideas={filteredRecommendationIdeas} toggleIdeasC={() => setIdeaFilter({})}/>
+                            <RecommendationProjects toggleProjectsC={toggleModalProjects}/>
+                            <RecommendationIdeas toggleIdeasC={() => setIdeaFilter({})}/>
                         </Stack>
                     </DialogContent>
                 </>
@@ -267,6 +302,8 @@ export default function App(): JSX.Element {
             {/*<Ideas userId={user?.id} open={selfIdeasC} onClose={() => { toggleSelfIdeasC(); refetch() }} />*/}
             <Visits open={visits} onClose={toggleVisits} />
             <Meets open={isOpenMeets} onClose={toggleIsOpenMeets} />
+            <Meets open={isOpenPassportMeets} onClose={toggleIsOpenPassportMeets} isForPassport />
         </Box>
+        </DialogProvider>
     )
 }

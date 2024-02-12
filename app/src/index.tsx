@@ -25,6 +25,7 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route element={<AuthLayout />}>
             <Route index element={<App />}/>
+            <Route path={"i"} element={<App action={'fastIdea'} />}/>
         </Route>
     )
 );

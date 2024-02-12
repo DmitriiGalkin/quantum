@@ -1,15 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Stack} from "@mui/material";
-import {useAddProject, useDeleteProject, useEditProject, useProject} from "../tools/service";
 import {Button, DialogHeader, ImageField, Input, Textarea} from "../components";
-import {DialogContent} from "../components/DialogContent";
-import {withDialog} from "../components/helper";
-import {PlaceSelect} from "../components/PlaceSelect";
-import {PlaceSelect2} from "../components/PlaceSelect2";
 import {AgeField} from "../components/AgeField";
 import {Place, Project} from "../tools/dto";
-import {Block} from "../components/Block";
-import {ParticipationCard} from "../cards/ParticipationCard";
 
 export interface ProjectFormProps {
     project: Partial<Project>

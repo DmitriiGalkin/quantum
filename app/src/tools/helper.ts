@@ -37,7 +37,7 @@ export const getVisitGroups = (visits?: Visit[]): VisitGroup[] => [...Array.from
 /**
  * Подготовка данных для отображения встреч списком и на карте
  */
-export const getOm = (meets: Meet[], date: string, userId: number) => {
+export const getOm = (meets: Meet[], date: string, userId?: number) => {
     const days = getWeek(date, meets, userId)
     const meetsGroup = getCalendarMeetsGroup(days, meets)
 

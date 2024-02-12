@@ -15,7 +15,7 @@ export interface ProjectsProps {
     onClose: () => void
 }
 function Projects({ onClose }: ProjectsProps) {
-    const [filter, setFilter] = useState<ProjectFilter>({ self: true, deleted: false });
+    const [filter, setFilter] = useState<ProjectFilter>({ deleted: false });
     const { data = [], refetch } = useProjects(filter);
     const [options, toggleOptions] = useToggle()
 
@@ -31,7 +31,6 @@ function Projects({ onClose }: ProjectsProps) {
                                 setFilter({...filter, deleted})
                             }}/>
                         </Stack>
-
                     </Block>
                 )}
                 <div style={{ padding: '8px 2px 8px 8px' }}>

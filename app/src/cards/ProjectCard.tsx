@@ -7,12 +7,15 @@ import Typography from "../components/Typography";
 import ProjectDialog from "../dialogs/Project";
 import {useToggle} from "usehooks-ts";
 import {COLOR_DEFAULT} from "../tools/theme";
+import {Card} from "../components";
+import {Parameter} from "../components/Parameter";
 
 interface ProjectCardProps {
     project: Project
     // selected?: boolean
     onClick?: (project: Project) => void
     refetchParent?: () => void // функция которую необходимо дернуть в случае изменений/удаления
+    variant?: 'recommendation' | 'admin'
 }
 const useStyles = makeStyles(() => ({
     image: {
@@ -21,9 +24,33 @@ const useStyles = makeStyles(() => ({
         display: 'block',
     },
 }));
-export function ProjectCard({ project, onClick, refetchParent }: ProjectCardProps) {
+export function ProjectCard({ project, onClick, refetchParent, variant = 'recommendation' }: ProjectCardProps) {
     const classes = useStyles();
     const [open, toggleOpen] = useToggle()
+
+    if (variant === 'admin') {
+        return (
+            <>
+                <Card onClick={onClick ? () => onClick && onClick(project) : toggleOpen}>
+                    <Stack direction="row">
+                        <div>
+                            <div style={{borderRadius: '8px 0 0 8px', height: '100%', display: 'flex', width: 60, backgroundImage: `url(${project.image})`, backgroundSize: 'cover', backgroundPosition: 'center'}} />
+                        </div>
+                        <div style={{ flexGrow: 1, padding: 12 }}>
+                            <Stack spacing={1}>
+                                {project && <Typography variant="Header2">{project?.title}</Typography>}
+                                <Stack spacing={1} direction="row" justifyContent="space-between">
+                                    {project?.place && <Parameter name="place2" title={project?.place.title} />}
+                                    <Parameter name="place2" title="5" />
+                                </Stack>
+                            </Stack>
+                        </div>
+                    </Stack>
+                </Card>
+                <ProjectDialog projectId={project.id} open={open} onClose={() => { toggleOpen(); refetchParent && refetchParent() }} />
+            </>
+        )
+    }
 
     return (
         <>
@@ -44,6 +71,5 @@ export function ProjectCard({ project, onClick, refetchParent }: ProjectCardProp
             </div>
             <ProjectDialog projectId={project.id} open={open} onClose={() => { toggleOpen(); refetchParent && refetchParent() }} />
         </>
-
     );
 }

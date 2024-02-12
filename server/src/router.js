@@ -126,5 +126,6 @@ router.delete('/idea/:id', passportController.usePassport, idea.delete );
  */
 router.post('/invite', passportController.usePassport, invite.create);
 router.delete('/invite/:id', passportController.usePassport, invite.delete );
+router.post('/invite/:id/accept', passportController.usePassport, invite.accept );
 
 module.exports = router

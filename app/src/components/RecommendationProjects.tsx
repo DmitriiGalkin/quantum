@@ -11,10 +11,12 @@ import {IdeaCard} from "../cards/IdeaCard";
 import {Project} from "../tools/dto";
 
 interface RecommendationProjectsProps {
-    projects: Project[]
     toggleProjectsC: () => void
 }
-export function RecommendationProjects({ projects, toggleProjectsC }: RecommendationProjectsProps) {
+
+export function RecommendationProjects({ toggleProjectsC }: RecommendationProjectsProps) {
+    const { data: projects = [] } = useProjects();
+
     return (
         <Stack spacing={2}>
             {Boolean(projects.length) && (
