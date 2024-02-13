@@ -1,5 +1,3 @@
-import React from "react";
-
 export { DialogHeader } from './DialogHeader'
 export { DialogFooter } from './DialogFooter'
 

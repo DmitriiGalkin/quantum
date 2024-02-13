@@ -1,34 +1,38 @@
-import {useState} from "react";
+import { useState } from 'react'
 
-export const useGeolocation = () => {
-    const [latitude, setLatitude] = useState()
-    const [longitude, setLongitude] = useState()
-    const [error, setError] = useState('')
+interface Geo {
+  latitude?: string
+  longitude?: string
+  error: string
+  defaultState?: false | { center: (string | undefined)[]; zoom: number }
+}
+export const useGeolocation = (): Geo => {
+  const [latitude, setLatitude] = useState<string>()
+  const [longitude, setLongitude] = useState<string>()
+  const [error, setError] = useState('')
 
-    function onSuccess(position: any) {
-        // Ужасный костыль
-        if (position?.coords?.latitude > 0) {
-            setLatitude(position?.coords?.latitude)
-            setLongitude(position?.coords?.longitude)
-        }
+  function onSuccess(position: GeolocationPosition) {
+    // Ужасный костыль
+    if (position?.coords?.latitude > 0) {
+      setLatitude(String(position?.coords?.latitude))
+      setLongitude(String(position?.coords?.longitude))
     }
+  }
 
-    function onError() {
-        setError("Unable to retrieve your location")
-    }
+  function onError() {
+    setError('Unable to retrieve your location')
+  }
 
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    } else {
-        setError("Geolocation is not supported by your browser")
-    }
+  if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition(onSuccess, onError)
+  } else {
+    setError('Geolocation is not supported by your browser')
+  }
 
-    // console.log(latitude, longitude, 'useGeolocation')
-
-    return {
-        latitude,
-        longitude,
-        error,
-        defaultState: latitude && longitude && { center: [latitude, longitude], zoom: 16 }
-    }
+  return {
+    latitude,
+    longitude,
+    error,
+    defaultState: Boolean(latitude) && Boolean(longitude) && { center: [latitude, longitude], zoom: 16 },
+  }
 }

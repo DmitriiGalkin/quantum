@@ -31,29 +31,24 @@ Idea.delete = function(id, result){
 
 Idea.findAll = function (params, result) {
     const dist = params.latitude && params.longitude && "ST_Distance_Sphere(point(" + params.latitude + ", " + params.longitude + "), point(latitude, longitude))"
+    const RADIUS = 100000
+    //console.log(params,'params Idea.findAll')
 
-    let where = 'WHERE idea.deleted IS NULL'
-    if (params.ageFrom || params.ageTo || params.userId || (params.latitude && params.longitude)) {
+    let where = ''
+    if (params.type || params.ageFrom || params.ageTo || params.userId || (params.latitude && params.longitude)) {
+        where += 'WHERE'
         where =' LEFT JOIN user ON user.id = idea.userId ' + where
-        if (params.ageFrom) {
-            where += ' AND user.age > ' + params.ageFrom
-        }
-        // if (params.ageTo && params.ageTo) {
-        //     where += ' AND '
-        // }
-        if (params.ageTo) {
-            where += ' AND user.age < '+ params.ageTo
-        }
-        if (params.userId) {
-            where += ' AND idea.userId = '+ params.userId
-        }
-        if (params.latitude && params.longitude) {
-            const RADIUS = 100000
-            where += ` AND ${dist} < ` + RADIUS
-        }
+        where += (params.deleted === 'true' ? ' idea.deleted IS NOT NULL OR idea.deleted IS NULL' : ' idea.deleted IS NULL')
+        where += (params.ageFrom) ? ' AND user.age > ' + params.ageFrom : ''
+        where += (params.ageTo) ? ' AND user.age < '+ params.ageTo : ''
+        where += (params.userId) ? ' AND idea.userId = '+ params.userId : ''
+        where += (params.latitude && params.longitude) ? ` AND ${dist} < ` + RADIUS : ''
+        where = where + ((params.type === 'recommendation' && params.passportId) ? ' AND idea.passportId != ' + params.passportId : '')
+        where = where + ' AND userId = ' + ((params.type === 'self' && params.userId) ? params.userId : 'userId')
     }
+
     const f = `SELECT idea.* ${dist ? `, ${dist} AS distance` : ''} FROM idea ${where}`
-    console.log(f,'f')
+    console.log(f,'Idea.findAll')
     dbConn.query(f, function (err, res) {
         result(null, res || []);
     });

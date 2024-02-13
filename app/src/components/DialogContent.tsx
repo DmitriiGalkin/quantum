@@ -1,11 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 interface DialogContentProps {
-    children: React.ReactNode
+  children: React.ReactNode
 }
-export function DialogContent({ children }: DialogContentProps) {
-    return (
-        <div style={{ flex: '1 1 auto', overflowY: 'auto' }}>{children}</div>
-    );
+export function DialogContent({ children }: DialogContentProps): React.ReactNode {
+  return <div style={{ flex: '1 1 auto', overflowY: 'auto' }}>{children}</div>
 }
-

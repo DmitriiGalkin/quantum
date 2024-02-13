@@ -1,19 +1,20 @@
-import React, {InputHTMLAttributes} from 'react';
-import {useInputStyles} from "./helper";
+import React from 'react'
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement>{
-    label?: string
-    name: string
+import { useInputStyles } from './helper'
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string
+  name: string
 }
-export function Input({ label, name, ...rest }: InputProps) {
-    const classes = useInputStyles();
+export function Input({ label, name, ...rest }: InputProps): React.ReactNode {
+  const classes = useInputStyles()
 
-    return (
-        <div>
-            {label && <label htmlFor={name}>{label}</label>}
-            <input id={name} className={classes.input} {...rest} />
-        </div>
-    );
+  return (
+    <div>
+      {label && <label htmlFor={name}>{label}</label>}
+      <input id={name} className={classes.input} {...rest} />
+    </div>
+  )
 }
 
-export default Input;
+export default Input

@@ -1,40 +1,40 @@
-import React from 'react';
-import {ImageSelect} from "./ImageSelect";
-import {Place} from "../tools/dto";
-import Places from "../dialogs/Places";
-import {useToggle} from "usehooks-ts";
-import {usePlaces} from "../tools/service";
+import React from 'react'
+import { useToggle } from 'usehooks-ts'
+
+import Places from '../dialogs/Places'
+import { Place } from '../tools/dto'
+import { usePlaces } from '../tools/service'
+import { ImageSelect } from './ImageSelect'
 
 interface PlaceSelectProps {
-    onChange: (place: Place) => void
-    value?: number
+  onChange: (place: Place) => void
+  value?: number
 }
 
-export function PlaceSelectDefault({ onChange, value }: PlaceSelectProps) {
-    const [findPlace, toggleFindPlace] = useToggle()
-    const { data: places = [] } = usePlaces()
-    const selected = places.find(p => p.id === value)
+export function PlaceSelectDefault({ onChange, value }: PlaceSelectProps): React.ReactNode {
+  const [findPlace, toggleFindPlace] = useToggle()
+  const { data: places = [] } = usePlaces()
+  const selected = places.find((p) => p.id === value)
 
-    return (
-        <>
-            <ImageSelect<Place>
-                label="Место"
-                selected={selected}
-                items={places.slice(2)}
-                onChange={onChange}
-                onAdd={toggleFindPlace}
-            />
-            <Places
-                open={findPlace}
-                onSuccess={(place: Place) => {
-                    onChange(place)
-                    toggleFindPlace()
-                }}
-                onClose={toggleFindPlace}
-            />
-        </>
-    );
+  return (
+    <>
+      <ImageSelect<Place>
+        label="Место"
+        selected={selected}
+        items={places.slice(2)}
+        onChange={onChange}
+        onAdd={toggleFindPlace}
+      />
+      <Places
+        open={findPlace}
+        onSuccess={(place: Place) => {
+          onChange(place)
+          toggleFindPlace()
+        }}
+        onClose={toggleFindPlace}
+      />
+    </>
+  )
 }
 
-export const PlaceSelect = React.memo(PlaceSelectDefault);
-
+export const PlaceSelect = PlaceSelectDefault

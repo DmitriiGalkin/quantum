@@ -2,11 +2,7 @@
 const async = require("async");
 const Idea = require('../models/idea');
 const User = require('../models/user');
-const Passport = require('../models/passport');
-const Visit = require('../models/visit');
-const Meet = require('../models/meet');
 const Place = require('../models/place');
-const Participation = require('../models/participation');
 const Invite = require('../models/invite');
 const Project = require('../models/project');
 
@@ -35,7 +31,7 @@ exports.delete = function(req, res) {
 };
 
 exports.findAll = function(req, res) {
-    Idea.findAll(req.query, function(err, ideas) {
+    Idea.findAll({...req.query, passportId: req.passport?.id }, function(err, ideas) {
         const userIds = [...new Set(ideas.map(m=>m.userId))]
 
         async.map(ideas.map(i=>i.id), Invite.findByIdeaId, function(err, invites) {

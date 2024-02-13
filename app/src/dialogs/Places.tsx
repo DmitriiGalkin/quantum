@@ -1,62 +1,71 @@
-import React, {useState} from 'react';
-import {Map, Placemark, YMaps} from '@pbe/react-yandex-maps';
-import {getCenter} from "../tools/map";
-import {usePlaces} from "../tools/service";
-import {Place} from "../tools/dto";
-import {DialogHeader} from "../components";
-import EditPlace from "./EditPlace";
-import {useToggle} from "usehooks-ts";
-import {withDialog} from "../components/helper";
-import {COLOR, COLOR_PRIMARY} from "../tools/theme";
+import { Map, Placemark, YMaps } from '@pbe/react-yandex-maps'
+import React, { useState } from 'react'
+import { useToggle } from 'usehooks-ts'
+
+import { DialogHeader } from '../components'
+import { withDialog } from '../components/helper'
+import { Place } from '../tools/dto'
+import { getCenter } from '../tools/map'
+import { usePlaces } from '../tools/service'
+import { COLOR, COLOR_PRIMARY } from '../tools/theme'
+import EditPlace from './EditPlace'
 
 interface PlacesProps {
-    onClose: () => void
-    onSuccess: (place: Place) => void
+  onClose: () => void
+  onSuccess: (place: Place) => void
 }
-function Places({onSuccess, onClose}: PlacesProps) {
-    const { data: places = [] } = usePlaces()
-    const [latitude, longitude] = getCenter(places)
-    const [openCreatePlace, toggleOpenCreatePlace] = useToggle()
-    const [state, setState] = useState({ center: [latitude, longitude], zoom: 16 } )
+function Places({ onSuccess, onClose }: PlacesProps) {
+  const { data: places = [] } = usePlaces()
+  const [latitude, longitude] = getCenter(places)
+  const [openCreatePlace, toggleOpenCreatePlace] = useToggle()
+  const [state, setState] = useState({ center: [latitude, longitude], zoom: 16 })
 
-    return (
-        <>
-            <DialogHeader title="Карта мест" onClick={onClose} isClose />
-            <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
-                <YMaps>
-                    <Map defaultState={state} width="100%" height="100%"
-                         onBoundsChange={(xx: any)=>{
-                             setState({...state, center: xx.originalEvent.newCenter })
-                         }}
-                    >
-                        {places.map((place) => (
-                            <Placemark
-                                key={place.id}
-                                modules={["geoObject.addon.balloon"]}
-                                defaultGeometry={[place.latitude, place.longitude]}
-                                options={{
-                                    preset: 'islands#icon',
-                                    iconColor: COLOR,
-                                }}
-                                onClick={() => onSuccess(place)}
-                            />
-                        ))}
-                    </Map>
-                </YMaps>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', position: "absolute", right: 18, bottom: 18 }} onClick={toggleOpenCreatePlace}>
-                <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.39px', paddingRight: 15, color: 'black' }}>Добавить Место</div>
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 54 54" fill="none">
-                        <rect width="54" height="54" rx="23.4" fill={COLOR_PRIMARY}/>
-                        <path d="M27.0002 16.875L27.0002 37.125" stroke="white" strokeWidth="2.745" strokeLinecap="round"/>
-                        <path d="M16.875 27.0005L37.125 27.0005" stroke="white" strokeWidth="2.745" strokeLinecap="round"/>
-                    </svg>
-                </div>
-            </div>
-            <EditPlace state={state} onSuccess={onSuccess} open={openCreatePlace} onClose={toggleOpenCreatePlace}  />
-        </>
-    );
+  return (
+    <>
+      <DialogHeader title="Карта мест" onClick={onClose} isClose />
+      <div style={{ position: 'absolute', top: 54, bottom: 0, left: 0, right: 0 }}>
+        <YMaps>
+          <Map
+            defaultState={state}
+            width="100%"
+            height="100%"
+            onBoundsChange={(xx: { originalEvent: { newCenter: string[] } }) => {
+              setState({ ...state, center: xx.originalEvent.newCenter })
+            }}
+          >
+            {places.map((place) => (
+              <Placemark
+                key={place.id}
+                modules={['geoObject.addon.balloon']}
+                defaultGeometry={[place.latitude, place.longitude]}
+                options={{
+                  preset: 'islands#icon',
+                  iconColor: COLOR,
+                }}
+                onClick={() => onSuccess(place)}
+              />
+            ))}
+          </Map>
+        </YMaps>
+      </div>
+      <div
+        style={{ display: 'flex', alignItems: 'center', position: 'absolute', right: 18, bottom: 18 }}
+        onClick={toggleOpenCreatePlace}
+      >
+        <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.39px', paddingRight: 15, color: 'black' }}>
+          Добавить Место
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 54 54" fill="none">
+            <rect width="54" height="54" rx="23.4" fill={COLOR_PRIMARY} />
+            <path d="M27.0002 16.875L27.0002 37.125" stroke="white" strokeWidth="2.745" strokeLinecap="round" />
+            <path d="M16.875 27.0005L37.125 27.0005" stroke="white" strokeWidth="2.745" strokeLinecap="round" />
+          </svg>
+        </div>
+      </div>
+      <EditPlace state={state} onSuccess={onSuccess} open={openCreatePlace} onClose={toggleOpenCreatePlace} />
+    </>
+  )
 }
 
 export default withDialog(Places)

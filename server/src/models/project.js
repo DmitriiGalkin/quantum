@@ -33,12 +33,13 @@ Project.delete = function(id, result){
 
 Project.findAll = function (params, result) {
     let where = 'WHERE '
-    where = (params.userId ? 'LEFT JOIN participation ON participation.projectId = project.id ' : '') + where + (params.userId ? 'participation.userId = ' + params.userId : 'project.id = project.id')
+    where = (params.type === 'participation' ? 'LEFT JOIN participation ON participation.projectId = project.id ' : '') + where + (params.type === 'participation' ? 'participation.userId = ' + params.userId : 'project.id = project.id')
     where = where + (params.deleted === 'true' ? ' AND deleted IS NOT NULL OR deleted IS NULL' : ' AND deleted IS NULL')
-    where = where + ' AND passportId = ' + (params.self ? params.passportId : 'passportId')
+    where = where + ' AND passportId = ' + ((params.type === 'self' && params.passportId) ? params.passportId : 'passportId')
+    where = where + ((params.type === 'recommendation' && params.passportId) ? ' AND passportId != ' + params.passportId : '')
 
     const l = `SELECT project.* FROM project ${where}`
-    // console.log(l,'l')
+    // console.log(params.type, l,' Project.findAll')
     dbConn.query(l, function (err, res) {
         result(null, res || []);
     });
