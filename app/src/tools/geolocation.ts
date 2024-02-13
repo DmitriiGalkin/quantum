@@ -4,7 +4,7 @@ interface Geo {
   latitude?: string
   longitude?: string
   error: string
-  defaultState?: false | { center: (string | undefined)[]; zoom: number }
+  defaultState?: false | { center: number[]; zoom: number }
 }
 export const useGeolocation = (): Geo => {
   const [latitude, setLatitude] = useState<string>()
@@ -33,6 +33,7 @@ export const useGeolocation = (): Geo => {
     latitude,
     longitude,
     error,
-    defaultState: Boolean(latitude) && Boolean(longitude) && { center: [latitude, longitude], zoom: 16 },
+    defaultState: Boolean(latitude) &&
+      Boolean(longitude) && { center: [Number(latitude), Number(longitude)], zoom: 16 },
   }
 }

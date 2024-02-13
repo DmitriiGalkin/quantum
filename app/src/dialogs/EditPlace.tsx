@@ -19,14 +19,6 @@ function EditPlace({ places, onSuccess, onClose }: EditPlaceProps) {
   const map = useRef()
 
   const [place, setPlace] = useState<Place>({ id: 0, title: '', latitude: '1', longitude: '2', image: '' })
-  // const onSave = () => {
-  //     if(place){
-  //         addPlace.mutateAsync(place).then((placeId) => {
-  //             onSuccess({ ...place, id: placeId as number })
-  //             onClose()
-  //         })
-  //     }
-  // }
 
   if (!defaultState) return null
 

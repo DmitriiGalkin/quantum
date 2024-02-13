@@ -18,7 +18,7 @@ function Places({ onSuccess, onClose }: PlacesProps) {
   const { data: places = [] } = usePlaces()
   const [latitude, longitude] = getCenter(places)
   const [openCreatePlace, toggleOpenCreatePlace] = useToggle()
-  const [state, setState] = useState({ center: [latitude, longitude], zoom: 16 })
+  const [state, setState] = useState({ center: [Number(latitude), Number(longitude)], zoom: 16 })
 
   return (
     <>
@@ -29,7 +29,7 @@ function Places({ onSuccess, onClose }: PlacesProps) {
             defaultState={state}
             width="100%"
             height="100%"
-            onBoundsChange={(xx: { originalEvent: { newCenter: string[] } }) => {
+            onBoundsChange={(xx: { originalEvent: { newCenter: number[] } }) => {
               setState({ ...state, center: xx.originalEvent.newCenter })
             }}
           >
