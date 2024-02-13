@@ -22,7 +22,7 @@ export function DialogHeaderDefault({
   isClose,
   menuItems,
   isForPassport,
-}: DialogHeaderProps): React.ReactNode {
+}: DialogHeaderProps): JSX.Element {
   const navigate = useNavigate()
   const onBackClick = onClick ? onClick : () => (window.history.length - 1 ? window.history.back() : navigate('/'))
 

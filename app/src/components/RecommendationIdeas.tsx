@@ -10,7 +10,7 @@ import Typography from './Typography'
 interface RecommendationIdeasProps {
   toggleIdeasC: () => void
 }
-export function RecommendationIdeas({ toggleIdeasC }: RecommendationIdeasProps): React.ReactNode {
+export function RecommendationIdeas({ toggleIdeasC }: RecommendationIdeasProps): JSX.Element {
   const { latitude, longitude } = useGeolocation()
   const { data: ideas = [], refetch } = useIdeas({
     type: 'recommendation',

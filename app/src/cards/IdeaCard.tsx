@@ -17,7 +17,7 @@ interface IdeaCardProps {
   onAdd?: (idea: Idea) => void
   invited?: boolean
 }
-export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): React.ReactNode {
+export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): JSX.Element {
   const { user, isAuth } = useAuth()
 
   const { data: selfProjects = [], refetch: refetchSelfProject } = useProjects({ type: 'self' })

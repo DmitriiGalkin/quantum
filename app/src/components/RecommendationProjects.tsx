@@ -12,7 +12,7 @@ interface RecommendationProjectsProps {
   toggleProjectsC: () => void
 }
 
-export function RecommendationProjects({ toggleProjectsC }: RecommendationProjectsProps): React.ReactNode {
+export function RecommendationProjects({ toggleProjectsC }: RecommendationProjectsProps): JSX.Element {
   const { user } = useAuth()
   const { data: projects = [] } = useProjects({ type: 'recommendation', userId: user?.id })
 

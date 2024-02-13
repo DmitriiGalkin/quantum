@@ -28,7 +28,7 @@ interface ImageFieldProps {
   value?: string
   onChange: (image: string) => void
 }
-export function ImageField({ name, label, onChange, value }: ImageFieldProps): React.ReactNode {
+export function ImageField({ name, label, onChange, value }: ImageFieldProps): JSX.Element {
   const uploadImage = useUploadImage()
   const classes = useStyles()
 

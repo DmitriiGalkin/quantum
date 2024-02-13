@@ -11,7 +11,7 @@ interface PlaceSelectProps {
   place?: Partial<Place>
 }
 
-export function PlaceSelectDefault({ onChange, place }: PlaceSelectProps): React.ReactNode {
+export function PlaceSelectDefault({ onChange, place }: PlaceSelectProps): JSX.Element {
   const { data: places = [] as Place[], refetch } = usePlaces()
   const [openCreatePlace, toggleOpenCreatePlace] = useToggle()
 

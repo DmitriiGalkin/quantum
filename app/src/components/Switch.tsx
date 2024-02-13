@@ -6,7 +6,7 @@ interface SwitchProps {
   checked?: boolean
   onChange: (value: boolean) => void
 }
-function Switch({ checked, onChange }: SwitchProps): React.ReactNode {
+function Switch({ checked, onChange }: SwitchProps): JSX.Element {
   if (checked) {
     return (
       <div onClick={() => onChange(false)}>

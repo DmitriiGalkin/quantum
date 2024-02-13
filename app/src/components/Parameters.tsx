@@ -13,7 +13,7 @@ export interface Parameter {
 interface ParametersProps {
   items: Parameter[]
 }
-export function Parameters({ items }: ParametersProps): React.ReactNode {
+export function Parameters({ items }: ParametersProps): JSX.Element {
   return (
     <div>
       {items.map(({ name, title, value }) => (

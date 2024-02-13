@@ -8,7 +8,7 @@ interface BlockProps {
   children: ReactNode
   variant?: 'primary' | 'secondary' | 'default'
 }
-export function Block({ title, children, variant = 'default' }: BlockProps): React.ReactNode {
+export function Block({ title, children, variant = 'default' }: BlockProps): JSX.Element {
   if (variant === 'primary') {
     return (
       <Stack spacing={3} style={{ padding: 16, backgroundColor: 'white', borderRadius: '0 0 28px 0' }}>

@@ -34,13 +34,7 @@ interface SelectProps<T> {
   onAdd?: () => void
 }
 
-export function ImageSelect<T extends Prop>({
-  label,
-  selected,
-  items,
-  onChange,
-  onAdd,
-}: SelectProps<T>): React.ReactNode {
+export function ImageSelect<T extends Prop>({ label, selected, items, onChange, onAdd }: SelectProps<T>): JSX.Element {
   const classes = useStyles()
 
   return (

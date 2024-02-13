@@ -19,7 +19,7 @@ interface MeetCardProps {
   showDate?: boolean
 }
 
-export function MeetCard({ meet, refetch, showDate }: MeetCardProps): React.ReactNode {
+export function MeetCard({ meet, refetch, showDate }: MeetCardProps): JSX.Element {
   const { isAuth, user, openLogin, passport } = useAuth()
   const createVisit = useCreateVisit()
   const deleteVisit = useDeleteVisit()

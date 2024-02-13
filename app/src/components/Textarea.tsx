@@ -6,7 +6,7 @@ interface TextareaFieldProps extends React.TextareaHTMLAttributes<HTMLTextAreaEl
   label?: string
   name: string
 }
-export function Textarea({ label, name, ...rest }: TextareaFieldProps): React.ReactNode {
+export function Textarea({ label, name, ...rest }: TextareaFieldProps): JSX.Element {
   const classes = useInputStyles()
 
   return (

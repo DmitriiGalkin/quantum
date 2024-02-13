@@ -16,8 +16,6 @@ export const useInputStyles = makeStyles(() => ({
     backgroundClip: 'padding-box',
     border: 0,
     borderRadius: 8,
-    //border: 'none !important',
-    //borderColor: 'transparent !important',
   },
   timePicker: {
     display: 'block',
@@ -32,7 +30,7 @@ export const useInputStyles = makeStyles(() => ({
 }))
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const withDialog = (WrappedComponent) => (props) => (
+export const withDialog = (WrappedComponent: any) => (props: any) => (
   <Dialog
     onClose={props.onClose}
     open={props.open}

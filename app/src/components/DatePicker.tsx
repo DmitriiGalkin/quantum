@@ -10,7 +10,7 @@ interface DateFieldProps {
   value?: string
   onChange: (date: string) => void
 }
-export function DatePickerDefault({ label, value, onChange }: DateFieldProps): React.ReactNode {
+export function DatePickerDefault({ label, value, onChange }: DateFieldProps): JSX.Element {
   const data = dayjs(value)
   const selectedDate2 = data.format('YYYY-MM-DD')
   const week = getWeek(selectedDate2)

@@ -14,7 +14,7 @@ interface Props {
   disabled?: boolean
   icon?: JSX.Element
 }
-export function Button({ children, variant, onClick, href, color, disabled, icon }: Props): React.ReactNode {
+export function Button({ children, variant, onClick, href, color, disabled, icon }: Props): JSX.Element {
   if (variant === 'small') {
     return (
       <div

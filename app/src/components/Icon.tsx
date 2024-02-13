@@ -383,7 +383,7 @@ const getIcon = (name: IconName, colorName?: Color): JSX.Element => {
   }
 }
 
-export function Icon({ name, onClick, color }: IconProps): React.ReactNode {
+export function Icon({ name, onClick, color }: IconProps): JSX.Element {
   const icon = getIcon(name, color)
 
   return (

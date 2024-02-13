@@ -11,7 +11,7 @@ interface PlaceSelectProps {
   value?: number
 }
 
-export function PlaceSelectDefault({ onChange, value }: PlaceSelectProps): React.ReactNode {
+export function PlaceSelectDefault({ onChange, value }: PlaceSelectProps): JSX.Element {
   const [findPlace, toggleFindPlace] = useToggle()
   const { data: places = [] } = usePlaces()
   const selected = places.find((p) => p.id === value)

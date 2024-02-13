@@ -1,13 +1,13 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 import { BOX_SHADOW } from '../tools/theme'
 import { Button } from './Button'
 
 interface DialogFooterProps {
   onClick?: () => void
-  children?: ReactNode
+  children?: JSX.Element
 }
-export function DialogFooterDefault({ onClick, children }: DialogFooterProps): ReactNode {
+export function DialogFooterDefault({ onClick, children }: DialogFooterProps): JSX.Element {
   return (
     <div style={{ padding: 15, backgroundColor: 'white', boxShadow: BOX_SHADOW, zIndex: 1 }}>
       {onClick && <Button onClick={onClick}>Сохранить</Button>}

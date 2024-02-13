@@ -13,7 +13,7 @@ interface ParticipationCardProps {
   variant?: 'idea' | 'project'
 }
 
-export function ParticipationCard({ participation, isOrganizer, refetch }: ParticipationCardProps): React.ReactNode {
+export function ParticipationCard({ participation, isOrganizer, refetch }: ParticipationCardProps): JSX.Element {
   const deleteParticipation = useDeleteParticipation()
   const onDeleteParticipation = () => deleteParticipation.mutateAsync(participation).then(() => refetch())
 

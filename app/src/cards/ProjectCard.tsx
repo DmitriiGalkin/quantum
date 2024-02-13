@@ -40,7 +40,7 @@ export function ProjectCard({
   onClick,
   refetchParent,
   variant = 'recommendation',
-}: ProjectCardProps): React.ReactNode {
+}: ProjectCardProps): JSX.Element {
   const classes = useStyles()
   const [open, toggleOpen] = useToggle()
 

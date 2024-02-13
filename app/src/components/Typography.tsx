@@ -66,12 +66,12 @@ interface TypographyProps {
   children: React.ReactNode
   style?: CSSProperties
 }
-export function Typography({ variant, color, children, style }: TypographyProps): React.ReactNode {
+export function Typography({ variant, color, children, style }: TypographyProps): JSX.Element {
   const classes = useStyles({ variant })
 
   return (
     <span className={classes.span} style={{ color: color === 'primary' ? COLOR_PRIMARY : COLOR_BLACK, ...style }}>
-      {children}
+      <>{children}</>
     </span>
   )
 }

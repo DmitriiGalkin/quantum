@@ -9,7 +9,7 @@ export interface ProjectFormProps {
   project: Partial<Project>
   onChange: (project: Partial<Project>) => void
 }
-function ProjectForm({ project, onChange }: ProjectFormProps): React.ReactNode {
+function ProjectForm({ project, onChange }: ProjectFormProps): JSX.Element {
   return (
     <>
       <Stack spacing={1} direction="row">

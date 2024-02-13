@@ -9,7 +9,7 @@ interface ParameterProps {
   title: string | number
   variant?: Color
 }
-export function Parameter({ title, name, variant }: ParameterProps): React.ReactNode {
+export function Parameter({ title, name, variant }: ParameterProps): JSX.Element {
   return (
     <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
       <Icon name={name} color={variant} />

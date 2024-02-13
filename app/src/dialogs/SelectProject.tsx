@@ -10,7 +10,7 @@ export interface SelectProjectProps {
   onClose: () => void
   onChange: (project: Project) => void
 }
-function SelectProject({ projects, onClose, onChange }: SelectProjectProps): React.ReactNode {
+function SelectProject({ projects, onClose, onChange }: SelectProjectProps): JSX.Element {
   return (
     <>
       <DialogHeader title="Выберите свой проект" onClick={onClose} />

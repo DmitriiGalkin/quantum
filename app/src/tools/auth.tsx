@@ -7,9 +7,14 @@ import { Passport, User } from './dto'
 import service, { usePassport } from './service'
 
 export const ACCESS_TOKEN = 'access_token'
-export const AuthContext = createContext<Auth>('auth' as Auth)
+export const AuthContext = createContext<Auth>({
+  openLogin: () => true,
+  logout: () => true,
+  refetch: () => true,
+  setSelectedUserId: () => true,
+})
 
-export const AuthProvider = ({ children }: { children: JSX.Element }): React.ReactNode => {
+export const AuthProvider = ({ children }: { children: JSX.Element }): JSX.Element => {
   const { data: passport, refetch } = usePassport()
   const [searchParams] = useSearchParams()
   const tokenSearchParam = searchParams.get('access_token')
@@ -32,12 +37,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }): React.Rea
     navigate('/', { replace: true })
   }
 
-  /**
-   * Функция триггер. Если пользователь авторизован, то функция вызовется,
-   * если же нет, то запускается механизм авторизации
-   */
-  const authFn = (fn: () => void) => (isAuth ? fn : toggleOpenLogin)
-
   const user = passport?.users.length
     ? passport?.users.find((u) => u.id === selectedUserId) || passport?.users[0]
     : undefined
@@ -49,28 +48,25 @@ export const AuthProvider = ({ children }: { children: JSX.Element }): React.Rea
         passport,
         isAuth,
         openLogin: toggleOpenLogin,
-        access_token: accessToken,
+        // access_token: accessToken,
         logout,
-        authFn,
         setSelectedUserId,
         refetch,
       }}
     >
       {children}
       <Login open={openLogin} onClose={toggleOpenLogin} />
-      {/*<PassportDialog open={isAuth && !passport?.users[0]} onClose={refetch} />*/}
     </AuthContext.Provider>
   )
 }
 
 export interface Auth {
-  user: User
-  passport: Passport
-  isAuth: boolean
+  user?: User
+  passport?: Passport
+  isAuth?: boolean
   openLogin: () => void
   logout: () => void
   refetch: () => void
-  authFn: (fn: () => void) => () => void
   setSelectedUserId: (userId: number) => void
 }
 

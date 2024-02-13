@@ -6,7 +6,7 @@ interface DisplaySwitchProps {
   display: boolean
   toggleDisplay: () => void
 }
-export function DisplaySwitch({ display, toggleDisplay }: DisplaySwitchProps): React.ReactNode {
+export function DisplaySwitch({ display, toggleDisplay }: DisplaySwitchProps): JSX.Element {
   return (
     <div onClick={toggleDisplay} style={{ display: 'flex' }}>
       <div

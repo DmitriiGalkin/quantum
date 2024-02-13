@@ -45,10 +45,10 @@ function EditPlace({ places, onSuccess, onClose }: EditPlaceProps) {
         <YMaps>
           <Map
             instanceRef={map}
-            onBoundsChange={(xx: { originalEvent: { newBounds: string[][] } }) => {
+            onBoundsChange={(xx: { originalEvent: { newBounds: number[][] } }) => {
               const [[x1, y1], [x2, y2]] = xx.originalEvent.newBounds
-              const latitude = x1 + (x2 - x1) / 2
-              const longitude = y1 + (y2 - y1) / 2
+              const latitude = String(x1 + (x2 - x1) / 2)
+              const longitude = String(y1 + (y2 - y1) / 2)
               setPlace({ ...place, latitude, longitude })
             }}
             defaultState={defaultState}

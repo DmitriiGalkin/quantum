@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material'
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 import { Input } from './Input'
 
@@ -9,7 +9,7 @@ interface PriceFieldProps {
   onChange: (age: { ageFrom?: number; ageTo?: number }) => void
 }
 
-export function AgeField({ ageFrom, ageTo, onChange }: PriceFieldProps): ReactNode {
+export function AgeField({ ageFrom, ageTo, onChange }: PriceFieldProps): JSX.Element {
   return (
     <div style={{ width: 100 }}>
       <label>Возраст, лет</label>

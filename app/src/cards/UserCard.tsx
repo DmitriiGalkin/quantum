@@ -12,7 +12,7 @@ interface UserCardProps {
   refetch: () => void
 }
 
-export function UserCard({ user, refetch }: UserCardProps): React.ReactNode {
+export function UserCard({ user, refetch }: UserCardProps): JSX.Element {
   const [edit, onClickEdit] = useToggle()
 
   return (

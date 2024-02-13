@@ -28,7 +28,7 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
   const editIdea = useEditIdea(ideaId)
   const deleteIdea = useDeleteIdea()
 
-  const [idea, setIdea] = useState<Partial<Idea>>({ title: '', userId: user.id, passportId: passport.id })
+  const [idea, setIdea] = useState<Partial<Idea>>({ title: '', userId: user?.id, passportId: passport?.id })
   const { data: defaultIdea, refetch } = useIdea(ideaId)
 
   const onDelete = () => deleteIdea.mutateAsync(idea.id).then(onClose)

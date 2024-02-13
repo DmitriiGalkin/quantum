@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 interface CardProps {
   onClick?: () => void
-  children: ReactNode
+  children: JSX.Element
 }
 
-export function Card({ onClick, children }: CardProps): ReactNode {
+export function Card({ onClick, children }: CardProps): JSX.Element {
   return (
     <div style={{ borderRadius: 8, backgroundColor: 'white', position: 'relative' }} onClick={onClick}>
       {children}

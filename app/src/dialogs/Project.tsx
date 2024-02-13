@@ -69,7 +69,7 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
   ] as Parameter[]
 
   const onCreateParticipation = () =>
-    createParticipation.mutateAsync({ projectId: project.id, userId: user.id }).then(() => refetch())
+    user && project && createParticipation.mutateAsync({ projectId: project.id, userId: user.id }).then(() => refetch())
   const onDeleteParticipation = () =>
     participation && deleteParticipation.mutateAsync(participation).then(() => refetch())
 

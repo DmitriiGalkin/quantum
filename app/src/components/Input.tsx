@@ -6,7 +6,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   name: string
 }
-export function Input({ label, name, ...rest }: InputProps): React.ReactNode {
+export function Input({ label, name, ...rest }: InputProps): JSX.Element {
   const classes = useInputStyles()
 
   return (

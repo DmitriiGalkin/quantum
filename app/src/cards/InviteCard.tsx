@@ -14,7 +14,7 @@ interface InviteCardProps {
   refetch: () => void
 }
 
-export function InviteCard({ invite, refetch }: InviteCardProps): React.ReactNode {
+export function InviteCard({ invite, refetch }: InviteCardProps): JSX.Element {
   const [open, toggleOpen] = useToggle()
   const acceptInvite = useAcceptInvite()
   const deleteInvite = useDeleteInvite()

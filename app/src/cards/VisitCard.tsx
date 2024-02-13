@@ -29,7 +29,7 @@ interface VisitCardProps {
   refetch: () => void
 }
 
-export function VisitCard({ visit, refetch }: VisitCardProps): React.ReactNode {
+export function VisitCard({ visit, refetch }: VisitCardProps): JSX.Element {
   const { passport } = useAuth()
 
   const startedVisit = useStartedVisit()
@@ -96,12 +96,12 @@ export function VisitCard({ visit, refetch }: VisitCardProps): React.ReactNode {
                 <Chip label="бесплатно" size="small" />
               )}
               <Stack direction="row" spacing={1} style={{ width: '100%', justifyContent: 'end' }}>
-                {visit.meet?.passportId === passport.id && !visit.started && (
+                {visit.meet?.passportId === passport?.id && !visit.started && (
                   <Button variant="small" onClick={onStarted}>
                     Пришел
                   </Button>
                 )}
-                {visit.meet?.passportId === passport.id && isStarted && (
+                {visit.meet?.passportId === passport?.id && isStarted && (
                   <Button variant="small2" onClick={onStopped}>
                     Ушел
                   </Button>

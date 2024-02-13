@@ -121,8 +121,10 @@ export const useDeleteUser = (): UseMutate<number | undefined> =>
 /**
  * Посещение
  */
-export const useVisits = (userId: number): UseQueryResult<Visit[]> =>
-  useQuery(['visits'], () => service.get(`/visits?userId=${userId}`))
+export const useVisits = (userId?: number): UseQueryResult<Visit[]> =>
+  useQuery(['visits'], () => service.get(`/visits?userId=${userId}`), {
+    enabled: Boolean(userId),
+  })
 export interface EditVisit extends Omit<Visit, 'id'> {
   id?: number
 }

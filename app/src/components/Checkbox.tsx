@@ -6,7 +6,7 @@ interface CheckboxProps {
   checked?: boolean
   onChange: (value: boolean) => void
 }
-function Checkbox({ checked, onChange }: CheckboxProps): React.ReactNode {
+function Checkbox({ checked, onChange }: CheckboxProps): JSX.Element {
   if (checked) {
     return (
       <div onClick={() => onChange(false)}>

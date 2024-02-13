@@ -19,7 +19,7 @@ export interface MeetsProps {
 
 function Meets({ onClose, isForPassport }: MeetsProps) {
   const { user } = useAuth()
-  const containerRef = useRef<HTMLDivElement>()
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const containerHeight = containerRef.current?.offsetHeight
   const { data: meets = [], refetch } = useMeets(user?.id, isForPassport)
   const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())

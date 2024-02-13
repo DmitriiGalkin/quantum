@@ -16,7 +16,7 @@ interface PriceFieldProps {
   onChange: (price: Price) => void
 }
 
-export function PriceField({ price, onChange }: PriceFieldProps): React.ReactNode {
+export function PriceField({ price, onChange }: PriceFieldProps): JSX.Element {
   const [view, toggleView] = useToggle()
 
   return (

@@ -16,7 +16,7 @@ export interface UserMeetsProps {
 }
 function Visits({ onClose }: UserMeetsProps) {
   const { user } = useAuth()
-  const { data, refetch } = useVisits(user.id)
+  const { data, refetch } = useVisits(user?.id)
   const visitGroups = getVisitGroups(data)
 
   return (

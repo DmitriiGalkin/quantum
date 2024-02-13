@@ -1,13 +1,13 @@
 import { Stack } from '@mui/material'
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 import { COLOR_LOW } from '../tools/theme'
 
 interface HeaderProps {
-  children: ReactNode
+  children: React.ReactNode
   isForPassport?: boolean
 }
-export function Header({ children, isForPassport }: HeaderProps): ReactNode {
+export function Header({ children, isForPassport }: HeaderProps): JSX.Element {
   return (
     <Stack
       direction="row"
