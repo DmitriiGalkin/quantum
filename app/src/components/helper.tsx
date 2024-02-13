@@ -33,7 +33,7 @@ export const useInputStyles = makeStyles(() => ({
 export const withDialog = (WrappedComponent: any) => (props: any) => (
   <Dialog
     onClose={props.onClose}
-    open={props.open}
+    open={props.open || false}
     fullScreen
     TransitionComponent={TransitionDialog}
     style={{ backgroundColor: 'rgb(245,245,245)' }}
