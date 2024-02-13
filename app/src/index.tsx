@@ -23,10 +23,10 @@ function AuthLayout(): JSX.Element {
 }
 const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route element={<AuthLayout />}>
-            <Route index element={<App />}/>
-            <Route path={"i"} element={<App action={'fastIdea'} />}/>
-        </Route>
+            <Route element={<AuthLayout />}>
+                <Route index element={<App />}/>
+                <Route path={"i"} element={<App action={'fastIdea'} />}/>
+            </Route>
     )
 );
 
@@ -38,10 +38,10 @@ root.render(
   // <React.StrictMode>
       <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <YMaps>
-                  <RouterProvider router={router} />
-              </YMaps>
+                  <CssBaseline />
+                  <YMaps>
+                      <RouterProvider router={router} />
+                  </YMaps>
           </ThemeProvider>
       </QueryClientProvider>
   // </React.StrictMode>

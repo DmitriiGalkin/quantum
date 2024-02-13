@@ -27,7 +27,7 @@ export function Back({ onClick, menuItems }: BackProps) {
                 {Boolean(menuItems?.length) && (
                     <div>
                         <div style={{ display: 'flex', padding: 7, background: 'rgba(0,0,0, .7)', borderRadius: 18 }} onClick={onMenuOpen}>
-                            <Icon name="dots" onClick={onMenuOpen} />
+                            <Icon color="white" name="dots" onClick={onMenuOpen} />
                         </div>
                         <Menu
                             anchorEl={anchorEl}

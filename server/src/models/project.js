@@ -32,18 +32,14 @@ Project.delete = function(id, result){
 };
 
 Project.findAll = function (params, result) {
-    // console.log(params,'params')
-
     let where = 'WHERE '
-    where = (params.userId ? 'LEFT JOIN participation ON participation.projectId = project.id ' : '') + where + (params.userId ? 'participation.userId = ' + params.userId : 'id = id')
+    where = (params.userId ? 'LEFT JOIN participation ON participation.projectId = project.id ' : '') + where + (params.userId ? 'participation.userId = ' + params.userId : 'project.id = project.id')
     where = where + (params.deleted === 'true' ? ' AND deleted IS NOT NULL OR deleted IS NULL' : ' AND deleted IS NULL')
     where = where + ' AND passportId = ' + (params.self ? params.passportId : 'passportId')
 
     const l = `SELECT project.* FROM project ${where}`
     // console.log(l,'l')
     dbConn.query(l, function (err, res) {
-        //console.log(res,'res')
-
         result(null, res || []);
     });
 };

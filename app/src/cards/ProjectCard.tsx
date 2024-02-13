@@ -39,9 +39,9 @@ export function ProjectCard({ project, onClick, refetchParent, variant = 'recomm
                         <div style={{ flexGrow: 1, padding: 12 }}>
                             <Stack spacing={1}>
                                 {project && <Typography variant="Header2">{project?.title}</Typography>}
-                                <Stack spacing={1} direction="row" justifyContent="space-between">
-                                    {project?.place && <Parameter name="place2" title={project?.place.title} />}
-                                    <Parameter name="place2" title="5" />
+                                <Stack spacing={1} direction="row" justifyContent="space-between" alignItems="flex-start">
+                                    {project?.place && <Parameter variant="primary" name="place2" title={project?.place.title} />}
+                                    {Boolean(project?.participations.length) && <Parameter variant="primary" name="participationSmall" title={project?.participations.length} />}
                                 </Stack>
                             </Stack>
                         </div>

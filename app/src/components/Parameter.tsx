@@ -6,12 +6,12 @@ import Typography from "./Typography";
 interface ParameterProps {
     name: IconName
     title: string | number
-    iconColor?: Color
+    variant?: Color
 }
-export function Parameter({ title, name, iconColor }: ParameterProps) {
+export function Parameter({ title, name, variant }: ParameterProps) {
     return (
         <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
-            <Icon name={name} color={iconColor} />
+            <Icon name={name} color={variant} />
             <Typography variant="Body">{title}</Typography>
         </Stack>
     );

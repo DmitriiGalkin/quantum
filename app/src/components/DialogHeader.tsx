@@ -24,14 +24,14 @@ export function DialogHeaderDefault({ title, onClick, onClickOption, isClose, me
 
     return (
         <Header isForPassport={isForPassport}>
-            {!isClose && <Icon name="left" onClick={onBackClick} />}
+            {!isClose && <Icon color="white" name="left" onClick={onBackClick} />}
             <Typography variant="Header1" style={{ flexGrow: 1, color: 'white', textAlign: 'center', paddingLeft: isClose ? 36 : undefined, paddingRight: !isClose ? 36 : undefined }}>{title}</Typography>
             {isClose && <Icon name="close" onClick={onBackClick} />}
             {onClickOption && <Icon name="option" onClick={onClickOption} />}
             {Boolean(menuItems?.length) && (
                 <div>
                     <div onClick={onMenuOpen}>
-                        <Icon name="dots" onClick={onMenuOpen} />
+                        <Icon color="white" name="dots" onClick={onMenuOpen} />
                     </div>
                     <Menu
                         anchorEl={anchorEl}

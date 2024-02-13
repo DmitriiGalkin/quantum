@@ -63,12 +63,12 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps) {
                         <Stack spacing={1}>
                             {meet.project && <Typography variant="Header2">{meet.project?.title}</Typography>}
                             <Stack spacing={1}>
-                                {meet.project?.place && <Parameter name="place2" title={meet.project?.place.title} />}
+                                {meet.project?.place && <Parameter variant="primary" name="place2" title={meet.project?.place.title} />}
                                 <Stack direction="row" alignContent="center" spacing={1} justifyContent="space-between">
                                     <Stack direction="row" alignContent="center" spacing={2}>
-                                        {time && <Parameter name="time2" title={time} />}
-                                        {meet.duration && <Parameter name="timer" title={meet.duration} />}
-                                        {meet.price && <Parameter name="ruble" title={meet.price} />}
+                                        {time && <Parameter variant="secondary" name="time2" title={time} />}
+                                        {meet.duration && <Parameter variant="secondary" name="timer" title={meet.duration} />}
+                                        {meet.price && <Parameter variant="secondary" name="ruble" title={meet.price} />}
                                     </Stack>
                                 </Stack>
                             </Stack>

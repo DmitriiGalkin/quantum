@@ -42,10 +42,13 @@ exports.delete = function(req, res) {
 exports.findAll = function(req, res) {
     Project.findAll({...req.query, passportId: req.passport?.id }, function(err, projects) {
         async.map(projects.map(p=>p.placeId), Place.findById, function(err, places) {
-            res.send(projects.map((p, index) => ({
-                ...p,
-                place: places[index]
-            })));
+            async.map(projects.map(p=>p.id), Participation.findByProjectId, function(err, participations) {
+                res.send(projects.map((p, index) => ({
+                    ...p,
+                    place: places[index],
+                    participations: participations[index]
+                })));
+            })
         })
     });
 };
