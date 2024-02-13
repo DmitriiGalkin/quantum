@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate, useOutlet, useSearchParams} from "react-router-dom";
 import service, {useAddIdea, useAddUser, usePassport} from "./service";
 import Login from "../dialogs/Login";
 import {useLocalStorage, useToggle} from "usehooks-ts";
@@ -75,3 +75,10 @@ export interface Auth {
 export const useAuth = (): Auth => {
     return useContext(AuthContext);
 };
+
+export const AuthLayout = (): JSX.Element => {
+    const outlet = useOutlet();
+    return (
+        <AuthProvider>{outlet as JSX.Element}</AuthProvider>
+    );
+}

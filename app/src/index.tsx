@@ -10,23 +10,16 @@ import theme from "./tools/theme";
 import 'dayjs/locale/ru';
 
 import {YMaps} from "@pbe/react-yandex-maps";
-import {AuthProvider} from "./tools/auth";
+import {AuthLayout} from "./tools/auth";
 import {Route} from "react-router";
 import App from "./App";
 
-const queryClient = new QueryClient()
-function AuthLayout(): JSX.Element {
-    const outlet = useOutlet();
-    return (
-        <AuthProvider>{outlet as JSX.Element}</AuthProvider>
-    );
-}
 const router = createBrowserRouter(
     createRoutesFromElements(
-            <Route element={<AuthLayout />}>
-                <Route index element={<App />}/>
-                <Route path={"i"} element={<App action={'fastIdea'} />}/>
-            </Route>
+        <Route element={<AuthLayout />}>
+            <Route index element={<App />}/>
+            <Route path={"i"} element={<App action={'fastIdea'} />}/>
+        </Route>
     )
 );
 
@@ -34,14 +27,16 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+const queryClient = new QueryClient()
+
 root.render(
   // <React.StrictMode>
       <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
-                  <CssBaseline />
-                  <YMaps>
-                      <RouterProvider router={router} />
-                  </YMaps>
+              <CssBaseline />
+              <YMaps>
+                  <RouterProvider router={router} />
+              </YMaps>
           </ThemeProvider>
       </QueryClientProvider>
   // </React.StrictMode>

@@ -34,7 +34,7 @@ export function InviteCard({ invite, refetch }: InviteCardProps) {
                             {invite.project && (
                                 <Typography variant="Header2">{invite.project.title}</Typography>
                             )}
-                            {invite.project?.place && <Parameter name="place2" title={invite.project?.place.title} />}
+                            {invite.project?.place && <Parameter variant="primary" name="place2" title={invite.project?.place.title} />}
                             <Stack direction="row" justifyContent="space-between" spacing={1}>
                                 {invite.accepted && (
                                     <Chip
