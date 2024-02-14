@@ -1,10 +1,9 @@
-import CreditScore from '@mui/icons-material/CreditScore'
 import { Avatar, Chip, Stack } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import clsx from 'clsx'
 import React from 'react'
 
-import { Button, Card } from '../components'
+import { Button, Card, Icon } from '../components'
 import { Parameter } from '../components/Parameter'
 import Typography from '../components/Typography'
 import { useAuth } from '../tools/auth'
@@ -90,7 +89,13 @@ export function VisitCard({ visit, refetch }: VisitCardProps): JSX.Element {
                   color={visit.paided ? 'success' : (isStart ? 'warning' : undefined)}
                   size="small"
                   onDelete={!visit.paided ? onPaided : undefined}
-                  deleteIcon={!visit.paided ? <CreditScore /> : undefined}
+                  deleteIcon={
+                    !visit.paided ? (
+                      <div style={{ width: 15 }}>
+                        <Icon name="inviteSmall" />
+                      </div>
+                    ) : undefined
+                  }
                 />
               ) : (
                 <Chip label="бесплатно" size="small" />
