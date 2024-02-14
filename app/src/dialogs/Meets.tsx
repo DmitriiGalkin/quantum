@@ -1,5 +1,5 @@
-import { LocalDate } from '@js-joda/core'
 import { Stack } from '@mui/material'
+import dayjs from 'dayjs'
 import React, { useRef } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { useLocalStorage } from 'usehooks-ts'
@@ -9,6 +9,7 @@ import { Calendar, DialogHeader } from '../components'
 import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
 import { useAuth } from '../tools/auth'
+import { FORMAT } from '../tools/date'
 import { getOm } from '../tools/helper'
 import { useMeets } from '../tools/service'
 
@@ -22,7 +23,7 @@ function Meets({ onClose, isForPassport }: MeetsProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const containerHeight = containerRef.current?.offsetHeight
   const { data: meets = [], refetch } = useMeets(user?.id, isForPassport)
-  const [date, setDate] = useLocalStorage<string>('date', LocalDate.now().toString())
+  const [date, setDate] = useLocalStorage<string>('date', dayjs().format(FORMAT))
   const { index, days, meetsGroup } = getOm(meets, date, user?.id)
 
   return (

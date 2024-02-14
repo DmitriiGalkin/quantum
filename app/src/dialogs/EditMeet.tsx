@@ -1,15 +1,13 @@
-import { LocalDate } from '@js-joda/core'
 import { Stack } from '@mui/material'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
-import { useLocalStorage } from 'usehooks-ts'
 
 import { VisitCard } from '../cards/VisitCard'
 import { DatePicker, DialogFooter, DialogHeader, Input } from '../components'
 import { Block } from '../components/Block'
 import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
-import { convertToMeetsGroupTime, convertToMeetTime } from '../tools/date'
+import { convertToMeetTime, FORMAT } from '../tools/date'
 import { Meet } from '../tools/dto'
 import { useAddMeet, useDeleteMeet, useEditMeet, useMeet } from '../tools/service'
 
@@ -19,9 +17,8 @@ export interface EditMeetProps {
   onClose: () => void
 }
 function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
-  const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
   const [meet, setMeet] = useState<Partial<Meet>>({
-    datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'),
+    datetime: dayjs().format(FORMAT),
     projectId: defaultProjectId,
   })
 
@@ -41,7 +38,6 @@ function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
       editMeet.mutateAsync(meet).then(onClose)
     } else {
       addMeet.mutateAsync(meet).then(() => {
-        setSelectedDate(convertToMeetsGroupTime(meet.datetime))
         onClose()
       })
     }
@@ -54,7 +50,7 @@ function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
       .startOf('date')
       .add(Number(date[0]), 'hour')
       .add(Number(date[1]), 'minute')
-      .format('YYYY-MM-DD HH:mm:ss')
+      .format(FORMAT)
   }
 
   return (

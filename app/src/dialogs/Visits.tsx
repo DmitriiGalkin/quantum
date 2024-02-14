@@ -26,7 +26,7 @@ function Visits({ onClose }: UserMeetsProps) {
         <Block variant="secondary">
           <Stack spacing={4}>
             {visitGroups.map((group) => (
-              <Stack spacing={2}>
+              <Stack key={group.title} spacing={2}>
                 <Typography variant="Header2">{group.title}</Typography>
                 <Stack spacing={1}>
                   {group.visits?.map((visit) => (

@@ -1,4 +1,4 @@
-import { LocalDate } from '@js-joda/core'
+import dayjs from 'dayjs'
 
 import { convertToMeetsGroupTime, convertToMeetsGroupTime2, getDayOfWeekTitle } from './date'
 import { Meet, Project, Visit } from './dto'
@@ -92,16 +92,15 @@ export const getWeek = (selectedDate?: string, meets?: Meet[], userId?: number):
   Array.from(new Array(DAYS_COUNT).keys()).map((day, index) => {
     const meetsGroup = getMeetsGroup2(meets)
 
-    const localDate = LocalDate.now()
-    const targetDay = localDate.plusDays(day)
+    const targetDay = dayjs().startOf('date').add(day, 'day')
     const re = targetDay.toString()
     const meets3 = (meetsGroup ? meetsGroup.find(({ id }) => id === re)?.meets : []) as Meet[]
 
     return {
       index,
       id: re,
-      dayOfWeekValue: getDayOfWeekTitle(targetDay.dayOfWeek().value() - 1),
-      day: targetDay.dayOfMonth(),
+      dayOfWeekValue: getDayOfWeekTitle(targetDay.day()),
+      day: targetDay.date(),
       active: selectedDate === re,
       activeMeetsLength: meets3?.filter((meet) => meet.visits?.some((visit) => visit.userId === userId)).length || 0,
       meets: meets3 || [],
