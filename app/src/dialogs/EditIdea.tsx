@@ -16,11 +16,6 @@ export interface EditIdeaProps {
   onClose: () => void
 }
 function EditIdea({ ideaId, onClose }: EditIdeaProps) {
-  // const [selectedDate, setSelectedDate] = useLocalStorage<string>('date', LocalDate.now().toString())
-  // const [meet, setMeet] = useState<Partial<Meet>>({ datetime: dayjs(selectedDate).format('YYYY-MM-DD HH:mm:ss'), projectId: defaultProjectId })
-  // const navigate = useNavigate();
-  //
-  // const { data: defaultIdea, refetch } = useMeet(meetId)
   const { user, passport } = useAuth()
   const { latitude, longitude } = useGeolocation()
 

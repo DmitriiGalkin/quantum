@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material'
-import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 
 import { VisitCard } from '../cards/VisitCard'
@@ -7,7 +6,7 @@ import { DatePicker, DialogFooter, DialogHeader, Input } from '../components'
 import { Block } from '../components/Block'
 import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
-import { convertToMeetTime, FORMAT } from '../tools/date'
+import { calendarPickerOnChange, convertToDate, convertToObject, now, onChangeReactIosTimePicker } from '../tools/date'
 import { Meet } from '../tools/dto'
 import { useAddMeet, useDeleteMeet, useEditMeet, useMeet } from '../tools/service'
 
@@ -18,7 +17,7 @@ export interface EditMeetProps {
 }
 function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
   const [meet, setMeet] = useState<Partial<Meet>>({
-    datetime: dayjs().format(FORMAT),
+    datetime: now(),
     projectId: defaultProjectId,
   })
 
@@ -43,15 +42,7 @@ function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
     }
   }
 
-  const onChangeReactIosTimePicker = (timeValue: string) => {
-    const date = timeValue.split(':')
-
-    return dayjs(meet.datetime)
-      .startOf('date')
-      .add(Number(date[0]), 'hour')
-      .add(Number(date[1]), 'minute')
-      .format(FORMAT)
-  }
+  const { time } = convertToObject(meet.datetime)
 
   return (
     <>
@@ -62,17 +53,27 @@ function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
       />
       <DialogContent>
         <Block variant="primary">
-          <DatePicker value={meet.datetime} onChange={(datetime) => setMeet({ ...meet, datetime })} />
+          <DatePicker
+            value={convertToDate(meet.datetime)}
+            onChange={(datetime) => {
+              setMeet({ ...meet, datetime: calendarPickerOnChange(datetime, meet.datetime) })
+            }}
+          />
           <Stack spacing={1} direction="row">
             <Input
               name="time"
               label="Время"
               type="time"
               step={60}
-              value={convertToMeetTime(meet.datetime)}
+              value={time}
               min="09:00"
               max="16:00"
-              onChange={(e) => setMeet({ ...meet, datetime: onChangeReactIosTimePicker(e.target.value) })}
+              onChange={(e) =>
+                setMeet({
+                  ...meet,
+                  datetime: onChangeReactIosTimePicker(e.target.value, meet.datetime),
+                })
+              }
             />
             <Input
               name="price"

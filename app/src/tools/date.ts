@@ -22,9 +22,9 @@ const MONTH_LONG_TITLES = [
 export const getMonthShortTitle = (index: number): string => MONTH_SHORT_TITLES[index - 1]
 export const getMonthLongTitle = (index: number): string => MONTH_LONG_TITLES[index - 1]
 
-export const getDayOfWeekTitle = (dayValue: number): string => ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'][dayValue]
+export const getDayOfWeekTitle = (dayValue: number): string => ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][dayValue]
 export const getDayOfWeekTitleLong = (dayValue: number): string =>
-  ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'][dayValue]
+  ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'][dayValue]
 
 const DAYS_OF_WEEK = new Map([
   ['Su', 'Вс'],
@@ -38,32 +38,35 @@ const DAYS_OF_WEEK = new Map([
 export const getDayOfWeek = (day: string): string => DAYS_OF_WEEK.get(day) as string
 
 /**
- * Server datetime to 'HH:mm'
- */
-export const convertToMeetTime = (datetime?: string): string => {
-  if (!datetime) return ''
-  return dayjs(datetime).format('HH:mm')
-}
-
-/**
  * Server datetime в разные объекты
  */
-export const convertToObject = (datetime?: string): { time?: string; shortMonth?: string; day?: string } => {
+export const convertToObject = (
+  datetime?: string,
+): { time?: string; shortMonth?: string; day?: string; dayOfWeekValue?: string } => {
   if (!datetime) return {}
   const localDateTime = dayjs(datetime)
   return {
     time: localDateTime.format('HH:mm'),
     shortMonth: getMonthShortTitle(localDateTime.month()),
-    day: String(localDateTime.day()),
+    day: String(localDateTime.date()),
+    dayOfWeekValue: getDayOfWeekTitle(localDateTime.day()),
   }
 }
 
 /**
- * Server datetime to 'yyyy-MM-dd'
+ *
  */
 export const convertToMeetsGroupTime = (datetime?: string): string => {
   if (!datetime) return ''
   return dayjs(datetime).format()
+}
+
+/**
+ *
+ */
+export const convertToDate = (datetime?: string): string => {
+  if (!datetime) return ''
+  return dayjs(datetime).format(FORMAT2)
 }
 
 /**
@@ -82,3 +85,53 @@ export const convertToMeetsGroupTime2 = (datetime?: string): string => {
   const localDate = dayjs(datetime)
   return `${localDate.date()} ${MONTH_LONG_TITLES[localDate.month()]}`
 }
+
+export const now = (): string => dayjs().format()
+
+/**
+ * Меняет минуты и дни у даты
+ */
+export const onChangeReactIosTimePicker = (timeValue: string, datetime?: string): string => {
+  const [hour, minute] = timeValue.split(':')
+  return dayjs(datetime)
+    .startOf('date')
+    .add(Number(hour), 'hour')
+    .add(Number(minute), 'minute')
+    .format('YYYY-MM-DD HH:mm:ss')
+}
+
+const TIMEOUT_DAYS = 3 // После отказа устанавливать банер мы запоминаем волеизъявление пользователя на 3 дня
+export const getNewApplicationInstallDate = (): string => dayjs().add(TIMEOUT_DAYS, 'day').format('YYYY-MM-DD HH:mm:ss')
+
+/**
+ * Проверяем а не больше ли эта дата текущего дня
+ */
+export const checkWithNow = (applicationInstallDate: string): boolean => {
+  const diffDay = dayjs(applicationInstallDate).diff(dayjs(), 'day')
+
+  return diffDay > 0
+}
+
+/**
+ * Отрезает от дататайма минуты и часы и присобачивает их к другой дате
+ */
+export const calendarPickerOnChange = (date: string, value?: string): string => {
+  const data = dayjs(value)
+
+  if (!date) return ''
+  const hour = data.hour()
+  const minute = data.minute()
+
+  return dayjs(date).startOf('day').add(hour, 'hour').add(minute, 'minute').format('YYYY-MM-DD HH:mm:ss')
+}
+
+/**
+ * Сравнивает две даты
+ */
+export const compareDate = (a?: string, b?: string): boolean => dayjs(a).format(FORMAT2) === dayjs(b).format(FORMAT)
+
+/**
+ * получаем дату большую на count дней от текущей
+ */
+export const getAddDayDatetime = (count: number): string =>
+  dayjs().startOf('date').add(count, 'day').format('YYYY-MM-DD')

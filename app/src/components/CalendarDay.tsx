@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles'
 import clsx from 'clsx'
 import React from 'react'
 
+import { convertToObject } from '../tools/date'
 import { Day } from '../tools/helper'
 import { COLOR_DEFAULT, COLOR_PAPER } from '../tools/theme'
 
@@ -74,18 +75,13 @@ const useStyles = makeStyles(() => ({
 }))
 
 interface CalendarDayProps extends Day {
+  active?: boolean
   onClick?: (id: string) => void
 }
 
-export function CalendarDay({
-  id,
-  dayOfWeekValue,
-  day,
-  active,
-  activeMeetsLength,
-  onClick,
-}: CalendarDayProps): JSX.Element {
+export function CalendarDay({ id, datetime, active, activeMeetsLength, onClick }: CalendarDayProps): JSX.Element {
   const classes = useStyles()
+  const { day, dayOfWeekValue } = convertToObject(datetime)
 
   const onClickDay = () => onClick?.(id)
   return (

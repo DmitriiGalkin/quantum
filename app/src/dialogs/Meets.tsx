@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material'
-import dayjs from 'dayjs'
 import React, { useRef } from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import { useLocalStorage } from 'usehooks-ts'
@@ -9,7 +8,7 @@ import { Calendar, DialogHeader } from '../components'
 import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
 import { useAuth } from '../tools/auth'
-import { FORMAT } from '../tools/date'
+import { now } from '../tools/date'
 import { getOm } from '../tools/helper'
 import { useMeets } from '../tools/service'
 
@@ -23,7 +22,7 @@ function Meets({ onClose, isForPassport }: MeetsProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const containerHeight = containerRef.current?.offsetHeight
   const { data: meets = [], refetch } = useMeets(user?.id, isForPassport)
-  const [date, setDate] = useLocalStorage<string>('date', dayjs().format(FORMAT))
+  const [date, setDate] = useLocalStorage<string>('date', now())
   const { index, days, meetsGroup } = getOm(meets, date, user?.id)
 
   return (
@@ -35,7 +34,7 @@ function Meets({ onClose, isForPassport }: MeetsProps) {
       />
       <DialogContent>
         <Stack spacing={3} style={{ height: '100%', padding: 16 }}>
-          <Calendar days={days} onChange={setDate} />
+          <Calendar value={date} days={days} onChange={setDate} />
           <div style={{ flex: '1 1 auto', overflowY: 'auto' }} ref={containerRef}>
             <SwipeableViews
               index={index}

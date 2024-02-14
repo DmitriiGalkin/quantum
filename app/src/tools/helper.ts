@@ -1,6 +1,4 @@
-import dayjs from 'dayjs'
-
-import { convertToMeetsGroupTime, convertToMeetsGroupTime2, getDayOfWeekTitle } from './date'
+import { convertToDate, convertToMeetsGroupTime, convertToMeetsGroupTime2, getAddDayDatetime } from './date'
 import { Meet, Project, Visit } from './dto'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -37,7 +35,10 @@ export const getMeetsGroup2 = (meets?: Meet[]): { id: string; meets: Meet[] }[] 
 
 export const getCalendarMeetsGroup = (days: Day[], meets: Meet[]): { id: string; meets: Meet[] }[] => {
   const groups = getMeetsGroup2(meets)
-  return days.map((day) => ({ id: day.id, meets: groups.find((group) => group.id === day.id)?.meets || [] }))
+  return days.map((day) => ({
+    id: day.id,
+    meets: groups.find((group) => convertToDate(group.id) === day.datetime)?.meets || [],
+  }))
 }
 
 interface VisitGroup {
@@ -63,13 +64,13 @@ interface GetOm {
   index: number
 }
 export const getOm = (meets: Meet[], date: string, userId?: number): GetOm => {
-  const days = getWeek(date, meets, userId)
+  const days = getWeek(meets, userId)
   const meetsGroup = getCalendarMeetsGroup(days, meets)
 
   return {
     days,
     meetsGroup,
-    filteredMeets: meetsGroup.find(({ id }) => id === date)?.meets || [],
+    filteredMeets: meetsGroup.find(({ id }) => convertToDate(id) === date)?.meets || [],
     index: days.find(({ id }) => id === date)?.index || 0,
   }
 }
@@ -79,29 +80,23 @@ export const DAYS_COUNT = 7
 export interface Day {
   index: number
   id: string
-  dayOfWeekValue: string
-  day: number
-  active: boolean
+  datetime: string
+  active?: boolean
   activeMeetsLength: number
   meets?: Meet[]
 }
 /**
  * Подготавливаем неделю
  */
-export const getWeek = (selectedDate?: string, meets?: Meet[], userId?: number): Day[] =>
-  Array.from(new Array(DAYS_COUNT).keys()).map((day, index) => {
+export const getWeek = (meets?: Meet[], userId?: number): Day[] =>
+  Array.from(new Array(DAYS_COUNT).keys()).map((count, index) => {
     const meetsGroup = getMeetsGroup2(meets)
-
-    const targetDay = dayjs().startOf('date').add(day, 'day')
-    const re = targetDay.toString()
-    const meets3 = (meetsGroup ? meetsGroup.find(({ id }) => id === re)?.meets : []) as Meet[]
-
+    const datetime = getAddDayDatetime(count)
+    const meets3 = (meetsGroup ? meetsGroup.find(({ id }) => convertToDate(id) === datetime)?.meets : []) as Meet[]
     return {
       index,
-      id: re,
-      dayOfWeekValue: getDayOfWeekTitle(targetDay.day()),
-      day: targetDay.date(),
-      active: selectedDate === re,
+      id: getAddDayDatetime(count),
+      datetime,
       activeMeetsLength: meets3?.filter((meet) => meet.visits?.some((visit) => visit.userId === userId)).length || 0,
       meets: meets3 || [],
     }

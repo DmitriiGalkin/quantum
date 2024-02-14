@@ -1,14 +1,12 @@
 import { Stack } from '@mui/material'
-import dayjs from 'dayjs'
 import React from 'react'
 import { useLocalStorage } from 'usehooks-ts'
 
+import { checkWithNow, getNewApplicationInstallDate } from '../tools/date'
 import { usePWA } from '../tools/pwa'
 import { COLOR_LOW } from '../tools/theme'
 import { Button } from './Button'
 import { Icon } from './Icon'
-
-const TIMEOUT_DAYS = 3 // После отказа устанавливать банер мы запоминаем волеизъявление пользователя на 3 дня
 
 interface AppBannerProps {
   title: string
@@ -19,14 +17,9 @@ export function AppBanner({ title }: AppBannerProps): React.ReactNode {
     'applicationInstallDate',
     new Date().toString(),
   )
-  const diffDay = dayjs(applicationInstallDate).diff(dayjs(), 'day')
+  const onClose = () => setApplicationInstallDate(getNewApplicationInstallDate())
 
-  const onClose = () => {
-    const newApplicationInstallDate = dayjs().add(TIMEOUT_DAYS, 'day').format('YYYY-MM-DD HH:mm:ss')
-    setApplicationInstallDate(newApplicationInstallDate)
-  }
-
-  if (diffDay > 0) {
+  if (checkWithNow(applicationInstallDate)) {
     return null
   }
 
