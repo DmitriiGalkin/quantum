@@ -21,25 +21,15 @@ export function groupBy<K, V>(list: Array<V>, keyGetter: (input: V) => K): Map<K
   return map
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const getMeetsGroup = (meets?: Meet[]): { id: string; meets: Meet[] }[] => [
-  ...Array.from(groupBy(meets || [], (meet) => convertToMeetsGroupTime(meet.datetime))),
-]
-
-export const getMeetsGroup2 = (meets?: Meet[]): { id: string; meets: Meet[] }[] =>
-  [...Array.from(groupBy(meets || [], (meet) => convertToMeetsGroupTime(meet.datetime)))].map(([a, b]) => ({
-    id: a,
+interface MeetGroup {
+  datetime: string
+  meets?: Meet[]
+}
+export const getMeetsGroup = (meets?: Meet[]): MeetGroup[] =>
+  [...Array.from(groupBy(meets || [], (meet) => convertToDate(meet.datetime)))].map(([a, b]) => ({
+    datetime: a,
     meets: b,
   }))
-
-export const getCalendarMeetsGroup = (days: Day[], meets: Meet[]): { id: string; meets: Meet[] }[] => {
-  const groups = getMeetsGroup2(meets)
-  return days.map((day) => ({
-    id: day.id,
-    meets: groups.find((group) => convertToDate(group.id) === day.datetime)?.meets || [],
-  }))
-}
 
 interface VisitGroup {
   title: string
@@ -51,69 +41,39 @@ export const getVisitGroups = (visits?: Visit[]): VisitGroup[] =>
     visits: b,
   }))
 
-/**
- * Подготовка данных для отображения встреч списком и на карте
- */
-interface GetOm {
-  days: Day[]
-  meetsGroup: {
-    id: string
-    meets: Meet[]
-  }[]
-  filteredMeets: Meet[]
-  index: number
-}
-export const getOm = (meets: Meet[], date: string, userId?: number): GetOm => {
-  const days = getWeek(meets, userId)
-  const meetsGroup = getCalendarMeetsGroup(days, meets)
-
-  return {
-    days,
-    meetsGroup,
-    filteredMeets: meetsGroup.find(({ id }) => convertToDate(id) === date)?.meets || [],
-    index: days.find(({ id }) => id === date)?.index || 0,
-  }
-}
-
 export const DAYS_COUNT = 7
 
 export interface Day {
-  index: number
-  id: string
   datetime: string
   active?: boolean
   activeMeetsLength: number
   meets?: Meet[]
 }
+
 /**
  * Подготавливаем неделю
  */
-export const getWeek = (meets?: Meet[], userId?: number): Day[] =>
-  Array.from(new Array(DAYS_COUNT).keys()).map((count, index) => {
-    const meetsGroup = getMeetsGroup2(meets)
+export const getWeek = (meets?: Meet[], userId?: number): Day[] => {
+  const meetsGroup = getMeetsGroup(meets)
+
+  return Array.from(new Array(DAYS_COUNT).keys()).map((count) => {
     const datetime = getAddDayDatetime(count)
-    const meets3 = (meetsGroup ? meetsGroup.find(({ id }) => convertToDate(id) === datetime)?.meets : []) as Meet[]
+    const meets = meetsGroup.find((meetGroup) => meetGroup.datetime === datetime)?.meets || []
+    const activeMeetsLength = meets.filter((meet) => meet.visits?.some((visit) => visit.userId === userId)).length || 0
+
     return {
-      index,
-      id: getAddDayDatetime(count),
       datetime,
-      activeMeetsLength: meets3?.filter((meet) => meet.visits?.some((visit) => visit.userId === userId)).length || 0,
-      meets: meets3 || [],
+      activeMeetsLength,
+      meets,
     }
   })
+}
 
 /**
  * Формируем строку отображающую возрастное ограничение
  */
 export const getAgeTitle = (ageFrom?: number, ageTo?: number): string => {
   return ageFrom || ageTo ? (ageFrom ? ` ${ageFrom}` : '') + (ageTo ? ` - ${ageTo}` : '') + ' лет' : 'любой'
-}
-
-/**
- * Формируем строку отображающую возрастное ограничение КОРОТКОЕ
- */
-export const getAgeTitle2 = (ageFrom?: number, ageTo?: number): string => {
-  return ageFrom || ageTo ? '(' + (ageFrom ? `${ageFrom}` : '0') + (ageTo ? ` - ${ageTo}` : '') + ' лет)' : ''
 }
 
 /**

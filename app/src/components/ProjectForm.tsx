@@ -16,7 +16,7 @@ function ProjectForm({ project, onChange }: ProjectFormProps): JSX.Element {
         <div style={{ flexGrow: 1 }}>
           <Input
             name="title"
-            label="Название"
+            label="Название *"
             value={project.title}
             onChange={(e) => onChange({ ...project, title: e.target.value })}
             autoFocus

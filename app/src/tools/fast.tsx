@@ -15,9 +15,10 @@ export const useFast = (refetch: () => void): void => {
   useEffect(() => {
     if (isAuth && fastIdeaJSON) {
       const fastIdea = JSON.parse(fastIdeaJSON)
+      localStorage.removeItem(FAST_IDEA)
+
       addUser.mutateAsync(fastIdea.user).then((userId) => {
         addIdea.mutateAsync({ ...fastIdea.idea, userId }).then(() => {
-          localStorage.removeItem(FAST_IDEA)
           refetch()
         })
       })
@@ -31,12 +32,13 @@ export const useFast = (refetch: () => void): void => {
   useEffect(() => {
     if (isAuth && fastProjectJSON) {
       const fastProject = JSON.parse(fastProjectJSON)
+      localStorage.removeItem(FAST_PROJECT)
+
       addPlace.mutateAsync(fastProject.place).then((placeId) => {
         addProject.mutateAsync({ ...fastProject.project, placeId }).then((projectId) => {
           fastProject.invites?.forEach((i: Partial<Invite>) => {
             addInvite.mutate({ ideaId: i.ideaId as number, projectId: projectId as number, userId: i.userId as number })
           })
-          localStorage.removeItem(FAST_PROJECT)
           refetch()
         })
       })

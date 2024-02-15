@@ -17,7 +17,7 @@ export function PlaceSelectDefault({ onChange, place }: PlaceSelectProps): JSX.E
 
   return (
     <div>
-      <label htmlFor="place">Место</label>
+      <label htmlFor="place">Место *</label>
       <div
         style={{
           display: 'block',

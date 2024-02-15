@@ -55,7 +55,7 @@ export function Button({ children, variant, onClick, href, color, disabled, icon
         onClick={(e) => onClick && !disabled && onClick(e)}
       >
         <Stack spacing={1} direction="row" justifyContent="space-between" alignItems="center">
-          <Icon name="ok" />
+          <Icon name="ok" color="white" />
           <span>{children}</span>
         </Stack>
       </div>

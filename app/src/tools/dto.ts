@@ -129,11 +129,11 @@ export interface Idea {
   latitude: string // Широта
   longitude: string // Долгота
   deleted?: string // Дата удаления
-  distance?: number // Дистанция до объекта
 
   /**
    * Дополнительные поля
    */
+  distance?: number // Дистанция до объекта
   user?: User
   invites?: Invite[] // Приглашения
 }

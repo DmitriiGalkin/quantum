@@ -154,12 +154,12 @@ export const useAddPlace = (): UseMutate<Place> => {
  * Проект
  */
 export interface ProjectFilter {
-  type?: 'self' | 'participation' | 'recommendation'
+  variant?: 'self' | 'participation' | 'recommendation'
   deleted?: boolean
   userId?: string | number
 }
 export const useProjects = (params?: ProjectFilter): UseQueryResult<Project[]> =>
-  useQuery(['projects', params?.type, params?.deleted, params?.userId], () => service.get(`/projects`, { params }))
+  useQuery(['projects', params?.variant, params?.deleted, params?.userId], () => service.get(`/projects`, { params }))
 export const useProject = (id?: number): UseQueryResult<Project> =>
   useQuery(['project', id], () => service.get(`/project/${id}`), {
     enabled: Boolean(id),
@@ -184,7 +184,7 @@ export const useDeleteParticipation = (): UseMutate<Participation> =>
  * Идея
  */
 export interface IdeaFilter {
-  type?: 'self' | 'recommendation'
+  variant?: 'self' | 'recommendation'
   userId?: string | number
   ageFrom?: number
   ageTo?: number
@@ -193,7 +193,7 @@ export interface IdeaFilter {
 }
 export const useIdeas = (params?: IdeaFilter): UseQueryResult<Idea[]> =>
   useQuery(
-    ['ideas', params?.type, params?.ageFrom, params?.ageTo, params?.userId, params?.latitude, params?.longitude],
+    ['ideas', params?.variant, params?.ageFrom, params?.ageTo, params?.userId, params?.latitude, params?.longitude],
     () => service.get(`/ideas`, { params }),
   )
 export const useIdea = (id?: number): UseQueryResult<Idea> =>

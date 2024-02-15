@@ -9,6 +9,7 @@ import EditIdea from '../dialogs/EditIdea'
 import SelectProject from '../dialogs/SelectProject'
 import { useAuth } from '../tools/auth'
 import { Idea, Project } from '../tools/dto'
+import { getDistanceTitle } from '../tools/geolocation'
 import { useCreateInvite, useProjects } from '../tools/service'
 
 interface IdeaCardProps {
@@ -19,8 +20,7 @@ interface IdeaCardProps {
 }
 export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): JSX.Element {
   const { user, isAuth } = useAuth()
-
-  const { data: selfProjects = [], refetch: refetchSelfProject } = useProjects({ type: 'self' })
+  const { data: selfProjects = [], refetch: refetchSelfProject } = useProjects({ variant: 'self' })
 
   const [project, toggleProject] = useToggle()
   const [create, toggleCreate] = useToggle()
@@ -57,7 +57,11 @@ export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): JSX.
                 </Typography>
               </Stack>
               {(idea.distance || idea.distance === 0) && (
-                <Parameter name="distanceSmall" variant="secondary" title={Math.round(idea.distance) + 'м.'} />
+                <Parameter
+                  name="distanceSmall"
+                  variant="secondary"
+                  title={getDistanceTitle(Math.round(idea.distance))}
+                />
               )}
               {(isAuth || onAdd) && (
                 <>
@@ -91,6 +95,8 @@ export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): JSX.
           onSelectProject(p)
           toggleProject()
         }}
+        latitude={idea.latitude}
+        longitude={idea.longitude}
       />
       <EditIdea
         ideaId={idea.id}

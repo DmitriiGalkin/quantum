@@ -37,8 +37,6 @@ Meet.deleteByProjectId = function(id, result){
     });
 };
 
-// Встречи
-const RADIUS = 100000 // Количество метров между мной и местом встречи TODO: сократить радиус с ростом аудитории
 Meet.findAll = function (result) {
     dbConn.query("SELECT *, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime from meet " +
         "WHERE DATE(datetime) >= CURDATE() " +
@@ -55,7 +53,7 @@ Meet.findById = function (id, result) {
     });
 };
 Meet.findByProjectId = function (id, result) {
-    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE projectId = ? AND DATE(datetime) >= CURDATE() AND deleted IS NULL", id, function (err, res) {
+    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE projectId = ? AND DATE(datetime) >= CURDATE() AND deleted IS NULL ORDER BY datetime", id, function (err, res) {
         result(null, res);
     });
 };

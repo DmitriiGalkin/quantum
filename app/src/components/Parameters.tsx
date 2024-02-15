@@ -9,6 +9,7 @@ export interface Parameter {
   name: IconName
   title: string
   value?: JSX.Element
+  onClick?: () => void
 }
 interface ParametersProps {
   items: Parameter[]
@@ -16,8 +17,8 @@ interface ParametersProps {
 export function Parameters({ items }: ParametersProps): JSX.Element {
   return (
     <div>
-      {items.map(({ name, title, value }) => (
-        <Grid container key={title} spacing={2} alignItems="center">
+      {items.map(({ name, title, value, onClick }) => (
+        <Grid container key={title} spacing={2} alignItems="center" onClick={onClick}>
           <Grid xs={5}>
             <Stack spacing={1} direction="row" alignItems="center">
               <Icon name={name} />

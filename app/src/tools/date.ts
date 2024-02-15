@@ -87,21 +87,18 @@ export const convertToMeetsGroupTime2 = (datetime?: string): string => {
 }
 
 export const now = (): string => dayjs().format()
+export const nowDate = (): string => dayjs().format(FORMAT2)
 
 /**
  * Меняет минуты и дни у даты
  */
 export const onChangeReactIosTimePicker = (timeValue: string, datetime?: string): string => {
   const [hour, minute] = timeValue.split(':')
-  return dayjs(datetime)
-    .startOf('date')
-    .add(Number(hour), 'hour')
-    .add(Number(minute), 'minute')
-    .format('YYYY-MM-DD HH:mm:ss')
+  return dayjs(datetime).startOf('date').add(Number(hour), 'hour').add(Number(minute), 'minute').format(FORMAT)
 }
 
 const TIMEOUT_DAYS = 3 // После отказа устанавливать банер мы запоминаем волеизъявление пользователя на 3 дня
-export const getNewApplicationInstallDate = (): string => dayjs().add(TIMEOUT_DAYS, 'day').format('YYYY-MM-DD HH:mm:ss')
+export const getNewApplicationInstallDate = (): string => dayjs().add(TIMEOUT_DAYS, 'day').format(FORMAT)
 
 /**
  * Проверяем а не больше ли эта дата текущего дня
@@ -122,7 +119,7 @@ export const calendarPickerOnChange = (date: string, value?: string): string => 
   const hour = data.hour()
   const minute = data.minute()
 
-  return dayjs(date).startOf('day').add(hour, 'hour').add(minute, 'minute').format('YYYY-MM-DD HH:mm:ss')
+  return dayjs(date).startOf('day').add(hour, 'hour').add(minute, 'minute').format(FORMAT)
 }
 
 /**
@@ -133,5 +130,4 @@ export const compareDate = (a?: string, b?: string): boolean => dayjs(a).format(
 /**
  * получаем дату большую на count дней от текущей
  */
-export const getAddDayDatetime = (count: number): string =>
-  dayjs().startOf('date').add(count, 'day').format('YYYY-MM-DD')
+export const getAddDayDatetime = (count: number): string => dayjs().startOf('date').add(count, 'day').format(FORMAT2)

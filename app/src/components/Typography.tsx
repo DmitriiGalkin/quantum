@@ -16,7 +16,7 @@ export const useStyles = makeStyles(() => ({
       case 'Subheader1':
         return {
           fontSize: 14,
-          opacity: 0.4,
+          opacity: 0.6,
           fontWeight: 400,
           lineHeight: '18px',
           letterSpacing: '0.36px',

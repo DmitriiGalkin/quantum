@@ -45,9 +45,9 @@ export default function App({ action }: AppProps): JSX.Element {
   const [isOpenMeets, toggleIsOpenMeets] = useToggle()
   const [isOpenPassportMeets, toggleIsOpenPassportMeets] = useToggle()
 
-  const { data: selfIdeas = [], refetch } = useIdeas({ type: 'self', userId: user?.id })
-  const { data: userProjects = [] } = useProjects({ type: 'participation', userId: user?.id })
-  const { data: selfProjects = [], refetch: refetchSelfProjects } = useProjects({ type: 'self' })
+  const { data: selfIdeas = [], refetch } = useIdeas({ variant: 'self', userId: user?.id })
+  const { data: userProjects = [] } = useProjects({ variant: 'participation', userId: user?.id })
+  const { data: selfProjects = [], refetch: refetchSelfProjects } = useProjects({ variant: 'self' })
   useFast(refetchSelfProjects)
 
   const [bottomNavigationValue, setBottomNavigationValue] = useState(1)
@@ -188,7 +188,7 @@ export default function App({ action }: AppProps): JSX.Element {
                             key={project.id}
                             project={project}
                             refetchParent={refetchSelfProjects}
-                            variant="admin"
+                            variant="self"
                           />
                         ))}
                       </Stack>
@@ -198,14 +198,14 @@ export default function App({ action }: AppProps): JSX.Element {
                 </Stack>
                 {Boolean(userProjects.length) && (
                   <Stack spacing={2}>
-                    <Typography variant="Header2">Участвую в проектах</Typography>
+                    <Typography variant="Header2">{user?.title} участвует в проектах</Typography>
                     <Stack spacing={1}>
                       {userProjects.map((project) => (
                         <ProjectCard
                           key={project.id}
                           project={project}
                           refetchParent={refetchSelfProjects}
-                          variant="admin"
+                          variant="self"
                         />
                       ))}
                     </Stack>
@@ -218,11 +218,16 @@ export default function App({ action }: AppProps): JSX.Element {
               <Stack spacing={4} style={{ padding: 16 }}>
                 {user ? (
                   <Stack spacing={2}>
-                    <Stack spacing={2}>
-                      {selfIdeas?.map((idea) => (
-                        <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
-                      ))}
-                    </Stack>
+                    {Boolean(selfIdeas.length) && (
+                      <Stack spacing={2}>
+                        <Typography variant="Header2">Мои идеи</Typography>
+                        <Stack spacing={2}>
+                          {selfIdeas?.map((idea) => (
+                            <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
+                          ))}
+                        </Stack>
+                      </Stack>
+                    )}
                     <Button onClick={toggleIdea}>Создать идею</Button>
                   </Stack>
                 ) : (
@@ -293,6 +298,7 @@ export default function App({ action }: AppProps): JSX.Element {
         open={project}
         onClose={() => {
           toggleProject()
+          refetchSelfProjects()
         }}
       />
       <EditPassport

@@ -1,15 +1,14 @@
 import { Stack } from '@mui/material'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import SwipeableViews from 'react-swipeable-views'
-import { useLocalStorage } from 'usehooks-ts'
 
 import { MeetCard } from '../cards/MeetCard'
 import { Calendar, DialogHeader } from '../components'
 import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
 import { useAuth } from '../tools/auth'
-import { now } from '../tools/date'
-import { getOm } from '../tools/helper'
+import { nowDate } from '../tools/date'
+import { getWeek } from '../tools/helper'
 import { useMeets } from '../tools/service'
 
 export interface MeetsProps {
@@ -19,11 +18,11 @@ export interface MeetsProps {
 
 function Meets({ onClose, isForPassport }: MeetsProps) {
   const { user } = useAuth()
+  const [date, setDate] = useState(nowDate())
   const containerRef = useRef<HTMLDivElement | null>(null)
   const containerHeight = containerRef.current?.offsetHeight
   const { data: meets = [], refetch } = useMeets(user?.id, isForPassport)
-  const [date, setDate] = useLocalStorage<string>('date', now())
-  const { index, days, meetsGroup } = getOm(meets, date, user?.id)
+  const days = getWeek(meets, user?.id)
 
   return (
     <>
@@ -37,15 +36,15 @@ function Meets({ onClose, isForPassport }: MeetsProps) {
           <Calendar value={date} days={days} onChange={setDate} />
           <div style={{ flex: '1 1 auto', overflowY: 'auto' }} ref={containerRef}>
             <SwipeableViews
-              index={index}
-              onChangeIndex={(index) => setDate(days[index].id)}
+              index={days.findIndex((d) => d.datetime === date)}
+              onChangeIndex={(index) => setDate(days[index].datetime)}
               containerStyle={{ height: containerHeight }}
               springConfig={{ duration: '0.2s', delay: '0s', easeFunction: 'cubic-bezier(0.0, 0.0, 0.58, 1.0)' }}
               threshold={4}
             >
-              {meetsGroup.map(({ id, meets }) => (
-                <Stack key={id} spacing={2}>
-                  {meets.map((meet) => (
+              {days.map(({ datetime, meets }) => (
+                <Stack key={datetime} spacing={2}>
+                  {meets?.map((meet) => (
                     <MeetCard key={meet.id} meet={meet} refetch={refetch} />
                   ))}
                 </Stack>

@@ -14,7 +14,7 @@ interface RecommendationProjectsProps {
 
 export function RecommendationProjects({ toggleProjectsC }: RecommendationProjectsProps): JSX.Element {
   const { user } = useAuth()
-  const { data: projects = [] } = useProjects({ type: 'recommendation', userId: user?.id })
+  const { data: projects = [] } = useProjects({ variant: 'recommendation', userId: user?.id })
 
   return (
     <Stack spacing={2}>
@@ -23,7 +23,7 @@ export function RecommendationProjects({ toggleProjectsC }: RecommendationProjec
           <Typography variant="Header2">Проекты для вдохновения</Typography>
           <Masonry columns={2} spacing={1}>
             {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} project={project} variant="recommendation" />
             ))}
           </Masonry>
         </>

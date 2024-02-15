@@ -18,7 +18,7 @@ export function Calendar({ value, days, onChange }: CalendarProps): JSX.Element 
         .map((f) => ({ ...f, meets: undefined }))
         .map((day) => (
           <MemoizedCalendarDay
-            key={day.id}
+            key={day.datetime}
             {...day}
             onClick={onChange}
             active={value === convertToDate(day.datetime)}

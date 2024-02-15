@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { DialogFooter, DialogHeader, Input, Textarea } from '../components'
 import { Block } from '../components/Block'
@@ -7,6 +7,7 @@ import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
 import { useAuth } from '../tools/auth'
 import { Idea, User } from '../tools/dto'
+import { useGeolocation } from '../tools/geolocation'
 
 interface FastIdeaData {
   idea: Partial<Idea>
@@ -20,6 +21,7 @@ export interface FastIdeaProps {
 }
 function FastIdea({ onClose }: FastIdeaProps) {
   const { isAuth } = useAuth()
+  const { latitude, longitude } = useGeolocation()
 
   const { openLogin } = useAuth()
   const [data, setData] = useState<FastIdeaData>({ idea: {}, user: {} })
@@ -27,6 +29,12 @@ function FastIdea({ onClose }: FastIdeaProps) {
     localStorage.setItem(FAST_IDEA, JSON.stringify(data))
     !isAuth && openLogin()
   }
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      setData({ ...data, idea: { ...data.idea, latitude, longitude } })
+    }
+  }, [latitude, longitude])
 
   return (
     <>

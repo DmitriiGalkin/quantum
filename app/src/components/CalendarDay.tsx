@@ -79,11 +79,11 @@ interface CalendarDayProps extends Day {
   onClick?: (id: string) => void
 }
 
-export function CalendarDay({ id, datetime, active, activeMeetsLength, onClick }: CalendarDayProps): JSX.Element {
+export function CalendarDay({ datetime, active, activeMeetsLength, onClick }: CalendarDayProps): JSX.Element {
   const classes = useStyles()
   const { day, dayOfWeekValue } = convertToObject(datetime)
 
-  const onClickDay = () => onClick?.(id)
+  const onClickDay = () => onClick?.(datetime)
   return (
     <Stack key={day} spacing={1} alignItems="center" onClick={onClickDay} style={{ width: '100%' }}>
       <div className={clsx(classes.dayOfWeek, active && classes.dayOfWeekActive)}>{dayOfWeekValue}</div>

@@ -9,15 +9,24 @@ export interface SelectProjectProps {
   projects: Project[]
   onClose: () => void
   onChange: (project: Project) => void
+  latitude: string
+  longitude: string
 }
-function SelectProject({ projects, onClose, onChange }: SelectProjectProps): JSX.Element {
+function SelectProject({ projects, onClose, onChange, latitude, longitude }: SelectProjectProps): JSX.Element {
   return (
     <>
       <DialogHeader title="Выберите свой проект" onClick={onClose} />
       <div style={{ flex: '1 1 auto', overflowY: 'auto', padding: 16 }}>
         <Stack spacing={1}>
           {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} onClick={onChange} variant="admin" />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onClick={onChange}
+              variant="self"
+              latitude={latitude}
+              longitude={longitude}
+            />
           ))}
         </Stack>
       </div>

@@ -50,6 +50,17 @@
     ]
   },
   "devDependencies": {
+    "@babel/eslint-parser": "7.17.0",
+    "@eslint-kit/eslint-config-base": "5.0.2",
+    "@eslint-kit/eslint-config-prettier": "4.0.0",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/react-swipeable-views": "^0.13.2",
+    "@typescript-eslint/eslint-plugin": "4.33.0",
+    "@typescript-eslint/parser": "4.33.0",
+    "babel-eslint": "10.1.0",
     "eslint": "7.17.0",
     "eslint-config-prettier": "6.15.0",
     "eslint-plugin-flowtype": "5.2.0",
@@ -58,19 +69,8 @@
     "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-react": "7.29.4",
-    "eslint-plugin-react-hooks": "4.2.0",
+    "eslint-plugin-react-hooks": "^5.0.0-canary-14fd9630e-20240213",
     "eslint-plugin-testing-library": "3.10.1",
-    "eslint-webpack-plugin": "2.5.1",
-    "@babel/eslint-parser": "7.17.0",
-    "@eslint-kit/eslint-config-base": "5.0.2",
-    "@eslint-kit/eslint-config-prettier": "4.0.0",
-    "@typescript-eslint/eslint-plugin": "4.33.0",
-    "@typescript-eslint/parser": "4.33.0",
-    "babel-eslint": "10.1.0",
-    "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.13",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "@types/react-swipeable-views": "^0.13.2"
+    "eslint-webpack-plugin": "2.5.1"
   }
 }

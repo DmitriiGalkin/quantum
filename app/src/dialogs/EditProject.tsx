@@ -82,7 +82,9 @@ function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) 
       <div
         style={{ padding: 15, display: JSON.stringify(defaultProject) === JSON.stringify(project) ? 'none' : 'block' }}
       >
-        <Button onClick={onClickSave}>{project.id ? 'Сохранить' : 'Создать'}</Button>
+        <Button disabled={!project.title || !(project.placeId || project.place)} onClick={onClickSave}>
+          {project.id ? 'Сохранить' : 'Создать'}
+        </Button>
       </div>
     </>
   )

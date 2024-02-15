@@ -39,7 +39,7 @@ function Projects({ onClose }: ProjectsProps) {
         <div style={{ padding: '8px 2px 8px 8px' }}>
           <Masonry columns={2} spacing={1}>
             {data.map((project) => (
-              <ProjectCard key={project.id} project={project} refetchParent={refetch} />
+              <ProjectCard key={project.id} project={project} refetchParent={refetch} variant="recommendation" />
             ))}
           </Masonry>
         </div>

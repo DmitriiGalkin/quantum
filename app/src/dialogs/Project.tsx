@@ -1,6 +1,7 @@
 import { Avatar, AvatarGroup, Box, Stack } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import React from 'react'
+import { Map, Placemark, YMaps } from '@pbe/react-yandex-maps'
+import React, { useEffect, useState } from 'react'
 import { useToggle } from 'usehooks-ts'
 
 import { Back, Button, Icon, MeetCard } from '../components'
@@ -12,6 +13,7 @@ import { useAuth } from '../tools/auth'
 import { getAgeTitle } from '../tools/helper'
 import { getOnShare } from '../tools/pwa'
 import { useCreateParticipation, useDeleteParticipation, useProject } from '../tools/service'
+import { COLOR } from '../tools/theme'
 import EditMeet from './EditMeet'
 import EditProject from './EditProject'
 
@@ -37,16 +39,28 @@ export interface ProjectDialogProps {
   projectId: number
   onClose: () => void
 }
+interface IMapState {
+  center: number[]
+  zoom: number
+}
 function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
   const { user, isAuth, passport } = useAuth()
   const classes = useStyles()
-
   const { data: project, refetch } = useProject(Number(projectId))
+  const [state, setState] = useState<IMapState>()
+
   const [edit, toggleCreate] = useToggle()
   const [createMeet, toggleCreateMeet] = useToggle()
+  const [openMap, toggleOpenMap] = useToggle()
 
   const createParticipation = useCreateParticipation()
   const deleteParticipation = useDeleteParticipation()
+
+  useEffect(() => {
+    if (project?.place) {
+      setState({ center: [Number(project.place.latitude), Number(project.place.longitude)], zoom: 16 })
+    }
+  }, [project, setState])
 
   if (!project) return null
 
@@ -54,8 +68,6 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
   const editable = project.passportId === passport?.id
 
   const parameters = [
-    { name: 'place', title: 'Место', value: project?.place?.title },
-    { name: 'age', title: 'Рек. возраст', value: getAgeTitle(project?.ageFrom, project?.ageTo) },
     {
       name: 'passport',
       title: 'Организатор',
@@ -66,6 +78,8 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
         </span>
       ),
     },
+    { name: 'age', title: 'Рек. возраст', value: getAgeTitle(project?.ageFrom, project?.ageTo) },
+    { name: 'place', title: 'Место', value: project?.place?.title, onClick: toggleOpenMap },
   ] as Parameter[]
 
   const onCreateParticipation = () =>
@@ -130,6 +144,29 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
               )}
               {!participation && isAuth && user && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
               <Parameters items={parameters} />
+              {openMap && state && (
+                <div style={{ height: 156, borderRadius: 8, overflow: 'hidden' }}>
+                  <YMaps>
+                    <Map
+                      defaultState={state}
+                      width="100%"
+                      height="100%"
+                      onBoundsChange={(xx: { originalEvent: { newCenter: number[] } }) => {
+                        setState({ ...state, center: xx.originalEvent.newCenter })
+                      }}
+                    >
+                      <Placemark
+                        modules={['geoObject.addon.balloon']}
+                        defaultGeometry={[project?.place?.latitude, project?.place?.longitude]}
+                        options={{
+                          preset: 'islands#icon',
+                          iconColor: COLOR,
+                        }}
+                      />
+                    </Map>
+                  </YMaps>
+                </div>
+              )}
             </Stack>
             <Block variant="secondary">
               {Boolean(project.meets?.length) && (

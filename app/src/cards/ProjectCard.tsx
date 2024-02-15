@@ -8,15 +8,17 @@ import { Parameter } from '../components/Parameter'
 import Typography from '../components/Typography'
 import ProjectDialog from '../dialogs/Project'
 import { Project } from '../tools/dto'
+import { distanceBetweenLocations, getDistanceTitle } from '../tools/geolocation'
 import { getAgeLabel } from '../tools/helper'
 import { COLOR_DEFAULT } from '../tools/theme'
 
 interface ProjectCardProps {
   project: Project
-  // selected?: boolean
+  latitude?: string
+  longitude?: string
   onClick?: (project: Project) => void
   refetchParent?: () => void // функция которую необходимо дернуть в случае изменений/удаления
-  variant?: 'recommendation' | 'admin'
+  variant?: 'recommendation' | 'self'
 }
 const useStyles = makeStyles(() => ({
   image: {
@@ -40,11 +42,20 @@ export function ProjectCard({
   onClick,
   refetchParent,
   variant = 'recommendation',
+  latitude,
+  longitude,
 }: ProjectCardProps): JSX.Element {
   const classes = useStyles()
   const [open, toggleOpen] = useToggle()
+  const distance =
+    latitude &&
+    longitude &&
+    distanceBetweenLocations(
+      { latitude: Number(project.place?.latitude) || 0, longitude: Number(project.place?.longitude) || 0 },
+      { latitude: Number(latitude), longitude: Number(longitude) },
+    )
 
-  if (variant === 'admin') {
+  if (variant === 'self') {
     return (
       <>
         <Card onClick={onClick ? () => onClick?.(project) : toggleOpen}>
@@ -67,10 +78,13 @@ export function ProjectCard({
                 {project && <Typography variant="Header2">{project?.title}</Typography>}
                 <Stack spacing={1} direction="row" justifyContent="space-between" alignItems="flex-start">
                   {project?.place && <Parameter variant="primary" name="place2" title={project?.place.title} />}
-                  {Boolean(project?.participations.length) && (
-                    <Parameter variant="primary" name="participationSmall" title={project?.participations.length} />
-                  )}
+                  {distance && <Parameter variant="primary" name="distanceSmall" title={getDistanceTitle(distance)} />}
                 </Stack>
+                {/*<Stack spacing={1} direction="row" justifyContent="space-between" alignItems="flex-start">*/}
+                {/*  {Boolean(project?.participations.length) && (*/}
+                {/*    <Parameter variant="secondary" name="participationSmall" title={project?.participations.length} />*/}
+                {/*  )}*/}
+                {/*</Stack>*/}
               </Stack>
             </div>
           </Stack>
