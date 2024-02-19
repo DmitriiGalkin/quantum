@@ -14,9 +14,9 @@ interface BackProps {
 }
 export function Back({ onClick, menuItems }: BackProps): JSX.Element {
   const navigate = useNavigate()
-  const onClickBack = onClick ? onClick : () => (window.history.length - 1 ? window.history.back() : navigate('/'))
-
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(null)
+
+  const onClickBack = onClick ? onClick : () => (window.history.length - 1 ? window.history.back() : navigate('/'))
   const onMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorElement(event.currentTarget)
   const onMenuClose = () => setAnchorElement(null)
 

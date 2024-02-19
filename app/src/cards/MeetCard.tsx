@@ -21,14 +21,12 @@ interface MeetCardProps {
 
 export function MeetCard({ meet, refetch, showDate }: MeetCardProps): JSX.Element {
   const { isAuth, user, openLogin, passport } = useAuth()
+  const [create, toggleCreate] = useToggle()
   const createVisit = useCreateVisit()
   const deleteVisit = useDeleteVisit()
-
-  const { time, shortMonth, day } = convertToObject(meet.datetime)
-
-  const visit = user && (meet.visits || []).find(({ userId }) => userId === user.id)
   const isOrganizer = passport && meet.passportId === passport.id
-  const [create, toggleCreate] = useToggle()
+  const { time, shortMonth, day } = convertToObject(meet.datetime)
+  const visit = user && (meet.visits || []).find(({ userId }) => userId === user.id)
 
   const onClickCreateVisit = () => {
     if (isAuth && user) {

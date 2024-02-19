@@ -8,8 +8,9 @@ import { AgeField } from './AgeField'
 export interface ProjectFormProps {
   project: Partial<Project>
   onChange: (project: Partial<Project>) => void
+  autoFocus?: boolean
 }
-function ProjectForm({ project, onChange }: ProjectFormProps): JSX.Element {
+function ProjectForm({ project, onChange, autoFocus = true }: ProjectFormProps): JSX.Element {
   return (
     <>
       <Stack spacing={1} direction="row">
@@ -19,7 +20,7 @@ function ProjectForm({ project, onChange }: ProjectFormProps): JSX.Element {
             label="Название *"
             value={project.title}
             onChange={(e) => onChange({ ...project, title: e.target.value })}
-            autoFocus
+            autoFocus={autoFocus}
           />
         </div>
         <AgeField

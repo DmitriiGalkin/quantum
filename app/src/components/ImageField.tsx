@@ -29,8 +29,8 @@ interface ImageFieldProps {
   onChange: (image: string) => void
 }
 export function ImageField({ name, label, onChange, value }: ImageFieldProps): JSX.Element {
-  const uploadImage = useUploadImage()
   const classes = useStyles()
+  const uploadImage = useUploadImage()
 
   const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {

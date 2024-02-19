@@ -13,7 +13,7 @@ var Idea = function(data){
 Idea.create = function (data, result) {
     dbConn.query("INSERT INTO idea set ?", data, function (err, res) {
         if (err) {console.log(err,'err')}
-        result(err, res.insertId);
+        result(err, res?.insertId);
     });
 };
 

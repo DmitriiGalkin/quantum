@@ -24,9 +24,9 @@ export function DialogHeaderDefault({
   isForPassport,
 }: DialogHeaderProps): JSX.Element {
   const navigate = useNavigate()
-  const onBackClick = onClick ? onClick : () => (window.history.length - 1 ? window.history.back() : navigate('/'))
-
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(null)
+
+  const onBackClick = onClick ? onClick : () => (window.history.length - 1 ? window.history.back() : navigate('/'))
   const onMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorElement(event.currentTarget)
   const onMenuClose = () => setAnchorElement(null)
 

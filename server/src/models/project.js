@@ -15,7 +15,7 @@ var Project = function(data){
 Project.create = function (data, result) {
     dbConn.query("INSERT INTO project set ?", data, function (err, res) {
         if (err) {console.log(err,'err')}
-        result(err, res.insertId);
+        result(err, res?.insertId);
     });
 };
 
@@ -32,14 +32,19 @@ Project.delete = function(id, result){
 };
 
 Project.findAll = function (params, result) {
+    if (params.variant === 'participation' && !params.userId) {
+        return result(null, []);
+    }
+
     let where = 'WHERE '
-    where = (params.variant === 'participation' ? 'LEFT JOIN participation ON participation.projectId = project.id ' : '') + where + (params.variant === 'participation' ? 'participation.userId = ' + params.userId : 'project.id = project.id')
-    where = where + (params.deleted === 'true' ? ' AND deleted IS NOT NULL OR deleted IS NULL' : ' AND deleted IS NULL')
-    where = where + ' AND passportId = ' + ((params.variant === 'self' && params.passportId) ? params.passportId : 'passportId')
-    where = where + ((params.type === 'recommendation' && params.passportId) ? ' AND passportId != ' + params.passportId : '')
+    where += (params.deleted === 'true' ? 'deleted IS NOT NULL OR deleted IS NULL' : 'deleted IS NULL')
+    where = (params.variant === 'participation' && params.userId) ? 'LEFT JOIN participation ON participation.projectId = project.id ' + where + ' AND participation.userId = ' + params.userId : where
+    where += ' AND passportId = ' + ((params.variant === 'self' && params.passportId) ? params.passportId : 'passportId')
+    where += ((params.type === 'recommendation' && params.passportId) ? ' AND passportId != ' + params.passportId : '')
 
     const l = `SELECT project.* FROM project ${where}`
-    // console.log(params.type, l,' Project.findAll')
+    // console.log(l,'l')
+
     dbConn.query(l, function (err, res) {
         result(null, res || []);
     });

@@ -1,5 +1,6 @@
 import { Avatar, Box, Stack, SwipeableDrawer } from '@mui/material'
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useToggle } from 'usehooks-ts'
 
 import { IdeaCard } from './cards/IdeaCard'
@@ -7,6 +8,7 @@ import { ProjectCard } from './cards/ProjectCard'
 import { Button, DialogFooter, Icon } from './components'
 import { DialogContent } from './components/DialogContent'
 import { Header } from './components/Header'
+import { LeftButton } from './components/LeftButton'
 import { Logo } from './components/Logo'
 import { RecommendationIdeas } from './components/RecommendationIdeas'
 import { RecommendationProjects } from './components/RecommendationProjects'
@@ -19,6 +21,7 @@ import FastIdea from './dialogs/FastIdea'
 import FastProject from './dialogs/FastProject'
 import Ideas from './dialogs/Ideas'
 import Meets from './dialogs/Meets'
+import ProjectDialog from './dialogs/Project'
 import Projects from './dialogs/Projects'
 import Visits from './dialogs/Visits'
 import { useAuth } from './tools/auth'
@@ -27,15 +30,17 @@ import { IdeaFilter, useIdeas, useProjects } from './tools/service'
 import { COLOR, COLOR_GRAY, COLOR_LOW, COLOR_PAPER } from './tools/theme'
 
 interface AppProps {
-  action?: 'fastIdea' | 'fastProject'
+  action?: 'fastIdea' | 'fastProject' | 'project'
 }
 export default function App({ action }: AppProps): JSX.Element {
+  const { id } = useParams()
   const { isAuth, openLogin, user, setSelectedUserId, passport, refetch: refetchPassport } = useAuth()
   const [idea, toggleIdea] = useToggle()
   const [ideaFilter, setIdeaFilter] = useState<IdeaFilter>()
   const [ideaStepper, toggleIdeaStepper] = useToggle(action === 'fastIdea')
   const [fastProject, toggleFastProject] = useToggle()
   const [modalProjects, toggleModalProjects] = useToggle()
+  const [openProject, toggleOpenProject] = useState<string | false | undefined>(action === 'project' && id)
   const [project, toggleProject] = useToggle()
   const [passportC, togglePassportC] = useToggle()
   const [menu, toggleMenu] = useToggle()
@@ -61,14 +66,8 @@ export default function App({ action }: AppProps): JSX.Element {
           <Header>
             {user && (
               <>
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <Avatar
-                    key={user.id}
-                    alt={user.title}
-                    src={user.image}
-                    sx={{ border: '2px solid white' }}
-                    onClick={toggleMenu}
-                  />
+                <Stack direction="row" spacing={2} alignItems="center" onClick={toggleMenu}>
+                  <Avatar alt={user.title} src={user.image} sx={{ border: '2px solid white' }} />
                   <Typography variant="Body-Bold" style={{ color: 'white' }}>
                     {user.title}
                   </Typography>
@@ -78,7 +77,7 @@ export default function App({ action }: AppProps): JSX.Element {
             )}
             {passport && !user && (
               <>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} alignItems="center" onClick={toggleMenu}>
                   <Stack>
                     <Typography variant="Body-Bold" style={{ color: 'white' }}>
                       {passport.title}
@@ -91,19 +90,6 @@ export default function App({ action }: AppProps): JSX.Element {
           </Header>
           <SwipeableDrawer anchor="left" open={menu} onClose={toggleMenu} onOpen={toggleMenu}>
             <Stack direction="row" style={{ height: '100%' }}>
-              <div style={{ position: 'absolute', top: 16, left: sub ? 54 : 0 }}>
-                <div
-                  onClick={user ? toggleSub : onClickCreateUser}
-                  style={{
-                    backgroundColor: COLOR_LOW,
-                    padding: 4,
-                    borderRadius: '0 8px 8px 0',
-                    display: 'inline-flex',
-                  }}
-                >
-                  <Icon color="white" name={user ? 'users' : 'addUser'} />
-                </div>
-              </div>
               {sub && (
                 <div style={{ backgroundColor: COLOR_LOW, width: 60, padding: '24px 8px', height: '100%' }}>
                   <Stack alignItems="center" spacing={2}>
@@ -120,56 +106,66 @@ export default function App({ action }: AppProps): JSX.Element {
                 </div>
               )}
               <div style={{ color: 'black', height: '100%', width: 280 }}>
-                <Stack justifyContent="space-between" style={{ height: '100%' }}>
+                <Stack justifyContent="space-between" style={{ height: '100%', position: 'relative' }}>
                   {user && (
-                    <Stack spacing={2} style={{ backgroundColor: 'white', padding: 16 }}>
-                      <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }} onClick={onClickCreateUser}>
-                        <Avatar alt={user.title} src={user.image} sx={{ width: 72, height: 72 }} />
-                        <Stack>
-                          <Typography variant="Caption">Ребенок</Typography>
-                          <Typography variant="Header3">{user.title}</Typography>
+                    <>
+                      <LeftButton onClick={toggleSub} iconName="users" />
+                      <Stack spacing={2} style={{ backgroundColor: 'white', padding: 16 }}>
+                        <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }} onClick={onClickCreateUser}>
+                          <Avatar alt={user.title} src={user.image} sx={{ width: 72, height: 72 }} />
+                          <Stack>
+                            <Typography variant="Caption">Ребенок</Typography>
+                            <Typography variant="Header3">{user.title}</Typography>
+                          </Stack>
+                        </Stack>
+                        <Stack spacing={1}>
+                          <Stack spacing={1} direction="row" justifyContent="space-between">
+                            <Button
+                              variant="menuButton"
+                              icon={<Icon name="add" color="white" />}
+                              onClick={toggleIdea}
+                              color="primary"
+                            >
+                              Создать идею
+                            </Button>
+                          </Stack>
+                          <Button variant="menuButton" icon={<Icon name="visits" />} onClick={toggleVisits}>
+                            Посещения
+                          </Button>
                         </Stack>
                       </Stack>
-                      <Stack spacing={1}>
+                    </>
+                  )}
+                  {passport && (
+                    <>
+                      {!user && <LeftButton onClick={onClickCreateUser} iconName="addUser" />}
+                      <Stack spacing={1} style={{ padding: 16 }}>
+                        <Stack style={{ padding: '14px 40px' }} onClick={togglePassportC}>
+                          <Typography variant="Caption">Взрослый</Typography>
+                          <Typography variant="Header3">{passport.title}</Typography>
+                        </Stack>
                         <Stack spacing={1} direction="row" justifyContent="space-between">
                           <Button
                             variant="menuButton"
                             icon={<Icon name="add" color="white" />}
-                            onClick={toggleIdea}
+                            onClick={toggleProject}
                             color="primary"
                           >
-                            Создать идею
+                            Создать проект
                           </Button>
                         </Stack>
-                        <Button variant="menuButton" icon={<Icon name="visits" />} onClick={toggleVisits}>
-                          Посещения
+                        <Button variant="menuButton" icon={<Icon name="idea" />} onClick={() => setIdeaFilter({})}>
+                          Банк идей
                         </Button>
-                      </Stack>
-                    </Stack>
-                  )}
-                  {passport && (
-                    <Stack spacing={1} style={{ padding: 16 }}>
-                      <Stack style={{ padding: '14px 40px' }} onClick={togglePassportC}>
-                        <Typography variant="Caption">Взрослый</Typography>
-                        <Typography variant="Header3">{passport.title}</Typography>
-                      </Stack>
-                      <Stack spacing={1} direction="row" justifyContent="space-between">
                         <Button
                           variant="menuButton"
-                          icon={<Icon name="add" color="white" />}
-                          onClick={toggleProject}
-                          color="primary"
+                          icon={<Icon name="passport" />}
+                          onClick={toggleIsOpenPassportMeets}
                         >
-                          Создать проект
+                          Календарь организатора
                         </Button>
                       </Stack>
-                      <Button variant="menuButton" icon={<Icon name="idea" />} onClick={() => setIdeaFilter({})}>
-                        Банк идей
-                      </Button>
-                      <Button variant="menuButton" icon={<Icon name="passport" />} onClick={toggleIsOpenPassportMeets}>
-                        Календарь организатора
-                      </Button>
-                    </Stack>
+                    </>
                   )}
                 </Stack>
               </div>
@@ -328,6 +324,13 @@ export default function App({ action }: AppProps): JSX.Element {
       <Visits open={visits} onClose={toggleVisits} />
       <Meets open={isOpenMeets} onClose={toggleIsOpenMeets} />
       <Meets open={isOpenPassportMeets} onClose={toggleIsOpenPassportMeets} isForPassport />
+      <ProjectDialog
+        projectId={openProject}
+        open={Boolean(openProject)}
+        onClose={() => {
+          toggleOpenProject(undefined)
+        }}
+      />
     </Box>
   )
 }

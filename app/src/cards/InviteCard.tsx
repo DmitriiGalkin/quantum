@@ -18,6 +18,7 @@ export function InviteCard({ invite, refetch }: InviteCardProps): JSX.Element {
   const [open, toggleOpen] = useToggle()
   const acceptInvite = useAcceptInvite()
   const deleteInvite = useDeleteInvite()
+
   const onAccept = () => invite.id && acceptInvite.mutateAsync(invite.id).then(refetch)
   const onDelete = () => invite.id && deleteInvite.mutateAsync(invite.id).then(refetch)
 

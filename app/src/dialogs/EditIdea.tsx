@@ -18,25 +18,11 @@ export interface EditIdeaProps {
 function EditIdea({ ideaId, onClose }: EditIdeaProps) {
   const { user, passport } = useAuth()
   const { latitude, longitude } = useGeolocation()
-
   const addIdea = useAddIdea()
   const editIdea = useEditIdea(ideaId)
   const deleteIdea = useDeleteIdea()
-
   const [idea, setIdea] = useState<Partial<Idea>>({ title: '', userId: user?.id, passportId: passport?.id })
   const { data: defaultIdea, refetch } = useIdea(ideaId)
-
-  const onDelete = () => deleteIdea.mutateAsync(idea.id).then(onClose)
-
-  const onClickSave = () => {
-    if (idea.id) {
-      editIdea.mutateAsync(idea).then(onClose)
-    } else {
-      addIdea.mutateAsync(idea).then(() => {
-        onClose()
-      })
-    }
-  }
 
   useEffect(() => {
     if (defaultIdea) {
@@ -46,6 +32,7 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
       return () => {}
     }
   }, [defaultIdea])
+
   useEffect(() => {
     if (longitude && latitude && !idea.longitude) {
       setIdea({ ...idea, longitude, latitude })
@@ -54,6 +41,17 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
       return () => {}
     }
   }, [idea, longitude, latitude])
+
+  const onDelete = () => deleteIdea.mutateAsync(idea.id).then(onClose)
+  const onClickSave = () => {
+    if (idea.id) {
+      editIdea.mutateAsync(idea).then(onClose)
+    } else {
+      addIdea.mutateAsync(idea).then(() => {
+        onClose()
+      })
+    }
+  }
 
   return (
     <>
@@ -70,7 +68,7 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
             label="Название"
             value={idea.title}
             onChange={(e) => setIdea({ ...idea, title: e.target.value })}
-            autoFocus
+            autoFocus={!ideaId}
           />
           <Textarea
             name="title"

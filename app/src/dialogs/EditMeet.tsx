@@ -16,22 +16,19 @@ export interface EditMeetProps {
   onClose: () => void
 }
 function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
+  const addMeet = useAddMeet()
+  const editMeet = useEditMeet(meetId)
+  const deleteMeet = useDeleteMeet()
   const [meet, setMeet] = useState<Partial<Meet>>({
     datetime: now(),
     projectId: defaultProjectId,
   })
-
   const { data: defaultMeet, refetch, isFetching } = useMeet(meetId)
-  const addMeet = useAddMeet()
-  const editMeet = useEditMeet(meetId)
-  const deleteMeet = useDeleteMeet()
-
-  const onDelete = () => deleteMeet.mutateAsync(meet.id).then(onClose)
+  const { time } = convertToObject(meet.datetime)
 
   useEffect(() => defaultMeet && setMeet(defaultMeet), [defaultMeet])
 
-  if (!meet) return null
-
+  const onDelete = () => deleteMeet.mutateAsync(meet.id).then(onClose)
   const onClickSave = () => {
     if (meet.id) {
       editMeet.mutateAsync(meet).then(onClose)
@@ -42,7 +39,7 @@ function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
     }
   }
 
-  const { time } = convertToObject(meet.datetime)
+  if (!meet) return null
 
   return (
     <>

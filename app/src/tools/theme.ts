@@ -10,6 +10,7 @@ export const COLOR_PRIMARY = '#7139FF'
 export const COLOR_DEFAULT = '#e1e1e1'
 export const COLOR_BLACK = '#070707'
 export const COLOR_GRAY = '#A5A5A5'
+export const COLOR_PRICE = '#7ED6D8'
 
 const theme = createTheme({
   typography: {

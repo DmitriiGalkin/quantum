@@ -20,11 +20,13 @@ interface IdeaCardProps {
 }
 export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): JSX.Element {
   const { user, isAuth } = useAuth()
-  const { data: selfProjects = [], refetch: refetchSelfProject } = useProjects({ variant: 'self' })
-
   const [project, toggleProject] = useToggle()
   const [create, toggleCreate] = useToggle()
   const createInvite = useCreateInvite()
+  const { data: selfProjects = [], refetch: refetchSelfProject } = useProjects({ variant: 'self' })
+  const self = user?.id === idea.userId
+  const inviteProjectIds = idea?.invites?.map((invite) => invite.projectId)
+  const filteredProjects = selfProjects.filter((project) => !inviteProjectIds?.includes(project.id))
 
   const onInvite = (e: React.MouseEvent<HTMLElement>) => {
     !onAdd ? toggleProject() : onAdd(idea)
@@ -37,10 +39,6 @@ export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): JSX.
         refetchSelfProject()
       })
   }
-
-  const self = user?.id === idea.userId
-  const inviteProjectIds = idea?.invites?.map((invite) => invite.projectId)
-  const filteredProjects = selfProjects.filter((project) => !inviteProjectIds?.includes(project.id))
 
   return (
     <>

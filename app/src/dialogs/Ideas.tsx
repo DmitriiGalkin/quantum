@@ -16,8 +16,8 @@ export interface IdeasProps {
 }
 function Ideas({ onClose, ideaFilter }: IdeasProps) {
   const [filter, setFilter] = useState<IdeaFilter | undefined>(ideaFilter)
-  const { data, refetch } = useIdeas(filter)
   const [options, toggleOptions] = useToggle()
+  const { data, refetch } = useIdeas(filter)
 
   return (
     <>

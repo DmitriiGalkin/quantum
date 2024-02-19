@@ -12,7 +12,7 @@ export function Textarea({ label, name, ...rest }: TextareaFieldProps): JSX.Elem
   return (
     <div>
       {label && <label htmlFor={name}>{label}</label>}
-      <textarea id={name} rows={3} className={classes.input} {...rest} />
+      <textarea id={name} rows={5} className={classes.input} {...rest} />
     </div>
   )
 }

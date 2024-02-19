@@ -14,16 +14,16 @@ export interface EditUserProps {
   onClose: () => void
 }
 function EditUser({ userId, onClose }: EditUserProps) {
-  const [user, setUser] = useState<Partial<User>>()
-  const { data: defaultUser, isFetching } = useUser(userId)
-  const [openDelete, toggleOpenDelete] = useToggle()
-
   const addUser = useAddUser()
   const editUser = useEditUser(userId)
   const deleteUser = useDeleteUser()
+  const [openDelete, toggleOpenDelete] = useToggle()
+  const [user, setUser] = useState<Partial<User>>()
+  const { data: defaultUser, isFetching } = useUser(userId)
+  const showSave = user && !isFetching && JSON.stringify(defaultUser) !== JSON.stringify(user)
+
   useEffect(() => defaultUser && setUser(defaultUser), [defaultUser])
 
-  // if (!user) return null;
   const onDelete = () => user?.id && deleteUser.mutateAsync(user.id).then(onClose)
   const onClickSave = () => {
     if (user) {
@@ -34,8 +34,6 @@ function EditUser({ userId, onClose }: EditUserProps) {
       }
     }
   }
-
-  const showSave = user && !isFetching && JSON.stringify(defaultUser) !== JSON.stringify(user)
 
   return (
     <>
@@ -52,6 +50,7 @@ function EditUser({ userId, onClose }: EditUserProps) {
               label="Имя"
               value={user?.title}
               onChange={(e) => setUser({ ...user, title: e.target.value })}
+              autoFocus
             />
             <Input
               name="age"

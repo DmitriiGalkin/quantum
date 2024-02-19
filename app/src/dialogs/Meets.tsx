@@ -20,8 +20,8 @@ function Meets({ onClose, isForPassport }: MeetsProps) {
   const { user } = useAuth()
   const [date, setDate] = useState(nowDate())
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const containerHeight = containerRef.current?.offsetHeight
   const { data: meets = [], refetch } = useMeets(user?.id, isForPassport)
+  const containerHeight = containerRef.current?.offsetHeight
   const days = getWeek(meets, user?.id)
 
   return (

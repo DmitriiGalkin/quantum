@@ -12,11 +12,7 @@ interface RecommendationIdeasProps {
 }
 export function RecommendationIdeas({ toggleIdeasC }: RecommendationIdeasProps): JSX.Element {
   const { latitude, longitude } = useGeolocation()
-  const { data: ideas = [], refetch } = useIdeas({
-    variant: 'recommendation',
-    latitude,
-    longitude,
-  })
+  const { data: ideas = [], refetch } = useIdeas({ variant: 'recommendation', latitude, longitude })
 
   return (
     <Stack spacing={2}>

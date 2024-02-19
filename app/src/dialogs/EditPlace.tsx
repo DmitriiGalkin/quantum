@@ -17,7 +17,6 @@ interface EditPlaceProps {
 function EditPlace({ places, onSuccess, onClose }: EditPlaceProps) {
   const { defaultState } = useGeolocation()
   const map = useRef()
-
   const [place, setPlace] = useState<Place>({ id: 0, title: '', latitude: '1', longitude: '2', image: '' })
 
   if (!defaultState) return null

@@ -17,22 +17,21 @@ export interface UserViewProps {
   onClose: () => void
 }
 function EditPassport({ onLogout, onClose }: UserViewProps): React.ReactNode {
-  // const { data: defaultPassport } = usePassport();
-  const { logout, refetch, passport: defaultPassport } = useAuth()
-  const [passport, setPassport] = useState<Passport>()
-  const [createUser, onClickCreateUser] = useToggle()
   const updateUser = useUpdatePassport()
+  const [createUser, onClickCreateUser] = useToggle()
+  const [passport, setPassport] = useState<Passport>()
+  const { logout, refetch, passport: defaultPassport } = useAuth()
 
-  const onClickSave = () => {
-    passport && updateUser.mutate(passport)
-    onClose?.()
-  }
   useEffect(() => defaultPassport && setPassport(defaultPassport), [defaultPassport])
 
   const onClickLogout = () => {
     logout()
     onLogout()
     onClose()
+  }
+  const onClickSave = () => {
+    passport && updateUser.mutate(passport)
+    onClose?.()
   }
 
   if (!passport) return null

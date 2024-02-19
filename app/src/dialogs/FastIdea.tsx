@@ -20,21 +20,20 @@ export interface FastIdeaProps {
   onClose: () => void
 }
 function FastIdea({ onClose }: FastIdeaProps) {
-  const { isAuth } = useAuth()
+  const { isAuth, openLogin } = useAuth()
   const { latitude, longitude } = useGeolocation()
-
-  const { openLogin } = useAuth()
   const [data, setData] = useState<FastIdeaData>({ idea: {}, user: {} })
-  const onSubmit = () => {
-    localStorage.setItem(FAST_IDEA, JSON.stringify(data))
-    !isAuth && openLogin()
-  }
 
   useEffect(() => {
     if (latitude && longitude) {
       setData({ ...data, idea: { ...data.idea, latitude, longitude } })
     }
   }, [latitude, longitude])
+
+  const onSubmit = () => {
+    localStorage.setItem(FAST_IDEA, JSON.stringify(data))
+    !isAuth && openLogin()
+  }
 
   return (
     <>

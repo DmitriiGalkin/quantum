@@ -15,6 +15,7 @@ interface ParticipationCardProps {
 
 export function ParticipationCard({ participation, isOrganizer, refetch }: ParticipationCardProps): JSX.Element {
   const deleteParticipation = useDeleteParticipation()
+
   const onDeleteParticipation = () => deleteParticipation.mutateAsync(participation).then(() => refetch())
 
   return (

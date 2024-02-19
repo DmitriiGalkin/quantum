@@ -27,6 +27,7 @@ export interface User {
 export interface Place {
   id: number // Идентификатор
   title: string // Название
+  description?: string // Описание
   image: string // Фотография
   latitude: string // Широта
   longitude: string // Долгота

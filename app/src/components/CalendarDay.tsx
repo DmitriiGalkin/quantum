@@ -84,6 +84,7 @@ export function CalendarDay({ datetime, active, activeMeetsLength, onClick }: Ca
   const { day, dayOfWeekValue } = convertToObject(datetime)
 
   const onClickDay = () => onClick?.(datetime)
+
   return (
     <Stack key={day} spacing={1} alignItems="center" onClick={onClickDay} style={{ width: '100%' }}>
       <div className={clsx(classes.dayOfWeek, active && classes.dayOfWeekActive)}>{dayOfWeekValue}</div>

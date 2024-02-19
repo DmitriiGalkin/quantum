@@ -17,6 +17,7 @@ const router = createBrowserRouter(
     <Route element={<AuthLayout />}>
       <Route index element={<App />} />
       <Route path="i" element={<App action="fastIdea" />} />
+      <Route path="project/:id" element={<App action="project" />} />
     </Route>,
   ),
 )

@@ -9,7 +9,7 @@ var Invite = function(data){
 
 Invite.create = function (data, result) {
     dbConn.query("INSERT INTO invite set ?", data, function (err, res) {
-        result(err, res && res.insertId);
+        result(err, res?.insertId);
     });
 };
 

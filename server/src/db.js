@@ -13,7 +13,9 @@ dbConn.connect(function(err) {
     console.log("Server connected database on port 3306");
 });
 
+dbConn.query("SET SESSION wait_timeout = 604800"); // 7 days timeout
 dbConn.query(`SET time_zone='+00:00'`, function (err, res) {
 });
+
 
 module.exports = dbConn;

@@ -40,7 +40,6 @@ export const useStyles = makeStyles(() => ({
       default:
         return {
           fontSize: 13,
-          // opacity: .6,
         }
       case 'Body-Bold':
         return {

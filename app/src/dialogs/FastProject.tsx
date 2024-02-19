@@ -28,7 +28,6 @@ export interface FastProjectProps {
 function FastProject({ onClose }: FastProjectProps) {
   const { openLogin } = useAuth()
   const [data, setData] = useState<FastProjectData>({ project: {}, place: {}, invites: [] })
-
   const { data: ideas = [], refetch } = useIdeas({
     ageFrom: data.project.ageFrom,
     ageTo: data.project.ageTo,
@@ -52,7 +51,7 @@ function FastProject({ onClose }: FastProjectProps) {
       <DialogHeader title="Быстрый проект" onClick={onClose} />
       <DialogContent>
         <Block variant="primary">
-          <ProjectForm project={data.project} onChange={(project) => setData({ ...data, project })} />
+          <ProjectForm project={data.project} onChange={(project) => setData({ ...data, project })} autoFocus />
           <PlaceSelect2 onChange={(place: Place) => setData({ ...data, place })} place={data.place} />
         </Block>
         <Block variant="secondary">

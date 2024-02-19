@@ -1,5 +1,6 @@
 'use strict';
 const async = require("async");
+const createError = require('http-errors')
 const Project = require('../models/project');
 const User = require('../models/user');
 const Passport = require('../models/passport');
@@ -39,18 +40,22 @@ exports.delete = function(req, res) {
     })
 };
 
-exports.findAll = function(req, res) {
-    Project.findAll({...req.query, passportId: req.passport?.id }, function(err, projects) {
-        async.map(projects.map(p=>p.placeId), Place.findById, function(err, places) {
-            async.map(projects.map(p=>p.id), Participation.findByProjectId, function(err, participations) {
-                res.send(projects.map((p, index) => ({
-                    ...p,
-                    place: places[index],
-                    participations: participations[index]
-                })));
+exports.findAll = async (req, res) => {
+    try {
+        Project.findAll({...req.query, passportId: req.passport?.id }, function(err, projects) {
+            async.map(projects.map(p=>p.placeId), Place.findById, function(err, places) {
+                async.map(projects.map(p=>p.id), Participation.findByProjectId, function(err, participations) {
+                    res.send(projects.map((p, index) => ({
+                        ...p,
+                        place: places[index],
+                        participations: participations[index]
+                    })));
+                })
             })
-        })
-    });
+        });
+    } catch (err) {
+        res.end("error page");
+    }
 };
 exports.findById = function(req, res) {
     Project.findById(req.params.id, function(err, project) {

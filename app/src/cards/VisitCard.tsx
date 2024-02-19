@@ -29,20 +29,19 @@ interface VisitCardProps {
 }
 
 export function VisitCard({ visit, refetch }: VisitCardProps): JSX.Element {
+  const classes = useStyles()
   const { passport } = useAuth()
-
   const startedVisit = useStartedVisit()
   const stoppedVisit = useStoppedVisit()
   const paidedVisit = usePaidedVisit()
-  const onStarted = () => startedVisit.mutateAsync(visit).then(() => refetch())
-  const onStopped = () => stoppedVisit.mutateAsync(visit).then(() => refetch())
-  const onPaided = () => paidedVisit.mutateAsync(visit).then(() => refetch())
-  const classes = useStyles()
   const isStarted = visit.started && !visit.stopped
   const isMiss = !visit.started && visit.stopped
   const isStart = getIsStart(visit.meet?.datetime) // true //
-
   const { time } = convertToObject(visit.meet?.datetime)
+
+  const onStarted = () => startedVisit.mutateAsync(visit).then(() => refetch())
+  const onStopped = () => stoppedVisit.mutateAsync(visit).then(() => refetch())
+  const onPaided = () => paidedVisit.mutateAsync(visit).then(() => refetch())
 
   return (
     <Card>

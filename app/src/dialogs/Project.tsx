@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Box, Stack } from '@mui/material'
+import {Avatar, AvatarGroup, Box, Link, Stack} from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { Map, Placemark, YMaps } from '@pbe/react-yandex-maps'
 import React, { useEffect, useState } from 'react'
@@ -79,7 +79,7 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
       ),
     },
     { name: 'age', title: 'Рек. возраст', value: getAgeTitle(project?.ageFrom, project?.ageTo) },
-    { name: 'place', title: 'Место', value: project?.place?.title, onClick: toggleOpenMap },
+    { name: 'place', title: 'Место', value: <Link>{project?.place?.title}</Link>, onClick: toggleOpenMap },
   ] as Parameter[]
 
   const onCreateParticipation = () =>
@@ -182,7 +182,7 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
           </Stack>
         </div>
       </div>
-      <EditProject projectId={project.id} open={edit} onClose={onCloseEditProject} onDeleteProject={onClose} />
+      <EditProject name={'editProject' + project.id} projectId={project.id} open={edit} onClose={onCloseEditProject} onDeleteProject={onClose} />
       <EditMeet defaultProjectId={project.id} open={createMeet} onClose={onCloseCreateMeet} />
     </>
   )

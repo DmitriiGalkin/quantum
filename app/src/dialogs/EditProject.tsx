@@ -17,11 +17,12 @@ export interface EditProjectProps {
   onDeleteProject: () => void
 }
 function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) {
-  const { data: defaultProject, refetch } = useProject(projectId)
-  const [project, setProject] = useState<Partial<Project>>({ title: '' })
   const addPlace = useAddPlace()
   const addProject = useAddProject()
-  const editProject = useEditProject(project.id)
+  const editProject = useEditProject(projectId)
+  const deleteProject = useDeleteProject()
+  const [project, setProject] = useState<Partial<Project>>({ title: '' })
+  const { data: defaultProject, refetch } = useProject(projectId)
 
   useEffect(() => defaultProject && setProject(defaultProject), [defaultProject])
 
@@ -40,8 +41,6 @@ function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) 
       addProject.mutateAsync(project).then(onClose)
     }
   }
-
-  const deleteProject = useDeleteProject()
   const onDelete = () => deleteProject.mutateAsync(project.id).then(onDeleteProject)
 
   return (
@@ -54,7 +53,7 @@ function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) 
       />
       <DialogContent>
         <Block variant="primary">
-          <ProjectForm project={project} onChange={setProject} />
+          <ProjectForm project={project} onChange={setProject} autoFocus={!projectId} />
           <PlaceSelect2
             onChange={(place: Place) => setProject({ ...project, place, placeId: place.id })}
             place={project.place}
