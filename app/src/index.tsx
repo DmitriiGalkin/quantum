@@ -11,13 +11,14 @@ import App from './App'
 import { AuthLayout } from './tools/auth'
 import reportWebVitals from './tools/reportWebVitals'
 import theme from './tools/theme'
+import ProjectDialog2 from "./dialogs/ProjectDialog2";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AuthLayout />}>
       <Route index element={<App />} />
       <Route path="i" element={<App action="fastIdea" />} />
-      <Route path="project/:id" element={<App action="project" />} />
+      <Route path="project/:id" element={<ProjectDialog2 open={true} />} />
     </Route>,
   ),
 )

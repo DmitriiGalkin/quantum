@@ -1,7 +1,12 @@
 import dayjs from 'dayjs'
+import isToday from 'dayjs/plugin/isToday'
+import isTomorrow from 'dayjs/plugin/isTomorrow'
 
 export const FORMAT = 'YYYY-MM-DD HH:mm:ss'
 export const FORMAT2 = 'YYYY-MM-DD'
+
+dayjs.extend(isToday)
+dayjs.extend(isTomorrow)
 
 const MONTH_SHORT_TITLES = ['ЯНВ', 'ФЕВ', 'МАР', 'АПР', 'МАЙ', 'ИЮН', 'ИЮЛ', 'АВГ', 'СЕН', 'ОКТ', 'НОЯ', 'ДЕК']
 const MONTH_LONG_TITLES = [
@@ -51,6 +56,22 @@ export const convertToObject = (
     day: String(localDateTime.date()),
     dayOfWeekValue: getDayOfWeekTitle(localDateTime.day()),
   }
+}
+
+/**
+ * Строчка для пользователя из дататайма
+ */
+export const getDatetimeTitle = (datetime?: string): string => {
+  if (!datetime) return ''
+
+  const localDateTime = dayjs(datetime)
+  const isToday2 = localDateTime.isToday()
+  const isTomorrow2 = localDateTime.isTomorrow()
+
+  return localDateTime.format(
+    (isToday2 ? '[Сегодня]' : ((isTomorrow2 ? '[Завтра]' : `D ${getMonthLongTitle(localDateTime.month())}`))) +
+      ', HH:mm',
+  )
 }
 
 /**

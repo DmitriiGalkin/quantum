@@ -56,6 +56,7 @@ export interface Project {
   passport?: Passport // Организатор (Родитель)
   place?: Place // Место проведения
   meets?: Meet[] // Встречи
+  recommendMeet?: Meet // Рекомендованная встреча
 }
 
 /**

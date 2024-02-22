@@ -57,6 +57,16 @@ Meet.findByProjectId = function (id, result) {
         result(null, res);
     });
 };
+
+/**
+ * Поиск одной рекомендованной пользователю встречи
+ */
+Meet.findRecommendationByProjectId = function (id, result) {
+    dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet WHERE projectId = ? AND DATE(datetime) >= CURDATE() AND deleted IS NULL ORDER BY datetime LIMIT 1", id, function (err, res) {
+        result(null, res?.[0]);
+    });
+};
+
 Meet.findByUserId = function (id, result) {
     dbConn.query("SELECT meet.*, date_format(datetime, '%Y-%m-%d %H:%i:%s') as datetime FROM meet LEFT JOIN participation ON participation.projectId = meet.projectId WHERE participation.userId = ? AND deleted IS NULL AND DATE(datetime) >= CURDATE()", id, function (err, res) {
         result(null, res || []);
