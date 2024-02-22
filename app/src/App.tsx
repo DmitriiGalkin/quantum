@@ -1,6 +1,6 @@
 import { Avatar, Box, Stack, SwipeableDrawer } from '@mui/material'
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import { useToggle } from 'usehooks-ts'
 
 import { IdeaCard } from './cards/IdeaCard'
@@ -13,42 +13,23 @@ import { Logo } from './components/Logo'
 import { RecommendationIdeas } from './components/RecommendationIdeas'
 import { RecommendationProjects } from './components/RecommendationProjects'
 import Typography from './components/Typography'
-import EditIdea from './dialogs/EditIdea'
-import EditPassport from './dialogs/EditPassport'
-import EditProject from './dialogs/EditProject'
-import EditUser from './dialogs/EditUser'
 import FastIdea from './dialogs/FastIdea'
 import FastProject from './dialogs/FastProject'
-import Ideas from './dialogs/Ideas'
-import Meets from './dialogs/Meets'
-import ProjectDialog from './dialogs/Project'
-import Projects from './dialogs/Projects'
-import Visits from './dialogs/Visits'
 import { useAuth } from './tools/auth'
 import { useFast } from './tools/fast'
-import { IdeaFilter, useIdeas, useProjects } from './tools/service'
+import { useIdeas, useProjects } from './tools/service'
 import { COLOR, COLOR_GRAY, COLOR_LOW, COLOR_PAPER } from './tools/theme'
 
 interface AppProps {
   action?: 'fastIdea' | 'fastProject' | 'project'
 }
 export default function App({ action }: AppProps): JSX.Element {
-  const { id } = useParams()
-  const { isAuth, openLogin, user, setSelectedUserId, passport, refetch: refetchPassport } = useAuth()
-  const [idea, toggleIdea] = useToggle()
-  const [ideaFilter, setIdeaFilter] = useState<IdeaFilter>()
+  const navigate = useNavigate()
+  const { isAuth, openLogin, user, setSelectedUserId, passport } = useAuth()
   const [ideaStepper, toggleIdeaStepper] = useToggle(action === 'fastIdea')
   const [fastProject, toggleFastProject] = useToggle()
-  const [modalProjects, toggleModalProjects] = useToggle()
-  const [openProject, toggleOpenProject] = useState<string | false | undefined>(action === 'project' && id)
-  const [project, toggleProject] = useToggle()
-  const [passportC, togglePassportC] = useToggle()
   const [menu, toggleMenu] = useToggle()
-  const [visits, toggleVisits] = useToggle()
   const [sub, toggleSub] = useToggle()
-  const [createUser, onClickCreateUser] = useToggle()
-  const [isOpenMeets, toggleIsOpenMeets] = useToggle()
-  const [isOpenPassportMeets, toggleIsOpenPassportMeets] = useToggle()
 
   const { data: selfIdeas = [], refetch } = useIdeas({ variant: 'self', userId: user?.id })
   const { data: userProjects = [] } = useProjects({ variant: 'participation', userId: user?.id })
@@ -72,7 +53,7 @@ export default function App({ action }: AppProps): JSX.Element {
                     {user.title}
                   </Typography>
                 </Stack>
-                <Icon color="white" name="meets" onClick={toggleIsOpenMeets} />
+                <Icon color="white" name="meets" onClick={() => navigate('/meets')} />
               </>
             )}
             {passport && !user && (
@@ -84,7 +65,7 @@ export default function App({ action }: AppProps): JSX.Element {
                     </Typography>
                   </Stack>
                 </Stack>
-                <Icon color="white" name="meets" onClick={toggleIsOpenPassportMeets} />
+                <Icon color="white" name="meets" onClick={() => navigate('/meets/isForPassport')} />
               </>
             )}
           </Header>
@@ -111,7 +92,7 @@ export default function App({ action }: AppProps): JSX.Element {
                     <>
                       <LeftButton onClick={toggleSub} iconName="users" />
                       <Stack spacing={2} style={{ backgroundColor: 'white', padding: 16 }}>
-                        <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }} onClick={onClickCreateUser}>
+                        <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }} onClick={() => navigate(`/user/${user?.id}/edit`)}>
                           <Avatar alt={user.title} src={user.image} sx={{ width: 72, height: 72 }} />
                           <Stack>
                             <Typography variant="Caption">Ребенок</Typography>
@@ -123,13 +104,13 @@ export default function App({ action }: AppProps): JSX.Element {
                             <Button
                               variant="menuButton"
                               icon={<Icon name="add" color="white" />}
-                              onClick={toggleIdea}
+                              onClick={() => navigate('/idea')}
                               color="primary"
                             >
                               Создать идею
                             </Button>
                           </Stack>
-                          <Button variant="menuButton" icon={<Icon name="visits" />} onClick={toggleVisits}>
+                          <Button variant="menuButton" icon={<Icon name="visits" />} onClick={() => navigate('/visits')}>
                             Посещения
                           </Button>
                         </Stack>
@@ -138,9 +119,9 @@ export default function App({ action }: AppProps): JSX.Element {
                   )}
                   {passport && (
                     <>
-                      {!user && <LeftButton onClick={onClickCreateUser} iconName="addUser" />}
+                      {!user && <LeftButton onClick={() => navigate('/user')} iconName="addUser" />}
                       <Stack spacing={1} style={{ padding: 16 }}>
-                        <Stack style={{ padding: '14px 40px' }} onClick={togglePassportC}>
+                        <Stack style={{ padding: '14px 40px' }} onClick={() => navigate('passport')}>
                           <Typography variant="Caption">Взрослый</Typography>
                           <Typography variant="Header3">{passport.title}</Typography>
                         </Stack>
@@ -148,19 +129,16 @@ export default function App({ action }: AppProps): JSX.Element {
                           <Button
                             variant="menuButton"
                             icon={<Icon name="add" color="white" />}
-                            onClick={toggleProject}
+                            onClick={() => navigate('/project')}
                             color="primary"
                           >
                             Создать проект
                           </Button>
                         </Stack>
-                        <Button variant="menuButton" icon={<Icon name="idea" />} onClick={() => setIdeaFilter({})}>
-                          Банк идей
-                        </Button>
                         <Button
                           variant="menuButton"
                           icon={<Icon name="passport" />}
-                          onClick={toggleIsOpenPassportMeets}
+                          onClick={() => navigate('/meets/isForPassport')}
                         >
                           Календарь организатора
                         </Button>
@@ -190,7 +168,7 @@ export default function App({ action }: AppProps): JSX.Element {
                       </Stack>
                     </>
                   )}
-                  <Button onClick={toggleProject}>Создать проект</Button>
+                  <Button onClick={() => navigate('/project')}>Создать проект</Button>
                 </Stack>
                 {Boolean(userProjects.length) && (
                   <Stack spacing={2}>
@@ -207,7 +185,7 @@ export default function App({ action }: AppProps): JSX.Element {
                     </Stack>
                   </Stack>
                 )}
-                <RecommendationProjects toggleProjectsC={toggleModalProjects} />
+                <RecommendationProjects />
               </Stack>
             )}
             {isIdeasTab && (
@@ -224,12 +202,12 @@ export default function App({ action }: AppProps): JSX.Element {
                         </Stack>
                       </Stack>
                     )}
-                    <Button onClick={toggleIdea}>Создать идею</Button>
+                    <Button onClick={() => navigate('/idea')}>Создать идею</Button>
                   </Stack>
                 ) : (
                   <Button onClick={toggleIdeaStepper}>Быстрая идея</Button>
                 )}
-                <RecommendationIdeas toggleIdeasC={() => setIdeaFilter({})} />
+                <RecommendationIdeas />
               </Stack>
             )}
           </DialogContent>
@@ -276,61 +254,14 @@ export default function App({ action }: AppProps): JSX.Element {
                 <Button onClick={toggleFastProject}>Быстрый проект</Button>
                 <Button onClick={toggleIdeaStepper}>Быстрая идея</Button>
               </Stack>
-              <RecommendationProjects toggleProjectsC={toggleModalProjects} />
-              <RecommendationIdeas toggleIdeasC={() => setIdeaFilter({})} />
+              <RecommendationProjects/>
+              <RecommendationIdeas/>
             </Stack>
           </DialogContent>
         </>
       )}
       <FastIdea open={ideaStepper} onClose={toggleIdeaStepper} />
       <FastProject open={fastProject} onClose={toggleFastProject} />
-      <EditIdea
-        open={idea}
-        onClose={() => {
-          toggleIdea()
-        }}
-      />
-      <EditProject
-        open={project}
-        onClose={() => {
-          toggleProject()
-          refetchSelfProjects()
-        }}
-      />
-      <EditPassport
-        open={passportC}
-        onClose={() => {
-          togglePassportC()
-          refetchPassport()
-        }}
-        onLogout={toggleMenu}
-      />
-      <EditUser
-        userId={user?.id}
-        open={createUser}
-        onClose={() => {
-          onClickCreateUser()
-          refetchPassport()
-        }}
-      />
-      <Projects open={modalProjects} onClose={toggleModalProjects} />
-      <Ideas
-        open={ideaFilter}
-        ideaFilter={ideaFilter}
-        onClose={() => {
-          setIdeaFilter(undefined)
-        }}
-      />
-      <Visits open={visits} onClose={toggleVisits} />
-      <Meets open={isOpenMeets} onClose={toggleIsOpenMeets} />
-      <Meets open={isOpenPassportMeets} onClose={toggleIsOpenPassportMeets} isForPassport />
-      <ProjectDialog
-        projectId={openProject}
-        open={Boolean(openProject)}
-        onClose={() => {
-          toggleOpenProject(undefined)
-        }}
-      />
     </Box>
   )
 }

@@ -10,13 +10,13 @@ import ProjectForm from '../components/ProjectForm'
 import { withDialog } from '../components/helper'
 import { Place, Project } from '../tools/dto'
 import { useAddPlace, useAddProject, useDeleteProject, useEditProject, useProject } from '../tools/service'
+import {useNavigate, useParams} from "react-router-dom";
 
-export interface EditProjectProps {
-  projectId?: number
-  onClose: () => void
-  onDeleteProject: () => void
-}
-function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) {
+function EditProject() {
+  let { id: projectId } = useParams()
+  const navigate = useNavigate()
+
+  const onClose = () => navigate(-1)
   const addPlace = useAddPlace()
   const addProject = useAddProject()
   const editProject = useEditProject(projectId)
@@ -41,7 +41,7 @@ function EditProject({ projectId, onClose, onDeleteProject }: EditProjectProps) 
       addProject.mutateAsync(project).then(onClose)
     }
   }
-  const onDelete = () => deleteProject.mutateAsync(project.id).then(onDeleteProject)
+  const onDelete = () => deleteProject.mutateAsync(project.id).then(onClose)
 
   return (
     <>

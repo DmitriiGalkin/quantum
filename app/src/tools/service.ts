@@ -54,7 +54,7 @@ export type UseMutate<TVariables, TData = unknown, TError = AxiosError, TContext
  */
 export const useMeets = (userId?: number, isForPassport?: boolean): UseQueryResult<Meet[]> =>
   useQuery(['meets'], () => service.get(`/meets?userId=${userId}&isForPassport=${isForPassport}`))
-export const useMeet = (id?: number): UseQueryResult<Meet> =>
+export const useMeet = (id?: string): UseQueryResult<Meet> =>
   useQuery(['meet', id], () => service.get(`/meet/${id}`), {
     enabled: Boolean(id),
   })
@@ -66,13 +66,8 @@ export const useAddMeet = (): UseMutate<Partial<Meet>> => {
     },
   })
 }
-export const useEditMeet = (id?: number): UseMutate<Partial<Meet>> => {
-  const queryClient = useQueryClient()
-  return useMutation((meet) => service.put(`/meet/${id}`, meet), {
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['meet', id] })
-    },
-  })
+export const useEditMeet = (id?: string): UseMutate<Partial<Meet>> => {
+  return useMutation((meet) => service.put(`/meet/${id}`, meet))
 }
 export const useDeleteMeet = (): UseMutate<number | undefined> =>
   useMutation((meetId) => service.delete(`/meet/${meetId}`))
@@ -95,7 +90,7 @@ export const useUpdatePassport = (): UseMutate<Passport> =>
 /**
  * Ребенок
  */
-export const useUser = (id?: number): UseQueryResult<User> =>
+export const useUser = (id?: string): UseQueryResult<User> =>
   useQuery(['user', id], () => service.get(`/user/${id}`), {
     enabled: Boolean(id),
   })
@@ -107,7 +102,7 @@ export const useAddUser = (): UseMutate<Partial<User>> => {
     },
   })
 }
-export const useEditUser = (id?: number): UseMutate<Partial<User>> => {
+export const useEditUser = (id?: string): UseMutate<Partial<User>> => {
   const queryClient = useQueryClient()
   return useMutation((user) => service.put(`/user/${id}`, user), {
     onSuccess() {
@@ -160,14 +155,14 @@ export interface ProjectFilter {
 }
 export const useProjects = (params?: ProjectFilter): UseQueryResult<Project[]> =>
   useQuery(['projects', params?.variant, params?.deleted, params?.userId], () => service.get(`/projects`, { params }))
-export const useProject = (id?: number): UseQueryResult<Project> =>
+export const useProject = (id?: string): UseQueryResult<Project> =>
   useQuery(['project', id], () => service.get(`/project/${id}`), {
     enabled: Boolean(id),
   })
 
 export const useAddProject = (): UseMutate<Partial<Project>> =>
   useMutation((project) => service.post('/project', project))
-export const useEditProject = (id?: number): UseMutate<Partial<Project>> =>
+export const useEditProject = (id?: string): UseMutate<Partial<Project>> =>
   useMutation((project) => service.put(`/project/${id}`, project))
 export const useDeleteProject = (): UseMutate<number | undefined> =>
   useMutation((projectId) => service.delete('/project/' + projectId))
@@ -196,7 +191,7 @@ export const useIdeas = (params?: IdeaFilter): UseQueryResult<Idea[]> =>
     ['ideas', params?.variant, params?.ageFrom, params?.ageTo, params?.userId, params?.latitude, params?.longitude],
     () => service.get(`/ideas`, { params }),
   )
-export const useIdea = (id?: number): UseQueryResult<Idea> =>
+export const useIdea = (id?: string): UseQueryResult<Idea> =>
   useQuery(['idea', id], () => service.get(`/idea/${id}`), {
     enabled: Boolean(id),
   })
@@ -208,13 +203,8 @@ export const useAddIdea = (): UseMutate<Partial<Idea>> => {
     },
   })
 }
-export const useEditIdea = (id?: number): UseMutate<Partial<Idea>> => {
-  const queryClient = useQueryClient()
-  return useMutation((meet) => service.put(`/idea/${id}`, meet), {
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['idea', id] })
-    },
-  })
+export const useEditIdea = (id?: string): UseMutate<Partial<Idea>> => {
+  return useMutation((meet) => service.put(`/idea/${id}`, meet))
 }
 export const useDeleteIdea = (): UseMutate<number | undefined> =>
   useMutation((ideaId) => service.delete(`/idea/${ideaId}`))

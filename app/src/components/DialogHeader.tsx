@@ -26,7 +26,7 @@ export function DialogHeaderDefault({
   const navigate = useNavigate()
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(null)
 
-  const onBackClick = onClick ? onClick : () => (window.history.length - 1 ? window.history.back() : navigate('/'))
+  const onBackClick = onClick ? onClick : () => (window.history.length - 1 ? navigate(-1) : navigate('/'))
   const onMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorElement(event.currentTarget)
   const onMenuClose = () => setAnchorElement(null)
 

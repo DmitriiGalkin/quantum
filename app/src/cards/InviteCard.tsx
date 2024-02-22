@@ -5,9 +5,9 @@ import { useToggle } from 'usehooks-ts'
 import { Button, Card } from '../components'
 import { Parameter } from '../components/Parameter'
 import Typography from '../components/Typography'
-import ProjectPage from '../dialogs/Project'
 import { Invite } from '../tools/dto'
 import { useAcceptInvite, useDeleteInvite } from '../tools/service'
+import {useNavigate} from "react-router-dom";
 
 interface InviteCardProps {
   invite: Invite
@@ -15,7 +15,8 @@ interface InviteCardProps {
 }
 
 export function InviteCard({ invite, refetch }: InviteCardProps): JSX.Element {
-  const [open, toggleOpen] = useToggle()
+  const navigate = useNavigate()
+
   const acceptInvite = useAcceptInvite()
   const deleteInvite = useDeleteInvite()
 
@@ -23,8 +24,7 @@ export function InviteCard({ invite, refetch }: InviteCardProps): JSX.Element {
   const onDelete = () => invite.id && deleteInvite.mutateAsync(invite.id).then(refetch)
 
   return (
-    <>
-      <Card onClick={toggleOpen}>
+    <Card onClick={() => navigate(`project/${invite.project?.id}`)}>
         <Stack direction="row">
           {invite.project && (
             <div>
@@ -77,7 +77,5 @@ export function InviteCard({ invite, refetch }: InviteCardProps): JSX.Element {
           </Stack>
         </Stack>
       </Card>
-      <ProjectPage projectId={invite.project?.id} open={open} onClose={toggleOpen} />
-    </>
   )
 }

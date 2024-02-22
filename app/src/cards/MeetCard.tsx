@@ -11,6 +11,7 @@ import { convertToObject } from '../tools/date'
 import { Meet, Visit } from '../tools/dto'
 import { useCreateVisit, useDeleteVisit } from '../tools/service'
 import { COLOR, COLOR_DEFAULT } from '../tools/theme'
+import {useNavigate} from "react-router-dom";
 
 interface MeetCardProps {
   meet: Meet
@@ -20,8 +21,8 @@ interface MeetCardProps {
 }
 
 export function MeetCard({ meet, refetch, showDate }: MeetCardProps): JSX.Element {
+  const navigate = useNavigate()
   const { isAuth, user, openLogin, passport } = useAuth()
-  const [create, toggleCreate] = useToggle()
   const createVisit = useCreateVisit()
   const deleteVisit = useDeleteVisit()
   const isOrganizer = passport && meet.passportId === passport.id
@@ -38,14 +39,9 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps): JSX.Elemen
   const onDeleteVisit = (visit: Visit) => {
     deleteVisit.mutateAsync(visit).then(refetch)
   }
-  const onCloseCreateMeet = () => {
-    toggleCreate()
-    refetch()
-  }
 
   return (
-    <>
-      <Card onClick={isOrganizer ? toggleCreate : undefined}>
+    <Card onClick={isOrganizer ? () => navigate(`/meet/${meet.id}/edit`) : undefined}>
         <Stack direction="row">
           {meet.project && (
             <div>
@@ -138,7 +134,5 @@ export function MeetCard({ meet, refetch, showDate }: MeetCardProps): JSX.Elemen
           </div>
         </Stack>
       </Card>
-      <EditMeet meetId={meet.id} open={create} onClose={onCloseCreateMeet} />
-    </>
   )
 }

@@ -16,10 +16,7 @@ interface FastIdeaData {
 
 export const FAST_IDEA = 'fastIdea'
 
-export interface FastIdeaProps {
-  onClose: () => void
-}
-function FastIdea({ onClose }: FastIdeaProps) {
+function FastIdea() {
   const { isAuth, openLogin } = useAuth()
   const { latitude, longitude } = useGeolocation()
   const [data, setData] = useState<FastIdeaData>({ idea: {}, user: {} })
@@ -37,7 +34,7 @@ function FastIdea({ onClose }: FastIdeaProps) {
 
   return (
     <>
-      <DialogHeader title="Быстрая идея" onClick={onClose} />
+      <DialogHeader title="Быстрая идея" />
       <DialogContent>
         <Block variant="primary">
           <Input

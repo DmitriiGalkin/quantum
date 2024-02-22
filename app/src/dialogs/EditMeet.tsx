@@ -9,25 +9,27 @@ import { withDialog } from '../components/helper'
 import { calendarPickerOnChange, convertToDate, convertToObject, now, onChangeReactIosTimePicker } from '../tools/date'
 import { Meet } from '../tools/dto'
 import { useAddMeet, useDeleteMeet, useEditMeet, useMeet } from '../tools/service'
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 
-export interface EditMeetProps {
-  meetId: number
-  defaultProjectId: number
-  onClose: () => void
-}
-function EditMeet({ meetId, defaultProjectId, onClose }: EditMeetProps) {
+function EditMeet() {
+  const navigate = useNavigate()
+  const { id: meetId } = useParams()
+  const [searchParams] = useSearchParams()
+  const defaultProjectId = searchParams.get("defaultProjectId")
+
   const addMeet = useAddMeet()
   const editMeet = useEditMeet(meetId)
   const deleteMeet = useDeleteMeet()
   const [meet, setMeet] = useState<Partial<Meet>>({
     datetime: now(),
-    projectId: defaultProjectId,
+    projectId: Number(defaultProjectId),
   })
   const { data: defaultMeet, refetch, isFetching } = useMeet(meetId)
   const { time } = convertToObject(meet.datetime)
 
   useEffect(() => defaultMeet && setMeet(defaultMeet), [defaultMeet])
 
+  const onClose = () => navigate(-1)
   const onDelete = () => deleteMeet.mutateAsync(meet.id).then(onClose)
   const onClickSave = () => {
     if (meet.id) {

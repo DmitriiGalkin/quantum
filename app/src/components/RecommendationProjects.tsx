@@ -7,12 +7,10 @@ import { useAuth } from '../tools/auth'
 import { useProjects } from '../tools/service'
 import { Button } from './Button'
 import Typography from './Typography'
+import {useNavigate} from "react-router-dom";
 
-interface RecommendationProjectsProps {
-  toggleProjectsC: () => void
-}
-
-export function RecommendationProjects({ toggleProjectsC }: RecommendationProjectsProps): JSX.Element {
+export function RecommendationProjects(): JSX.Element {
+  const navigate = useNavigate()
   const { user } = useAuth()
   const { data: projects = [] } = useProjects({ variant: 'recommendation', userId: user?.id })
 
@@ -28,7 +26,7 @@ export function RecommendationProjects({ toggleProjectsC }: RecommendationProjec
           </Masonry>
         </>
       )}
-      <Button onClick={toggleProjectsC} variant="outlined">
+      <Button onClick={() => navigate('/projects')} variant="outlined">
         Банк проектов
       </Button>
     </Stack>

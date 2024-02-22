@@ -8,12 +8,12 @@ import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
 import { User } from '../tools/dto'
 import { useAddUser, useDeleteUser, useEditUser, useUser } from '../tools/service'
+import {useNavigate, useParams} from "react-router-dom";
 
-export interface EditUserProps {
-  userId?: number
-  onClose: () => void
-}
-function EditUser({ userId, onClose }: EditUserProps) {
+function EditUser() {
+  const navigate = useNavigate()
+  let { id: userId } = useParams()
+
   const addUser = useAddUser()
   const editUser = useEditUser(userId)
   const deleteUser = useDeleteUser()
@@ -24,6 +24,7 @@ function EditUser({ userId, onClose }: EditUserProps) {
 
   useEffect(() => defaultUser && setUser(defaultUser), [defaultUser])
 
+  const onClose = () => navigate(-1)
   const onDelete = () => user?.id && deleteUser.mutateAsync(user.id).then(onClose)
   const onClickSave = () => {
     if (user) {

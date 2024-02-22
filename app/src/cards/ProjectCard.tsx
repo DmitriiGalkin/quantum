@@ -1,18 +1,16 @@
 import { Chip, Stack } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import React from 'react'
-import { useToggle } from 'usehooks-ts'
+import { Link, useNavigate } from 'react-router-dom'
 
-import {Card, Icon} from '../components'
+import { Card, Icon } from '../components'
 import { Parameter } from '../components/Parameter'
 import Typography from '../components/Typography'
-import ProjectDialog from '../dialogs/Project'
+import { convertToObject, getDatetimeTitle } from '../tools/date'
 import { Project } from '../tools/dto'
 import { distanceBetweenLocations, getDistanceTitle } from '../tools/geolocation'
 import { getAgeLabel } from '../tools/helper'
 import { COLOR_DEFAULT } from '../tools/theme'
-import {convertToObject, getDatetimeTitle} from "../tools/date";
-import {Link, useNavigate} from "react-router-dom";
 
 interface ProjectCardProps {
   project: Project
@@ -49,7 +47,7 @@ export function ProjectCard({
   const navigate = useNavigate()
   const handleClick = () => {
     if (onClick) return onClick(project)
-    navigate(`project/${project.id}`)
+    navigate(`/project/${project.id}`)
   }
 
   const classes = useStyles()
@@ -99,39 +97,37 @@ export function ProjectCard({
   }
 
   return (
-    <div onClick={handleClick}>
-      <Stack spacing={1} style={{ opacity: project.deleted ? 0.5 : 1 }}>
-        <div style={{ minWidth: 150, position: 'relative' }}>
-          {project.image && (
-            <>
-              <Chip
-                label={getAgeLabel(project)}
-                size="small"
-                style={{
-                  position: 'absolute',
-                  top: 5,
-                  left: 5,
-                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                  color: COLOR_DEFAULT,
-                  zIndex: 1,
-                }}
-              />
-              <div className={classes.s}>
-                <div style={{ backgroundImage: `url(${project.image})` }} className={classes.image} />
-              </div>
-            </>
+    <Stack onClick={handleClick} spacing={1} style={{ opacity: project.deleted ? 0.5 : 1 }}>
+      <div style={{ minWidth: 150, position: 'relative' }}>
+        {project.image && (
+          <>
+            <Chip
+              label={getAgeLabel(project)}
+              size="small"
+              style={{
+                position: 'absolute',
+                top: 5,
+                left: 5,
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                color: COLOR_DEFAULT,
+                zIndex: 1,
+              }}
+            />
+            <div className={classes.s}>
+              <div style={{ backgroundImage: `url(${project.image})` }} className={classes.image} />
+            </div>
+          </>
+        )}
+        <Stack style={{ padding: 4 }}>
+          <Typography variant="Body-Bold">{project.title}</Typography>
+          {recommendMeetDatetimeTitle && (
+            <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
+              <Icon name="time2" color="secondary" />
+              <Typography variant="Body">{recommendMeetDatetimeTitle}</Typography>
+            </Stack>
           )}
-          <Stack style={{ padding: 4 }}>
-            <Typography variant="Body-Bold">{project.title}</Typography>
-            {recommendMeetDatetimeTitle && (
-              <Stack spacing={1} direction="row" alignContent="center" alignItems="center">
-                <Icon name="time2" color="secondary" />
-                <Typography variant="Body">{recommendMeetDatetimeTitle}</Typography>
-              </Stack>
-            )}
-          </Stack>
-        </div>
-      </Stack>
-    </div>
+        </Stack>
+      </div>
+    </Stack>
   )
 }

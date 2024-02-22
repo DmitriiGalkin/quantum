@@ -15,7 +15,7 @@ import { getOnShare } from '../tools/pwa'
 import { useCreateParticipation, useDeleteParticipation, useProject } from '../tools/service'
 import { COLOR } from '../tools/theme'
 import EditMeet from './EditMeet'
-import EditProject from './EditProject'
+import {useNavigate, useParams} from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -43,10 +43,12 @@ interface IMapState {
   center: number[]
   zoom: number
 }
-function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
+function ProjectDialog() {
+  let { id: projectId } = useParams()
+  const navigate = useNavigate();
   const { user, isAuth, passport } = useAuth()
   const classes = useStyles()
-  const { data: project, refetch } = useProject(Number(projectId))
+  const { data: project, refetch } = useProject(projectId)
   const [state, setState] = useState<IMapState>()
 
   const [edit, toggleCreate] = useToggle()
@@ -89,8 +91,8 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
 
   const menuItems = []
   if (editable) {
-    menuItems.push({ title: 'Новая встреча', onClick: toggleCreateMeet })
-    menuItems.push({ title: 'Редактировать', onClick: toggleCreate })
+    menuItems.push({ title: 'Новая встреча', onClick: () => navigate(`/meet?defaultProjectId=${project.id}`) })
+    menuItems.push({ title: 'Редактировать', onClick: () => navigate(`edit`) })
   }
   if (participation) {
     menuItems.push({ title: 'Выйти из проекта', onClick: onDeleteParticipation })
@@ -100,20 +102,16 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
     url: `/project/${project?.id}`,
   })
 
-  const onCloseEditProject = () => {
-    toggleCreate()
-    refetch()
-  }
-  const onCloseCreateMeet = () => {
-    toggleCreateMeet()
-    refetch()
-  }
+  let back = () => {
+    navigate(-1)
+  };
+
 
   return (
     <>
       <div style={{ position: 'relative', backgroundColor: 'rgb(245, 245, 245)' }}>
         <div style={{ position: 'absolute', top: 18, left: 16, right: 16 }}>
-          <Back menuItems={menuItems} onClick={onClose} />
+          <Back menuItems={menuItems} onClick={back} />
         </div>
         <div style={{ height: 230 }}>
           {project.image && <img alt={project.title} src={project.image} className={classes.image} />}
@@ -182,8 +180,6 @@ function ProjectDialog({ projectId, onClose }: ProjectDialogProps) {
           </Stack>
         </div>
       </div>
-      <EditProject name={'editProject' + project.id} projectId={project.id} open={edit} onClose={onCloseEditProject} onDeleteProject={onClose} />
-      <EditMeet defaultProjectId={project.id} open={createMeet} onClose={onCloseCreateMeet} />
     </>
   )
 }

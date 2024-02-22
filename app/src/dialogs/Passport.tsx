@@ -16,7 +16,7 @@ export interface UserViewProps {
   onLogout: () => void
   onClose: () => void
 }
-function EditPassport({ onLogout, onClose }: UserViewProps): React.ReactNode {
+function PassportDialog({ onLogout, onClose }: UserViewProps): React.ReactNode {
   const updateUser = useUpdatePassport()
   const [createUser, onClickCreateUser] = useToggle()
   const [passport, setPassport] = useState<Passport>()
@@ -79,4 +79,4 @@ function EditPassport({ onLogout, onClose }: UserViewProps): React.ReactNode {
     </>
   )
 }
-export default withDialog(EditPassport)
+export default withDialog(PassportDialog)

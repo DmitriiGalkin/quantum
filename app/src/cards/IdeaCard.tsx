@@ -11,6 +11,7 @@ import { useAuth } from '../tools/auth'
 import { Idea, Project } from '../tools/dto'
 import { getDistanceTitle } from '../tools/geolocation'
 import { useCreateInvite, useProjects } from '../tools/service'
+import {useNavigate} from "react-router-dom";
 
 interface IdeaCardProps {
   idea: Idea
@@ -19,9 +20,9 @@ interface IdeaCardProps {
   invited?: boolean
 }
 export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): JSX.Element {
+  const navigate = useNavigate()
   const { user, isAuth } = useAuth()
   const [project, toggleProject] = useToggle()
-  const [create, toggleCreate] = useToggle()
   const createInvite = useCreateInvite()
   const { data: selfProjects = [], refetch: refetchSelfProject } = useProjects({ variant: 'self' })
   const self = user?.id === idea.userId
@@ -42,7 +43,7 @@ export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): JSX.
 
   return (
     <>
-      <Card onClick={self ? toggleCreate : undefined}>
+      <Card onClick={self ? () => navigate(`/idea/${idea.id}/edit`) : undefined}>
         <Stack spacing={2} style={{ padding: '8px 16px' }}>
           <Typography variant="Body-Bold">{idea.title}</Typography>
           <Typography variant="Body">{idea.description}</Typography>
@@ -95,14 +96,6 @@ export function IdeaCard({ idea, refetch, onAdd, invited }: IdeaCardProps): JSX.
         }}
         latitude={idea.latitude}
         longitude={idea.longitude}
-      />
-      <EditIdea
-        ideaId={idea.id}
-        open={create}
-        onClose={() => {
-          toggleCreate()
-          refetch()
-        }}
       />
     </>
   )

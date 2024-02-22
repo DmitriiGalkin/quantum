@@ -10,12 +10,12 @@ import { useAuth } from '../tools/auth'
 import { Idea } from '../tools/dto'
 import { useGeolocation } from '../tools/geolocation'
 import { useAddIdea, useDeleteIdea, useEditIdea, useIdea } from '../tools/service'
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 
-export interface EditIdeaProps {
-  ideaId: number
-  onClose: () => void
-}
-function EditIdea({ ideaId, onClose }: EditIdeaProps) {
+function EditIdea() {
+  const navigate = useNavigate()
+  const { id: ideaId } = useParams()
+
   const { user, passport } = useAuth()
   const { latitude, longitude } = useGeolocation()
   const addIdea = useAddIdea()
@@ -42,6 +42,7 @@ function EditIdea({ ideaId, onClose }: EditIdeaProps) {
     }
   }, [idea, longitude, latitude])
 
+  const onClose = () => navigate(-1)
   const onDelete = () => deleteIdea.mutateAsync(idea.id).then(onClose)
   const onClickSave = () => {
     if (idea.id) {

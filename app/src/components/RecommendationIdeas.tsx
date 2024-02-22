@@ -6,11 +6,11 @@ import { useGeolocation } from '../tools/geolocation'
 import { useIdeas } from '../tools/service'
 import { Button } from './Button'
 import Typography from './Typography'
+import {useNavigate} from "react-router-dom";
 
-interface RecommendationIdeasProps {
-  toggleIdeasC: () => void
-}
-export function RecommendationIdeas({ toggleIdeasC }: RecommendationIdeasProps): JSX.Element {
+export function RecommendationIdeas(): JSX.Element {
+  const navigate = useNavigate()
+
   const { latitude, longitude } = useGeolocation()
   const { data: ideas = [], refetch } = useIdeas({ variant: 'recommendation', latitude, longitude })
 
@@ -26,7 +26,7 @@ export function RecommendationIdeas({ toggleIdeasC }: RecommendationIdeasProps):
           </Stack>
         </>
       )}
-      <Button onClick={toggleIdeasC} variant="outlined">
+      <Button onClick={() => navigate('/ideas')} variant="outlined">
         Банк идеи
       </Button>
     </Stack>
