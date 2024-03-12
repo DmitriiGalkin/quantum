@@ -1,7 +1,8 @@
-import {Avatar, AvatarGroup, Box, Link, Stack} from '@mui/material'
+import { Avatar, AvatarGroup, Box, Link, Stack } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { Map, Placemark, YMaps } from '@pbe/react-yandex-maps'
 import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useToggle } from 'usehooks-ts'
 
 import { Back, Button, Icon, MeetCard } from '../components'
@@ -14,8 +15,6 @@ import { getAgeTitle } from '../tools/helper'
 import { getOnShare } from '../tools/pwa'
 import { useCreateParticipation, useDeleteParticipation, useProject } from '../tools/service'
 import { COLOR } from '../tools/theme'
-import EditMeet from './EditMeet'
-import {useNavigate, useParams} from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -44,15 +43,13 @@ interface IMapState {
   zoom: number
 }
 function ProjectDialog() {
-  let { id: projectId } = useParams()
-  const navigate = useNavigate();
+  const { id: projectId } = useParams()
+  const navigate = useNavigate()
   const { user, isAuth, passport } = useAuth()
   const classes = useStyles()
   const { data: project, refetch } = useProject(projectId)
   const [state, setState] = useState<IMapState>()
 
-  const [edit, toggleCreate] = useToggle()
-  const [createMeet, toggleCreateMeet] = useToggle()
   const [openMap, toggleOpenMap] = useToggle()
 
   const createParticipation = useCreateParticipation()
@@ -102,10 +99,9 @@ function ProjectDialog() {
     url: `/project/${project?.id}`,
   })
 
-  let back = () => {
+  const back = () => {
     navigate(-1)
-  };
-
+  }
 
   return (
     <>
@@ -121,7 +117,7 @@ function ProjectDialog() {
             <Stack className={classes.container2} spacing={3}>
               <Stack direction="row" justifyContent="space-between" alignContent="center">
                 <Typography variant="Header1">{project.title}</Typography>
-                <Icon name="share" onClick={onShare} />
+                {navigator?.canShare?.() && <Icon name="share" onClick={onShare} />}
               </Stack>
               <Typography variant="Subheader1">{project.description}</Typography>
               {Boolean(project.participations.length) && (

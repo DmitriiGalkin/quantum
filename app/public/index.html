@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" prefix="og: http://ogp.me/ns#">
 <head>
   <meta charset="utf-8" />
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="theme-color" content="#FFA427">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Быстро. Просто. Вживую" />
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <script src="https://api-maps.yandex.ru/2.1/?apikey=ce32ffcd-d432-4c13-9035-407aa9f344a0&lang=ru_RU&load=Map,Placemark" type="text/javascript"></script>
@@ -15,7 +14,16 @@
       navigator.serviceWorker.register('/sw.js')
     }
   </script>
-  <title>Сервис организации встреч Quantum</title>
+
+  <title>Quantum</title>
+  <meta name="description" content="__DESCRIPTION__" />
+  <meta property="og:site_name" content="__OG_SITE_NAME__"/>
+  <meta property="og:type" content="__OG_TYPE__"/>
+  <meta property="og:title" content="__OG_TITLE__">
+  <meta property="og:description" content="__OG_DESCRIPTION__">
+  <meta property="og:image" content="__OG_IMAGE__">
+
+  <meta name="robots" content="max-image-preview:large" />
 
   <style>
     @font-face {

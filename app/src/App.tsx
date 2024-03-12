@@ -1,6 +1,6 @@
 import { Avatar, Box, Stack, SwipeableDrawer } from '@mui/material'
 import React, { useState } from 'react'
-import {useNavigate, useParams} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useToggle } from 'usehooks-ts'
 
 import { IdeaCard } from './cards/IdeaCard'
@@ -23,7 +23,7 @@ import { COLOR, COLOR_GRAY, COLOR_LOW, COLOR_PAPER } from './tools/theme'
 interface AppProps {
   action?: 'fastIdea' | 'fastProject' | 'project'
 }
-export default function App({ action }: AppProps): JSX.Element {
+function App({ action }: AppProps): JSX.Element {
   const navigate = useNavigate()
   const { isAuth, openLogin, user, setSelectedUserId, passport } = useAuth()
   const [ideaStepper, toggleIdeaStepper] = useToggle(action === 'fastIdea')
@@ -92,7 +92,12 @@ export default function App({ action }: AppProps): JSX.Element {
                     <>
                       <LeftButton onClick={toggleSub} iconName="users" />
                       <Stack spacing={2} style={{ backgroundColor: 'white', padding: 16 }}>
-                        <Stack spacing={2} direction="row" style={{ padding: '14px 40px' }} onClick={() => navigate(`/user/${user?.id}/edit`)}>
+                        <Stack
+                          spacing={2}
+                          direction="row"
+                          style={{ padding: '14px 40px' }}
+                          onClick={() => navigate(`/user/${user?.id}/edit`)}
+                        >
                           <Avatar alt={user.title} src={user.image} sx={{ width: 72, height: 72 }} />
                           <Stack>
                             <Typography variant="Caption">Ребенок</Typography>
@@ -110,7 +115,11 @@ export default function App({ action }: AppProps): JSX.Element {
                               Создать идею
                             </Button>
                           </Stack>
-                          <Button variant="menuButton" icon={<Icon name="visits" />} onClick={() => navigate('/visits')}>
+                          <Button
+                            variant="menuButton"
+                            icon={<Icon name="visits" />}
+                            onClick={() => navigate('/visits')}
+                          >
                             Посещения
                           </Button>
                         </Stack>
@@ -254,8 +263,8 @@ export default function App({ action }: AppProps): JSX.Element {
                 <Button onClick={toggleFastProject}>Быстрый проект</Button>
                 <Button onClick={toggleIdeaStepper}>Быстрая идея</Button>
               </Stack>
-              <RecommendationProjects/>
-              <RecommendationIdeas/>
+              <RecommendationProjects />
+              <RecommendationIdeas />
             </Stack>
           </DialogContent>
         </>
@@ -265,3 +274,5 @@ export default function App({ action }: AppProps): JSX.Element {
     </Box>
   )
 }
+
+export default App

@@ -48,7 +48,7 @@ Idea.findAll = function (params, result) {
     }
 
     const f = `SELECT idea.* ${dist ? `, ${dist} AS distance` : ''} FROM idea ${where}`
-    //console.log(f,'Idea.findAll')
+    // console.log(f,'Idea.findAll')
     dbConn.query(f, function (err, res) {
         result(null, res || []);
     });

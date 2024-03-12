@@ -12,6 +12,7 @@ const project =   require('./controllers/project');
 const idea = require('./controllers/idea');
 const participation =   require('./controllers/participation');
 const invite =   require('./controllers/invite');
+const meta = require('./controllers/meta');
 const strategys =   require('./strategys');
 const helper =   require('./helper');
 
@@ -127,5 +128,10 @@ router.delete('/idea/:id', passportController.usePassport, idea.delete );
 router.post('/invite', passportController.usePassport, invite.create);
 router.delete('/invite/:id', passportController.usePassport, invite.delete );
 router.post('/invite/:id/accept', passportController.usePassport, invite.accept );
+
+/**
+ * Мета
+ */
+router.get('/meta/:type/:id', meta.get );
 
 module.exports = router
