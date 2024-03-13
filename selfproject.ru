@@ -16,12 +16,18 @@ server {
     root /var/www/quantum/app/build;
     index index.html;
 
-    location / {
-            try_files $uri /index.html =404;
-    }
+      location / {
+        proxy_pass          http://localhost:3000/;
+        proxy_http_version 1.1;
+        proxy_set_header    Host             $host;
+        proxy_set_header    X-Real-IP        $remote_addr;
+        proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+        proxy_read_timeout 1800;
+        proxy_connect_timeout 1800;
+      }
 
       location /api/ {
-        proxy_pass          https://localhost:4000/;
+        proxy_pass          http://localhost:4000/;
         proxy_http_version 1.1;
         proxy_set_header    Host             $host;
         proxy_set_header    X-Real-IP        $remote_addr;
@@ -30,12 +36,3 @@ server {
         proxy_connect_timeout 1800;
       }
 }
-
-#server {
-#     listen 3001;
-#     server_name localhost;
-#
-#    location / {
-#        proxy_pass http://localhost:4000;
-#    }
-#}
