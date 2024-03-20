@@ -4,27 +4,19 @@ const fs = require('fs')
 
 const app = express()
 
-console.log(process.env.PORT,'process.env.PORT')
 const PORT = process.env.PORT || 3000
 const indexPath = path.resolve(__dirname, '..', 'build', 'index.html')
 
 app.use(express.static(path.resolve(__dirname, '..', 'build'), { maxAge: '30d' }))
-app.get('/*', (req, res, next) => {
-  console.log('/*')
 
-  fs.readFile(indexPath, 'utf8', (error, htmlData) => {
-    if (error) {
-      console.error('Error during file reading', error)
-      return res.status(404).end()
-    }
-    const metaUrl = 'http://localhost:4000/meta' + req.baseUrl + req.path
-    console.log(metaUrl, 'meta')
+app.get('/project/:id', (req, res, next) => {
+  fs.readFile(indexPath, 'utf8', (error, html) => {
+    if (error) return res.status(404).end()
 
-    fetch(metaUrl)
+    fetch('http://localhost:4000/meta' + req.path)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response, 'response')
-        htmlData = htmlData
+        html = html
           .replace('<title>Quantum</title>', `<title>${response.title}</title>`)
           .replace('__DESCRIPTION__', response.description)
           .replace('__OG_SITE_NAME__', response.ogSiteName)
@@ -32,17 +24,61 @@ app.get('/*', (req, res, next) => {
           .replace('__OG_TITLE__', response.ogTitle)
           .replace('__OG_DESCRIPTION__', response.ogDescription)
           .replace('__OG_IMAGE__', response.ogImage)
-        return res.send(htmlData)
+        return res.send(html)
       })
       .catch((error) => {
-        return res.send(htmlData)
+        return res.send(html)
       })
   })
 })
-// listening...
+
+app.get('/idea', (req, res, next) => {
+  fs.readFile(indexPath, 'utf8', (error, html) => {
+    if (error) return res.status(404).end()
+
+    return res.send(html
+      .replace('<title>Quantum</title>', `<title>Quantum | Для родителей</title>`)
+      .replace('__DESCRIPTION__', 'Помогаем родителям подобрать для ребенка интересный проект: секцию, кружок, мастер класс или предложить идею нового уникального проекта')
+      .replace('__OG_SITE_NAME__', 'Quantum | Для родителей')
+      .replace('__OG_TYPE__', 'article')
+      .replace('__OG_TITLE__', 'Реализовать идею проекта ребенка')
+      .replace('__OG_DESCRIPTION__', 'Помогаем родителям подобрать для ребенка интересный проект: секцию, кружок, мастер класс или предложить идею нового уникального проекта')
+      .replace('__OG_IMAGE__', 'https://selfproject.ru/forParent.png'))
+  })
+})
+
+app.get('/project', (req, res, next) => {
+  fs.readFile(indexPath, 'utf8', (error, html) => {
+    if (error) return res.status(404).end()
+
+    return res.send(html
+      .replace('<title>Quantum</title>', `<title>Quantum | Для педагогов</title>`)
+      .replace('__DESCRIPTION__', 'Помогаем педагогам развивать детские проекты: набирать детей в группы, подбирать места для проведения встреч, вести учет посещаемости и оплаты занятий')
+      .replace('__OG_SITE_NAME__', 'Quantum | Для педагогов')
+      .replace('__OG_TYPE__', 'article')
+      .replace('__OG_TITLE__', 'Организовать детский проект')
+      .replace('__OG_DESCRIPTION__', 'Помогаем педагогам развивать детские проекты: набирать детей в группы, подбирать места для проведения встреч, вести учет посещаемости и оплаты занятий')
+      .replace('__OG_IMAGE__', 'https://selfproject.ru/forParent.png'))
+  })
+})
+
+app.get('/*', (req, res, next) => {
+  fs.readFile(indexPath, 'utf8', (error, html) => {
+    if (error) return res.status(404).end()
+
+    return res.send(html
+      .replace('<title>Quantum</title>', `<title>Quantum</title>`)
+      .replace('__DESCRIPTION__', 'Помогаем педагогам и детям находить друг друга, создавать интересные проекты, подбирать места для проведения встреч')
+      .replace('__OG_SITE_NAME__', 'Quantum')
+      .replace('__OG_TYPE__', 'article')
+      .replace('__OG_TITLE__', 'Интересные проекты и идеи для детей рядом')
+      .replace('__OG_DESCRIPTION__', 'Помогаем педагогам и детям находить друг друга, создавать интересные проекты, подбирать места для проведения встреч')
+      .replace('__OG_IMAGE__', 'https://selfproject.ru/forParent.png'))
+  })
+})
+
 app.listen(PORT, (error) => {
-  if (error) {
-    return console.log('Error during app startup', error)
-  }
+  if (error) return console.log('Error during app startup', error)
+
   console.log('listening on ' + PORT + '...')
 })

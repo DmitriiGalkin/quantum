@@ -13,7 +13,6 @@ import { Logo } from './components/Logo'
 import { RecommendationIdeas } from './components/RecommendationIdeas'
 import { RecommendationProjects } from './components/RecommendationProjects'
 import Typography from './components/Typography'
-import FastIdea from './dialogs/FastIdea'
 import FastProject from './dialogs/FastProject'
 import { useAuth } from './tools/auth'
 import { useFast } from './tools/fast'
@@ -21,12 +20,11 @@ import { useIdeas, useProjects } from './tools/service'
 import { COLOR, COLOR_GRAY, COLOR_LOW, COLOR_PAPER } from './tools/theme'
 
 interface AppProps {
-  action?: 'fastIdea' | 'fastProject' | 'project'
+  action?: 'fastProject' | 'project'
 }
 function App({ action }: AppProps): JSX.Element {
   const navigate = useNavigate()
   const { isAuth, openLogin, user, setSelectedUserId, passport } = useAuth()
-  const [ideaStepper, toggleIdeaStepper] = useToggle(action === 'fastIdea')
   const [fastProject, toggleFastProject] = useToggle()
   const [menu, toggleMenu] = useToggle()
   const [sub, toggleSub] = useToggle()
@@ -214,7 +212,7 @@ function App({ action }: AppProps): JSX.Element {
                     <Button onClick={() => navigate('/idea')}>Создать идею</Button>
                   </Stack>
                 ) : (
-                  <Button onClick={toggleIdeaStepper}>Быстрая идея</Button>
+                  <Button onClick={() => navigate('/idea')}>Быстрая идея</Button>
                 )}
                 <RecommendationIdeas />
               </Stack>
@@ -261,7 +259,7 @@ function App({ action }: AppProps): JSX.Element {
             <Stack spacing={4} style={{ padding: 16 }}>
               <Stack spacing={1}>
                 <Button onClick={toggleFastProject}>Быстрый проект</Button>
-                <Button onClick={toggleIdeaStepper}>Быстрая идея</Button>
+                <Button onClick={() => navigate('/idea')}>Быстрая идея</Button>
               </Stack>
               <RecommendationProjects />
               <RecommendationIdeas />
@@ -269,7 +267,6 @@ function App({ action }: AppProps): JSX.Element {
           </DialogContent>
         </>
       )}
-      <FastIdea open={ideaStepper} onClose={toggleIdeaStepper} />
       <FastProject open={fastProject} onClose={toggleFastProject} />
     </Box>
   )

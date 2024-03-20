@@ -26,7 +26,6 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AuthLayout />}>
       <Route index element={<App />} />
-      <Route path="i" element={<App action="fastIdea" />} />
       <Route path="project" element={<EditProject open={true} />} />
       <Route path="projects" element={<Projects open={true} />} />
       <Route path="project/:id" element={<ProjectDialog open={true} />} />

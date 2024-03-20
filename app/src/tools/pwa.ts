@@ -1,20 +1,23 @@
 import { useCallback, useEffect, useState } from 'react'
 
 interface ShareProps {
-  title?: string
   text?: string
   url?: string
 }
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getOnShare = ({ title, text, url }: ShareProps) => () => {
+export const getOnShare = ({ text, url }: ShareProps) => () => {
   try {
     navigator
       .share({
-        title,
         text,
         url: `https://selfproject.ru` + url,
       })
-      .then()
+      .then(() => {
+        console.log('Sharing was successful');
+      })
+      .catch((error) => {
+        console.error('Sharing failed:', error);
+      })
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('Ошибка функции "Поделиться"', error)

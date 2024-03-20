@@ -2,21 +2,23 @@ import { Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 
 import { InviteCard } from '../cards/InviteCard'
-import { Button, DialogHeader, Input, Textarea } from '../components'
+import {Button, DialogFooter, DialogHeader, Input, Textarea} from '../components'
 import { Block } from '../components/Block'
 import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
 import { useAuth } from '../tools/auth'
-import { Idea } from '../tools/dto'
+import {Idea, User} from '../tools/dto'
 import { useGeolocation } from '../tools/geolocation'
 import { useAddIdea, useDeleteIdea, useEditIdea, useIdea } from '../tools/service'
 import {useNavigate, useParams, useSearchParams} from "react-router-dom";
+
+export const FAST_IDEA = 'fastIdea'
 
 function EditIdea() {
   const navigate = useNavigate()
   const { id: ideaId } = useParams()
 
-  const { user, passport } = useAuth()
+  const { user, passport, isAuth, openLogin } = useAuth()
   const { latitude, longitude } = useGeolocation()
   const addIdea = useAddIdea()
   const editIdea = useEditIdea(ideaId)
@@ -54,6 +56,12 @@ function EditIdea() {
     }
   }
 
+  const [puser, setPuser] = useState<Partial<User>>({})
+  const onSubmit = () => {
+    localStorage.setItem(FAST_IDEA, JSON.stringify({ idea, user: puser }))
+    !isAuth && openLogin()
+  }
+
   return (
     <>
       <DialogHeader
@@ -77,6 +85,23 @@ function EditIdea() {
             value={idea.description}
             onChange={(e) => setIdea({ ...idea, description: e.target.value })}
           />
+          {!user && (
+            <Stack spacing={1} direction="row">
+              <Input
+                name="price"
+                label="Имя"
+                value={puser.title || ''}
+                onChange={(e) => setPuser({ ...puser, title: e.target.value })}
+              />
+              <Input
+                name="age"
+                label="Возраст"
+                type="number"
+                value={puser.age || ''}
+                onChange={(e) => setPuser({ ...puser, age: Number(e.target.value) })}
+              />
+            </Stack>
+          )}
         </Block>
         {idea.id && (
           <Block variant="secondary">
@@ -90,9 +115,8 @@ function EditIdea() {
           </Block>
         )}
       </DialogContent>
-      <div style={{ padding: 15, display: JSON.stringify(defaultIdea) === JSON.stringify(idea) ? 'none' : 'block' }}>
-        <Button onClick={onClickSave}>{idea.id ? 'Сохранить' : 'Создать'}</Button>
-      </div>
+      {!user && idea.title && puser.title && puser.age && <DialogFooter onClick={onSubmit} />}
+      {user && idea.title && <DialogFooter onClick={onClickSave} title={idea.id ? 'Сохранить' : 'Создать'} />}
     </>
   )
 }

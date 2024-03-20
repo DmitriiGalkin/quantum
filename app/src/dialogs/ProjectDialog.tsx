@@ -15,6 +15,7 @@ import { getAgeTitle } from '../tools/helper'
 import { getOnShare } from '../tools/pwa'
 import { useCreateParticipation, useDeleteParticipation, useProject } from '../tools/service'
 import { COLOR } from '../tools/theme'
+import {getDatetimeTitle, getDatetimeTitle2} from "../tools/date";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -94,8 +95,10 @@ function ProjectDialog() {
   if (participation) {
     menuItems.push({ title: 'Выйти из проекта', onClick: onDeleteParticipation })
   }
+
+  const bl = Boolean(project.meets?.length) ? 'Ближайшая встреча состоится ' + getDatetimeTitle2(project.meets?.[0].datetime) : ''
   const onShare = getOnShare({
-    title: `Приглашаю в проект: ${project?.title}`,
+    text: `${project?.title} (5-7 лет) | ${project?.place?.title} | Организатор ${project?.passport?.title}. ` + bl,
     url: `/project/${project?.id}`,
   })
 
@@ -117,7 +120,8 @@ function ProjectDialog() {
             <Stack className={classes.container2} spacing={3}>
               <Stack direction="row" justifyContent="space-between" alignContent="center">
                 <Typography variant="Header1">{project.title}</Typography>
-                {navigator?.canShare?.() && <Icon name="share" onClick={onShare} />}
+                <Icon name="share" onClick={onShare} />
+                {/*{navigator?.canShare?.() && <Icon name="share" onClick={onShare} />}*/}
               </Stack>
               <Typography variant="Subheader1">{project.description}</Typography>
               {Boolean(project.participations.length) && (

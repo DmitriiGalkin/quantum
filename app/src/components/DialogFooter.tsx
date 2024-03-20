@@ -6,11 +6,12 @@ import { Button } from './Button'
 interface DialogFooterProps {
   onClick?: () => void
   children?: JSX.Element
+  title?: string
 }
-export function DialogFooterDefault({ onClick, children }: DialogFooterProps): JSX.Element {
+export function DialogFooterDefault({ onClick, children, title }: DialogFooterProps): JSX.Element {
   return (
     <div style={{ padding: 15, backgroundColor: 'white', boxShadow: BOX_SHADOW, zIndex: 1 }}>
-      {onClick && <Button onClick={onClick}>Сохранить</Button>}
+      {onClick && <Button onClick={onClick}>{title || 'Сохранить'}</Button>}
       {children}
     </div>
   )

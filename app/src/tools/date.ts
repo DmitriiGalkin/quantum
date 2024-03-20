@@ -74,6 +74,19 @@ export const getDatetimeTitle = (datetime?: string): string => {
   )
 }
 
+export const getDatetimeTitle2 = (datetime?: string): string => {
+  if (!datetime) return ''
+
+  const localDateTime = dayjs(datetime)
+  const isToday2 = localDateTime.isToday()
+  const isTomorrow2 = localDateTime.isTomorrow()
+
+  return localDateTime.format(
+    (isToday2 ? 'сегодня' : ((isTomorrow2 ? 'завтра' : `D ${getMonthLongTitle(localDateTime.month())}`))) +
+    ' в HH:mm',
+  )
+}
+
 /**
  *
  */
