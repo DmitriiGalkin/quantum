@@ -17,6 +17,7 @@ import Meets from './dialogs/Meets'
 import PassportDialog from './dialogs/Passport'
 import ProjectDialog from './dialogs/ProjectDialog'
 import Projects from './dialogs/Projects'
+import SelfProjects from './dialogs/SelfProjects'
 import Visits from './dialogs/Visits'
 import { AuthLayout } from './tools/auth'
 import reportWebVitals from './tools/reportWebVitals'
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
     <Route element={<AuthLayout />}>
       <Route index element={<App />} />
       <Route path="project" element={<EditProject open={true} />} />
+      <Route path="projects/self" element={<SelfProjects open={true} />} />
       <Route path="projects" element={<Projects open={true} />} />
       <Route path="project/:id" element={<ProjectDialog open={true} />} />
       <Route path="project/:id/edit" element={<EditProject open={true} />} />

@@ -3,7 +3,7 @@ import { Stack } from '@mui/material'
 import React, { useState } from 'react'
 import { useToggle } from 'usehooks-ts'
 
-import { DialogHeader, ProjectCard } from '../components'
+import { DialogHeader, ProjectCard, Input } from '../components'
 import { Block } from '../components/Block'
 import Checkbox from '../components/Checkbox'
 import { DialogContent } from '../components/DialogContent'
@@ -21,7 +21,15 @@ function Projects({ onClose }: ProjectsProps) {
 
   return (
     <>
-      <DialogHeader title="Банк проектов" onClick={onClose} onClickOption={toggleOptions} />
+      <DialogHeader
+        onClick={onClose}
+        onClickOption={toggleOptions}
+        renderTitle={() => (
+          <div style={{ flexGrow: 1 }}>
+            <Input name="like" iconName="like" />
+          </div>
+        )}
+      />
       <DialogContent>
         {options && (
           <Block variant="primary">

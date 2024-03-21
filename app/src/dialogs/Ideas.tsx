@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useToggle } from 'usehooks-ts'
 
 import { IdeaCard } from '../cards/IdeaCard'
-import { DialogHeader } from '../components'
+import { DialogHeader, Input } from '../components'
 import { AgeField } from '../components/AgeField'
 import { Block } from '../components/Block'
 import { DialogContent } from '../components/DialogContent'
@@ -21,7 +21,15 @@ function Ideas({ onClose, ideaFilter }: IdeasProps) {
 
   return (
     <>
-      <DialogHeader title="Банк идей" onClick={onClose} onClickOption={toggleOptions} />
+      <DialogHeader
+        onClick={onClose}
+        onClickOption={toggleOptions}
+        renderTitle={() => (
+          <div style={{ flexGrow: 1 }}>
+            <Input name="like" iconName="like" />{' '}
+          </div>
+        )}
+      />
       <DialogContent>
         {options && (
           <Block variant="primary">

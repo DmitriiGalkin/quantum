@@ -26,9 +26,6 @@ export function RecommendationIdeas(): JSX.Element {
           </Stack>
         </>
       )}
-      <Button onClick={() => navigate('/ideas')} variant="outlined">
-        Банк идеи
-      </Button>
     </Stack>
   )
 }

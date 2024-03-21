@@ -3,7 +3,6 @@ import { makeStyles } from '@mui/styles'
 import React from 'react'
 
 import { COLOR_PAPER } from '../tools/theme'
-import { TransitionDialog } from './TransitionDialog'
 
 export const useInputStyles = makeStyles(() => ({
   input: {
@@ -12,7 +11,7 @@ export const useInputStyles = makeStyles(() => ({
     padding: '11px 12px 10px',
     fontFamily: 'inherit',
     color: '#212529',
-    backgroundColor: COLOR_PAPER,
+    backgroundColor: 'rgba(245,245,245,0.5)',
     backgroundClip: 'padding-box',
     border: 0,
     borderRadius: 8,
@@ -32,13 +31,7 @@ export const useInputStyles = makeStyles(() => ({
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const withDialog = (WrappedComponent: any) => (props: any) => (
-  <Dialog
-    onClose={props.onClose}
-    open={props.open || false}
-    fullScreen
-    TransitionComponent={TransitionDialog}
-    style={{ backgroundColor: 'rgb(245,245,245)' }}
-  >
+  <Dialog onClose={props.onClose} open={props.open || false} fullScreen style={{ backgroundColor: 'rgb(245,245,245)' }}>
     <WrappedComponent {...props} />
   </Dialog>
 )

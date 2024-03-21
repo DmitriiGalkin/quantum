@@ -14,6 +14,7 @@ interface DialogHeaderProps {
   isClose?: boolean
   menuItems?: MenuItemProps[]
   isForPassport?: boolean
+  renderTitle?: () => JSX.Element
 }
 export function DialogHeaderDefault({
   title,
@@ -22,6 +23,7 @@ export function DialogHeaderDefault({
   isClose,
   menuItems,
   isForPassport,
+  renderTitle,
 }: DialogHeaderProps): JSX.Element {
   const navigate = useNavigate()
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(null)
@@ -33,18 +35,21 @@ export function DialogHeaderDefault({
   return (
     <Header isForPassport={isForPassport}>
       {!isClose && <Icon color="white" name="left" onClick={onBackClick} />}
-      <Typography
-        variant="Header1"
-        style={{
-          flexGrow: 1,
-          color: 'white',
-          textAlign: 'center',
-          paddingLeft: isClose ? 36 : undefined,
-          paddingRight: !isClose ? 36 : undefined,
-        }}
-      >
-        {title}
-      </Typography>
+      {title && (
+        <Typography
+          variant="Header1"
+          style={{
+            flexGrow: 1,
+            color: 'white',
+            textAlign: 'center',
+            paddingLeft: isClose ? 36 : undefined,
+            paddingRight: !isClose ? 36 : undefined,
+          }}
+        >
+          {title}
+        </Typography>
+      )}
+      {renderTitle?.()}
       {isClose && <Icon color="white" name="close" onClick={onBackClick} />}
       {onClickOption && <Icon color="white" name="option" onClick={onClickOption} />}
       {Boolean(menuItems?.length) && (

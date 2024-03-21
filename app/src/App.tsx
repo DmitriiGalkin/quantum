@@ -15,14 +15,10 @@ import { RecommendationProjects } from './components/RecommendationProjects'
 import Typography from './components/Typography'
 import FastProject from './dialogs/FastProject'
 import { useAuth } from './tools/auth'
-import { useFast } from './tools/fast'
 import { useIdeas, useProjects } from './tools/service'
 import { COLOR, COLOR_GRAY, COLOR_LOW, COLOR_PAPER } from './tools/theme'
 
-interface AppProps {
-  action?: 'fastProject' | 'project'
-}
-function App({ action }: AppProps): JSX.Element {
+function App(): JSX.Element {
   const navigate = useNavigate()
   const { isAuth, openLogin, user, setSelectedUserId, passport } = useAuth()
   const [fastProject, toggleFastProject] = useToggle()
@@ -31,8 +27,7 @@ function App({ action }: AppProps): JSX.Element {
 
   const { data: selfIdeas = [], refetch } = useIdeas({ variant: 'self', userId: user?.id })
   const { data: userProjects = [] } = useProjects({ variant: 'participation', userId: user?.id })
-  const { data: selfProjects = [], refetch: refetchSelfProjects } = useProjects({ variant: 'self' })
-  useFast(refetchSelfProjects)
+  // useFast(refetchSelfProjects)
 
   const [bottomNavigationValue, setBottomNavigationValue] = useState(1)
   const isProjectsTab = bottomNavigationValue === 1
@@ -51,7 +46,10 @@ function App({ action }: AppProps): JSX.Element {
                     {user.title}
                   </Typography>
                 </Stack>
-                <Icon color="white" name="meets" onClick={() => navigate('/meets')} />
+                <Stack direction="row" spacing={1}>
+                  <Icon color="white" name="like" onClick={() => navigate(isIdeasTab ? '/ideas' : '/projects')} />
+                  <Icon color="white" name="meets" onClick={() => navigate('/meets')} />
+                </Stack>
               </>
             )}
             {passport && !user && (
@@ -145,6 +143,13 @@ function App({ action }: AppProps): JSX.Element {
                         <Button
                           variant="menuButton"
                           icon={<Icon name="passport" />}
+                          onClick={() => navigate('/projects/self')}
+                        >
+                          Мои проекты
+                        </Button>
+                        <Button
+                          variant="menuButton"
+                          icon={<Icon name="passport" />}
                           onClick={() => navigate('/meets/isForPassport')}
                         >
                           Календарь организатора
@@ -156,117 +161,93 @@ function App({ action }: AppProps): JSX.Element {
               </div>
             </Stack>
           </SwipeableDrawer>
-          <DialogContent>
-            {isProjectsTab && (
-              <Stack spacing={4} style={{ padding: 16 }}>
-                <Stack spacing={2}>
-                  {Boolean(selfProjects.length) && (
-                    <>
-                      <Typography variant="Header2">Организую проекты</Typography>
-                      <Stack spacing={1}>
-                        {selfProjects.map((project) => (
-                          <ProjectCard
-                            key={project.id}
-                            project={project}
-                            refetchParent={refetchSelfProjects}
-                            variant="self"
-                          />
-                        ))}
-                      </Stack>
-                    </>
-                  )}
-                  <Button onClick={() => navigate('/project')}>Создать проект</Button>
-                </Stack>
-                {Boolean(userProjects.length) && (
-                  <Stack spacing={2}>
-                    <Typography variant="Header2">{user?.title} участвует в проектах</Typography>
-                    <Stack spacing={1}>
-                      {userProjects.map((project) => (
-                        <ProjectCard
-                          key={project.id}
-                          project={project}
-                          refetchParent={refetchSelfProjects}
-                          variant="self"
-                        />
-                      ))}
-                    </Stack>
-                  </Stack>
-                )}
-                <RecommendationProjects />
-              </Stack>
-            )}
-            {isIdeasTab && (
-              <Stack spacing={4} style={{ padding: 16 }}>
-                {user ? (
-                  <Stack spacing={2}>
-                    {Boolean(selfIdeas.length) && (
-                      <Stack spacing={2}>
-                        <Typography variant="Header2">Мои идеи</Typography>
-                        <Stack spacing={2}>
-                          {selfIdeas?.map((idea) => (
-                            <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
-                          ))}
-                        </Stack>
-                      </Stack>
-                    )}
-                    <Button onClick={() => navigate('/idea')}>Создать идею</Button>
-                  </Stack>
-                ) : (
-                  <Button onClick={() => navigate('/idea')}>Быстрая идея</Button>
-                )}
-                <RecommendationIdeas />
-              </Stack>
-            )}
-          </DialogContent>
-          <DialogFooter>
-            <Stack spacing={2} direction="row" justifyContent="space-evenly">
-              <Stack spacing={2} direction="row" alignItems="center" onClick={() => setBottomNavigationValue(1)}>
-                <Icon name="project" color={isProjectsTab ? 'secondary' : 'gray'} />
-                <span
-                  style={{
-                    fontSize: 9,
-                    fontWeight: 900,
-                    textTransform: 'uppercase',
-                    color: isProjectsTab ? COLOR : COLOR_GRAY,
-                  }}
-                >
-                  Проекты
-                </span>
-              </Stack>
-              <Stack spacing={2} direction="row" alignItems="center" onClick={() => setBottomNavigationValue(0)}>
-                <Icon name="idea" color={isIdeasTab ? 'secondary' : 'gray'} />
-                <span
-                  style={{
-                    fontSize: 9,
-                    fontWeight: 900,
-                    textTransform: 'uppercase',
-                    color: isIdeasTab ? COLOR : COLOR_GRAY,
-                  }}
-                >
-                  Идеи
-                </span>
-              </Stack>
-            </Stack>
-          </DialogFooter>
         </>
       ) : (
-        <>
-          <Header>
-            <Logo />
-            <Icon color="white" name="login" onClick={openLogin} />
-          </Header>
-          <DialogContent>
-            <Stack spacing={4} style={{ padding: 16 }}>
-              <Stack spacing={1}>
-                <Button onClick={toggleFastProject}>Быстрый проект</Button>
-                <Button onClick={() => navigate('/idea')}>Быстрая идея</Button>
-              </Stack>
-              <RecommendationProjects />
-              <RecommendationIdeas />
-            </Stack>
-          </DialogContent>
-        </>
+        <Header>
+          <Logo />
+          <Icon color="white" name="login" onClick={openLogin} />
+        </Header>
       )}
+      <DialogContent>
+        {isProjectsTab && (
+          <Stack spacing={4} style={{ padding: 16 }}>
+            {userProjects.length ? (
+              <Stack spacing={2}>
+                <Typography variant="Header2">{user?.title} участвует в проектах</Typography>
+                <Stack spacing={1}>
+                  {userProjects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      //refetchParent={refetchSelfProjects}
+                      variant="self"
+                    />
+                  ))}
+                </Stack>
+              </Stack>
+            ) : (
+              <Stack spacing={3}>
+                <img src="/forTeacher.svg" style={{ width: '100%' }} />
+                <Button onClick={() => navigate('/project')}>Создать свой проект</Button>
+              </Stack>
+            )}
+            <RecommendationProjects />
+          </Stack>
+        )}
+        {isIdeasTab && (
+          <Stack spacing={4} style={{ padding: 16 }}>
+            {selfIdeas.length ? (
+              <Stack spacing={2}>
+                <Stack spacing={2}>
+                  <Typography variant="Header2">Мои идеи</Typography>
+                  <Stack spacing={2}>
+                    {selfIdeas?.map((idea) => (
+                      <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
+                    ))}
+                  </Stack>
+                </Stack>
+                <Button onClick={() => navigate('/idea')}>Создать идею</Button>
+              </Stack>
+            ) : (
+              <Stack spacing={3}>
+                <img src="/forParent.svg" style={{ width: '100%' }} />
+                <Button onClick={() => navigate('/idea')}>Создать идею проекта</Button>
+              </Stack>
+            )}
+            <RecommendationIdeas />
+          </Stack>
+        )}
+      </DialogContent>
+      <DialogFooter>
+        <Stack spacing={2} direction="row" justifyContent="space-evenly">
+          <Stack spacing={2} direction="row" alignItems="center" onClick={() => setBottomNavigationValue(1)}>
+            <Icon name="project" color={isProjectsTab ? 'secondary' : 'gray'} />
+            <span
+              style={{
+                fontSize: 9,
+                fontWeight: 900,
+                textTransform: 'uppercase',
+                color: isProjectsTab ? COLOR : COLOR_GRAY,
+              }}
+            >
+              Проекты
+            </span>
+          </Stack>
+          <Stack spacing={2} direction="row" alignItems="center" onClick={() => setBottomNavigationValue(0)}>
+            <Icon name="idea" color={isIdeasTab ? 'secondary' : 'gray'} />
+            <span
+              style={{
+                fontSize: 9,
+                fontWeight: 900,
+                textTransform: 'uppercase',
+                color: isIdeasTab ? COLOR : COLOR_GRAY,
+              }}
+            >
+              Идеи
+            </span>
+          </Stack>
+        </Stack>
+      </DialogFooter>
       <FastProject open={fastProject} onClose={toggleFastProject} />
     </Box>
   )

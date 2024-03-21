@@ -26,9 +26,6 @@ export function RecommendationProjects(): JSX.Element {
           </Masonry>
         </>
       )}
-      <Button onClick={() => navigate('/projects')} variant="outlined">
-        Банк проектов
-      </Button>
     </Stack>
   )
 }

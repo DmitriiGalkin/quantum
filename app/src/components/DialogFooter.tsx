@@ -10,7 +10,7 @@ interface DialogFooterProps {
 }
 export function DialogFooterDefault({ onClick, children, title }: DialogFooterProps): JSX.Element {
   return (
-    <div style={{ padding: 15, backgroundColor: 'white', boxShadow: BOX_SHADOW, zIndex: 1 }}>
+    <div style={{ padding: '13px 18px', backgroundColor: 'white', boxShadow: BOX_SHADOW, zIndex: 1 }}>
       {onClick && <Button onClick={onClick}>{title || 'Сохранить'}</Button>}
       {children}
     </div>

@@ -7,8 +7,6 @@ const app = express()
 const PORT = process.env.PORT || 3000
 const indexPath = path.resolve(__dirname, '..', 'build', 'index.html')
 
-app.use(express.static(path.resolve(__dirname, '..', 'build'), { maxAge: '30d' }))
-
 app.get('/project/:id', (req, res, next) => {
   fs.readFile(indexPath, 'utf8', (error, html) => {
     if (error) return res.status(404).end()
@@ -58,11 +56,11 @@ app.get('/project', (req, res, next) => {
       .replace('__OG_TYPE__', 'article')
       .replace('__OG_TITLE__', 'Организовать детский проект')
       .replace('__OG_DESCRIPTION__', 'Помогаем педагогам развивать детские проекты: набирать детей в группы, подбирать места для проведения встреч, вести учет посещаемости и оплаты занятий')
-      .replace('__OG_IMAGE__', 'https://selfproject.ru/forParent.png'))
+      .replace('__OG_IMAGE__', 'https://selfproject.ru/forTeacher.png'))
   })
 })
 
-app.get('/*', (req, res, next) => {
+app.get('/', (req, res, next) => {
   fs.readFile(indexPath, 'utf8', (error, html) => {
     if (error) return res.status(404).end()
 
@@ -73,9 +71,11 @@ app.get('/*', (req, res, next) => {
       .replace('__OG_TYPE__', 'article')
       .replace('__OG_TITLE__', 'Интересные проекты и идеи для детей рядом')
       .replace('__OG_DESCRIPTION__', 'Помогаем педагогам и детям находить друг друга, создавать интересные проекты, подбирать места для проведения встреч')
-      .replace('__OG_IMAGE__', 'https://selfproject.ru/forParent.png'))
+      .replace('__OG_IMAGE__', 'https://selfproject.ru/forIndex.png'))
   })
 })
+
+app.use(express.static(path.resolve(__dirname, '..', 'build'), { maxAge: '30d' }))
 
 app.listen(PORT, (error) => {
   if (error) return console.log('Error during app startup', error)
