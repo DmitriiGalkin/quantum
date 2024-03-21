@@ -69,8 +69,7 @@ export const getDatetimeTitle = (datetime?: string): string => {
   const isTomorrow2 = localDateTime.isTomorrow()
 
   return localDateTime.format(
-    (isToday2 ? '[Сегодня]' : ((isTomorrow2 ? '[Завтра]' : `D ${getMonthLongTitle(localDateTime.month())}`))) +
-      ', HH:mm',
+    (isToday2 ? '[Сегодня]' : (isTomorrow2 ? '[Завтра]' : `D ${getMonthLongTitle(localDateTime.month())}`)) + ', HH:mm',
   )
 }
 
@@ -82,8 +81,7 @@ export const getDatetimeTitle2 = (datetime?: string): string => {
   const isTomorrow2 = localDateTime.isTomorrow()
 
   return localDateTime.format(
-    (isToday2 ? 'сегодня' : ((isTomorrow2 ? 'завтра' : `D ${getMonthLongTitle(localDateTime.month())}`))) +
-    ' в HH:mm',
+    (isToday2 ? 'сегодня' : (isTomorrow2 ? 'завтра' : `D ${getMonthLongTitle(localDateTime.month())}`)) + ' в HH:mm',
   )
 }
 

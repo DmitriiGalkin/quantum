@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { VisitCard } from '../cards/VisitCard'
 import { DatePicker, DialogFooter, DialogHeader, Input } from '../components'
@@ -9,13 +10,12 @@ import { withDialog } from '../components/helper'
 import { calendarPickerOnChange, convertToDate, convertToObject, now, onChangeReactIosTimePicker } from '../tools/date'
 import { Meet } from '../tools/dto'
 import { useAddMeet, useDeleteMeet, useEditMeet, useMeet } from '../tools/service'
-import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 
 function EditMeet() {
   const navigate = useNavigate()
   const { id: meetId } = useParams()
   const [searchParams] = useSearchParams()
-  const defaultProjectId = searchParams.get("defaultProjectId")
+  const defaultProjectId = searchParams.get('defaultProjectId')
 
   const addMeet = useAddMeet()
   const editMeet = useEditMeet(meetId)

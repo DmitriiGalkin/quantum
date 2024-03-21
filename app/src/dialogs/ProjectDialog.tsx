@@ -11,11 +11,11 @@ import { Parameter, Parameters } from '../components/Parameters'
 import Typography from '../components/Typography'
 import { withDialog } from '../components/helper'
 import { useAuth } from '../tools/auth'
+import { getDatetimeTitle2 } from '../tools/date'
 import { getAgeTitle } from '../tools/helper'
 import { getOnShare } from '../tools/pwa'
 import { useCreateParticipation, useDeleteParticipation, useProject } from '../tools/service'
 import { COLOR } from '../tools/theme'
-import {getDatetimeTitle, getDatetimeTitle2} from "../tools/date";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -96,7 +96,9 @@ function ProjectDialog() {
     menuItems.push({ title: 'Выйти из проекта', onClick: onDeleteParticipation })
   }
 
-  const bl = Boolean(project.meets?.length) ? 'Ближайшая встреча состоится ' + getDatetimeTitle2(project.meets?.[0].datetime) : ''
+  const bl = project.meets?.length
+    ? 'Ближайшая встреча состоится ' + getDatetimeTitle2(project.meets?.[0].datetime)
+    : ''
   const onShare = getOnShare({
     text: `${project?.title} (5-7 лет) | ${project?.place?.title} | Организатор ${project?.passport?.title}. ` + bl,
     url: `/project/${project?.id}`,

@@ -1,16 +1,16 @@
 import { Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { InviteCard } from '../cards/InviteCard'
-import {Button, DialogFooter, DialogHeader, Input, Textarea} from '../components'
+import { DialogFooter, DialogHeader, Input, Textarea } from '../components'
 import { Block } from '../components/Block'
 import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
 import { useAuth } from '../tools/auth'
-import {Idea, User} from '../tools/dto'
+import { Idea, User } from '../tools/dto'
 import { useGeolocation } from '../tools/geolocation'
 import { useAddIdea, useDeleteIdea, useEditIdea, useIdea } from '../tools/service'
-import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 
 export const FAST_IDEA = 'fastIdea'
 

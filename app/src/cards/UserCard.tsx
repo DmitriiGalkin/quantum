@@ -1,10 +1,10 @@
 import { Avatar, Stack } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { Card } from '../components'
 import Typography from '../components/Typography'
 import { User } from '../tools/dto'
-import {useNavigate} from "react-router-dom";
 
 interface UserCardProps {
   user: User

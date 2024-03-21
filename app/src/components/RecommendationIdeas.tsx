@@ -1,12 +1,11 @@
 import { Stack } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { IdeaCard } from '../cards/IdeaCard'
 import { useGeolocation } from '../tools/geolocation'
 import { useIdeas } from '../tools/service'
-import { Button } from './Button'
 import Typography from './Typography'
-import {useNavigate} from "react-router-dom";
 
 export function RecommendationIdeas(): JSX.Element {
   const navigate = useNavigate()

@@ -1,13 +1,12 @@
 import Masonry from '@mui/lab/Masonry'
 import { Stack } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { ProjectCard } from '../cards/ProjectCard'
 import { useAuth } from '../tools/auth'
 import { useProjects } from '../tools/service'
-import { Button } from './Button'
 import Typography from './Typography'
-import {useNavigate} from "react-router-dom";
 
 export function RecommendationProjects(): JSX.Element {
   const navigate = useNavigate()

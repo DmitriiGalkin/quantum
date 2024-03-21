@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
+import { FAST_IDEA } from '../dialogs/EditIdea'
 import { FAST_PROJECT } from '../dialogs/FastProject'
 import { useAuth } from './auth'
 import { Invite } from './dto'
 import { useAddIdea, useAddPlace, useAddProject, useAddUser, useCreateInvite } from './service'
-import {FAST_IDEA} from "../dialogs/EditIdea";
 
 export const useFast = (refetch: () => void): void => {
   const { isAuth } = useAuth()

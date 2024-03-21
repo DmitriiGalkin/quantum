@@ -1,12 +1,12 @@
+import { Stack } from '@mui/material'
 import React from 'react'
 import { useToggle } from 'usehooks-ts'
 
 import EditPlace from '../dialogs/EditPlace'
 import { Place } from '../tools/dto'
 import { usePlaces } from '../tools/service'
-import {COLOR_PAPER, COLOR_PRICE} from '../tools/theme'
-import Typography from "./Typography";
-import {Stack} from "@mui/material";
+import { COLOR_PAPER, COLOR_PRICE } from '../tools/theme'
+import Typography from './Typography'
 
 interface PlaceSelectProps {
   onChange: (place: Place) => void

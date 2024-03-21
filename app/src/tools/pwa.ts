@@ -13,10 +13,10 @@ export const getOnShare = ({ text, url }: ShareProps) => () => {
         url: `https://selfproject.ru` + url,
       })
       .then(() => {
-        console.log('Sharing was successful');
+        console.log('Sharing was successful')
       })
       .catch((error) => {
-        console.error('Sharing failed:', error);
+        console.error('Sharing failed:', error)
       })
   } catch (error) {
     // eslint-disable-next-line no-console

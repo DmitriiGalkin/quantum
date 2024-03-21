@@ -1,5 +1,6 @@
 import { Dialog, DialogActions, Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useToggle } from 'usehooks-ts'
 
 import { Button, DialogFooter, DialogHeader, ImageField, Input } from '../components'
@@ -8,11 +9,10 @@ import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
 import { User } from '../tools/dto'
 import { useAddUser, useDeleteUser, useEditUser, useUser } from '../tools/service'
-import {useNavigate, useParams} from "react-router-dom";
 
 function EditUser() {
   const navigate = useNavigate()
-  let { id: userId } = useParams()
+  const { id: userId } = useParams()
 
   const addUser = useAddUser()
   const editUser = useEditUser(userId)

@@ -2,8 +2,6 @@ import Dialog from '@mui/material/Dialog'
 import { makeStyles } from '@mui/styles'
 import React from 'react'
 
-import { COLOR_PAPER } from '../tools/theme'
-
 export const useInputStyles = makeStyles(() => ({
   input: {
     display: 'block',

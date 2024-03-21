@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { ParticipationCard } from '../cards/ParticipationCard'
 import { Button, DialogHeader } from '../components'
@@ -10,10 +11,9 @@ import ProjectForm from '../components/ProjectForm'
 import { withDialog } from '../components/helper'
 import { Place, Project } from '../tools/dto'
 import { useAddPlace, useAddProject, useDeleteProject, useEditProject, useProject } from '../tools/service'
-import {useNavigate, useParams} from "react-router-dom";
 
 function EditProject() {
-  let { id: projectId } = useParams()
+  const { id: projectId } = useParams()
   const navigate = useNavigate()
 
   const onClose = () => navigate(-1)

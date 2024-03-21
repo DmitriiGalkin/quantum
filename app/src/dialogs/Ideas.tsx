@@ -1,56 +1,48 @@
 import { Stack } from '@mui/material'
-import React, { useState } from 'react'
-import { useToggle } from 'usehooks-ts'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { IdeaCard } from '../cards/IdeaCard'
-import { DialogHeader, Input } from '../components'
-import { AgeField } from '../components/AgeField'
-import { Block } from '../components/Block'
+import { Button } from '../components'
 import { DialogContent } from '../components/DialogContent'
-import { withDialog } from '../components/helper'
-import { IdeaFilter, useIdeas } from '../tools/service'
+import { RecommendationIdeas } from '../components/RecommendationIdeas'
+import Tabs from '../components/Tabs'
+import Typography from '../components/Typography'
+import { useAuth } from '../tools/auth'
+import { useIdeas } from '../tools/service'
 
-export interface IdeasProps {
-  onClose: () => void
-  ideaFilter?: IdeaFilter
-}
-function Ideas({ onClose, ideaFilter }: IdeasProps) {
-  const [filter, setFilter] = useState<IdeaFilter | undefined>(ideaFilter)
-  const [options, toggleOptions] = useToggle()
-  const { data, refetch } = useIdeas(filter)
+function Ideas() {
+  const navigate = useNavigate()
+  const { user } = useAuth()
+  const { data: selfIdeas = [], refetch } = useIdeas({ variant: 'self', userId: user?.id })
 
   return (
     <>
-      <DialogHeader
-        onClick={onClose}
-        onClickOption={toggleOptions}
-        renderTitle={() => (
-          <div style={{ flexGrow: 1 }}>
-            <Input name="like" iconName="like" />{' '}
-          </div>
-        )}
-      />
       <DialogContent>
-        {options && (
-          <Block variant="primary">
-            <AgeField
-              ageFrom={filter?.ageFrom}
-              ageTo={filter?.ageTo}
-              onChange={({ ageFrom, ageTo }) => {
-                setFilter({ ...filter, ageFrom, ageTo })
-              }}
-            />
-          </Block>
-        )}
-        <Block variant="secondary">
-          <Stack spacing={1}>
-            {data?.map((idea) => (
-              <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
-            ))}
-          </Stack>
-        </Block>
+        <Stack spacing={4} style={{ padding: 16 }}>
+          {selfIdeas.length ? (
+            <Stack spacing={2}>
+              <Stack spacing={2}>
+                <Typography variant="Header2">Мои идеи</Typography>
+                <Stack spacing={2}>
+                  {selfIdeas?.map((idea) => (
+                    <IdeaCard key={idea.id} idea={idea} refetch={refetch} />
+                  ))}
+                </Stack>
+              </Stack>
+              <Button onClick={() => navigate('/idea')}>Создать идею</Button>
+            </Stack>
+          ) : (
+            <Stack spacing={3}>
+              <img src="/forParent.svg" style={{ width: '100%' }} />
+              <Button onClick={() => navigate('/idea')}>Создать идею проекта</Button>
+            </Stack>
+          )}
+          <RecommendationIdeas />
+        </Stack>
       </DialogContent>
+      <Tabs />
     </>
   )
 }
-export default withDialog(Ideas)
+export default Ideas

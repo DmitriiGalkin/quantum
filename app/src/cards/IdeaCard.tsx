@@ -1,17 +1,16 @@
 import { Avatar, Stack } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useToggle } from 'usehooks-ts'
 
 import { Button, Card, Icon } from '../components'
 import { Parameter } from '../components/Parameter'
 import Typography from '../components/Typography'
-import EditIdea from '../dialogs/EditIdea'
 import SelectProject from '../dialogs/SelectProject'
 import { useAuth } from '../tools/auth'
 import { Idea, Project } from '../tools/dto'
 import { getDistanceTitle } from '../tools/geolocation'
 import { useCreateInvite, useProjects } from '../tools/service'
-import {useNavigate} from "react-router-dom";
 
 interface IdeaCardProps {
   idea: Idea
