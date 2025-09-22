@@ -6,12 +6,9 @@ pipeline {
         stage('Application') {
             steps {
                 echo 'Application install & build'
-                                sh 'ls'
-                sh 'cd ./app'
+                sh 'cd app && yarn'
                 sh 'ls'
-                sh 'yarn'
-                                sh 'ls'
-                sh 'cd ./app'
+                sh 'cd app'
                 sh 'ls'
                 sh 'npm run build'
             }
