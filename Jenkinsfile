@@ -7,10 +7,7 @@ pipeline {
             steps {
                 echo 'Application install & build'
                 sh 'cd app && yarn'
-                sh 'ls'
-                sh 'cd app'
-                sh 'ls'
-                sh 'npm run build'
+                sh 'cd app && npm run build'
             }
         }
         stage('Deploy') {
