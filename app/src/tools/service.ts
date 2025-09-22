@@ -1,5 +1,5 @@
 import { useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult } from '@tanstack/react-query'
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 
 import { ACCESS_TOKEN } from './auth'
 import { Idea, Meet, Participation, Passport, Place, Project, User, Visit } from './dto'
@@ -10,32 +10,31 @@ const developmentServer = window.location.protocol + '//' + window.location.host
 const BASE_URL = process.env.REACT_APP_SERVER === 'localhost' ? developmentServer : 'https://selfproject.ru/api'
 
 export const createService = (): AxiosInstance => {
-  const service = axios.create()
-  service.interceptors.request.use((config: AxiosRequestConfig) => ({
-    baseURL: BASE_URL,
-    ...config,
-  }))
-  service.interceptors.request.use((config: AxiosRequestConfig) => {
+  const service = axios.create({ baseURL: BASE_URL })
+
+  // Устанавливаем baseURL только через конструктор, а не отдельным интерсептором.
+
+  service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN)
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`
     }
     return config
   })
+
   service.interceptors.response.use(
-    (response) => {
-      return response
-    },
+    (response: AxiosResponse) => response,
     (error) => {
-      if (error.response.status === 401) {
+      if (error.response && error.response.status === 401) {
         localStorage.removeItem(ACCESS_TOKEN)
         window.location.reload()
       }
-      return error
+      return Promise.reject(error)
     },
   )
 
-  service.interceptors.response.use((axiosResponse) => axiosResponse.data)
+  // Достаём только data из ответа
+  service.interceptors.response.use((response: AxiosResponse) => response.data)
 
   return service
 }
