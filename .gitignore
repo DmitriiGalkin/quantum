@@ -15,4 +15,5 @@ pnpm-debug.log*
 
 # production
 /app/build
+default
 
