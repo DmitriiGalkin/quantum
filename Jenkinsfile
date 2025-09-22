@@ -10,10 +10,5 @@ pipeline {
                 sh 'cd app && npm run build'
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying'
-            }
-        }
     }
 }
