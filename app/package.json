@@ -1,6 +1,6 @@
 {
   "name": "quantum",
-  "version": "0.2.0",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@aws-sdk/client-s3": "^3.312.0",
@@ -12,7 +12,7 @@
     "@pbe/react-yandex-maps": "^1.2.0",
     "@tanstack/react-query": "^4.24.10",
     "async": "^3.2.4",
-    "axios": "0.20.0",
+    "axios": "^1.12.2",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",
     "nodemon": "^3.1.0",
@@ -29,8 +29,6 @@
     "start": "PORT=5000 REACT_APP_SERVER=localhost ./node_modules/.bin/react-scripts start",
     "build": "./node_modules/.bin/react-scripts build",
     "build:dev": "REACT_APP_SERVER=localhost ./node_modules/.bin/react-scripts build",
-    "test": "./node_modules/.bin/react-scripts test",
-    "eject": "./node_modules/.bin/react-scripts eject",
     "server": "nodemon server/index.js"
   },
   "eslintConfig": {

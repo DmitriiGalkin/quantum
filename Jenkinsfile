@@ -3,16 +3,17 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Application') {
             steps {
-                echo 'Building...'
-                sh 'npm install'
+                echo 'Application install & build'
+                sh 'cd app'
+                sh 'yarn'
+                sh 'npm run build'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying'
-                sh 'npm run build'
             }
         }
     }
