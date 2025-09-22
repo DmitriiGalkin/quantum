@@ -9,6 +9,7 @@ pipeline {
                 sh 'cd app'
                 sh 'yarn'
                 sh 'cd app'
+                sh 'ls'
                 sh 'npm run build'
             }
         }
