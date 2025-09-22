@@ -9,6 +9,7 @@ import { DialogContent } from '../components/DialogContent'
 import { withDialog } from '../components/helper'
 import { User } from '../tools/dto'
 import { useAddUser, useDeleteUser, useEditUser, useUser } from '../tools/service'
+import UserEditor from "./UserEditor";
 
 function EditUser() {
   const navigate = useNavigate()
@@ -45,28 +46,7 @@ function EditUser() {
       />
       <DialogContent>
         <Block variant="primary">
-          <Stack spacing={1} direction="row">
-            <Input
-              name="price"
-              label="Имя"
-              value={user?.title}
-              onChange={(e) => setUser({ ...user, title: e.target.value })}
-              autoFocus
-            />
-            <Input
-              name="age"
-              label="Возраст"
-              type="number"
-              value={user?.age}
-              onChange={(e) => setUser({ ...user, age: Number(e.target.value) })}
-            />
-          </Stack>
-          <ImageField
-            name="meetImage"
-            label="Обложка"
-            value={user?.image}
-            onChange={(image) => setUser({ ...user, image })}
-          />
+          <UserEditor user={user} onChange={setUser} />
         </Block>
       </DialogContent>
       {showSave && <DialogFooter onClick={onClickSave} />}

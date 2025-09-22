@@ -16,6 +16,7 @@ import Meets from './dialogs/Meets'
 import PassportDialog from './dialogs/Passport'
 import ProjectDialog from './dialogs/ProjectDialog'
 import Projects from './dialogs/Projects'
+import SearchIdeas from './dialogs/SearchIdeas'
 import SearchProjects from './dialogs/SearchProjects'
 import SelfProjects from './dialogs/SelfProjects'
 import Visits from './dialogs/Visits'
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
       <Route path="passport" element={<PassportDialog open={true} />} />
       <Route path="user" element={<EditUser open={true} />} />
       <Route path="user/:id/edit" element={<EditUser open={true} />} />
+      <Route path="ideas/search" element={<SearchIdeas open={true} />} />
       <Route path="ideas" element={<Ideas />} />
       <Route path="idea" element={<EditIdea open={true} />} />
       <Route path="idea/:id/edit" element={<EditIdea open={true} />} />

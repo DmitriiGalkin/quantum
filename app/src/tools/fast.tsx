@@ -5,9 +5,10 @@ import { FAST_PROJECT } from '../dialogs/FastProject'
 import { useAuth } from './auth'
 import { Invite } from './dto'
 import { useAddIdea, useAddPlace, useAddProject, useAddUser, useCreateInvite } from './service'
+import {useNavigate} from "react-router-dom";
 
-export const useFast = (refetch: () => void): void => {
-  const { isAuth } = useAuth()
+export const useFast = (isAuth: boolean): void => {
+  const navigate = useNavigate()
 
   const fastIdeaJSON = localStorage.getItem(FAST_IDEA)
   const addUser = useAddUser()
@@ -19,11 +20,11 @@ export const useFast = (refetch: () => void): void => {
 
       addUser.mutateAsync(fastIdea.user).then((userId) => {
         addIdea.mutateAsync({ ...fastIdea.idea, userId }).then(() => {
-          refetch()
+          navigate('/ideas')
         })
       })
     }
-  }, [isAuth, fastIdeaJSON, addUser, addIdea, refetch])
+  }, [isAuth, fastIdeaJSON, addUser, addIdea])
 
   const fastProjectJSON = localStorage.getItem(FAST_PROJECT)
   const addPlace = useAddPlace()
@@ -34,14 +35,24 @@ export const useFast = (refetch: () => void): void => {
       const fastProject = JSON.parse(fastProjectJSON)
       localStorage.removeItem(FAST_PROJECT)
 
-      addPlace.mutateAsync(fastProject.place).then((placeId) => {
-        addProject.mutateAsync({ ...fastProject.project, placeId }).then((projectId) => {
+      console.log(fastProject,'fastProject')
+      if (fastProject.project.place.id) {
+        addProject.mutateAsync({ ...fastProject.project, placeId: fastProject.project.place.id }).then((projectId) => {
           fastProject.invites?.forEach((i: Partial<Invite>) => {
             addInvite.mutate({ ideaId: i.ideaId as number, projectId: projectId as number, userId: i.userId as number })
           })
-          refetch()
+          navigate('/projects/self')
         })
-      })
+      } else {
+        addPlace.mutateAsync(fastProject.place).then((placeId) => {
+          addProject.mutateAsync({ ...fastProject.project, placeId }).then((projectId) => {
+            fastProject.invites?.forEach((i: Partial<Invite>) => {
+              addInvite.mutate({ ideaId: i.ideaId as number, projectId: projectId as number, userId: i.userId as number })
+            })
+            navigate('/projects/self')
+          })
+        })
+      }
     }
-  }, [isAuth, fastProjectJSON, addPlace, addProject, refetch, addInvite])
+  }, [isAuth, fastProjectJSON, addPlace, addProject, addInvite])
 }

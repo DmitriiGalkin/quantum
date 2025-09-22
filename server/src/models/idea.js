@@ -32,24 +32,26 @@ Idea.delete = function(id, result){
 const RADIUS = 100000
 
 Idea.findAll = function (params, result) {
-    const dist = params.latitude && params.longitude && "ST_Distance_Sphere(point(" + params.latitude + ", " + params.longitude + "), point(latitude, longitude))"
+    let sql = ''
+    if (params.variant === 'self') {
+        sql = `SELECT idea.* FROM idea WHERE userId = ${params.userId}`
+    } else {
+        const dist = params.latitude && params.longitude && "ST_Distance_Sphere(point(" + params.latitude + ", " + params.longitude + "), point(latitude, longitude))"
+        let where = ''
+        if (params.variant || params.ageFrom || params.ageTo || params.userId || (params.latitude && params.longitude)) {
+            where += 'WHERE'
+            where =' LEFT JOIN user ON user.id = idea.userId ' + where
+            where += (params.deleted === 'true' ? ' idea.deleted IS NOT NULL OR idea.deleted IS NULL' : ' idea.deleted IS NULL')
+            where += (params.ageFrom) ? ' AND user.age > ' + params.ageFrom : ''
+            where += (params.ageTo) ? ' AND user.age < '+ params.ageTo : ''
+            where += (params.userId) ? ' AND idea.userId = '+ params.userId : ''
+            where += (params.latitude && params.longitude) ? ` AND ${dist} < ` + RADIUS : ''
+            where = where + ((params.variant === 'recommendation' && params.passportId) ? ' AND idea.passportId != ' + params.passportId : '')
+        }
 
-    let where = ''
-    if (params.variant || params.ageFrom || params.ageTo || params.userId || (params.latitude && params.longitude)) {
-        where += 'WHERE'
-        where =' LEFT JOIN user ON user.id = idea.userId ' + where
-        where += (params.deleted === 'true' ? ' idea.deleted IS NOT NULL OR idea.deleted IS NULL' : ' idea.deleted IS NULL')
-        where += (params.ageFrom) ? ' AND user.age > ' + params.ageFrom : ''
-        where += (params.ageTo) ? ' AND user.age < '+ params.ageTo : ''
-        where += (params.userId) ? ' AND idea.userId = '+ params.userId : ''
-        where += (params.latitude && params.longitude) ? ` AND ${dist} < ` + RADIUS : ''
-        where = where + ((params.variant === 'recommendation' && params.passportId) ? ' AND idea.passportId != ' + params.passportId : '')
-        where = where + ' AND userId = ' + ((params.variant === 'self' && params.userId) ? params.userId : 'userId')
+        sql = `SELECT idea.* ${dist ? `, ${dist} AS distance` : ''} FROM idea ${where}`
     }
-
-    const f = `SELECT idea.* ${dist ? `, ${dist} AS distance` : ''} FROM idea ${where}`
-    // console.log(f,'Idea.findAll')
-    dbConn.query(f, function (err, res) {
+    dbConn.query(sql, function (err, res) {
         result(null, res || []);
     });
 };

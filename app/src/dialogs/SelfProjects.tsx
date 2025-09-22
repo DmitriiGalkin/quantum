@@ -18,7 +18,7 @@ function Projects({ onClose }: ProjectsProps) {
     <>
       <DialogHeader title="Мои проекты" onClick={onClose} />
       <DialogContent>
-        <Stack spacing={2}>
+        <Stack spacing={2} style={{ padding: 15 }}>
           {Boolean(selfProjects.length) && (
             <Stack spacing={1}>
               {selfProjects.map((project) => (

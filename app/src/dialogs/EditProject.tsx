@@ -3,20 +3,24 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { ParticipationCard } from '../cards/ParticipationCard'
-import { Button, DialogHeader } from '../components'
+import { Button, DialogFooter, DialogHeader, Input } from '../components'
 import { Block } from '../components/Block'
 import { DialogContent } from '../components/DialogContent'
 import { PlaceSelect2 } from '../components/PlaceSelect2'
 import ProjectForm from '../components/ProjectForm'
 import { withDialog } from '../components/helper'
-import { Place, Project } from '../tools/dto'
+import { useAuth } from '../tools/auth'
+import { Place, Project, User } from '../tools/dto'
 import { useAddPlace, useAddProject, useDeleteProject, useEditProject, useProject } from '../tools/service'
+
+const FAST_PROJECT = 'fastProject'
 
 function EditProject() {
   const { id: projectId } = useParams()
   const navigate = useNavigate()
+  const { user, isAuth, openLogin } = useAuth()
 
-  const onClose = () => navigate(-1)
+  const onBack = () => navigate(-1)
   const addPlace = useAddPlace()
   const addProject = useAddProject()
   const editProject = useEditProject(projectId)
@@ -30,24 +34,28 @@ function EditProject() {
     if (!project.placeId && project?.place) {
       addPlace.mutateAsync(project.place).then((placeId) => {
         if (project.id) {
-          editProject.mutateAsync({ ...project, placeId: placeId as number }).then(onClose)
+          editProject.mutateAsync({ ...project, placeId: placeId as number }).then(onBack)
         } else {
-          addProject.mutateAsync({ ...project, placeId: placeId as number }).then(onClose)
+          addProject.mutateAsync({ ...project, placeId: placeId as number }).then(() => navigate('/projects/self'))
         }
       })
     } else if (project.id) {
-      editProject.mutateAsync(project).then(onClose)
+      editProject.mutateAsync(project).then(onBack)
     } else {
-      addProject.mutateAsync(project).then(onClose)
+      addProject.mutateAsync(project).then(() => navigate('/projects/self'))
     }
   }
-  const onDelete = () => deleteProject.mutateAsync(project.id).then(onClose)
+  const onDelete = () => deleteProject.mutateAsync(project.id).then(onBack)
+  const onSubmit = () => {
+    localStorage.setItem(FAST_PROJECT, JSON.stringify({ project }))
+    !isAuth && openLogin()
+  }
 
   return (
     <>
       <DialogHeader
         title={project.id ? 'Редактировать проект' : 'Новый проект'}
-        onClick={onClose}
+        onClick={onBack}
         isClose={!project.id}
         menuItems={project.id ? [{ title: 'Удалить', onClick: onDelete }] : undefined}
       />
@@ -78,13 +86,13 @@ function EditProject() {
           </Block>
         )}
       </DialogContent>
-      <div
-        style={{ padding: 15, display: JSON.stringify(defaultProject) === JSON.stringify(project) ? 'none' : 'block' }}
-      >
-        <Button disabled={!project.title || !(project.placeId || project.place)} onClick={onClickSave}>
-          {project.id ? 'Сохранить' : 'Создать'}
-        </Button>
-      </div>
+      {!user && project.title && (project.placeId || project.place) && <DialogFooter onClick={onSubmit} />}
+      {user &&
+        project.title &&
+        (project.placeId || project.place) &&
+        JSON.stringify(defaultProject) !== JSON.stringify(project) && (
+          <DialogFooter onClick={onClickSave} title={project.id ? 'Сохранить' : 'Создать'} />
+        )}
     </>
   )
 }

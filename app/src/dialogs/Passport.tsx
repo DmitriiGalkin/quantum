@@ -26,8 +26,8 @@ function PassportDialog({ onLogout, onClose }: UserViewProps): React.ReactNode {
 
   const onClickLogout = () => {
     logout()
-    onLogout()
-    onClose()
+    onLogout?.()
+    onClose?.()
   }
   const onClickSave = () => {
     passport && updateUser.mutate(passport)

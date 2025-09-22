@@ -11,6 +11,7 @@ import { useAuth } from '../tools/auth'
 import { Idea, User } from '../tools/dto'
 import { useGeolocation } from '../tools/geolocation'
 import { useAddIdea, useDeleteIdea, useEditIdea, useIdea } from '../tools/service'
+import UserEditor from "./UserEditor";
 
 export const FAST_IDEA = 'fastIdea'
 
@@ -85,38 +86,26 @@ function EditIdea() {
             value={idea.description}
             onChange={(e) => setIdea({ ...idea, description: e.target.value })}
           />
-          {!user && (
-            <Stack spacing={1} direction="row">
-              <Input
-                name="price"
-                label="Имя"
-                value={puser.title || ''}
-                onChange={(e) => setPuser({ ...puser, title: e.target.value })}
-              />
-              <Input
-                name="age"
-                label="Возраст"
-                type="number"
-                value={puser.age || ''}
-                onChange={(e) => setPuser({ ...puser, age: Number(e.target.value) })}
-              />
-            </Stack>
-          )}
+          {!user && <UserEditor user={puser} onChange={setPuser} withoutImage />}
         </Block>
         {idea.id && (
           <Block variant="secondary">
-            <Block title="Приглашения в проекты">
-              <Stack spacing={1}>
-                {idea.invites?.map((invite) => (
-                  <InviteCard key={invite.id} invite={invite} refetch={refetch} />
-                ))}
-              </Stack>
-            </Block>
+            {Boolean(idea.invites?.length) && (
+              <Block title="Приглашения в проекты">
+                <Stack spacing={1}>
+                  {idea.invites?.map((invite) => (
+                    <InviteCard key={invite.id} invite={invite} refetch={refetch} />
+                  ))}
+                </Stack>
+              </Block>
+            )}
           </Block>
         )}
       </DialogContent>
-      {!user && idea.title && puser.title && puser.age && <DialogFooter onClick={onSubmit} />}
-      {user && idea.title && <DialogFooter onClick={onClickSave} title={idea.id ? 'Сохранить' : 'Создать'} />}
+      {!user && idea.title && puser.title && puser.age && <DialogFooter title="Воплотить" onClick={onSubmit} />}
+      {user && idea.title && JSON.stringify(defaultIdea) !== JSON.stringify(idea) && (
+        <DialogFooter onClick={onClickSave} title={idea.id ? 'Сохранить' : 'Воплотить'} />
+      )}
     </>
   )
 }

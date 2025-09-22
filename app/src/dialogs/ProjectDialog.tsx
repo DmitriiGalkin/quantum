@@ -35,10 +35,6 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export interface ProjectDialogProps {
-  projectId: number
-  onClose: () => void
-}
 interface IMapState {
   center: number[]
   zoom: number
@@ -46,7 +42,7 @@ interface IMapState {
 function ProjectDialog() {
   const { id: projectId } = useParams()
   const navigate = useNavigate()
-  const { user, isAuth, passport } = useAuth()
+  const { user, isAuth, passport, openLogin } = useAuth()
   const classes = useStyles()
   const { data: project, refetch } = useProject(projectId)
   const [state, setState] = useState<IMapState>()
@@ -82,8 +78,13 @@ function ProjectDialog() {
     { name: 'place', title: 'Место', value: <Link>{project?.place?.title}</Link>, onClick: toggleOpenMap },
   ] as Parameter[]
 
-  const onCreateParticipation = () =>
-    user && project && createParticipation.mutateAsync({ projectId: project.id, userId: user.id }).then(() => refetch())
+  const onCreateParticipation = () => {
+    if (user && project) {
+      createParticipation.mutateAsync({ projectId: project.id, userId: user.id }).then(() => refetch())
+    } else {
+      openLogin()
+    }
+  }
   const onDeleteParticipation = () =>
     participation && deleteParticipation.mutateAsync(participation).then(() => refetch())
 
@@ -142,7 +143,7 @@ function ProjectDialog() {
                   </Box>
                 </Block>
               )}
-              {!participation && isAuth && user && <Button onClick={onCreateParticipation}>Присоединиться</Button>}
+              <Button onClick={onCreateParticipation}>Присоединиться</Button>
               <Parameters items={parameters} />
               {openMap && state && (
                 <div style={{ height: 156, borderRadius: 8, overflow: 'hidden' }}>
