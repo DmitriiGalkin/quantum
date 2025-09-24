@@ -11,9 +11,9 @@ pipeline {
 //         }
             stage('Api') {
                 steps {
-                    echo 'APi install & run'
+                    echo 'API install & run'
                     sh 'cd server && yarn'
-                    sh 'cd server && pm2 start src/index.js'
+                    sh 'cd server && pm2 start src/index.js -f'
                 }
             }
     }
