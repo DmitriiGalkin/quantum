@@ -4,12 +4,13 @@ pipeline {
     stages {
         stage('Application') {
             steps {
-                echo 'Application install & build'
+                echo 'Application install & build & run'
                 sh 'cd app && yarn'
                 sh 'cd app && CI=false npm run build'
+                sh 'cd app && pm2 start server/index.js -f'
             }
         }
-        stage('Api') {
+        stage('Api for application') {
             steps {
                 echo 'API install & run'
                 sh 'cd server && yarn'
