@@ -13,7 +13,7 @@ pipeline {
             steps {
                 echo 'API install & run'
                 sh 'cd server && yarn'
-                sh 'cd server && pm2 start src/index.js -f'
+                sh 'cd server && node src/index.js -f'
             }
         }
     }
