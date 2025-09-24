@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Api for application') {
             steps {
-                echo 'API install & run'
+                echo 'API install & run2'
                 sh 'cd server && yarn'
                 sh 'cd server && pm2 start src/index.js -f --name api'
                 sh 'pm2 save'
