@@ -65,7 +65,7 @@ app.get('/', (req, res, next) => {
     if (error) return res.status(404).end()
 
     return res.send(html
-      .replace('<title>Quantum</title>', `<title>Quantum</title>`)
+      .replace('<title>Quantum</title>', `<title>Quantum Evolution</title>`)
       .replace('__DESCRIPTION__', 'Помогаем педагогам и детям находить друг друга, создавать интересные проекты, подбирать места для проведения встреч')
       .replace('__OG_SITE_NAME__', 'Quantum')
       .replace('__OG_TYPE__', 'article')
