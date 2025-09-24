@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Application install & build'
                 sh 'cd app && yarn'
-                sh 'cd app && npm run build'
+                sh 'cd app && CI=false npm run build'
             }
         }
         stage('Api') {
