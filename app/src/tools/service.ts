@@ -7,7 +7,7 @@ import { Idea, Meet, Participation, Passport, Place, Project, User, Visit } from
 // При разработки хост может быть разным
 const developmentServer = window.location.protocol + '//' + window.location.hostname + ':4000'
 
-const BASE_URL = process.env.REACT_APP_SERVER === 'localhost' ? developmentServer : 'https://selfproject.ru/api'
+const BASE_URL = process.env.REACT_APP_SERVER === 'localhost' ? developmentServer : 'https://q2-dev.ru/api'
 
 export const createService = (): AxiosInstance => {
   const service = axios.create({ baseURL: BASE_URL })
