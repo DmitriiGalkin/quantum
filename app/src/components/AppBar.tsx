@@ -29,7 +29,7 @@ export function AppBar({ isIdeasTab }: { isIdeasTab?: boolean }): React.ReactEle
                 {user.title}
               </Typography>
             </Stack>
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row" spacing={2}>
               <Icon
                 color="white"
                 name="like"
