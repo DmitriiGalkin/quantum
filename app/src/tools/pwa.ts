@@ -10,7 +10,7 @@ export const getOnShare = ({ text, url }: ShareProps) => () => {
     navigator
       .share({
         text,
-        url: `https://selfproject.ru` + url,
+        url: `https://q2-dev.ru` + url,
       })
       .then(() => {
         console.log('Sharing was successful')

@@ -41,7 +41,7 @@ app.get('/idea', (req, res, next) => {
       .replace('__OG_TYPE__', 'article')
       .replace('__OG_TITLE__', 'Реализовать идею проекта ребенка')
       .replace('__OG_DESCRIPTION__', 'Помогаем родителям подобрать для ребенка интересный проект: секцию, кружок, мастер класс или предложить идею нового уникального проекта')
-      .replace('__OG_IMAGE__', 'https://selfproject.ru/forParent.png'))
+      .replace('__OG_IMAGE__', 'https://q2-dev.ru/forParent.png'))
   })
 })
 
@@ -56,7 +56,7 @@ app.get('/project', (req, res, next) => {
       .replace('__OG_TYPE__', 'article')
       .replace('__OG_TITLE__', 'Организовать детский проект')
       .replace('__OG_DESCRIPTION__', 'Помогаем педагогам развивать детские проекты: набирать детей в группы, подбирать места для проведения встреч, вести учет посещаемости и оплаты занятий')
-      .replace('__OG_IMAGE__', 'https://selfproject.ru/forTeacher.png'))
+      .replace('__OG_IMAGE__', 'https://q2-dev.ru/forTeacher.png'))
   })
 })
 
@@ -71,7 +71,7 @@ app.get('/', (req, res, next) => {
       .replace('__OG_TYPE__', 'article')
       .replace('__OG_TITLE__', 'Интересные проекты и идеи для детей рядом')
       .replace('__OG_DESCRIPTION__', 'Помогаем педагогам и детям находить друг друга, создавать интересные проекты, подбирать места для проведения встреч')
-      .replace('__OG_IMAGE__', 'https://selfproject.ru/forIndex.png'))
+      .replace('__OG_IMAGE__', 'https://q2-dev.ru/forIndex.png'))
   })
 })
 
